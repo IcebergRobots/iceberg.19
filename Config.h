@@ -5,4 +5,6 @@
 #include "Utility.h"
 #include "pin.h"
 
+void pinModes();
+
 #endif

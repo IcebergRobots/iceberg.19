@@ -1,6 +1,6 @@
 #include "Config.h"
 
-void pinModes() 
+void pinModes() {
   pinMode(BRIGHTNESS_PCB, INPUT_PULLUP);
   pinMode(TEMPERATURE_PCB, INPUT);
   pinMode(TEMPERATURE_MD, INPUT);
