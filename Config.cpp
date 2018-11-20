@@ -1,6 +1,6 @@
 #include "Config.h"
 
-void pinModes() {
+void setupPinmodes() {
   pinMode(BRIGHTNESS_PCB, INPUT_PULLUP);
   pinMode(TEMPERATURE_PCB, INPUT);
   pinMode(TEMPERATURE_MD, INPUT);
@@ -66,4 +66,17 @@ void pinModes() {
   pinMode(KICK, OUTPUT);
   
   pinMode(CAMERA_SERVO, OUTPUT);
+
+  pinMode(SPI_CS, OUTPUT);
 }
+
+void setupUART() {
+  DEBUG_SERIAL.begin(DEBUG_BAUDRATE);
+  BLUETOOTH_SERIAL.begin(BLUETOOTH_BAUDRATE);
+  BLACKBOX_SERIAL.begin(BLACKBOX_BAUDRATE);
+}
+
+void setupI2C() {
+  Wire.begin();
+}
+

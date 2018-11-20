@@ -94,10 +94,10 @@
 #define CAMERA_SERVO    5   // Kamerawinkel, setzt Servolenkung für die Kameradrehung
           
 // SPI 
-#define CLK             52  // Serial Clock
-#define CS              53  // Chip Select
-#define MISO            50  // Master Input, Slave Output
-#define MOSI            51  // Master Output, Slave Input
+#define SPI_CLK             52  // Serial Clock
+#define SPI_CS              53  // Chip Select
+#define SPI_MISO            50  // Master Input, Slave Output
+#define SPI_MOSI            51  // Master Output, Slave Input
 
 // USB 
 #define USB_TX          1   // Computer <- Mega, Computer Kommunikation
