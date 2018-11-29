@@ -5,6 +5,7 @@
 #define BRIGHTNESS_PCB  A10 // misst Helligkeit rechts auf der Platine
 #define TEMPERATURE_PCB A13 // misst Temperatur nahe den Motortreibern
 #define TEMPERATURE_MD  A5  // misst Temperatur nahe den Motortreibern
+#define BATTERY_VOLTAGE A11 // misst Akkuspannung
 
 // Ausgabe
 #define BUZZER          34  // piept Ton, aktiver Buzzer
