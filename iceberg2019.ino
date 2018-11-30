@@ -1,13 +1,5 @@
-#include "Config.h"
-
-bool silent = false;
-bool hasDebugHead = false;
-
-// OBJEKTINITIALISIERUNG
-Camera camera; 
-Display d = Display(D_PIN_3); // OBJEKTINITIALISIERUNG
-Key key;
-Light light;
+#include "Core.h"
+#include "Global.h"
 
 void setup() {
   initPins();

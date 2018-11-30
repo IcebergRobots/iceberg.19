@@ -1,5 +1,5 @@
-#ifndef Config_h
-#define Config_h
+#ifndef Core_h
+#define Core_h
 
 #ifndef ARDUINO_AVR_MEGA2560
 #error "Wrong board selected! Choose Mega 2560"
@@ -7,12 +7,9 @@
 
 #include "Arduino.h"
 #include <Adafruit_NeoPixel.h>
+#include <Adafruit_SSD1306.h>
 #include <avr/wdt.h>
-#include "Camera.h"
-#include "Display.h"
-#include "Light.h"
 #include "pin.h"
-#include "Key.h"
 #include "KeyListener.h"
 #include "Utility.h"
 

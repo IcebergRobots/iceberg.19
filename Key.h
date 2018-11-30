@@ -1,7 +1,7 @@
 #ifndef Key_h
 #define Key_h
 
-#include "Config.h"
+#include "Core.h"
 
 #define NUMBER_OF_KEYS 3
 
@@ -14,6 +14,8 @@ class Key
     KeyListener selectMenu();
     void update();*/
   private:
+    KeyListener k = KeyListener(PUI_START, 0, 0, 0);    // flat
+
     /*
     KeyListener k[3] = {
       KeyListener(PUI_STOP, 0, 500, 200), // decreasePage

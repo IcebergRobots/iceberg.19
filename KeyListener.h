@@ -1,7 +1,7 @@
 #ifndef KeyListener_h
 #define KeyListener_h
 
-#include "Config.h"
+#include "Core.h"
 
 /***********************************************************
                                   click

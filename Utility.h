@@ -1,7 +1,7 @@
 #ifndef Utility_h
 #define Utility_h
 
-#include "Config.h"
+#include "Core.h"
 
 void reset();
 int shift(int &value, int min, int max);

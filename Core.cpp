@@ -1,4 +1,4 @@
-#include "Config.h"
+#include "Core.h"
 
 void initPins() {
   pinMode(BRIGHTNESS_PCB, INPUT_PULLUP);
