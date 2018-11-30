@@ -1,5 +1,5 @@
-#include "Core.h"
-#include "Global.h"
+#include "Core.h"   // Lade fundamentale Daten, die alle benötigen: Einstellungen, Pintabelle, Basiswerkzeuge, Bibliotheken
+#include "Global.h" // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen / Objekte
 
 void setup() {
   initPins();

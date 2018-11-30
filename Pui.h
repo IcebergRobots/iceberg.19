@@ -1,14 +1,14 @@
-#ifndef Key_h
-#define Key_h
+#ifndef Pui_h
+#define Pui_h
 
 #include "Core.h"
 
 #define NUMBER_OF_KEYS 3
 
-class Key
+class Pui
 {
   public:
-    Key();
+    Pui();
     /*KeyListener start();
     KeyListener stop();
     KeyListener selectMenu();

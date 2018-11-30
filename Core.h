@@ -9,7 +9,7 @@
 #include <Adafruit_NeoPixel.h>
 #include <Adafruit_SSD1306.h>
 #include <avr/wdt.h>
-#include "pin.h"
+#include "Pin.h"
 #include "KeyListener.h"
 #include "Utility.h"
 
