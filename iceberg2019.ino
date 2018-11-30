@@ -21,7 +21,12 @@ void loop() {
   //readCompass();
   //readPixy();
   //readUltrasonic();
-  //readPui(); page menu start stop lever
+  //readPui();
+  key.update();
+
+  if (key.start().permanent())  debug("start");
+  if (key.stop().stroke())      debug("stop");
+  if (key.selectMenu().click()) debug("select");
 
   //updateStates();
   //updateRating();
@@ -38,5 +43,6 @@ void loop() {
   //display();
 
   //camera.frame();
+  delay(10);
 }
 

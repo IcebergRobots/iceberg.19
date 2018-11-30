@@ -32,7 +32,7 @@ void KeyListener::update() {
         clicks = 0;
     } else {
         // Knopf wird gedrückt
-        if (clicks == 0) {
+        if (cooldownTimer == 0) {
             // Erstmaliges Drücken
             cooldownTimer = millis() + preDelay;
         }

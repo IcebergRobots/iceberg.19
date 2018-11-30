@@ -9,16 +9,13 @@ class Pui
 {
   public:
     Pui();
-    /*KeyListener start();
+    KeyListener start();
     KeyListener stop();
     KeyListener selectMenu();
-    void update();*/
+    void update();
   private:
-    KeyListener k = KeyListener(PUI_START, 0, 0, 0);    // flat
-
-    /*
     KeyListener k[3] = {
-      KeyListener(PUI_STOP, 0, 500, 200), // decreasePage
+      /*KeyListener(PUI_STOP, 0, 500, 200), // decreasePage
       KeyListener(PUI_STOP, 0, 500, 200), // increasePage
       KeyListener(PUI_STOP, 0),    // selectPage
       KeyListener(PUI_STOP, 2000),    // resetProperties (left + right)
@@ -35,11 +32,10 @@ class Pui
       KeyListener(PUI_STOP, 0),    // bottom
       KeyListener(PUI_STOP, 0),    // debug
       KeyListener(PUI_STOP, 0),    // silent
-      KeyListener(PUI_STOP, 600, 0, 0),    // flat
-      KeyListener(PUI_START, 0, 0, 0),    // flat
-      KeyListener(PUI_STOP, 0, 0, 0),    // flat
-      KeyListener(PUI_ROT_BTN, 500, 2000, 100)    // flat
+      KeyListener(PUI_STOP, 600, 0, 0),    // flat*/
+      KeyListener(PUI_START, 0, 0, 0),          // start
+      KeyListener(PUI_STOP, 0, 0, 0),           // stop
+      KeyListener(PUI_ROT_BTN, 500, 2000, 100)  // select
     };
-    */
 };
 #endif
