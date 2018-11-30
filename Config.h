@@ -6,12 +6,15 @@
 #endif
 
 #include "Arduino.h"
+#include <Adafruit_NeoPixel.h>
 #include <avr/wdt.h>
 #include "Camera.h"
 #include "Display.h"
-#include "Input.h"
-#include "Utility.h"
+#include "Light.h"
 #include "pin.h"
+#include "Key.h"
+#include "KeyListener.h"
+#include "Utility.h"
 
 #include <SPI.h>
 #include <Wire.h>
