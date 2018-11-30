@@ -24,9 +24,28 @@ void loop() {
   //readPui();
   key.update();
 
-  if (key.start().permanent())  debug("start");
-  if (key.stop().stroke())      debug("stop");
-  if (key.selectMenu().click()) debug("select");
+  if (key.decreasePage().click())         {} // display.changePage(1);
+  if (key.increasePage().click())         {} // display.changePage(-1);
+  if (key.selectPage().stroke())          {} // display.setMenu(0);
+  if (key.selectPage().permanent())       {} // display.setPage(0);
+  if (key.resetProperties().stroke())     {} // resetProperties();
+  if (key.selectMenu().stroke())          {} // display.toggle();
+  if (key.selectMenu().permanent())       {} // display.resetValue();
+  if (key.kick().click())                 {} // kick();
+  if (key.compassCalibration().click())   {} // activate calibration
+  if (key.animation().stroke())           {} // activate animation
+  if (key.animation().permanent())        {} // hymne
+  if (key.lineCalibration().stroke())     {} // activate line calibration, setpage, setmenu to value
+  if (key.lightBeamCalibration().click()) {} // activate light beam calibration, setpage, setmenu to value
+  if (key.start().stroke())               {} // start motors, activate bluetooth
+  if (key.stop().stroke())                {} // stop motors, activate bluetooth
+  if (key.record().stroke())              {} // start / stop recording, activate bluetooth
+  if (key.headstart().stroke())           {} // ?
+  if (key.motor().stroke())               {} // ?
+  if (key.bluetooth().stroke())           {} // activate bluetooth
+  if (key.kicker().stroke())              {} // ?
+  if (key.bottom().stroke())              {} // activate light
+  if (key.debug().stroke())               {} // send hello
 
   //updateStates();
   //updateRating();

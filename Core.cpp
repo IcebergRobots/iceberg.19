@@ -55,7 +55,7 @@ void initPins() {
   pinMode(M3_CURRENT, INPUT);
 
   pinMode(PUI_LIGHT, OUTPUT);
-  pinMode(PUI_ROT_BTN, INPUT_PULLUP);
+  pinMode(PUI_ROT_BUTTON, INPUT_PULLUP);
   pinMode(PUI_ROT_DIR1, INPUT_PULLUP);
   pinMode(PUI_ROT_DIR2, INPUT_PULLUP);
   pinMode(PUI_INTERRUPT, INPUT);

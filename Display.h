@@ -13,16 +13,22 @@ class Display: public Adafruit_SSD1306
     void update();
     void select();
     void back();
-    void toggle();
     void change(int change);
+
+    void changePage(int n);
+    void setPage(int n);
     byte getPage();
+    void scroll(int n);
+    void setMenu(int n);
+    void toggle();
+    void resetValue();
   private:
     bool set();
-    void addLine(String title, String value);
-    void addLine(String title, long value, bool showPlus);
-    void addLine(String title, long value);
-    void addLine(String title);
     void addLine();
+    void addLine(String title);
+    void addLine(String title, String value);
+    void addLine(String title, long value);
+    void addLine(String title, long value, bool showPlus);
     String intToStr(int number);
 
     byte level = 0;

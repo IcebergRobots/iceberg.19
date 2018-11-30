@@ -1,5 +1,5 @@
-#ifndef pin_h
-#define pin_h
+#ifndef Pintable_h
+#define Pintable_h
 
 // Analoge Sensoren
 #define BRIGHTNESS_PCB  A10 // misst Helligkeit rechts auf der Platine
@@ -80,7 +80,7 @@
 
 // PUI-Anschluss
 #define PUI_LIGHT       32  // stellt PUI-LEDs ein
-#define PUI_ROT_BTN     30  // Knopf des Rotary Encoders
+#define PUI_ROT_BUTTON  30  // Knopf des Rotary Encoders
 #define PUI_ROT_DIR1    26  // misst Drehung des Rotary Encoders
 #define PUI_ROT_DIR2    28  // misst Drehung des Rotary Encoders
 #define PUI_INTERRUPT   2   // empfängt Interrupt bei Knopfdruck
