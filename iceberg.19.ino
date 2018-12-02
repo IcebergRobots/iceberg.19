@@ -26,8 +26,10 @@ void loop() {
   //readCompass();
   //readPixy();
   //readUltrasonic();
+  /*
   io.update();
 
+  
   if (io.decreasePage.click())         {} // display.changePage(1);
   if (io.increasePage.click())         {} // display.changePage(-1);
   if (io.selectPage.stroke())          {} // display.setMenu(0);
@@ -50,6 +52,7 @@ void loop() {
   if (io.kicker.stroke())              {} // ?
   if (io.bottom.stroke())              {} // activate light
   if (io.debug.stroke())               {} // send hello
+  */
 
   //updateStates();
   //updateRating();
