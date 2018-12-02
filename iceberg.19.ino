@@ -14,6 +14,10 @@ void setup() {
   //restoreSession();
   debugln("SETUP DONE");
   delay(1000);
+	debug("2="+String(pinMode(BRIGHTNESS_PCB)));
+	debugln("1="+String(pinMode(TEMPERATURE_PCB)));
+	debugln("SCL="+String(pinMode(SCL)));
+	debugln("SDA="+String(pinMode(SDA)));
 }
 void loop() {
   prepareDebug();  // bereite debug nachrichten vor
