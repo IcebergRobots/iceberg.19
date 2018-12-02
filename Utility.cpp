@@ -1,13 +1,42 @@
 #include "Utility.h"
 
-void reset() {
-  asm ("jmp 0");   // starte den Arduino neu
+void initUART() {
+  DEBUG_SERIAL.begin(DEBUG_BAUDRATE);
+  BLUETOOTH_SERIAL.begin(BLUETOOTH_BAUDRATE);
+  BLACKBOX_SERIAL.begin(BLACKBOX_BAUDRATE);
 }
 
-int shift(int &value, int min, int max) {
-  max -= min;
-  value = (max + (value - min % max)) % max + min; // wandle Drehposition in Zustand von 0 bis ROTARY_RANGE um
-  return value;
+void initI2C() {
+  I2c.begin();
+  I2c.scan();
+}
+
+/*
+  gemessen  theoretisch
+  17mS      WDTO_15MS
+  34mS      WDTO_30MS
+  68mS      WDTO_60MS
+  136mS     WDTO_120MS
+  272mS     WDTO_250MS
+  544mS     WDTO_500MS
+  1088mS    WDTO_1S
+  2176mS    WDTO_2S
+  4352mS    WDTO_4S
+  8705mS    WDTO_8S
+*/
+void initWatchdog() {
+  wdt_enable(WDTO_120MS); //135ms
+}
+
+void initDebug() {
+  String str = "";
+  if (!DEBUG) str += "\nUSB DEBUG DEACTIVATED!";
+  else {
+    str += "\nICEBERG ROBOTS 2019\n";
+    str += "Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher\n";
+    for (int i = 0; i < 60; i++) str += "=";
+  }
+  DEBUG_SERIAL.println(str);
 }
 
 /*****************************************************
@@ -16,52 +45,7 @@ int shift(int &value, int min, int max) {
 void calculateStates() {
 }
 
-
-/*****************************************************
-  sende Text zum PC
-*****************************************************/
-void debug(String str) {
-  if (DEBUG && !silent) {
-    if (!hasDebugHead) {
-      hasDebugHead = true;
-      str = "\n" + String(millis()) + " " + str;
-    }
-    DEBUG_SERIAL.print(str + " ");
-  }
-}
-void debug(long num) {
-  debug(String(num));
-}
-void debug() {
-  debug("");
-}
-
-/*****************************************************
-  sende Text zum PC
-*****************************************************/
-void debugln(String str) {
-  debug(str + "\n");
-}
-void debugln(long num) {
-  debugln(String(num));
-}
-void debugln() {
-  debugln("");
-}
-
 void prepareDebug() {
   hasDebugHead = false;
   if (DEBUG_LOOP) debug();
-}
-
-int pinMode(uint8_t pin) {
-  if (pin >= NUM_DIGITAL_PINS) return (-1);
-
-  uint8_t bit = digitalPinToBitMask(pin);
-  uint8_t port = digitalPinToPort(pin);
-  volatile uint8_t *reg = portModeRegister(port);
-  if (*reg & bit) return (OUTPUT);
-
-  volatile uint8_t *out = portOutputRegister(port);
-  return ((*out & bit) ? INPUT_PULLUP : INPUT);
 }

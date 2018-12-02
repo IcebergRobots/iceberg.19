@@ -6,8 +6,8 @@
 Light::Light() {}
 
 void Light::light() {
-  pui.setBrightness(map(analogRead(PUI_POTI), 0, 1023, 0, 255));
-  analogWrite(IND_HEARBEAT, constrain(map(abs(int(millis() % 500) - 250),0,250,-100,356),0,255));
+  pui.setBrightness(map(io.puiPoti.get(), 0, 1023, 0, 255));
+  io.indHearbeat.set(map(abs(int(millis() % 500) - 250),0,250,-100,356));
   setBoard(pui, wheelToColor(pui, millis() / 20 % 256));
 }
 

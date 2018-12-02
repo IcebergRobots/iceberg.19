@@ -1,7 +1,7 @@
 #ifndef Pin_h
 #define Pin_h
 
-#include "Core.h"
+#include "core.h"
 
 #define ANALOG false
 #define DIGITAL true

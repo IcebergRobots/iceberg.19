@@ -16,7 +16,7 @@ void Camera::init() {
 }
 
 void Camera::frame() {
-  digitalWrite(SPI_CS, LOW);
+  //io.spiCs.set(LOW);
   delay(1); // Give the OpenMV Cam some time to setup to send data.
 
   if(SPI.transfer(1) == 85) { // saw sync char?
@@ -30,6 +30,6 @@ void Camera::frame() {
     while (zero_legnth--) SPI.transfer(0); // eat zeros.
   }
 
-  digitalWrite(SPI_CS, HIGH);
+  //io.spiCs.set(HIGH);
   debugln(buff);
 }

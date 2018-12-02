@@ -1,7 +1,7 @@
 #ifndef IO_h
 #define IO_h
 
-#include "Core.h"
+#include "core.h"
 
 class IO
 {

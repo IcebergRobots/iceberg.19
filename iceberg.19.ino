@@ -1,8 +1,9 @@
-#include "Core.h"   // Lade fundamentale Daten, die alle benötigen: Einstellungen, Pintabelle, Basiswerkzeuge, Bibliotheken
-#include "Global.h" // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen / Objekte
+#include "core.h"   // Lade fundamentale Daten, die alle benötigen: Einstellungen, Pintabelle, Basiswerkzeuge, Bibliotheken
+#include "IO.h"
+IO io;
+#include "global.h" // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen / Objekte
 
 void setup() {
-  initPins();
   initUART();
   initDebug();
   initI2C();
@@ -14,10 +15,6 @@ void setup() {
   //restoreSession();
   debugln("SETUP DONE");
   delay(1000);
-	debug("2="+String(pinMode(BRIGHTNESS_PCB)));
-	debugln("1="+String(pinMode(TEMPERATURE_PCB)));
-	debugln("SCL="+String(pinMode(SCL)));
-	debugln("SDA="+String(pinMode(SDA)));
 }
 void loop() {
   prepareDebug();  // bereite debug nachrichten vor

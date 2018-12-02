@@ -1,7 +1,8 @@
 #ifndef Light_h
 #define Light_h
 
-#include "Core.h"
+#include "core.h"
+#include "tools.h"
 
 class Light
 {
@@ -15,7 +16,7 @@ class Light
     void wheelBoard(Adafruit_NeoPixel & board, int offset);
     void setBoard(Adafruit_NeoPixel & board, uint32_t color);
     uint32_t wheelToColor(Adafruit_NeoPixel & board, byte pos);
-    Adafruit_NeoPixel pui = Adafruit_NeoPixel(12, PUI_LIGHT, NEO_GRB + NEO_KHZ800);
+    Adafruit_NeoPixel pui = Adafruit_NeoPixel(12, io.puiLight.getPin(), NEO_GRB + NEO_KHZ800);
 
 };
 #endif

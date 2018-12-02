@@ -6,6 +6,8 @@
 #endif
 
 #include "Arduino.h"
+#include "Key.h"
+#include "Pin.h"
 
 #include <Adafruit_NeoPixel.h>
 #include <Adafruit_SSD1306.h>
@@ -13,20 +15,18 @@
 #include <I2C.h>
 #include <SPI.h>
 
-#include "Pintable.h"
-#include "Key.h"
-#include "Pin.h"
-#include "Utility.h"
+void debug(String str);
+void debug(long num);
+void debug();
+void debugln(String str);
+void debugln(long num);
+void debugln();
+
+int shift(int &value, int min, int max);
+int pinMode(byte pin);
+void reset();
 
 
-
-void initPins();
-void initSPI();
-void initUART();
-void initI2C();
-
-void initWatchdog();
-void initDebug();
 
 // UART
 #define DEBUG true
@@ -75,35 +75,5 @@ void initDebug();
 #define UINT32_T_MAX 4294967295
 
 extern bool silent, hasDebugHead;
-
-
-/*
-data type         │  min      │   max
-══════════════════╪═══════════╪═══════
-bool, boolean      0            1 
-char               -128         127
-byte               0            255
-short
-
-unsigned short
-
-int
-
-unsigned int
-
-long
-
-uint64_t
-
-long long
-
-uint64_t long
-
-float
-
-double
-
-
-*/
 
 #endif
