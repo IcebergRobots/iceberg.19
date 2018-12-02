@@ -4,12 +4,12 @@ Key::Key(int8_t _pin) {
     pin = _pin;
 }
 
-Key::Key(int8_t _pin, uint64_t _preDelay) {
+Key::Key(int8_t _pin, uint32_t _preDelay) {
     pin = _pin;
     preDelay = _preDelay;
 }
 
-Key::Key(int8_t _pin, uint64_t _preDelay, uint64_t _postDelay, uint64_t _repititionDelay) {
+Key::Key(int8_t _pin, uint32_t _preDelay, uint32_t _postDelay, uint32_t _repititionDelay) {
     pin = _pin;
     preDelay = _preDelay;
     postDelay = _postDelay;
@@ -21,6 +21,7 @@ bool Key::stroke() {
     return active && clicks == 1;
 }
 bool Key::permanent() {
+    if(active && clicks > 1) debug(cooldownTimer);
     return active && clicks > 1;
 }
 bool Key::click() {
@@ -45,7 +46,7 @@ void Key::update() {
     }
 }
 
-void Key::cooldown(uint64_t delay) {
+void Key::cooldown(uint32_t delay) {
     if(delay + 1 == 0) cooldownTimer = -1;
-    cooldownTimer += delay;
+    else cooldownTimer = millis() + delay;
 }

@@ -72,10 +72,6 @@ void initDebug();
 #define INT32_T_MAX 2147483647
 #define UINT32_T_MIN 0
 #define UINT32_T_MAX 4294967295
-#define INT64_T_MIN −9223372036854775808
-#define INT64_T_MAX 9223372036854775807
-#define UINT64_T_MIN 0
-#define UINT64_T_MAX 18446744073709551615
 
 extern bool silent, hasDebugHead;
 
