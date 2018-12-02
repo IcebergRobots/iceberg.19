@@ -3,12 +3,15 @@
 Key::Key(int8_t _pin) {
     pin = _pin;
 }
-
 Key::Key(int8_t _pin, uint32_t _preDelay) {
     pin = _pin;
     preDelay = _preDelay;
 }
-
+Key::Key(int8_t _pin, uint32_t _preDelay, uint32_t _postDelay) {
+    pin = _pin;
+    preDelay = _preDelay;
+    postDelay = _postDelay;
+}
 Key::Key(int8_t _pin, uint32_t _preDelay, uint32_t _postDelay, uint32_t _repititionDelay) {
     pin = _pin;
     preDelay = _preDelay;
@@ -17,11 +20,9 @@ Key::Key(int8_t _pin, uint32_t _preDelay, uint32_t _postDelay, uint32_t _repitit
 }
 
 bool Key::stroke() {
-    if(active && clicks == 1) debug(cooldownTimer);
     return active && clicks == 1;
 }
 bool Key::permanent() {
-    if(active && clicks > 1) debug(cooldownTimer);
     return active && clicks > 1;
 }
 bool Key::click() {

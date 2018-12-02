@@ -20,6 +20,7 @@ class Key
   public:
     Key(int8_t _pin);
     Key(int8_t _pin, uint32_t _preDelay);
+    Key(int8_t _pin, uint32_t _preDelay, uint32_t _postDelay);
     Key(int8_t _pin, uint32_t _preDelay, uint32_t _postDelay, uint32_t _repititionDelay);
     bool stroke();
     bool permanent();

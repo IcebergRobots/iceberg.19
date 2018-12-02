@@ -11,7 +11,7 @@ public:
   Key increasePage = Key(PUI_POTI, 0, 500, 200);   // increasePage
   Key selectPage = Key(PUI_POTI, 0);               // selectPage
   Key resetProperties = Key(PUI_POTI, 2000);       // resetProperties (left + right)
-  Key selectMenu = Key(PUI_ROT_BUTTON, 0, 1000, -1);         // selectMenu
+  Key selectMenu = Key(PUI_ROT_BUTTON, 0, 1000);   // selectMenu
   Key kick = Key(PUI_POTI, 0, 1000, 0);            // kick
   Key compassCalibration = Key(PUI_POTI, 0, 0, 0); // compassCalibration
   Key animation = Key(PUI_POTI, 0);                // animation
