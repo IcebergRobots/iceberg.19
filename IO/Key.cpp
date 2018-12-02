@@ -1,18 +1,18 @@
 #include "Key.h"
 
-Key::Key(int8_t _pin) {
+Key::Key(int _pin) {
     pin = _pin;
 }
-Key::Key(int8_t _pin, uint32_t _preDelay) {
+Key::Key(int _pin, unsigned long _preDelay) {
     pin = _pin;
     preDelay = _preDelay;
 }
-Key::Key(int8_t _pin, uint32_t _preDelay, uint32_t _postDelay) {
+Key::Key(int _pin, unsigned long _preDelay, unsigned long _postDelay) {
     pin = _pin;
     preDelay = _preDelay;
     postDelay = _postDelay;
 }
-Key::Key(int8_t _pin, uint32_t _preDelay, uint32_t _postDelay, uint32_t _repititionDelay) {
+Key::Key(int _pin, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay) {
     pin = _pin;
     preDelay = _preDelay;
     postDelay = _postDelay;
@@ -47,7 +47,7 @@ void Key::update() {
     }
 }
 
-void Key::cooldown(uint32_t delay) {
+void Key::cooldown(unsigned long delay) {
     if(delay + 1 == 0) cooldownTimer = -1;
     else cooldownTimer = millis() + delay;
 }

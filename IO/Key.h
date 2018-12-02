@@ -18,22 +18,22 @@ Button  ║        ┊         ┊               ┊               ┊          
 class Key
 {
   public:
-    Key(int8_t _pin);
-    Key(int8_t _pin, uint32_t _preDelay);
-    Key(int8_t _pin, uint32_t _preDelay, uint32_t _postDelay);
-    Key(int8_t _pin, uint32_t _preDelay, uint32_t _postDelay, uint32_t _repititionDelay);
+    Key(int _pin);
+    Key(int _pin, unsigned long _preDelay);
+    Key(int _pin, unsigned long _preDelay, unsigned long _postDelay);
+    Key(int _pin, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay);
     bool stroke();
     bool permanent();
     bool click();
     void update();
   private:
-    void cooldown(uint32_t delay);
-    int8_t pin = 0;
+    void cooldown(unsigned long delay);
+    int pin = 0;
     bool active = false;
-    uint32_t clicks = 0;
-    uint32_t preDelay = 0;
-    uint32_t postDelay = -1;        // infinity
-    uint32_t repititionDelay = -1;  // infinity
-    uint32_t cooldownTimer = 0;
+    unsigned long clicks = 0;
+    unsigned long preDelay = 0;
+    unsigned long postDelay = -1;        // infinity
+    unsigned long repititionDelay = -1;  // infinity
+    unsigned long cooldownTimer = 0;
 };
 #endif
