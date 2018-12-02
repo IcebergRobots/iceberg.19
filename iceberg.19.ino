@@ -4,6 +4,7 @@
 void setup() {
   initPins();
   initUART();
+  initDebug();
   initI2C();
 
   //d.init();  // initialisiere Display mit Iceberg Schriftzug
@@ -11,7 +12,7 @@ void setup() {
 
   //createCrashlog();
   //restoreSession();
-  initDebug();
+  debugln("SETUP DONE");
   delay(1000);
 }
 void loop() {

@@ -77,7 +77,8 @@ void initUART() {
 }
 
 void initI2C() {
-  Wire.begin();
+  IC2.begin();
+  IC2.scan();
 }
 
 /*

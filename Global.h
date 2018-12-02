@@ -7,7 +7,7 @@
 #include "Display.h"
 
 bool silent = false;
-bool hasDebugHead = false;
+bool hasDebugHead = true;
 
 Camera camera; 
 Display d = Display(D_PIN_3); // OBJEKTINITIALISIERUNG

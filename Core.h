@@ -6,15 +6,18 @@
 #endif
 
 #include "Arduino.h"
+
 #include <Adafruit_NeoPixel.h>
 #include <Adafruit_SSD1306.h>
 #include <avr/wdt.h>
+#include <I2C.h>
+#include <SPI.h>
+
 #include "Pintable.h"
 #include "KeyListener.h"
 #include "Utility.h"
 
-#include <SPI.h>
-#include <Wire.h>
+
 
 void initPins();
 void initSPI();
