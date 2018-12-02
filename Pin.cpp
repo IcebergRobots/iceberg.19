@@ -1,14 +1,14 @@
 #include "Pin.h"
 
-Pin::Pin(int _pin, byte _pinMode, bool _digital) {
+Pin::Pin(int _pin, byte _mode, bool _digital) {
   pin = _pin;
-  pinMode = _pinMode;
+  mode = _mode;
   digital = _digital;
-  pinMode(pin, pinMode);
+  pinMode(pin, mode);
 }
 
 void Pin::set(int value) {
-  if(pinMode == OUTPUT) {
+  if(mode == OUTPUT) {
 	if(pin < 0) {
 	  // I2C Expander Pin
 	  /*byte address = pin - INT16_T_MIN; // Decode pin address
@@ -41,4 +41,8 @@ void Pin::update() {
 	if (digital) value = digitalRead(pin);
 	else value = analogRead(pin);
   }
+}
+
+byte Pin::getPin() {
+	return pin;
 }

@@ -1,7 +1,7 @@
 #ifndef Key_h
 #define Key_h
 
-#include "../Core.h"
+#include "Core.h"
 
 /***********************************************************
 																	click

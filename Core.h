@@ -14,8 +14,8 @@
 #include <SPI.h>
 
 #include "Pintable.h"
-#include "IO/Key.h"
-//#include "IO/Pin.h"
+#include "Key.h"
+//#include "Pin.h"
 #include "Utility.h"
 
 
