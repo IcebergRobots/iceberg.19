@@ -1,5 +1,5 @@
 #include "core.h"   // Lade fundamentale Daten, die alle benötigen: Einstellungen, Pintabelle, Basiswerkzeuge, Bibliotheken
-#include "IO.h"
+#include "tools.h"
 IO io;
 #include "global.h" // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen / Objekte
 

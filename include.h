@@ -1,5 +1,5 @@
-#ifndef Tools_h
-#define Tools_h
+#ifndef Include_h
+#define Include_h
 
 #include "IO.h"
 extern IO io;

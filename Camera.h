@@ -1,7 +1,7 @@
 #ifndef Camera_h
 #define Camera_h
 
-#include "core.h"
+#include "include.h"
 
 #define BUFFER_SIZE 128
 

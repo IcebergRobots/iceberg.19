@@ -1,7 +1,7 @@
 #ifndef Display_h
 #define Display_h
 
-#include "core.h"
+#include "include.h"
 
 class Display: public Adafruit_SSD1306
 {
