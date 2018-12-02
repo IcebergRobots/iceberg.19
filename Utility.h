@@ -16,5 +16,6 @@ void debugln(long num);
 void debugln();
 
 void prepareDebug();
+int pinMode(uint8_t pin);
 
 #endif

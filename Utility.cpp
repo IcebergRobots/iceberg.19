@@ -24,7 +24,7 @@ void debug(String str) {
   if (DEBUG && !silent) {
     if (!hasDebugHead) {
       hasDebugHead = true;
-      str = "\n" + String(millis())+ str;
+      str = "\n" + String(millis()) + " " + str;
     }
     DEBUG_SERIAL.print(str + " ");
   }
@@ -52,4 +52,16 @@ void debugln() {
 void prepareDebug() {
   hasDebugHead = false;
   if (DEBUG_LOOP) debug();
+}
+
+int pinMode(uint8_t pin) {
+  if (pin >= NUM_DIGITAL_PINS) return (-1);
+
+  uint8_t bit = digitalPinToBitMask(pin);
+  uint8_t port = digitalPinToPort(pin);
+  volatile uint8_t *reg = portModeRegister(port);
+  if (*reg & bit) return (OUTPUT);
+
+  volatile uint8_t *out = portOutputRegister(port);
+  return ((*out & bit) ? INPUT_PULLUP : INPUT);
 }

@@ -14,7 +14,7 @@
 #include <SPI.h>
 
 #include "Pintable.h"
-#include "KeyListener.h"
+#include "Key.h"
 #include "Utility.h"
 
 
@@ -59,7 +59,54 @@ void initDebug();
 // DISPLAY
 #define SETUP_MESSAGE_RANGE 10 // [0 bis *] Anzahl von Schritten im Setup
 
+// DATA TYPES
+#define INT8_T_MIN -128
+#define INT8_T_MAX 127
+#define UINT8_T_MIN 0
+#define UINT8_T_MAX 255
+#define INT16_T_MIN -32768
+#define INT16_T_MAX 32767
+#define UINT16_T_MIN 0
+#define UINT16_T_MAx 65535
+#define INT32_T_MIN -2147483648
+#define INT32_T_MAX 2147483647
+#define UINT32_T_MIN 0
+#define UINT32_T_MAX 4294967295
+#define INT64_T_MIN −9223372036854775808
+#define INT64_T_MAX 9223372036854775807
+#define UINT64_T_MIN 0
+#define UINT64_T_MAX 18446744073709551615
 
 extern bool silent, hasDebugHead;
+
+
+/*
+data type         │  min      │   max
+══════════════════╪═══════════╪═══════
+bool, boolean      0            1 
+char               -128         127
+byte               0            255
+short
+
+unsigned short
+
+int
+
+unsigned int
+
+long
+
+uint64_t
+
+long long
+
+uint64_t long
+
+float
+
+double
+
+
+*/
 
 #endif

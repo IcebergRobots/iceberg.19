@@ -22,31 +22,30 @@ void loop() {
   //readCompass();
   //readPixy();
   //readUltrasonic();
-  //readPui();
-  key.update();
+  io.update();
 
-  if (key.decreasePage().click())         {} // display.changePage(1);
-  if (key.increasePage().click())         {} // display.changePage(-1);
-  if (key.selectPage().stroke())          {} // display.setMenu(0);
-  if (key.selectPage().permanent())       {} // display.setPage(0);
-  if (key.resetProperties().stroke())     {} // resetProperties();
-  if (key.selectMenu().stroke())          {} // display.toggle();
-  if (key.selectMenu().permanent())       {} // display.resetValue();
-  if (key.kick().click())                 {} // kick();
-  if (key.compassCalibration().click())   {} // activate calibration
-  if (key.animation().stroke())           {} // activate animation
-  if (key.animation().permanent())        {} // hymne
-  if (key.lineCalibration().stroke())     {} // activate line calibration, setpage, setmenu to value
-  if (key.lightBeamCalibration().click()) {} // activate light beam calibration, setpage, setmenu to value
-  if (key.start().stroke())               {} // start motors, activate bluetooth
-  if (key.stop().stroke())                {} // stop motors, activate bluetooth
-  if (key.record().stroke())              {} // start / stop recording, activate bluetooth
-  if (key.headstart().stroke())           {} // ?
-  if (key.motor().stroke())               {} // ?
-  if (key.bluetooth().stroke())           {} // activate bluetooth
-  if (key.kicker().stroke())              {} // ?
-  if (key.bottom().stroke())              {} // activate light
-  if (key.debug().stroke())               {} // send hello
+  if (io.decreasePage.click())         {} // display.changePage(1);
+  if (io.increasePage.click())         {} // display.changePage(-1);
+  if (io.selectPage.stroke())          {} // display.setMenu(0);
+  if (io.selectPage.permanent())       {} // display.setPage(0);
+  if (io.resetProperties.stroke())     {} // resetProperties();
+  if (io.selectMenu.stroke())          { debug("stroke"); } // display.toggle();
+  if (io.selectMenu.permanent())       { debug("permanent"); } // display.resetValue();
+  if (io.kick.click())                 {} // kick();
+  if (io.compassCalibration.click())   {} // activate calibration
+  if (io.animation.stroke())           {} // activate animation
+  if (io.animation.permanent())        {} // hymne
+  if (io.lineCalibration.stroke())     {} // activate line calibration, setpage, setmenu to value
+  if (io.lightBeamCalibration.click()) {} // activate light beam calibration, setpage, setmenu to value
+  if (io.start.stroke())               { debug("start"); } // start motors, activate bluetooth
+  if (io.stop.stroke())                { debug("stop");  } // stop motors, activate bluetooth
+  if (io.record.stroke())              {} // start / stop recording, activate bluetooth
+  if (io.headstart.stroke())           {} // ?
+  if (io.motor.stroke())               {} // ?
+  if (io.bluetooth.stroke())           {} // activate bluetooth
+  if (io.kicker.stroke())              {} // ?
+  if (io.bottom.stroke())              {} // activate light
+  if (io.debug.stroke())               {} // send hello
 
   //updateStates();
   //updateRating();
