@@ -110,26 +110,27 @@ public:
   Pin usbTx               = Pin(  1,      INPUT,         DIGITAL  );  // Computer <- Mega, Computer Kommunikation
   Pin usbRx               = Pin(  0,      OUTPUT,        DIGITAL  );  // Computer -> Mega, Computer Kommunikation   
 
-  
-  Key decreasePage = Key(A0, 0, 500, 200);   // decreasePage
-  Key increasePage = Key(A0, 0, 500, 200);   // increasePage
-  Key selectPage = Key(A0, 0);               // selectPage
-  Key resetProperties = Key(A0, 2000);       // resetProperties (left + right)
-  Key selectMenu = Key(puiRotButton.getPin(), 0, 1000);   // selectMenu
-  Key testKick = Key(A0, 0, 1000, 0);            // kick
-  Key compassCalibration = Key(A0, 0, 0, 0); // compassCalibration
-  Key animation = Key(A0, 0);                // animation
-  Key lineCalibration = Key(A0, 500);        // lineCalibration
-  Key lightBeamCalibration = Key(A0, 500);   // lightBeamCalibration
-  Key start = Key(puiStart.getPin(), 0);                   // start
-  Key stop = Key(puiStop.getPin(), 0);                     // stop
-  Key record = Key(A0, 0, 0, 0);             // record (start + stop)
-  Key headstart = Key(A0, 0);                // headstart (lever)
-  Key motor = Key(A0, 0);                    // motor     (lever)
-  Key bluetooth = Key(A0, 0);                // bluetooth (lever)
-  Key kicker = Key(A0, 0);                   // kicker    (lever)
-  Key bottom = Key(A0, 0);                   // bottom    (lever)
-  Key debug = Key(A0, 0);                    // debug     (lever)
+  // PUI: Keys and levers
+  Key decreasePage          = Key(  A0,   0,     500,   200   );  // vorherige Bildschirmseite
+  Key increasePage          = Key(  A0,   0,     500,   200   );  // nächste Bildschirmseite
+  Key selectPage            = Key(  A0,   0,     5000         );  // Seite auswählen
+  Key resetProperties       = Key(  A0,   2000                );  // Alle Konfigurationen und Kalibrierungen zurücksetzten
+  Key selectMenu            = Key(  30,   0,     1000         );  // Menüpunkt auswählen
+  Key testKick              = Key(  A0,   0,     1000,  0     );  // Schuss austesten
+  Key compassCalibration    = Key(  A0,   0,     0,     0     );  // Torrichtung kalibrieren
+  Key animation             = Key(  A0                        );  // Starte Leucht Animation
+  Key lineCalibration       = Key(  A0,   500                 );  // Linienhelligkeit kalibrieren
+  Key lightBeamCalibration  = Key(  A0,   500                 );  // Lichtschranke kalibrieren
+  Key start                 = Key(  22                        );  // Losfahren
+  Key stop                  = Key(  24                        );  // Anhalten
+  Key record                = Key(  A0,   0,     0,     0     );  // Spiel aufzeichnen (start + stop)
+  Key headstart             = Key(  A0,   0,     0,     0     );  // headstart (lever)
+  Key motor                 = Key(  A0,   0,     0,     0     );  // motor     (lever)
+  Key bluetooth             = Key(  A0,   0,     0,     0     );  // bluetooth (lever)
+  Key kicker                = Key(  A0,   0,     0,     0     );  // kicker    (lever)
+  Key bottom                = Key(  A0,   0,     0,     0     );  // bottom    (lever)
+  Key debug                 = Key(  A0,   0,     0,     0     );  // debug     (lever)
+
   void update();
 
 private:

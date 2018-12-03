@@ -1,9 +1,5 @@
-#ifndef Core_h
-#define Core_h
-
-#ifndef ARDUINO_AVR_MEGA2560
-#error "Wrong board selected! Choose Mega 2560"
-#endif
+#ifndef core_h
+#define core_h
 
 #include "Arduino.h"
 #include "Pin.h"

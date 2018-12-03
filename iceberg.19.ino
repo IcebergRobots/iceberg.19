@@ -1,7 +1,4 @@
-#include "core.h"    // Lade fundamentale Daten, die alle benötigen: Einstellungen, Pintabelle, Basiswerkzeuge, Bibliotheken
-#include "basic.h" // Lade Ein- und Ausgabe
-IO io;               // Ermögliche Ein- und Ausgabe
-#include "global.h"  // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen / Objekte
+#include "start.h"
 
 void setup() {
   initUART();
@@ -34,7 +31,7 @@ void loop() {
   if (io.resetProperties.stroke())     {} // resetProperties();
   if (io.selectMenu.stroke())          { debug("stroke"); } // display.toggle();
   if (io.selectMenu.permanent())       { debug("permanent"); } // display.resetValue();
-  if (io.testKick.click())                 {} // kick();
+  if (io.testKick.click())             {} // kick();
   if (io.compassCalibration.click())   {} // activate calibration
   if (io.animation.stroke())           {} // activate animation
   if (io.animation.permanent())        {} // hymne

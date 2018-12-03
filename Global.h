@@ -1,5 +1,5 @@
-#ifndef Global_h
-#define Global_h
+#ifndef global_h
+#define global_h
 
 #include "Utility.h"
 #include "Camera.h"
