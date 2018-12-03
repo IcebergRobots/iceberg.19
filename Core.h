@@ -6,7 +6,6 @@
 #endif
 
 #include "Arduino.h"
-#include "Key.h"
 #include "Pin.h"
 
 #include <Adafruit_NeoPixel.h>
@@ -14,6 +13,8 @@
 #include <avr/wdt.h>
 #include <I2C.h>
 #include <SPI.h>
+
+extern bool silent, hasDebugHead;
 
 void debug(String str);
 void debug(long num);
@@ -72,7 +73,5 @@ void reset();
 #define INT32_T_MAX 2147483647
 #define UINT32_T_MIN 0
 #define UINT32_T_MAX 4294967295
-
-extern bool silent, hasDebugHead;
 
 #endif
