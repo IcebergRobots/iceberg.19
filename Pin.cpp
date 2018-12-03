@@ -1,27 +1,46 @@
 #include "Pin.h"
 
-Pin::Pin(int _pin, byte _mode, byte _type) {
+Pin::Pin(byte _pin, byte _mode, byte _type) {
   pin = _pin;
   mode = _mode;
-  digital = (_mode == OUTPUT && _type == DIGITAL) || (_mode != OUTPUT && _type != ANALOG);
+  switch (mode) {
+    case PWM:
+      digital = (_type != OUTPUT);
+    case DIGITAL:
+    case PUI:
+    case VIRTUAL:
+      digital = true;
+      break;
+  }
   pinMode(pin, mode);
 }
 
-void Pin::set(int value) {
+void Pin::set(int _value) {
+  value = _value;
   if(mode == OUTPUT) {
-	if(pin < 0) {
-	  // I2C Expander Pin
-	  /*byte address = pin - INT16_T_MIN; // Decode pin address
-	  I2c.read(address, numberBytes);
-	  I2c.receive()
-	  http://dsscircuits.com/articles/arduino-i2c-master-library
-	  https://tronixstuff.com/2011/08/26/tutorial-maximising-your-arduinos-io-ports/
-	  https://cdn-shop.adafruit.com/datasheets/mcp23017.pdf
-	  http://www.gammon.com.au/i2c
-	  */
-	}
-	if(digital) digitalWrite(pin, value);
-	else analogWrite(pin, constrain(value, 0, 255));
+    switch (mode) {
+      case ANALOG:
+      case DIGITAL:
+      case PWM:
+        if(digital) {
+          value = (value != 0);
+          digitalWrite(pin, value);
+        } else {
+          value = constrain(value, 0, 255);
+          analogWrite(pin, value);
+        }
+        break;
+      case PUI:
+        /* I2C Expander Pin
+        I2c.read(pin, numberBytes);
+        I2c.receive()
+        http://dsscircuits.com/articles/arduino-i2c-master-library
+        https://tronixstuff.com/2011/08/26/tutorial-maximising-your-arduinos-io-ports/
+        https://cdn-shop.adafruit.com/datasheets/mcp23017.pdf
+        http://www.gammon.com.au/i2c
+        */
+        break;
+    }
   }
 }
 
@@ -30,16 +49,20 @@ byte Pin::get() {
 }
 
 void Pin::update() {
-  if (pin < 0) {
-	/*// I2C Expander Pin
-	byte address = pin - INT16_T_MIN; // Decode pin address
-	  I2c.read(address, numberBytes);
-	  I2c.receive()
-	  bitRead
-	  */
-  } else {
-	if (digital) value = digitalRead(pin);
-	else value = analogRead(pin);
+  switch (mode)
+  {
+    case ANALOG:
+    case DIGITAL:
+    case PWM:
+      if (digital) value = digitalRead(pin);
+	    else value = analogRead(pin);
+      break;
+    case PUI:
+      /* I2C Expander Pin
+        I2c.read(pin, numberBytes);
+        I2c.receive()
+        */
+      break;
   }
 }
 

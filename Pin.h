@@ -3,24 +3,26 @@
 
 #include "config.h"
 
-// Pin
+// Mode
 #define ANALOG 0
 #define DIGITAL 1
 #define PWM 2
+#define PUI 3
+#define VIRTUAL 4
 
 class Pin
 {
 	public:
-		Pin(int _pin, byte _mode, byte _type);
+		Pin(byte _pin, byte _mode, byte _type);
 		void set(int _value);
 		byte get();
 		void update();
 		byte getPin();
 	private:
-		int pin = 0;
+		byte pin = 0;
 		byte mode = 0;	// OUTPUT, INPUT, INPUT_PULLUP
-		byte value = 0;
-		bool digital = true;
+		int value = 0;  // ANALOG, DIGITAL, PWM, PUI, VIRTUAL
+		bool digital = false;
 };
 
 /******************************************************************************
@@ -65,13 +67,13 @@ class Key: public Pin
 class Shortcut: public Key
 {
 	public:
-		Shortcut(Pin *_keys, bool _muteKeys) : Key(int _pin) {
+		Shortcut(Key *_keys, bool _muteKeys) : Key(int _pin) {
     }
-		Shortcut(Pin *_keys, bool _muteKeys, unsigned long _preDelay) : Key(int _pin, unsigned long _preDelay) {
+		Shortcut(Key *_keys, bool _muteKeys, unsigned long _preDelay) : Key(int _pin, unsigned long _preDelay) {
     }
-		Shortcut(Pin *_keys, bool _muteKeys, unsigned long _preDelay, unsigned long _postDelay) : Key(int _pin, unsigned long _preDelay, unsigned long _postDelay) {
+		Shortcut(Key *_keys, bool _muteKeys, unsigned long _preDelay, unsigned long _postDelay) : Key(int _pin, unsigned long _preDelay, unsigned long _postDelay) {
     }
-		Shortcut(Pin *_keys, bool _muteKeys, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay) : Key(int _pin, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay) {
+		Shortcut(Key *_keys, bool _muteKeys, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay) : Key(int _pin, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay) {
     }
     void update();  // => set fix value from Key.get() objects
 	private:

@@ -15,7 +15,6 @@ void setup() {
 }
 
 void loop() {
-  unsigned long timestamp = millis();
   prepareDebug();  // bereite debug nachrichten vor
   initWatchdog();
 
