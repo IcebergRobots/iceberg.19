@@ -27,7 +27,6 @@ int pinMode(byte pin);
 void reset();
 
 
-
 // UART
 #define DEBUG true
 #define DEBUG_SERIAL Serial
