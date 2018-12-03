@@ -1,7 +1,7 @@
-#include "core.h"   // Lade fundamentale Daten, die alle benötigen: Einstellungen, Pintabelle, Basiswerkzeuge, Bibliotheken
-#include "tools.h"
-IO io;
-#include "global.h" // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen / Objekte
+#include "core.h"    // Lade fundamentale Daten, die alle benötigen: Einstellungen, Pintabelle, Basiswerkzeuge, Bibliotheken
+#include "basic.h" // Lade Ein- und Ausgabe
+IO io;               // Ermögliche Ein- und Ausgabe
+#include "global.h"  // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen / Objekte
 
 void setup() {
   initUART();

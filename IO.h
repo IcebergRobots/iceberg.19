@@ -17,18 +17,18 @@ public:
 
   // Ausgabe
   Pin indFront            = Pin(  49,     OUTPUT,        DIGITAL  );  // ungenutzte LED vorne
-  Pin speaker             = Pin(  13,     OUTPUT,        DIGITAL  );  // zum abspielen von Tönen und Melodien, passiver Buzzer
-  Pin indLeft             = Pin(  6,      OUTPUT,        DIGITAL  );  // ungenutzte LED hinten links
+  Pin speaker             = Pin(  13,     OUTPUT,        PWM      );  // zum abspielen von Tönen und Melodien, passiver Buzzer
+  Pin indLeft             = Pin(  6,      OUTPUT,        PWM      );  // ungenutzte LED hinten links
   Pin indRight            = Pin(  38,     OUTPUT,        DIGITAL  );  // ungenutzte LED hinten rechts
   Pin indRgb              = Pin(  36,     OUTPUT,        DIGITAL  );  // stellt RGB-LEDs vorne auf Main-PCB ein, kann über Logic Analyser mitgelesen werden
-  Pin indHearbeat         = Pin(  7,      OUTPUT,        DIGITAL  );  // Blinken zweier LEDs
+  Pin indHearbeat         = Pin(  7,      OUTPUT,        PWM      );  // Blinken zweier LEDs
 
   // Bluetooth
   Pin bluetoothTx         = Pin(  16,     INPUT,         DIGITAL  );  // HC-05 <- Mega, Funkverbindung mit Partner
   Pin bluetoothRx         = Pin(  17,     INPUT,         DIGITAL  );  // HC-05 -> Mega, Funkverbindung mit Partner
 
   // Bodensensor
-  Pin lineInterrupt       = Pin(  3,      INPUT,         DIGITAL  );  // empfängt Interrupt beim Erkennen einer Linie
+  Pin lineInterrupt       = Pin(  3,      INPUT,         PWM      );  // empfängt Interrupt beim Erkennen einer Linie
   Pin lineLight           = Pin(  46,     OUTPUT,        DIGITAL  );  // stellt Bodenbeleuchtungs-LEDs ein
   Pin lineTx              = Pin(  14,     INPUT,         DIGITAL  );  // Nano <- Mega
   Pin lineRx              = Pin(  15,     INPUT,         DIGITAL  );  // Nano -> Mega
@@ -53,7 +53,7 @@ public:
   Pin navigationAntennaA  = Pin(  A9,     INPUT,         ANALOG   );  // erkennt Entfernung der IR-Pulsquelle
   Pin navigationAntennaC  = Pin(  A7,     INPUT,         ANALOG   );  // erkennt Entfernung der IR-Pulsquelle
   Pin navigationAntennaD  = Pin(  A6,     INPUT,         ANALOG   );  // erkennt Entfernung der IR-Pulsquelle
-  Pin navigationLight     = Pin(  4,      OUTPUT,        DIGITAL  );  // aktiviert Pulse-IR-Positionslichter
+  Pin navigationLight     = Pin(  4,      OUTPUT,        PWM      );  // aktiviert Pulse-IR-Positionslichter
 
   // Lichtschranke
   Pin lightBeamTx         = Pin(  47,     INPUT,         DIGITAL  );  // leuchtet den Ball an, Sensor misst Reflexion
@@ -67,19 +67,19 @@ public:
   Pin loggerTrigger       = Pin(  40,     OUTPUT,        DIGITAL  );  // Freier Pin am Analyzer, kann zum auslösen einer Messung verwendet werden
 
   // Motortreiber
-  Pin m0Speed             = Pin(  8,      OUTPUT,        DIGITAL  );  // setzt Motordrehzahl
+  Pin m0Speed             = Pin(  8,      OUTPUT,        PWM      );  // setzt Motordrehzahl
   Pin m0Dir1              = Pin(  25,     OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
   Pin m0Dir2              = Pin(  23,     OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
   Pin m0Current           = Pin(  A1,     INPUT,         ANALOG   );  // misst Stromstärke der Motoren
-  Pin m1Speed             = Pin(  9,      OUTPUT,        DIGITAL  );  // setzt Motordrehzahl
+  Pin m1Speed             = Pin(  9,      OUTPUT,        PWM      );  // setzt Motordrehzahl
   Pin m1Dir1              = Pin(  29,     OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
   Pin m1Dir2              = Pin(  27,     OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
   Pin m1Current           = Pin(  A2,     INPUT,         ANALOG   );  // misst Stromstärke der Motoren
-  Pin m2Speed             = Pin(  10,     OUTPUT,        DIGITAL  );  // setzt Motordrehzahl
+  Pin m2Speed             = Pin(  10,     OUTPUT,        PWM      );  // setzt Motordrehzahl
   Pin m2Dir1              = Pin(  37,     OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
   Pin m2Dir2              = Pin(  35,     OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
   Pin m2Current           = Pin(  A3,     INPUT,         ANALOG   );  // misst Stromstärke der Motoren
-  Pin m3Speed             = Pin(  11,     OUTPUT,        DIGITAL  );  // setzt Motordrehzahl
+  Pin m3Speed             = Pin(  11,     OUTPUT,        PWM      );  // setzt Motordrehzahl
   Pin m3Dir1              = Pin(  33,     OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
   Pin m3Dir2              = Pin(  31,     OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
   Pin m3Current           = Pin(  A4,     INPUT,         ANALOG   );  // misst Stromstärke der Motoren
@@ -95,10 +95,10 @@ public:
   Pin puiStop             = Pin(  24,     INPUT_PULLUP,  DIGITAL  );  // stoppt Motoren
 
   // Schuss-Elektronik
-  Pin kick                = Pin(  12,     OUTPUT,        DIGITAL  );  // Schuss auslösen, lässt Elektromagneten anziehen, Wenn MOSFET ausgewählt PWM-fähig
+  Pin kick                = Pin(  12,     OUTPUT,        PWM      );  // Schuss auslösen, lässt Elektromagneten anziehen, Wenn MOSFET ausgewählt PWM-fähig
 
   // Servo
-  Pin cameraServo         = Pin(  5,      OUTPUT,        DIGITAL  );  // Kamerawinkel, setzt Servolenkung für die Kameradrehung
+  Pin cameraServo         = Pin(  5,      OUTPUT,        PWM      );  // Kamerawinkel, setzt Servolenkung für die Kameradrehung
 
   // SPI 
   Pin spiClk              = Pin(  52,     INPUT,         DIGITAL  );  // Serial Clock

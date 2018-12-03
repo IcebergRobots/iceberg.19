@@ -3,13 +3,14 @@
 
 #include "core.h"
 
-#define ANALOG false
-#define DIGITAL true
+#define ANALOG 0
+#define DIGITAL 1
+#define PWM 2
 
 class Pin
 {
 	public:
-		Pin(int _pin, byte _mode, bool _digital);
+		Pin(int _pin, byte _mode, byte _type);
 		void set(int _value);
 		byte get();
 		void update();

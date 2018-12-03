@@ -10,7 +10,7 @@ bool silent = false;
 bool hasDebugHead = true;
 
 Camera camera; 
-//Display d = Display(D_PIN_3); // OBJEKTINITIALISIERUNG
+Display d = Display(io.test1.getPin()); // OBJEKTINITIALISIERUNG
 Light light;
 extern IO io;
 

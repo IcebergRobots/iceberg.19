@@ -1,9 +1,9 @@
 #include "Pin.h"
 
-Pin::Pin(int _pin, byte _mode, bool _digital) {
+Pin::Pin(int _pin, byte _mode, byte _type) {
   pin = _pin;
   mode = _mode;
-  digital = _digital;
+  digital = (_mode == OUTPUT && _type == DIGITAL) || (_mode != OUTPUT && _type != ANALOG);
   pinMode(pin, mode);
 }
 

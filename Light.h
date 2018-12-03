@@ -1,7 +1,7 @@
 #ifndef Light_h
 #define Light_h
 
-#include "tools.h"
+#include "basic.h"
 
 class Light
 {
