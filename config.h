@@ -20,7 +20,8 @@ void debug(String str = "");
 int shift(int &value, int min, int max);
 int pinMode(byte pin);
 void reset();
-
+String format(String str, byte length);
+String format(long num, byte length, bool sign=false);
 
 // UART
 #define DEBUG true
@@ -36,7 +37,7 @@ void reset();
 // DEBUG
 #define DEBUG_STATE     true         // soll der Statuswechsel gezeigt werden?
 #define DEBUG_FUNCTIONS false        // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP      false         // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_LOOP      false        // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH true         // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_SERIAL Serial       // Serial der Usb-Schnittstelle
 #define START_MARKER 254          // Startzeichen einer Bluetooth-Nachricht

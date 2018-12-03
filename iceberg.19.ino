@@ -15,6 +15,7 @@ void setup() {
 }
 
 void loop() {
+  unsigned long timestamp = millis();
   prepareDebug();  // bereite debug nachrichten vor
   initWatchdog();
 
@@ -24,7 +25,7 @@ void loop() {
 
   io.update();
   
-  if (io.decreasePage.click())         {} // display.changePage(1);
+  if (io.decreasePage.click())         { debug("poti"); } // display.changePage(1);
   if (io.increasePage.click())         {} // display.changePage(-1);
   if (io.selectPage.stroke())          {} // display.setMenu(0);
   if (io.selectPage.permanent())       {} // display.setPage(0);
@@ -47,7 +48,6 @@ void loop() {
   if (io.bottom.stroke())              {} // activate light
   if (io.debug.stroke())               {} // send hello
 
-
   //updateStates();
   //updateRating();
   //updateKick();
@@ -63,6 +63,5 @@ void loop() {
   //display();
 
   //camera.frame();
-  delay(10);
 }
 

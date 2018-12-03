@@ -37,3 +37,16 @@ int pinMode(byte pin) {
 void reset() {
   asm ("jmp 0");   // starte den Arduino neu
 }
+
+String format(String str, byte length) {
+  byte l = str.length();
+  for(int i = 0; l + i < length; i++) {
+    str = " " + str;
+  }
+  return str.substring(l-length,l);
+}
+String format(long num, byte length, bool sign) {
+  String str = String(num);
+  if(sign && num >= 0) str = "+" + str;
+  return format(str, length);
+}
