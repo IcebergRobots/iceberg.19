@@ -42,12 +42,7 @@ Button  ║        ┊         ┊               ┊               ┊          
 class Key: public Pin
 {
 	public:
-		Key(byte _pin, byte _type, unsigned long _preDelay = -1, unsigned long _postDelay = -1, unsigned long _repititionDelay = -1);
-    /*Key(unsigned long _preDelay = -1, unsigned long _postDelay = -1, unsigned long _repititionDelay = -1) : Pin() {
-      preDelay = _preDelay;
-      postDelay = _postDelay;
-      repititionDelay = _repititionDelay;
-    }*/
+    Key(byte _pin, byte _type, unsigned long _preDelay=-1, unsigned long _postDelay=-1, unsigned long _repititionDelay=-1);
 		bool stroke();
 		bool permanent();
 		bool click();
@@ -56,9 +51,9 @@ class Key: public Pin
 		void cooldown(unsigned long delay);
     bool active;
 		unsigned long clicks = 0;
-		unsigned long preDelay = 0;
-		unsigned long postDelay = 0;        // infinity
-		unsigned long repititionDelay = 0;  // infinity
+		unsigned long preDelay = -1;         // infinity
+		unsigned long postDelay = -1;        // infinity
+		unsigned long repititionDelay = -1;  // infinity
 		unsigned long cooldownTimer = 0;
 };
 
@@ -78,6 +73,6 @@ class Shortcut: public Key
     }
     void update();  // => set fix value from Key.get() objects
 	private:
-		Pin keys[];
+		Pin *keys;
 };*/
 #endif

@@ -7,16 +7,22 @@ Pin::Pin(byte _pin, byte _mode, byte _type) {
   switch (type) {
     case ANALOG:
       digital = false;
+      pinMode(pin, mode);
+      break;
+
     case PWM:
-      digital = mode == OUTPUT;
+      digital = (mode != OUTPUT);
+      pinMode(pin, mode);
+      break;
+
     case DIGITAL:
+      pinMode(pin, mode);
     case PUI:
     case VIRTUAL:
     default:
       digital = true;
       break;
   }
-  pinMode(pin, mode);
 }
 Pin::Pin() {
   mode = INPUT;
@@ -38,6 +44,7 @@ void Pin::set(int _value) {
           analogWrite(pin, value);
         }
         break;
+
       case PUI:
         /* I2C Expander Pin
         I2c.read(pin, numberBytes);
@@ -48,6 +55,7 @@ void Pin::set(int _value) {
         http://www.gammon.com.au/i2c
         */
         break;
+
       case VIRTUAL:
       default:
         break;
@@ -82,7 +90,11 @@ byte Pin::getPin() {
 }
 
 
-Key::Key(byte _pin, byte _type, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay) : Pin(_pin, INPUT_PULLUP, _type) {
+
+
+
+Key::Key(byte _pin, byte _type, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay)
+ : Pin(_pin, INPUT_PULLUP, _type) {
   preDelay = _preDelay;
   postDelay = _postDelay;
   repititionDelay = _repititionDelay;
@@ -121,3 +133,6 @@ void Key::cooldown(unsigned long delay) {
 	if(delay + 1 == 0) cooldownTimer = -1;
 	else cooldownTimer = millis() + delay;
 }
+
+
+
