@@ -1,7 +1,7 @@
 #ifndef IO_h
 #define IO_h
 
-#include "core.h"
+#include "config.h"
 
 class IO
 {
@@ -86,13 +86,8 @@ public:
 
   // PUI-Anschluss
   Pin puiLight            = Pin(  32,     OUTPUT,        DIGITAL  );  // stellt PUI-LEDs ein
-  Pin puiRotButton        = Pin(  30,     INPUT_PULLUP,  DIGITAL  );  // Knopf des Rotary Encoders
-  Pin puiRotDir1          = Pin(  26,     INPUT_PULLUP,  DIGITAL  );  // misst Drehung des Rotary Encoders
-  Pin puiRotDir2          = Pin(  28,     INPUT_PULLUP,  DIGITAL  );  // misst Drehung des Rotary Encoders
   Pin puiInterrupt        = Pin(  2,      INPUT,         DIGITAL  );  // empfängt Interrupt bei Knopfdruck
   Pin puiPoti             = Pin(  A0,     INPUT,         ANALOG   );  // misst Drehwiderstand
-  Pin puiStart            = Pin(  22,     INPUT_PULLUP,  DIGITAL  );  // startet Motoren
-  Pin puiStop             = Pin(  24,     INPUT_PULLUP,  DIGITAL  );  // stoppt Motoren
 
   // Schuss-Elektronik
   Pin kick                = Pin(  12,     OUTPUT,        PWM      );  // Schuss auslösen, lässt Elektromagneten anziehen, Wenn MOSFET ausgewählt PWM-fähig
@@ -112,24 +107,26 @@ public:
 
   // PUI: Keys and levers
   Key decreasePage          = Key(  A0,   0,     500,   200   );  // vorherige Bildschirmseite
-  Key increasePage          = Key(  A0,   0,     500,   200   );  // nächste Bildschirmseite
+  Key increasePage          = Key(  A0,   0,     500,   200   );  // nächste   Bildschirmseite
   Key selectPage            = Key(  A0,   0,     5000         );  // Seite auswählen
   Key resetProperties       = Key(  A0,   2000                );  // Alle Konfigurationen und Kalibrierungen zurücksetzten
-  Key selectMenu            = Key(  30,   0,     1000         );  // Menüpunkt auswählen
+  Key decreaseMenu          = Key(  26,   0                   );  // vorheriger Menüpunkt (misst Drehung des Rotary Encoders)
+  Key increaseMenu          = Key(  28,   0                   );  // nächster   Menüpunkt (misst Drehung des Rotary Encoders)
+  Key selectMenu            = Key(  30,   0,     1000         );  // Menüpunkt auswählen (Knopf des Rotary Encoders)
   Key testKick              = Key(  A0,   0,     1000,  0     );  // Schuss austesten
   Key compassCalibration    = Key(  A0,   0,     0,     0     );  // Torrichtung kalibrieren
-  Key animation             = Key(  A0                        );  // Starte Leucht Animation
-  Key lineCalibration       = Key(  A0,   500                 );  // Linienhelligkeit kalibrieren
-  Key lightBeamCalibration  = Key(  A0,   500                 );  // Lichtschranke kalibrieren
-  Key start                 = Key(  22                        );  // Losfahren
-  Key stop                  = Key(  24                        );  // Anhalten
-  Key record                = Key(  A0,   0,     0,     0     );  // Spiel aufzeichnen (start + stop)
-  Key headstart             = Key(  A0,   0,     0,     0     );  // headstart (lever)
-  Key motor                 = Key(  A0,   0,     0,     0     );  // motor     (lever)
-  Key bluetooth             = Key(  A0,   0,     0,     0     );  // bluetooth (lever)
-  Key kicker                = Key(  A0,   0,     0,     0     );  // kicker    (lever)
-  Key bottom                = Key(  A0,   0,     0,     0     );  // bottom    (lever)
-  Key debug                 = Key(  A0,   0,     0,     0     );  // debug     (lever)
+  Key animation             = Key(  A0,   0                   );  // Starte Leucht Animation
+  Key lineCalibration       = Key(  A0,   0,     500          );  // Linienhelligkeit kalibrieren
+  Key lightBeamCalibration  = Key(  A0,   0,     500          );  // Lichtschranke kalibrieren
+  Key start                 = Key(  22,   0                   );  // Losfahren
+  Key stop                  = Key(  24,   0                   );  // Anhalten
+  Key record                = Key(  A0,   0                   );  // Spiel aufzeichnen (start + stop)
+  Key headstart             = Key(  A0,   0                   );  // headstart (lever)
+  Key motor                 = Key(  A0,   0                   );  // motor     (lever)
+  Key bluetooth             = Key(  A0,   0                   );  // bluetooth (lever)
+  Key kicker                = Key(  A0,   0                   );  // kicker    (lever)
+  Key bottom                = Key(  A0,   0                   );  // bottom    (lever)
+  Key debug                 = Key(  A0,   0                   );  // debug     (lever)
 
   void update();
 

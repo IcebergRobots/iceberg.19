@@ -13,6 +13,7 @@ void setup() {
   debugln("SETUP DONE");
   delay(1000);
 }
+
 void loop() {
   prepareDebug();  // bereite debug nachrichten vor
   initWatchdog();
@@ -22,7 +23,6 @@ void loop() {
   //readUltrasonic();
 
   io.update();
-
   
   if (io.decreasePage.click())         {} // display.changePage(1);
   if (io.increasePage.click())         {} // display.changePage(-1);

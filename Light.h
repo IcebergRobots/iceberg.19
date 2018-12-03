@@ -1,7 +1,7 @@
 #ifndef Light_h
 #define Light_h
 
-#include "basic.h"
+#include "core.h"
 
 class Light
 {
@@ -10,8 +10,7 @@ class Light
     void light();
 
   private:
-    void showState(Adafruit_NeoPixel & board, byte pos, byte state);
-    void showState(Adafruit_NeoPixel & board, byte pos, byte state, bool hideRed);
+    void showState(Adafruit_NeoPixel & board, byte pos, byte state, bool hideRed=false);
     void wheelBoard(Adafruit_NeoPixel & board, int offset);
     void setBoard(Adafruit_NeoPixel & board, uint32_t color);
     uint32_t wheelToColor(Adafruit_NeoPixel & board, byte pos);

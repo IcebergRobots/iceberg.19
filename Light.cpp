@@ -15,44 +15,33 @@ void Light::light() {
   Led zeigt rot, grün oder aus
   @param board: Light-Board
   @param pos: Nummer der Led im Board
-  @param (optional) state: darzustellender Zustand
-  0: rot/aus
-  1: grün
-  2: magenta
-  3: rot
-  @param hideRed: soll rot unsichtbar sein?
+  @param state: darzustellender Zustand
+    0: rot/aus
+    1: grün
+    2: magenta
+    3: rot
+  @param (optional) hideRed: soll rot unsichtbar sein?
 *****************************************************/
-void Light::showState(Adafruit_NeoPixel & board, byte pos, byte state) {
-  showState(board, pos, state, false);
-}
 void Light::showState(Adafruit_NeoPixel & board, byte pos, byte state, bool hideRed) {
   switch (state) {
     default:  //case: 0
-      /*
-         Information falsch (magenta)
-         hideRed=true Information nicht verfügbar (aus)
-         hideRed=true Information nicht relevant (aus)
-      */
+      // Information falsch (magenta)
+      // hideRed=true Information nicht verfügbar (aus)
+      // hideRed=true Information nicht relevant (aus)
       board.setPixelColor(pos, (!hideRed) * 150, 0, (!hideRed) * 150);
       break;
-    case 1:
-      /*
-         Information wahr (grün)
-      */
+    case 1: 
+      // Information wahr (grün)
       board.setPixelColor(pos, 0, 255, 0);
       break;
     case 2:
-      /*
-         Wahrnung (blau)
-         Information ungewiss (blau)
-      */
+      // Wahrnung (blau)
+      // Information ungewiss (blau)
       board.setPixelColor(pos, 0, 180, 120);
       break;
     case 3:
-      /*
-         Kritische Warnung (magenta)
-         Information falsch (magenta)
-      */
+      // Kritische Warnung (magenta)
+      // Information falsch (magenta)
       board.setPixelColor(pos, 255, 0, 150);
 
       break;

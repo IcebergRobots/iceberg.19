@@ -1,7 +1,7 @@
 #ifndef Pin_h
 #define Pin_h
 
-#include "core.h"
+#include "config.h"
 
 // Pin
 #define ANALOG 0
@@ -23,22 +23,22 @@ class Pin
 		bool digital = true;
 };
 
+/******************************************************************************
+                                  click
+                 ┌─────────┬────────┴──────┬───────────────┬─╌                                                
+              stroke   permanent       permanent       permanent    
+      on╔════════╪═════════╪═══════════════╪═══════════════╪═════ ... ═╗
+Button  ║        ┊         ┊               ┊               ┊           ║
+     off║        ┊         ┊               ┊               ┊           ║
+════════╝        ┊postDelay┊               ┊               ┊           ╚══════                
+        ┊preDelay┊         ┊repititionDelay┊repititionDelay┊                                             
+
+******************************************************************************/
+
 class Key: public Pin
 {
 	public:
-		Key(int _pin) : Pin(_pin, INPUT_PULLUP, DIGITAL) {
-      pin = _pin;
-    }
-		Key(int _pin, unsigned long _preDelay) : Pin(_pin, INPUT_PULLUP, DIGITAL) {
-      pin = _pin;
-	    preDelay = _preDelay;
-    }
-		Key(int _pin, unsigned long _preDelay, unsigned long _postDelay) : Pin(_pin, INPUT_PULLUP, DIGITAL) {
-      pin = _pin;
-	    preDelay = _preDelay;
-	    postDelay = _postDelay;
-    }
-		Key(int _pin, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay) : Pin(_pin, INPUT_PULLUP, DIGITAL) {
+		Key(int _pin, unsigned long _preDelay = -1, unsigned long _postDelay = -1, unsigned long _repititionDelay = -1) : Pin(_pin, INPUT_PULLUP, DIGITAL) {
       pin = _pin;
       preDelay = _preDelay;
       postDelay = _postDelay;
@@ -54,8 +54,27 @@ class Key: public Pin
 		bool active = false;
 		unsigned long clicks = 0;
 		unsigned long preDelay = 0;
-		unsigned long postDelay = -1;        // infinity
-		unsigned long repititionDelay = -1;  // infinity
+		unsigned long postDelay = 0;        // infinity
+		unsigned long repititionDelay = 0;  // infinity
 		unsigned long cooldownTimer = 0;
 };
+
+#define MUTE_KEYS true
+#define FIRE_KEYS false
+/*
+class Shortcut: public Key
+{
+	public:
+		Shortcut(Pin *_keys, bool _muteKeys) : Key(int _pin) {
+    }
+		Shortcut(Pin *_keys, bool _muteKeys, unsigned long _preDelay) : Key(int _pin, unsigned long _preDelay) {
+    }
+		Shortcut(Pin *_keys, bool _muteKeys, unsigned long _preDelay, unsigned long _postDelay) : Key(int _pin, unsigned long _preDelay, unsigned long _postDelay) {
+    }
+		Shortcut(Pin *_keys, bool _muteKeys, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay) : Key(int _pin, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay) {
+    }
+    void update();  // => set fix value from Key.get() objects
+	private:
+		Pin keys[];
+};*/
 #endif
