@@ -3,22 +3,30 @@
 Pin::Pin(byte _pin, byte _mode, byte _type) {
   pin = _pin;
   mode = _mode;
-  switch (mode) {
+  type = _type;
+  switch (type) {
+    case ANALOG:
+      digital = false;
     case PWM:
-      digital = (_type != OUTPUT);
+      digital = mode == OUTPUT;
     case DIGITAL:
     case PUI:
     case VIRTUAL:
+    default:
       digital = true;
       break;
   }
   pinMode(pin, mode);
 }
+Pin::Pin() {
+  mode = INPUT;
+  type = VIRTUAL;
+}
 
 void Pin::set(int _value) {
   value = _value;
   if(mode == OUTPUT) {
-    switch (mode) {
+    switch (type) {
       case ANALOG:
       case DIGITAL:
       case PWM:
@@ -39,6 +47,9 @@ void Pin::set(int _value) {
         https://cdn-shop.adafruit.com/datasheets/mcp23017.pdf
         http://www.gammon.com.au/i2c
         */
+        break;
+      case VIRTUAL:
+      default:
         break;
     }
   }
@@ -70,6 +81,13 @@ byte Pin::getPin() {
 	return pin;
 }
 
+
+Key::Key(byte _pin, byte _type, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay) : Pin(_pin, INPUT_PULLUP, _type) {
+  preDelay = _preDelay;
+  postDelay = _postDelay;
+  repititionDelay = _repititionDelay;
+}
+
 bool Key::stroke() {
 	return active && clicks == 1;
 }
@@ -81,7 +99,8 @@ bool Key::click() {
 }
 
 void Key::update() {
-	if(digitalRead(pin)) {
+  Pin::update();
+	if(get()) {
 		// Knopf ist losgelassen
 		cooldownTimer = 0;
 		clicks = 0;

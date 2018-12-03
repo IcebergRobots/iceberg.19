@@ -24,7 +24,7 @@ void loop() {
 
   io.update();
   
-  if (io.decreasePage.click())         { debug("poti"); } // display.changePage(1);
+  if (io.decreasePage.click())         {} // display.changePage(1);
   if (io.increasePage.click())         {} // display.changePage(-1);
   if (io.selectPage.stroke())          {} // display.setMenu(0);
   if (io.selectPage.permanent())       {} // display.setPage(0);
@@ -37,7 +37,9 @@ void loop() {
   if (io.animation.permanent())        {} // hymne
   if (io.lineCalibration.stroke())     {} // activate line calibration, setpage, setmenu to value
   if (io.lightBeamCalibration.click()) {} // activate light beam calibration, setpage, setmenu to value
-  if (io.start.stroke())               { debug("start"); } // start motors, activate bluetooth
+  if (io.start.stroke())               {
+    debug("start");
+  } // start motors, activate bluetooth
   if (io.stop.stroke())                { debug("stop");  } // stop motors, activate bluetooth
   if (io.record.stroke())              {} // start / stop recording, activate bluetooth
   if (io.headstart.stroke())           {} // ?
