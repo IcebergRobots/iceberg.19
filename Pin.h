@@ -26,18 +26,18 @@ class Pin
 class Key: public Pin
 {
 	public:
-		/*Key(int _pin) : Pin(int _pin, INPUT_PULLUP, DIGITAL) {
+		Key(int _pin) : Pin(_pin, INPUT_PULLUP, DIGITAL) {
       pin = _pin;
     }
-		Key(int _pin, unsigned long _preDelay) : Pin(int _pin, INPUT_PULLUP, DIGITAL) {
+		Key(int _pin, unsigned long _preDelay) : Pin(_pin, INPUT_PULLUP, DIGITAL) {
       pin = _pin;
 	    preDelay = _preDelay;
     }
-		Key(int _pin, unsigned long _preDelay, unsigned long _postDelay) : Pin(int _pin, INPUT_PULLUP, DIGITAL) {
+		Key(int _pin, unsigned long _preDelay, unsigned long _postDelay) : Pin(_pin, INPUT_PULLUP, DIGITAL) {
       pin = _pin;
 	    preDelay = _preDelay;
 	    postDelay = _postDelay;
-    }*/
+    }
 		Key(int _pin, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay) : Pin(_pin, INPUT_PULLUP, DIGITAL) {
       pin = _pin;
       preDelay = _preDelay;

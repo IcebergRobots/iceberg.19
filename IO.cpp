@@ -4,7 +4,7 @@
 - Konstruktor
 *********************************************************************/
 IO::IO() {}
-/*
+
 void IO::update() {
   decreasePage.update();
   increasePage.update();
@@ -26,4 +26,3 @@ void IO::update() {
   bottom.update();
   debug.update();
 }
-*/

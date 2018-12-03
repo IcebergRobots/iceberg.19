@@ -23,7 +23,7 @@ void loop() {
   //readCompass();
   //readPixy();
   //readUltrasonic();
-  /*
+
   io.update();
 
   
@@ -34,7 +34,7 @@ void loop() {
   if (io.resetProperties.stroke())     {} // resetProperties();
   if (io.selectMenu.stroke())          { debug("stroke"); } // display.toggle();
   if (io.selectMenu.permanent())       { debug("permanent"); } // display.resetValue();
-  if (io.kick.click())                 {} // kick();
+  if (io.testKick.click())                 {} // kick();
   if (io.compassCalibration.click())   {} // activate calibration
   if (io.animation.stroke())           {} // activate animation
   if (io.animation.permanent())        {} // hymne
@@ -49,7 +49,7 @@ void loop() {
   if (io.kicker.stroke())              {} // ?
   if (io.bottom.stroke())              {} // activate light
   if (io.debug.stroke())               {} // send hello
-  */
+
 
   //updateStates();
   //updateRating();
