@@ -75,7 +75,6 @@ void IO::update() {
   decreasePage.update();
   increasePage.update();
   selectPage.update();
-  resetProperties.update();
   decreaseMenu.update();
   increaseMenu.update();
   selectMenu.update();
@@ -86,11 +85,15 @@ void IO::update() {
   lightBeamCalibration.update();
   start.update();
   stop.update();
-  record.update();
   headstart.update();
   motor.update();
   bluetooth.update();
   kicker.update();
   bottom.update();
   debug.update();
+
+  record.update();
+  resetProperties.update();
+  kickerStart.update();
+  kickerStop.update();
 }

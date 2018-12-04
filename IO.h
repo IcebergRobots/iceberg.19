@@ -109,7 +109,6 @@ public:
   Key decreasePage          = Key(  0,   PUI,      0,     500,   200   );  // vorherige Bildschirmseite
   Key increasePage          = Key(  0,   PUI,      0,     500,   200   );  // nächste   Bildschirmseite
   Key selectPage            = Key(  0,   PUI,      0,     5000         );  // Seite auswählen
-  Key resetProperties       = Key(  0,   PUI,      2000                );  // Alle Konfigurationen und Kalibrierungen zurücksetzten
   Key decreaseMenu          = Key(  26,  DIGITAL,  0                   );  // vorheriger Menüpunkt (misst Drehung des Rotary Encoders)
   Key increaseMenu          = Key(  28,  DIGITAL,  0                   );  // nächster   Menüpunkt (misst Drehung des Rotary Encoders)
   Key selectMenu            = Key(  30,  DIGITAL,  0,     1000         );  // Menüpunkt auswählen (Knopf des Rotary Encoders)
@@ -120,13 +119,25 @@ public:
   Key lightBeamCalibration  = Key(  0,   PUI,      0,     500          );  // Lichtschranke kalibrieren
   Key start                 = Key(  22,  DIGITAL,  0                   );  // Losfahren
   Key stop                  = Key(  24,  DIGITAL,  0                   );  // Anhalten
-  Key record                = Key(  0,   PUI,      0                   );  // Spiel aufzeichnen (start + stop)
   Key headstart             = Key(  0,   PUI,      0                   );  // headstart (lever)
   Key motor                 = Key(  0,   PUI,      0                   );  // motor     (lever)
   Key bluetooth             = Key(  0,   PUI,      0                   );  // bluetooth (lever)
   Key kicker                = Key(  0,   PUI,      0                   );  // kicker    (lever)
   Key bottom                = Key(  0,   PUI,      0                   );  // bottom    (lever)
   Key debug                 = Key(  0,   PUI,      0                   );  // debug     (lever)
+
+  // PUI: shortcut
+  Key *_record[2] = { &start, &stop }; 
+  Shortcut record = Shortcut(_record, 2, FIRE_KEYS, 0);  // Spiel aufzeichnen (start + stop)
+
+  Key *_resetProperties[2] = { &decreasePage, &increasePage };
+  Shortcut resetProperties = Shortcut(_resetProperties, 2, MUTE_KEYS,  2000);  // Alle Konfigurationen und Kalibrierungen zurücksetzten
+
+  Key *_kickerStart[2] = { &testKick, &start };
+  Shortcut kickerStart = Shortcut(_kickerStart, 2, MUTE_KEYS, 0);  // aktiviere einen dauerhaften Schuss
+
+  Key *_kickerStop[2] = { &testKick, &stop };
+  Shortcut kickerStop = Shortcut(_kickerStop, 2, MUTE_KEYS, 0);  // deaktiviere einen dauerhaften Schuss
 
   void update();
 

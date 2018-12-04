@@ -6,9 +6,16 @@
 Light::Light() {}
 
 void Light::light() {
+  setBoard(pui, 0);
   pui.setBrightness(map(io.puiPoti.get(), 0, 1023, 0, 255));
   io.indHearbeat.set(map(abs(int(millis() % 500) - 250),0,250,-100,356));
-  setBoard(pui, wheelToColor(pui, millis() / 20 % 256));
+  showState(pui, 0, io.start.get());
+  showState(pui, 1, io.stop.get());
+  showState(pui, 2, io.record.get());
+  showState(pui, 3, io.start.stroke());
+  showState(pui, 4, io.stop.stroke());
+  showState(pui, 5, io.record.stroke());
+  pui.show();
 }
 
 /*****************************************************

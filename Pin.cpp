@@ -68,7 +68,7 @@ byte Pin::get() {
 }
 
 void Pin::update() {
-  switch (mode)
+  switch (type)
   {
     case ANALOG:
     case DIGITAL:
@@ -136,3 +136,26 @@ void Key::cooldown(unsigned long delay) {
 
 
 
+Shortcut::Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay)
+ : Key(0, VIRTUAL, _preDelay, _postDelay, _repititionDelay) {
+  keys = _keys;
+  keysLength = _keysLength;
+  muteKeys = _muteKeys;
+}
+
+void Shortcut::update() {
+  set(false); // activate virtual key
+  for(int i = 0; i < keysLength; i++) {
+    if (keys[i]->get()) { // this key inactive
+      set(true); // shortcut is inactive
+      break; // skip other keys
+    }
+  }
+  if(!get() && muteKeys) {
+    for(int i = 0; i < keysLength; i++) {
+      keys[i]->set(true); // deactivate key to prevent their functions 
+      keys[i]->update();
+    }
+  }
+  Key::update(); // is this shortcut active (stroke, permanent, click)?
+}

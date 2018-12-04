@@ -24,7 +24,7 @@ class Pin
 		byte mode = 0;  // OUTPUT, INPUT, INPUT_PULLUP
 		byte type = 0;  // ANALOG, DIGITAL, PWM, PUI, VIRTUAL
     int value = 0;
-		bool digital = 0;
+		bool digital = false;
 };
 
 /******************************************************************************
@@ -49,7 +49,7 @@ class Key: public Pin
 		void update();
 	private:
 		void cooldown(unsigned long delay);
-    bool active;
+    bool active = false;
 		unsigned long clicks = 0;
 		unsigned long preDelay = -1;         // infinity
 		unsigned long postDelay = -1;        // infinity
@@ -59,20 +59,15 @@ class Key: public Pin
 
 #define MUTE_KEYS true
 #define FIRE_KEYS false
-/*
+
 class Shortcut: public Key
 {
 	public:
-		Shortcut(Key *_keys, bool _muteKeys) : Key(int 0, ) {
-    }
-		Shortcut(Key *_keys, bool _muteKeys, unsigned long _preDelay) : Key(int _pin, unsigned long _preDelay) {
-    }
-		Shortcut(Key *_keys, bool _muteKeys, unsigned long _preDelay, unsigned long _postDelay) : Key(int _pin, unsigned long _preDelay, unsigned long _postDelay) {
-    }
-		Shortcut(Key *_keys, bool _muteKeys, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay) : Key(int _pin, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay) {
-    }
+		Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long _preDelay=-1, unsigned long _postDelay=-1, unsigned long _repititionDelay=-1);
     void update();  // => set fix value from Key.get() objects
 	private:
-		Pin *keys;
-};*/
+		Key **keys;
+    byte keysLength = 0;
+    bool muteKeys = false;
+};
 #endif
