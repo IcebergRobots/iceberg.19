@@ -1,13 +1,17 @@
 #ifndef core_h
 #define core_h
 
+#ifndef ARDUINO_AVR_MEGA2560
+#error "Wrong board selected! Choose Mega 2560"
+#endif
+
+#include "Arduino.h"
 #include <Adafruit_NeoPixel.h>
 #include <Adafruit_SSD1306.h>
 #include <avr/wdt.h>
 #include <I2C.h>
 #include <SPI.h>
 
-#include "Arduino.h"
 #include "IO.h"
 
 extern bool silent, hasDebugHead;

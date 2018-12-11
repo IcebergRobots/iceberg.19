@@ -101,3 +101,5 @@ uint32_t Light::wheelToColor(Adafruit_NeoPixel & board, byte pos) {
     return board.Color(pos * 3, 0, 255 - pos * 3);
   }
 }
+
+Light light = Light();

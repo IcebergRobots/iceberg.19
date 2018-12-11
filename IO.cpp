@@ -83,6 +83,17 @@ byte Pin::getPin() {
 
 
 
+/******************************************************************************
+                                  click
+                 ┌─────────┬────────┴──────┬───────────────┬─╌                                                
+              stroke   permanent       permanent       permanent    
+      on╔════════╪═════════╪═══════════════╪═══════════════╪═════ ... ═╗
+Button  ║        ┊         ┊               ┊               ┊           ║
+     off║        ┊         ┊               ┊               ┊           ║
+════════╝        ┊postDelay┊               ┊               ┊           ╚══════                
+        ┊preDelay┊         ┊repititionDelay┊repititionDelay┊                                             
+
+******************************************************************************/
 
 Key::Key(byte _pin, byte _type, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay)
  : Pin(_pin, INPUT_PULLUP, _type) {

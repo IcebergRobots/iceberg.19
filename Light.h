@@ -17,4 +17,6 @@ class Light
     Adafruit_NeoPixel pui = Adafruit_NeoPixel(12, io.puiLight.getPin(), NEO_GRB + NEO_KHZ800);
 
 };
+extern Light light;
+
 #endif

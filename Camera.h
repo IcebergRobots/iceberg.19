@@ -16,4 +16,6 @@ class Camera
     int32_t temp = 0;
     char buff[BUFFER_SIZE] = {0};
 };
+extern Camera camera;
+
 #endif

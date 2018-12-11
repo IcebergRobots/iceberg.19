@@ -33,3 +33,5 @@ void Camera::frame() {
   //io.spiCs.set(HIGH);
   debugln(buff);
 }
+
+Camera camera = Camera();

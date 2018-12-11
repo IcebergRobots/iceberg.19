@@ -171,3 +171,5 @@ String Display::intToStr(int number) {
 byte Display::getPage() {
   return page;
 }
+
+Display d = Display(io.test1.getPin());

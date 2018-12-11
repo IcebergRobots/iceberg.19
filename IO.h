@@ -27,18 +27,6 @@ class Pin
 		bool digital = false;
 };
 
-/******************************************************************************
-                                  click
-                 ┌─────────┬────────┴──────┬───────────────┬─╌                                                
-              stroke   permanent       permanent       permanent    
-      on╔════════╪═════════╪═══════════════╪═══════════════╪═════ ... ═╗
-Button  ║        ┊         ┊               ┊               ┊           ║
-     off║        ┊         ┊               ┊               ┊           ║
-════════╝        ┊postDelay┊               ┊               ┊           ╚══════                
-        ┊preDelay┊         ┊repititionDelay┊repititionDelay┊                                             
-
-******************************************************************************/
-
 class Key: public Pin
 {
 	public:
@@ -230,7 +218,6 @@ public:
 
 private:
 };
-
 extern IO io;
 
 #endif
