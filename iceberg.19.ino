@@ -1,5 +1,5 @@
 #include "core.h"   // Lade fundamentale Daten, die alle benötigen: Einstellungen, Pintabelle, Basiswerkzeuge, Bibliotheken
-#include "global.h" // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen / Objekte
+#include "global.h" // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen
 
 void setup() {
   initUART();
@@ -7,8 +7,8 @@ void setup() {
   initI2C();
   pui.init();
 
-  //d.init();  // initialisiere Display mit Iceberg Schriftzug
-  //initCamera();
+  d.init();  // initialisiere Display mit Iceberg Schriftzug
+  //camera.init();
 
   //createCrashlog();
   //restoreSession();

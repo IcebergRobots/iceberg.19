@@ -2,9 +2,9 @@
 
 void Display::init() {
   begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialisiere das Displays
-  clearDisplay(); // leere den Bildschirm
-  if (!silent) drawBitmap(0, 0, LOGO, 114, 64, WHITE); // zeige das Logo
-  display();  //wendet Aenderungen an
+  //clearDisplay(); // leere den Bildschirm
+  //if (!silent) drawBitmap(0, 0, LOGO, 114, 64, WHITE); // zeige das Logo
+  //display();  //wendet Aenderungen an
 }
 
 void Display::setupMessage(byte pos, String title, String description) {

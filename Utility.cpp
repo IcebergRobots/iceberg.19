@@ -8,7 +8,7 @@ void initUART() {
 
 void initI2C() {
   I2c.begin();
-  I2c.scan();
+  //I2c.scan();
 }
 
 /*
