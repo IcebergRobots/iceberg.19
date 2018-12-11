@@ -1,4 +1,4 @@
-#include "config.h"
+#include "core.h"
 
 /*****************************************************
   sende Text zum PC

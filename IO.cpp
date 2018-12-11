@@ -1,5 +1,187 @@
 #include "IO.h"
 
+Pin::Pin(byte _pin, byte _mode, byte _type) {
+  pin = _pin;
+  mode = _mode;
+  type = _type;
+  switch (type) {
+    case ANALOG:
+      digital = false;
+      pinMode(pin, mode);
+      break;
+
+    case PWM:
+      digital = (mode != OUTPUT);
+      pinMode(pin, mode);
+      break;
+
+    case DIGITAL:
+      pinMode(pin, mode);
+    case PUI:
+    case VIRTUAL:
+    default:
+      digital = true;
+      break;
+  }
+}
+Pin::Pin() {
+  mode = INPUT;
+  type = VIRTUAL;
+}
+
+void Pin::set(int _value) {
+  value = _value;
+  if(mode == OUTPUT) {
+    switch (type) {
+      case ANALOG:
+      case DIGITAL:
+      case PWM:
+        if(digital) {
+          value = (value != 0);
+          digitalWrite(pin, value);
+        } else {
+          value = constrain(value, 0, 255);
+          analogWrite(pin, value);
+        }
+        break;
+
+      case PUI:
+        value = (value != 0);
+        pui.set(pin, value);
+        break;
+
+      case VIRTUAL:
+      default:
+        break;
+    }
+  }
+}
+
+byte Pin::get() {
+  return value;
+}
+
+void Pin::update() {
+  switch (type)
+  {
+    case ANALOG:
+    case DIGITAL:
+    case PWM:
+      if (digital) value = digitalRead(pin);
+	    else value = analogRead(pin);
+      break;
+    case PUI:
+      pui.get(pin);
+      break;
+  }
+}
+
+byte Pin::getPin() {
+	return pin;
+}
+
+
+
+
+
+Key::Key(byte _pin, byte _type, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay)
+ : Pin(_pin, INPUT_PULLUP, _type) {
+  preDelay = _preDelay;
+  postDelay = _postDelay;
+  repititionDelay = _repititionDelay;
+}
+
+bool Key::stroke() {
+	return active && clicks == 1;
+}
+bool Key::permanent() {
+	return active && clicks > 1;
+}
+bool Key::click() {
+	return active;
+}
+
+void Key::update() {
+  Pin::update();
+	if(get()) {
+		// Knopf ist losgelassen
+		cooldownTimer = 0;
+		clicks = 0;
+	} else {
+		// Knopf wird gedrückt
+		if (cooldownTimer == 0) cooldown(preDelay); // Erstmaliges Drücken
+		if (millis() >= cooldownTimer) {
+			// Nächster Klick
+			clicks++;
+			active = true;
+			if(clicks == 1) cooldown(postDelay);
+			else cooldown(repititionDelay);
+		} else active = false; // Warte auf nächsten Klick
+	}
+}
+
+void Key::cooldown(unsigned long delay) {
+	if(delay + 1 == 0) cooldownTimer = -1;
+	else cooldownTimer = millis() + delay;
+}
+
+
+
+Shortcut::Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay)
+ : Key(0, VIRTUAL, _preDelay, _postDelay, _repititionDelay) {
+  keys = _keys;
+  keysLength = _keysLength;
+  muteKeys = _muteKeys;
+}
+
+void Shortcut::update() {
+  set(false); // activate virtual key
+  for(int i = 0; i < keysLength; i++) {
+    if (keys[i]->get()) { // this key inactive
+      set(true); // shortcut is inactive
+      break; // skip other keys
+    }
+  }
+  if(!get() && muteKeys) {
+    for(int i = 0; i < keysLength; i++) {
+      keys[i]->set(true); // deactivate key to prevent their functions 
+      keys[i]->update();
+    }
+  }
+  Key::update(); // is this shortcut active (stroke, permanent, click)?
+}
+
+
+
+
+Pui::Pui() {}
+
+void Pui::init() {
+  I2c.write(ADDRESS, A_PINMODE, 0x00); // set OUTPUT
+  I2c.write(ADDRESS, B_PINMODE, 0xFF);  // set INPUT
+  I2c.write(ADDRESS, B_VALUE, 0xFF);    // set INPUT_PULLUP
+}
+
+void Pui::set(byte pin, bool value) {
+  if(pin < 8) {
+    bitWrite(a, pin, value);
+    I2c.write(ADDRESS, A_VALUE, a);
+  }
+}
+
+bool Pui::get(byte pin) {
+  if(pin < 8) return bitRead(a, pin);
+  else return bitRead(b, pin-8);
+}
+
+void Pui::update() {
+  I2c.read(ADDRESS, A_VALUE, 1);
+  b = I2c.receive();
+}
+
+Pui pui = Pui();
+
+
 /*********************************************************************
 - Konstruktor
 *********************************************************************/
