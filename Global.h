@@ -12,6 +12,5 @@ bool hasDebugHead = true;
 Camera camera; 
 Display d = Display(io.test1.getPin()); // OBJEKTINITIALISIERUNG
 Light light;
-extern IO io;
 
 #endif

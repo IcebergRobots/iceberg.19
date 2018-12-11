@@ -46,14 +46,8 @@ void Pin::set(int _value) {
         break;
 
       case PUI:
-        /* I2C Expander Pin
-        I2c.read(pin, numberBytes);
-        I2c.receive()
-        http://dsscircuits.com/articles/arduino-i2c-master-library
-        https://tronixstuff.com/2011/08/26/tutorial-maximising-your-arduinos-io-ports/
-        https://cdn-shop.adafruit.com/datasheets/mcp23017.pdf
-        http://www.gammon.com.au/i2c
-        */
+        value = (value != 0);
+        pui.set(pin, value);
         break;
 
       case VIRTUAL:
@@ -77,10 +71,7 @@ void Pin::update() {
 	    else value = analogRead(pin);
       break;
     case PUI:
-      /* I2C Expander Pin
-        I2c.read(pin, numberBytes);
-        I2c.receive()
-        */
+      pui.get(pin);
       break;
   }
 }
@@ -159,3 +150,33 @@ void Shortcut::update() {
   }
   Key::update(); // is this shortcut active (stroke, permanent, click)?
 }
+
+
+
+
+Pui::Pui() {}
+
+void Pui::init() {
+  I2c.write(ADDRESS, A_PINMODE, 0x00); // set OUTPUT
+  I2c.write(ADDRESS, B_PINMODE, 0xFF);  // set INPUT
+  I2c.write(ADDRESS, B_VALUE, 0xFF);    // set INPUT_PULLUP
+}
+
+void Pui::set(byte pin, bool value) {
+  if(pin < 8) {
+    bitWrite(a, pin, value);
+    I2c.write(ADDRESS, A_VALUE, a);
+  }
+}
+
+bool Pui::get(byte pin) {
+  if(pin < 8) return bitRead(a, pin);
+  else return bitRead(b, pin-8);
+}
+
+void Pui::update() {
+  I2c.read(ADDRESS, A_VALUE, 1);
+  b = I2c.receive();
+}
+
+Pui pui = Pui();

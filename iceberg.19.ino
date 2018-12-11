@@ -4,6 +4,7 @@ void setup() {
   initUART();
   initDebug();
   initI2C();
+  pui.init();
 
   //d.init();  // initialisiere Display mit Iceberg Schriftzug
   //initCamera();
@@ -35,19 +36,19 @@ void loop() {
   if (io.compassCalibration.click())   {} // activate calibration
   if (io.animation.stroke())           {} // activate animation
   if (io.animation.permanent())        {} // hymne
-  if (io.lineCalibration.stroke())     {} // activate line calibration, setpage, setmenu to value
-  if (io.lightBeamCalibration.click()) {} // activate light beam calibration, setpage, setmenu to value
+  if (io.lineCalibration.stroke())     { debug("6"); } // activate line calibration, setpage, setmenu to value
+  if (io.lightBeamCalibration.click()) { debug("7"); } // activate light beam calibration, setpage, setmenu to value
   if (io.start.stroke())               {
     debug("start");
   } // start motors, activate bluetooth
   if (io.stop.stroke())                { debug("stop");  } // stop motors, activate bluetooth
-  if (io.record.stroke())              { debug("record"); } // start / stop recording, activate bluetooth
-  if (io.headstart.stroke())           {} // ?
-  if (io.motor.stroke())               {} // ?
-  if (io.bluetooth.stroke())           {} // activate bluetooth
-  if (io.kicker.stroke())              {} // ?
-  if (io.bottom.stroke())              {} // activate light
-  if (io.debug.stroke())               {} // send hello
+  if (io.record.stroke())              { debug("0"); } // start / stop recording, activate bluetooth
+  if (io.headstart.stroke())           { debug("1"); } // ?
+  if (io.motor.stroke())               { debug("2"); } // ?
+  if (io.bluetooth.stroke())           { debug("3"); } // activate bluetooth
+  if (io.kicker.stroke())              { debug("4"); } // ?
+  if (io.bottom.stroke())              { debug("5"); } // activate light
+  if (io.debug.stroke())               { debug("6"); } // send hello
 
   //updateStates();
   //updateRating();

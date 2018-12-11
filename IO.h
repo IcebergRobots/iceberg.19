@@ -3,6 +3,8 @@
 
 #include "config.h"
 
+extern IO io;
+
 class IO
 {
 public:
@@ -106,25 +108,25 @@ public:
   Pin usbRx               = Pin(  0,      OUTPUT,        DIGITAL  );  // Computer -> Mega, Computer Kommunikation   
 
   // PUI: Keys and levers
-  Key decreasePage          = Key(  0,   PUI,      0,     500,   200   );  // vorherige Bildschirmseite
+  Key decreasePage          = Key(  0,   VIRTUAL,      0,     500,   200   );  // vorherige Bildschirmseite
   Key increasePage          = Key(  0,   PUI,      0,     500,   200   );  // nächste   Bildschirmseite
   Key selectPage            = Key(  0,   PUI,      0,     5000         );  // Seite auswählen
   Key decreaseMenu          = Key(  26,  DIGITAL,  0                   );  // vorheriger Menüpunkt (misst Drehung des Rotary Encoders)
   Key increaseMenu          = Key(  28,  DIGITAL,  0                   );  // nächster   Menüpunkt (misst Drehung des Rotary Encoders)
   Key selectMenu            = Key(  30,  DIGITAL,  0,     1000         );  // Menüpunkt auswählen (Knopf des Rotary Encoders)
-  Key testKick              = Key(  0,   PUI,      0,     1000,  0     );  // Schuss austesten
-  Key compassCalibration    = Key(  0,   PUI,      0,     0,     0     );  // Torrichtung kalibrieren
-  Key animation             = Key(  0,   PUI,      0                   );  // Starte Leucht Animation
-  Key lineCalibration       = Key(  0,   PUI,      0,     500          );  // Linienhelligkeit kalibrieren
-  Key lightBeamCalibration  = Key(  0,   PUI,      0,     500          );  // Lichtschranke kalibrieren
+  Key testKick              = Key(  0,   VIRTUAL,      0,     1000,  0     );  // Schuss austesten
+  Key compassCalibration    = Key(  0,   VIRTUAL,      0,     0,     0     );  // Torrichtung kalibrieren
+  Key animation             = Key(  0,   VIRTUAL,      0                   );  // Starte Leucht Animation
+  Key lineCalibration       = Key(  6,   PUI,      0,     500          );  // Linienhelligkeit kalibrieren
+  Key lightBeamCalibration  = Key(  7,   PUI,      0,     500          );  // Lichtschranke kalibrieren
   Key start                 = Key(  22,  DIGITAL,  0                   );  // Losfahren
   Key stop                  = Key(  24,  DIGITAL,  0                   );  // Anhalten
   Key headstart             = Key(  0,   PUI,      0                   );  // headstart (lever)
-  Key motor                 = Key(  0,   PUI,      0                   );  // motor     (lever)
-  Key bluetooth             = Key(  0,   PUI,      0                   );  // bluetooth (lever)
-  Key kicker                = Key(  0,   PUI,      0                   );  // kicker    (lever)
-  Key bottom                = Key(  0,   PUI,      0                   );  // bottom    (lever)
-  Key debug                 = Key(  0,   PUI,      0                   );  // debug     (lever)
+  Key motor                 = Key(  1,   PUI,      0                   );  // motor     (lever)
+  Key bluetooth             = Key(  2,   PUI,      0                   );  // bluetooth (lever)
+  Key kicker                = Key(  3,   PUI,      0                   );  // kicker    (lever)
+  Key bottom                = Key(  4,   PUI,      0                   );  // bottom    (lever)
+  Key debug                 = Key(  5,   PUI,      0                   );  // debug     (lever)
 
   // PUI: shortcut
   Key *_record[2] = { &start, &stop }; 
@@ -142,6 +144,5 @@ public:
   void update();
 
 private:
-
 };
 #endif

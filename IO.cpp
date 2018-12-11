@@ -97,3 +97,5 @@ void IO::update() {
   kickerStart.update();
   kickerStop.update();
 }
+
+IO io = IO();
