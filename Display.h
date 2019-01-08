@@ -3,10 +3,10 @@
 
 #include "core.h"
 
-class Display: public Adafruit_SSD1306
+class Display: public Adafruit_SH1106
 {
   public:
-    Display(int resetPin) : Adafruit_SSD1306(resetPin) {}
+    Display(int resetPin) : Adafruit_SH1106(resetPin) {}
 
     void init();
     void setupMessage(byte pos, String title, String description);

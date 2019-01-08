@@ -7,7 +7,7 @@
 
 #include "Arduino.h"
 #include <Adafruit_NeoPixel.h>
-#include <Adafruit_SSD1306.h>
+#include <Adafruit_SH1106.h>
 #include <avr/wdt.h>
 #include <I2C.h>
 #include <SPI.h>
@@ -57,7 +57,7 @@ String format(long num, byte length, bool sign=false);
 #define numberOfMinutes(_time_) (_time_ / MILS_PER_MIN) % MINS_PER_HOUR       // TIME: wandle Zeit in Minutenanzeige um
 
 // DISPLAY
-#define SETUP_MESSAGE_RANGE 10 // [0 bis *] Anzahl von Schritten im Setup
+#define SETUP_MESSAGE_RANGE 5 // [0 bis *] Anzahl von Schritten im Setup
 
 // DATA TYPES
 #define INT8_T_MIN -128
