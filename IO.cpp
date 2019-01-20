@@ -155,16 +155,16 @@ Shortcut::Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long 
 }
 
 void Shortcut::update() {
-  set(false); // activate virtual key
+  set(true); // activate virtual key
   for(int i = 0; i < keysLength; i++) {
     if (keys[i]->off()) { // this key inactive
-      set(true); // shortcut is inactive
+      set(false); // shortcut is inactive
       break; // skip other keys
     }
   }
   if(on() && muteKeys) {
     for(int i = 0; i < keysLength; i++) {
-      keys[i]->set(true); // deactivate key to prevent their functions 
+      keys[i]->set(false); // deactivate key to prevent their functions 
       keys[i]->update();
     }
   }
@@ -297,7 +297,16 @@ void IO::update() {
   kicker.update();
   bottom.update();
   debug.update();
-
+  
+  lifted.update();
+  onLine.update();
+  isHeadstart.update();
+  isDodge.update();
+  hasBall.update();
+  seeBall.update();
+  seeGoal.update();
+  closeBall.update();
+  
   record.update();
   resetProperties.update();
   kickerStart.update();

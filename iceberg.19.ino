@@ -41,7 +41,7 @@ void loop() {
     debug("start");
   } // start motors, activate bluetooth
   if (io.stop.stroke())                { debug("stop"); } // stop motors, activate bluetooth
-  if (io.record.stroke())              { /* debug("0"); */ } // start / stop recording, activate bluetooth
+  if (io.record.stroke())              { debug("record");  } // start / stop recording, activate bluetooth
   if (io.headstart.stroke())           { /* debug("1"); */ } // ?
   if (io.motor.stroke())               { /* debug("2"); */ } // ?
   if (io.bluetooth.stroke())           { /* debug("3"); */ } // activate bluetooth
