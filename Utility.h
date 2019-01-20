@@ -5,7 +5,8 @@
 
 void initUART();
 void initI2C();
-void initWatchdog();
+void setupWatchdog();
+void loopWatchdog();
 void initDebug();
 void setupDone();
 

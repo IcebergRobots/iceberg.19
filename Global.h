@@ -10,13 +10,6 @@
 bool silent = false;
 bool hasDebugHead = true;
 
-int ball = 0;           // Abweichung der Ball X-Koordinate
-int ballWidth = 0;      // Ballbreite
-int ballArea = 0;       // Ballgröße (Flächeninhalt)
-int goal = 0;           // Abweichung der Tor X-Koordinate
-int goalWidth = 0;      // Torbreite
-int goalArea = 0;       // Torgröße (Flächeninhalt)
-
 unsigned long lastSegment = 0;
 unsigned long lastLoop = 0;
 unsigned long seeBallTimer = 0;   // Zeitpunkt des letzten Ball Sehens

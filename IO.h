@@ -11,22 +11,47 @@
 #define PUI 4
 #define VIRTUAL 5
 
-class Pin
+// DATA TYPES
+#define INT8_T_MIN -128
+#define INT8_T_MAX 127
+#define UINT8_T_MIN 0
+#define UINT8_T_MAX 255
+#define INT16_T_MIN -32768
+#define INT16_T_MAX 32767
+#define UINT16_T_MIN 0
+#define UINT16_T_MAx 65535
+#define INT32_T_MIN -2147483648
+#define INT32_T_MAX 2147483647
+#define UINT32_T_MIN 0
+#define UINT32_T_MAX 4294967295
+
+class Value
+{
+  public:
+    Value(int _min=INT16_T_MIN, int _max=INT16_T_MAX);
+    void setRange(int _min=INT16_T_MIN, int _max=INT16_T_MAX);
+    void set(int _value);
+		int get();
+    bool on();
+    bool off();
+    String str();
+  private:
+    int value = 0;
+    int min = 0;
+    int max = 0;
+};
+
+class Pin: public Value
 {
 	public:
 		Pin(byte _pin, byte _mode, byte _type);
-    Pin();
 		void set(int _value);
-		byte get();
-    bool on();
-    bool off();
 		void update();
 		byte getPin();
 	private:
 		byte pin = 0;
 		byte mode = 0;  // OUTPUT, INPUT, INPUT_PULLUP
 		byte type = 0;  // ANALOG, DIGITAL, PWM, PUI, VIRTUAL
-    int value = 0;
 		bool digital = false;
 };
 
@@ -225,6 +250,13 @@ public:
 
   Key *_kickerStop[2] = { &testKick, &stop };
   Shortcut kickerStop = Shortcut(_kickerStop, 2, MUTE_KEYS, 0);  // deaktiviere einen dauerhaften Schuss
+
+  Value ball       = Value(  -160,  159  );  // Abweichung der Ball X-Koordinate
+  Value ballWidth  = Value(     0        );  // Ballbreite
+  Value ballArea   = Value(     0        );  // Ballgröße (Flächeninhalt)
+  Value goal       = Value(  -160,  159  );  // Abweichung der Tor X-Koordinate
+  Value goalWidth  = Value(     0        );  // Torbreite
+  Value goalArea   = Value(     0        );  // Torgröße (Flächeninhalt)
 
   void update();
 

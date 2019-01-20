@@ -3,7 +3,9 @@
 /*********************************************************************
 - Konstruktor
 *********************************************************************/
-PixyCam::PixyCam() {}
+PixyCam::PixyCam() {
+    setCooldown(30, 100);
+}
 
 /*********************************************************************
 - initialisiert die SPI Kommunikation
@@ -18,15 +20,13 @@ void PixyCam::init() {
 
 void PixyCam::frame() {
     beginSegment("c:r");
-    if (silent) setLED(255, 255, 255); // schalte die Front-LED aus
-    debug("setLed");
+    if (silent) setLED(0, 0, 0); // schalte die Front-LED aus
     int ballAreaMax = 0;  // Ballgröße, 0: blind, >0: Flächeninhalt
     int goalAreaMax = 0;  // Torgröße,  0: blind, >0: Flächeninhalt
     int eastHeightMax = 0;  // Farbmarkierungsgröße,  0: blind, >0: Flächeninhalt
     int westHeightMax = 0;  // Farbmarkierungsgröße,  0: blind, >0: Flächeninhalt
 
     blockCount = getBlocks();
-    debug("getBlocks");
     blockCountBall = 0;
     blockCountGoal = 0;
     // Liest alle Blöcke aus und zählt diese
@@ -44,20 +44,20 @@ void PixyCam::frame() {
                 blockCountBall++;
                 if (area > ballAreaMax) {
                     ballAreaMax = area;
-                    ball = x;           // merke Ballwinkel
-                    ballWidth = width;  // merke Ballbreite
-                    ballArea = area;    // merke Ballgröße
+                    io.ball.set(x);           // merke Ballwinkel
+                    io.ballWidth.set(width);  // merke Ballbreite
+                    io.ballArea.set(area);    // merke Ballgröße
                     seeBallTimer = millis();
-                    if (ballWidth > BALL_WIDTH_TRIGGER) closeBallTimer = millis();
+                    if (width > BALL_WIDTH_TRIGGER) closeBallTimer = millis();
                 }
             break;
             case SIGNATURE_GOAL:
                 blockCountGoal++;
                 if (area > goalAreaMax) {
                     goalAreaMax = area;
-                    goal = x;           // merke Torwinkel
-                    goalWidth = width;  // merke Torbreite
-                    goalArea = area;    // merke Torgröße
+                    io.goal.set(x);           // merke Torwinkel
+                    io.goalWidth.set(width);  // merke Torbreite
+                    io.goalArea.set(area);    // merke Torgröße
                     seeGoalTimer = millis();
                 }
             break;

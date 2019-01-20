@@ -17,7 +17,6 @@
 #include "Demand.h"
 
 extern bool silent, hasDebugHead;
-extern int ball, ballWidth, ballArea, goal, goalWidth, goalArea;
 extern unsigned long lastSegment, lastLoop, seeBallTimer, seeGoalTimer, closeBallTimer, driftTimer, ballLeftTimer, ballRightTimer, pixyResponseTimer, pixyTimer;
 
 
@@ -48,7 +47,7 @@ void endSegment();
 
 // DEBUG
 #define DEBUG_STATE         1       // soll der Statuswechsel gezeigt werden?
-#define DEBUG_SEGMENT       1       // sollen Methoden gezeigt werden?
+#define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
 #define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_SERIAL        Serial  // Serial der Usb-Schnittstelle
@@ -69,8 +68,9 @@ void endSegment();
   4352mS    WDTO_4S
   8705mS    WDTO_8S
 */
-#define WATCHDOG            0           // Soll bei Absturz automatisch neu gestartet werden?
-#define WATCHDOG_TIME       WDTO_120MS  // Schleifenzeit, nach der Neugestartet wird
+#define WATCHDOG        1           // Soll bei Absturz automatisch neu gestartet werden?
+#define WATCHDOG_SETUP  WDTO_500MS  // Setupzeit, nach der Neugestartet wird
+#define WATCHDOG_LOOP   WDTO_120MS  // Schleifenzeit, nach der Neugestartet wird
 
 // PIYX
 #define SIGNATURE_BALL 1                      // Pixy-Signature des Balls
@@ -90,19 +90,5 @@ void endSegment();
 
 // DISPLAY
 #define SETUP_MESSAGE_RANGE 5 // [0 bis *] Anzahl von Schritten im Setup
-
-// DATA TYPES
-#define INT8_T_MIN -128
-#define INT8_T_MAX 127
-#define UINT8_T_MIN 0
-#define UINT8_T_MAX 255
-#define INT16_T_MIN -32768
-#define INT16_T_MAX 32767
-#define UINT16_T_MIN 0
-#define UINT16_T_MAx 65535
-#define INT32_T_MIN -2147483648
-#define INT32_T_MAX 2147483647
-#define UINT32_T_MIN 0
-#define UINT32_T_MAX 4294967295
 
 #endif

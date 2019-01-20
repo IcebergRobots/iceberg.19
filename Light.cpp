@@ -4,7 +4,7 @@
   Konstruktor
 *****************************************************/
 Light::Light() {
-  setCooldown(100);
+  setCooldown(10);
 }
 
 void Light::light() {

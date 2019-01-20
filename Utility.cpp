@@ -13,11 +13,12 @@ void initI2C() {
   endSegment();
 }
 
-void initWatchdog() {
-  if(WATCHDOG) {
-    wdt_enable(WATCHDOG_TIME);
-    wdt_reset();
-  }
+void setupWatchdog() {
+  if(WATCHDOG) wdt_enable(WATCHDOG_SETUP);
+}
+
+void loopWatchdog() {
+  if(WATCHDOG) wdt_enable(WATCHDOG_LOOP);
 }
 
 void initDebug() {

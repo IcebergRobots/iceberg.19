@@ -2,6 +2,7 @@
 #include "global.h" // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen
 
 void setup() {
+  setupWatchdog();
   initUART();
   initDebug();
 
@@ -16,13 +17,13 @@ void setup() {
 
 void loop() {
   prepareDebug();  // bereite debug nachrichten vor
-  initWatchdog();
-
-  //readCompass();
-  camera.frame();
-  //readUltrasonic();
+  loopWatchdog();
 
   io.update();
+
+  //readCompass();
+  if (camera.onDemand()) camera.frame();
+  //readUltrasonic();
   
   if (io.decreasePage.click())         {} // display.changePage(1);
   if (io.increasePage.click())         {} // display.changePage(-1);
@@ -38,7 +39,10 @@ void loop() {
   if (io.lineCalibration.stroke())     { /* debug("6"); */ } // activate line calibration, setpage, setmenu to value
   if (io.lightBeamCalibration.click()) { /* debug("7"); */ } // activate light beam calibration, setpage, setmenu to value
   if (io.start.stroke())               {
-    debug("start");
+    debug("ball:");
+    debug(io.ball.str() + ",");
+    debug(io.ballWidth.str() + ",");
+    debug(io.ballArea.str());
   } // start motors, activate bluetooth
   if (io.stop.stroke())                { debug("stop"); } // stop motors, activate bluetooth
   if (io.record.stroke())              { debug("record");  } // start / stop recording, activate bluetooth
@@ -61,7 +65,7 @@ void loop() {
   if (light.onDemand()) light.light();
   //pilot();
   //bluetoth();
-  //if (d.onDemand()) d.update();
+  if (d.onDemand()) d.update();
 
   //camera.frame();
 }

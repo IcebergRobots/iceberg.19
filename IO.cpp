@@ -1,6 +1,37 @@
 #include "IO.h"
 
-Pin::Pin(byte _pin, byte _mode, byte _type) {
+Value::Value(int _min, int _max) {
+  min = _min;
+  max = _max;
+}
+
+void Value::set(int _value) {
+  value = constrain(_value, min, max);
+}
+
+void Value::setRange(int _min, int _max) {
+  min = _min;
+  max = _max;
+}
+
+int Value::get() {
+  return value;
+}
+
+bool Value::on() {
+  return value != 0;
+}
+
+bool Value::off() {
+  return value == 0;
+}
+
+String Value::str() {
+  return String(value);
+}
+
+
+Pin::Pin(byte _pin, byte _mode, byte _type) : Value() {
   pin = _pin;
   mode = _mode;
   type = _type;
@@ -23,73 +54,55 @@ Pin::Pin(byte _pin, byte _mode, byte _type) {
       digital = true;
       break;
   }
-}
-Pin::Pin() {
-  mode = INPUT;
-  type = VIRTUAL;
+  if(type != VIRTUAL) {
+    if(digital) setRange(0, 1);
+    else setRange(0, 255);
+  }
 }
 
 void Pin::set(int _value) {
-  value = _value;
+  Value::set(_value);
   if(mode == OUTPUT) {
     switch (type) {
       case ANALOG:
       case DIGITAL:
       case PWM:
-        if(digital) {
-          value = (value != 0);
-          digitalWrite(pin, value);
-        } else {
-          value = constrain(value, 0, 255);
-          analogWrite(pin, value);
-        }
-        break;
+        if(digital) digitalWrite(pin, get());
+        else analogWrite(pin, get());
+      break;
 
       case PUI:
-        value = (value != 0);
-        pui.set(pin, value);
-        break;
+        pui.set(pin, get());
+      break;
 
       case VIRTUAL:
       default:
-        break;
+      break;
     }
   }
-}
-
-byte Pin::get() {
-  return value;
-}
-
-bool Pin::on() {
-  return value != 0;
-}
-
-bool Pin::off() {
-  return value == 0;
 }
 
 void Pin::update() {
   switch (type)
   {
+    case VIRTUAL:
+      return;
     case ANALOG:
     case DIGITAL:
     case PWM:
-      if (digital) value = digitalRead(pin);
-	    else value = analogRead(pin);
+      if (digital) set(digitalRead(pin));
+	    else Pin::set(analogRead(pin));
     break;
     case PUI:
       pui.get(pin);
     break;
   }
-  if(mode == INPUT_PULLUP && type != VIRTUAL) value = !value;
+  if(mode == INPUT_PULLUP && type != VIRTUAL) set(!get());
 }
 
 byte Pin::getPin() {
 	return pin;
 }
-
-
 
 
 /******************************************************************************

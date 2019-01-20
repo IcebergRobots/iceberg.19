@@ -5,7 +5,7 @@
 
 #define BUFFER_SIZE 128
 
-class PixyCam : private Pixy
+class PixyCam : private Pixy, public Demand
 {
   public:
     PixyCam();
