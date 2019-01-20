@@ -9,10 +9,12 @@ Camera::Camera() {}
 - initialisiert die SPI Kommunikation
 *********************************************************************/
 void Camera::init() {  
+  beginSegment("cam");
   SPI.begin();
   SPI.setBitOrder(MSBFIRST);
   SPI.setClockDivider(SPI_CLOCK_DIV16);
   SPI.setDataMode(SPI_MODE0);
+  endSegment();
 }
 
 void Camera::frame() {

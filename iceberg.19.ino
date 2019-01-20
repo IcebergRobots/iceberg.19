@@ -4,20 +4,14 @@
 void setup() {
   initUART();
   initDebug();
+
   d.init();  // initialisiere Display mit Iceberg Schriftzug
-  d.setupMessage(0, "DISPLAY", "OLED-Display");
-  d.setupMessage(1, "I2C", "BUS COMUNICATION");
   initI2C();
-  d.setupMessage(2, "PUI", "PUI Pins");
   pui.init();
-  d.setupMessage(3, "CAMERA", "PUI Pins");
   //camera.init();
-  d.setupMessage(4, "CRASH", "readBlackbox");
   //createCrashlog();
   //restoreSession();
-  d.setupMessage(5, "DONE", "Setup ");
-  debugln("SETUP DONE");
-  delay(1000);
+  setupDone();
 }
 
 void loop() {
@@ -67,7 +61,7 @@ void loop() {
   light.light();
   //pilot();
   //bluetoth();
-  //display();
+  if (d.onDemand()) d.update();
 
   //camera.frame();
 }

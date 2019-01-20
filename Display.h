@@ -3,10 +3,10 @@
 
 #include "core.h"
 
-class Display: public Adafruit_SH1106
+class Display: public Adafruit_SH1106, public Demand
 {
   public:
-    Display(int resetPin) : Adafruit_SH1106(resetPin) {}
+    Display(int resetPin);
 
     void init();
     void setupMessage(byte pos, String title, String description);
@@ -22,6 +22,7 @@ class Display: public Adafruit_SH1106
     void setMenu(int n);
     void toggle();
     void resetValue();
+
   private:
     bool set();
     void addLine();
@@ -43,6 +44,7 @@ class Display: public Adafruit_SH1106
     String line1 = "";
     String line2 = "";
     byte lineIndex = 0;
+    unsigned long lastRun = 0;
 };
 extern Display d;
 

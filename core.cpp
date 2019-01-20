@@ -10,7 +10,8 @@ void debug(String str) {
   if (DEBUG && !silent) {
     if (!hasDebugHead) {
       hasDebugHead = true;
-      str = "\n" + String(millis()) + " " + str;
+      str = "\nt" + String(millis() - lastLoop) + " " + str;
+      lastLoop = millis();
     }
     DEBUG_SERIAL.print(str + " ");
   }
@@ -49,4 +50,16 @@ String format(long num, byte length, bool sign) {
   String str = String(num);
   if(sign && num >= 0) str = "+" + str;
   return format(str, length);
+}
+
+
+
+void beginSegment(String name) {
+  if(DEBUG_SEGMENT) {
+    debug(name + "{");
+    lastSegment = millis();
+  }
+}
+void endSegment() {
+  if(DEBUG_SEGMENT) debug("}"+ String(millis() - lastSegment));
 }

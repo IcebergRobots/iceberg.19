@@ -168,9 +168,11 @@ void Shortcut::update() {
 Pui::Pui() {}
 
 void Pui::init() {
+  beginSegment("pui");
   I2c.write(ADDRESS, A_PINMODE, 0x00); // set OUTPUT
   I2c.write(ADDRESS, B_PINMODE, 0xFF);  // set INPUT
   I2c.write(ADDRESS, B_VALUE, 0xFF);    // set INPUT_PULLUP
+  endSegment();
 }
 
 void Pui::set(byte pin, bool value) {
@@ -199,6 +201,8 @@ Pui pui = Pui();
 IO::IO() {}
 
 void IO::update() {
+  beginSegment("io");
+
   temperaturePcb.update();
   brightnessPcb.update();
   batteryVoltage.update();
@@ -289,6 +293,8 @@ void IO::update() {
   resetProperties.update();
   kickerStart.update();
   kickerStop.update();
+
+  endSegment();
 }
 
 IO io = IO();

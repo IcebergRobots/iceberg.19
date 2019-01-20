@@ -1,10 +1,20 @@
 #include "Display.h"
 
+/*********************************************************************
+- Konstruktor
+*********************************************************************/
+Display::Display(int resetPin) : Adafruit_SH1106(resetPin) {
+  setCooldown(100, 1000);
+}
+
+
 void Display::init() {
+  beginSegment("d");
   begin(SH1106_SWITCHCAPVCC, 0x3C);  // initialisiere das Displays
   clearDisplay(); // leere den Bildschirm
   if (!silent) drawBitmap(0, 0, LOGO, 114, 64, WHITE); // zeige das Logo
   display();  //wendet Aenderungen an
+  endSegment();
 }
 
 void Display::setupMessage(byte pos, String title, String description) {
@@ -28,10 +38,10 @@ void Display::setupMessage(byte pos, String title, String description) {
 // Infos auf dem Bildschirm anzeigen
 void Display::update() {
   if (set() == false) {
-    if (DEBUG_FUNCTIONS) debug("reload");
     set();
   }
 
+  beginSegment("d:render");
   clearDisplay();
   setTextColor(WHITE);
 
@@ -57,9 +67,11 @@ void Display::update() {
   print(line2.substring(0, 10));
 
   //invertDisplay(m.getMotEn());
-  display();      // aktualisiere Display
+  endSegment();
 
-  //lastDisplay = millis(); // merke Zeitpunkt
+  beginSegment("d:exe");
+  display();      // aktualisiere Display
+  endSegment();
 }
 
 void Display::select() {
@@ -96,6 +108,7 @@ void Display::change(int change) {
 }
 
 bool Display::set() {
+  beginSegment("d:set");
   runtime = "";
   int min = numberOfMinutes(millis());
   if (min < 10) {
@@ -119,6 +132,8 @@ bool Display::set() {
       /*if (isTypeA) title = "IcebergRobotsA";
       else*/ title = "IcebergRobotsB";
   }
+
+  endSegment();
   if (subpageRange[page] != lineIndex) {
     subpageRange[page] = lineIndex;
     return false;

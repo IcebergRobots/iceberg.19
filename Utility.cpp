@@ -7,8 +7,10 @@ void initUART() {
 }
 
 void initI2C() {
+  beginSegment("i2c");
   I2c.begin();
   //I2c.scan();
+  endSegment();
 }
 
 /*
@@ -25,7 +27,8 @@ void initI2C() {
   8705mS    WDTO_8S
 */
 void initWatchdog() {
-  wdt_enable(WDTO_120MS); //135ms
+  wdt_enable(WDTO_120MS); // 136mS
+  wdt_reset();
 }
 
 void initDebug() {
@@ -33,10 +36,15 @@ void initDebug() {
   if (!DEBUG) str += "\nUSB DEBUG DEACTIVATED!";
   else {
     str += "\nICEBERG ROBOTS 2019\n";
-    str += "Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher\n";
-    for (int i = 0; i < 60; i++) str += "=";
+    str += "Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher";
   }
   DEBUG_SERIAL.println(str);
+}
+
+void setupDone() {
+  String str = "\n";
+  for (int i = 0; i < 60; i++) str += "=";
+  debug(str);
 }
 
 /*****************************************************

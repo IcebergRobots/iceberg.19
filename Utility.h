@@ -7,6 +7,7 @@ void initUART();
 void initI2C();
 void initWatchdog();
 void initDebug();
+void setupDone();
 
 void startSound();
 void calculateStates();

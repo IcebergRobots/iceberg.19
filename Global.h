@@ -10,4 +10,7 @@
 bool silent = false;
 bool hasDebugHead = true;
 
+unsigned long lastSegment = 0;
+unsigned long lastLoop = 0;
+
 #endif
