@@ -35,21 +35,21 @@ void loop() {
   if (io.compassCalibration.click())   {} // activate calibration
   if (io.animation.stroke())           {} // activate animation
   if (io.animation.permanent())        {} // hymne
-  if (io.lineCalibration.stroke())     { debug("6"); } // activate line calibration, setpage, setmenu to value
-  if (io.lightBeamCalibration.click()) { debug("7"); } // activate light beam calibration, setpage, setmenu to value
+  if (io.lineCalibration.stroke())     { /* debug("6"); */ } // activate line calibration, setpage, setmenu to value
+  if (io.lightBeamCalibration.click()) { /* debug("7"); */ } // activate light beam calibration, setpage, setmenu to value
   if (io.start.stroke())               {
     debug("start");
   } // start motors, activate bluetooth
-  if (io.stop.stroke())                { debug("stop");  } // stop motors, activate bluetooth
-  if (io.record.stroke())              { debug("0"); } // start / stop recording, activate bluetooth
-  if (io.headstart.stroke())           { debug("1"); } // ?
-  if (io.motor.stroke())               { debug("2"); } // ?
-  if (io.bluetooth.stroke())           { debug("3"); } // activate bluetooth
-  if (io.kicker.stroke())              { debug("4"); } // ?
-  if (io.bottom.stroke())              { debug("5"); } // activate light
-  if (io.debug.stroke())               { debug("6"); } // send hello
+  if (io.stop.stroke())                { debug("stop"); } // stop motors, activate bluetooth
+  if (io.record.stroke())              { /* debug("0"); */ } // start / stop recording, activate bluetooth
+  if (io.headstart.stroke())           { /* debug("1"); */ } // ?
+  if (io.motor.stroke())               { /* debug("2"); */ } // ?
+  if (io.bluetooth.stroke())           { /* debug("3"); */ } // activate bluetooth
+  if (io.kicker.stroke())              { /* debug("4"); */ } // ?
+  if (io.bottom.stroke())              { /* debug("5"); */ } // activate light
+  if (io.debug.stroke())               { /* debug("6"); */ } // send hello
 
-  //updateStates();
+  updateStates();
   //updateRating();
   //updateKick();
   //updateAnimation();
@@ -61,7 +61,7 @@ void loop() {
   if (light.onDemand()) light.light();
   //pilot();
   //bluetoth();
-  if (d.onDemand()) d.update();
+  //if (d.onDemand()) d.update();
 
   //camera.frame();
 }

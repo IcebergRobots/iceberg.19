@@ -6,9 +6,10 @@
 // Mode
 #define ANALOG 0
 #define DIGITAL 1
-#define PWM 2
-#define PUI 3
-#define VIRTUAL 4
+#define INVERTED 2
+#define PWM 3
+#define PUI 4
+#define VIRTUAL 5
 
 class Pin
 {
@@ -17,6 +18,8 @@ class Pin
     Pin();
 		void set(int _value);
 		byte get();
+    bool on();
+    bool off();
 		void update();
 		byte getPin();
 	private:
@@ -181,15 +184,15 @@ public:
   Pin usbRx               = Pin(  0,      OUTPUT,        DIGITAL  );  // Computer -> Mega, Computer Kommunikation   
 
   // PUI: Keys and levers
-  Key decreasePage          = Key(  0,   VIRTUAL,      0,     500,   200   );  // vorherige Bildschirmseite
+  Key decreasePage          = Key(  0,   VIRTUAL,  0,     500,   200   );  // vorherige Bildschirmseite
   Key increasePage          = Key(  0,   PUI,      0,     500,   200   );  // nächste   Bildschirmseite
   Key selectPage            = Key(  0,   PUI,      0,     5000         );  // Seite auswählen
   Key decreaseMenu          = Key(  26,  DIGITAL,  0                   );  // vorheriger Menüpunkt (misst Drehung des Rotary Encoders)
   Key increaseMenu          = Key(  28,  DIGITAL,  0                   );  // nächster   Menüpunkt (misst Drehung des Rotary Encoders)
   Key selectMenu            = Key(  30,  DIGITAL,  0,     1000         );  // Menüpunkt auswählen (Knopf des Rotary Encoders)
-  Key testKick              = Key(  0,   VIRTUAL,      0,     1000,  0     );  // Schuss austesten
-  Key compassCalibration    = Key(  0,   VIRTUAL,      0,     0,     0     );  // Torrichtung kalibrieren
-  Key animation             = Key(  0,   VIRTUAL,      0                   );  // Starte Leucht Animation
+  Key testKick              = Key(  0,   VIRTUAL,  0,     1000,  0     );  // Schuss austesten
+  Key compassCalibration    = Key(  0,   VIRTUAL,  0,     0,     0     );  // Torrichtung kalibrieren
+  Key animation             = Key(  0,   VIRTUAL,  0                   );  // Starte Leucht Animation
   Key lineCalibration       = Key(  6,   PUI,      0,     500          );  // Linienhelligkeit kalibrieren
   Key lightBeamCalibration  = Key(  7,   PUI,      0,     500          );  // Lichtschranke kalibrieren
   Key start                 = Key(  22,  DIGITAL,  0                   );  // Losfahren
@@ -200,6 +203,15 @@ public:
   Key kicker                = Key(  3,   PUI,      0                   );  // kicker    (lever)
   Key bottom                = Key(  4,   PUI,      0                   );  // bottom    (lever)
   Key debug                 = Key(  5,   PUI,      0                   );  // debug     (lever)
+
+  Key lifted                = Key(  0,   VIRTUAL,  0                   );  // erkennen wir den Ball?
+  Key onLine                = Key(  0,   VIRTUAL,  0                   );  // erkennen wir das Tor?
+  Key isHeadstart           = Key(  0,   VIRTUAL,  0                   );  // befinden wir uns im schnellstart?
+  Key isDodge               = Key(  0,   VIRTUAL,  0                   );  // weichen wir dem gegner aus?
+  Key hasBall               = Key(  0,   VIRTUAL,  0                   );  // besitzen wir den Ball
+  Key seeBall               = Key(  0,   VIRTUAL,  0                   );  // erkennen wir den Ball?
+  Key seeGoal               = Key(  0,   VIRTUAL,  0                   );  // erkennen wir das Tor?
+  Key closeBall             = Key(  0,   VIRTUAL,  0                   );  // ist der Ball nah?
 
   // PUI: shortcut
   Key *_record[2] = { &start, &stop }; 

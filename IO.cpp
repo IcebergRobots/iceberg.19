@@ -61,6 +61,14 @@ byte Pin::get() {
   return value;
 }
 
+bool Pin::on() {
+  return value != 0;
+}
+
+bool Pin::off() {
+  return value == 0;
+}
+
 void Pin::update() {
   switch (type)
   {
@@ -69,11 +77,12 @@ void Pin::update() {
     case PWM:
       if (digital) value = digitalRead(pin);
 	    else value = analogRead(pin);
-      break;
+    break;
     case PUI:
       pui.get(pin);
-      break;
+    break;
   }
+  if(mode == INPUT_PULLUP && type != VIRTUAL) value = !value;
 }
 
 byte Pin::getPin() {
@@ -114,7 +123,7 @@ bool Key::click() {
 
 void Key::update() {
   Pin::update();
-	if(get()) {
+	if(off()) {
 		// Knopf ist losgelassen
 		cooldownTimer = 0;
 		clicks = 0;
@@ -148,12 +157,12 @@ Shortcut::Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long 
 void Shortcut::update() {
   set(false); // activate virtual key
   for(int i = 0; i < keysLength; i++) {
-    if (keys[i]->get()) { // this key inactive
+    if (keys[i]->off()) { // this key inactive
       set(true); // shortcut is inactive
       break; // skip other keys
     }
   }
-  if(!get() && muteKeys) {
+  if(on() && muteKeys) {
     for(int i = 0; i < keysLength; i++) {
       keys[i]->set(true); // deactivate key to prevent their functions 
       keys[i]->update();
@@ -201,7 +210,7 @@ Pui pui = Pui();
 IO::IO() {}
 
 void IO::update() {
-  //beginSegment("io");
+  if (DEBUG_LOOP) beginSegment("io");
 
   temperaturePcb.update();
   brightnessPcb.update();
@@ -294,7 +303,7 @@ void IO::update() {
   kickerStart.update();
   kickerStop.update();
 
-  //endSegment();
+  if (DEBUG_LOOP) endSegment();
 }
 
 IO io = IO();

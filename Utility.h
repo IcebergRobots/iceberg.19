@@ -14,4 +14,6 @@ void calculateStates();
 
 void prepareDebug();
 
+void updateStates();
+
 #endif

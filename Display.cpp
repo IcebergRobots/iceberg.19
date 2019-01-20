@@ -12,7 +12,10 @@ void Display::init() {
   beginSegment("d");
   begin(SH1106_SWITCHCAPVCC, 0x3C);  // initialisiere das Displays
   clearDisplay(); // leere den Bildschirm
-  if (!silent) drawBitmap(0, 0, LOGO, 114, 64, WHITE); // zeige das Logo
+  if (!silent) { 
+    drawBitmap(0, 0, LOGO, 114, 64, WHITE); // zeige das Logo
+    drawRect(0, 29, 128, 2, WHITE);
+  }
   display();  //wendet Aenderungen an
   endSegment();
 }

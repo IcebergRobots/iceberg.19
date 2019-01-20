@@ -13,22 +13,11 @@ void initI2C() {
   endSegment();
 }
 
-/*
-  gemessen  theoretisch
-  17mS      WDTO_15MS
-  34mS      WDTO_30MS
-  68mS      WDTO_60MS
-  136mS     WDTO_120MS
-  272mS     WDTO_250MS
-  544mS     WDTO_500MS
-  1088mS    WDTO_1S
-  2176mS    WDTO_2S
-  4352mS    WDTO_4S
-  8705mS    WDTO_8S
-*/
 void initWatchdog() {
-  wdt_enable(WDTO_120MS); // 136mS
-  wdt_reset();
+  if(WATCHDOG) {
+    wdt_enable(WATCHDOG_TIME);
+    wdt_reset();
+  }
 }
 
 void initDebug() {
@@ -56,4 +45,20 @@ void calculateStates() {
 void prepareDebug() {
   hasDebugHead = false;
   if (DEBUG_LOOP) debug();
+}
+
+
+void updateStates() {
+  //io.lifted.set(                        millis() - flatTimer > FLAT_DURATION             );
+  //io.onLine.set(                        millis() - lineTimer < LINE_DURATION             );
+  //io.isHeadstart.set(                     millis() - headstartTimer < HEADSTART_DURATION   );
+  //io.isDodge.set(                         millis() - dodgeTimer < DODGE_DURATION           );
+  //io.hasBall.set(    analogRead(LIGHT_BARRIER) > lightBarrierTriggerLevel;               );
+  io.seeBall.set(    io.lifted.off() && millis() - seeBallTimer < 100                    );
+  io.seeGoal.set(    io.lifted.off() && millis() - seeGoalTimer < 500                    );
+  io.closeBall.set(  io.seeBall.on() && millis() - closeBallTimer < 500                  );
+
+  // erkenne Hochheben
+  //dof.accelGetOrientation(&accel_event, &orientation);
+  //if (!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7)) flatTimer = millis();
 }

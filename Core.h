@@ -11,12 +11,15 @@
 #include <avr/wdt.h>
 #include <I2C.h>
 #include <SPI.h>
+#include <Pixy.h>
 
 #include "IO.h"
 #include "Demand.h"
 
 extern bool silent, hasDebugHead;
-extern unsigned long lastSegment, lastLoop;
+extern int ball, ballWidth, ballArea, goal, goalWidth, goalArea;
+extern unsigned long lastSegment, lastLoop, seeBallTimer, seeGoalTimer, closeBallTimer, driftTimer, ballLeftTimer, ballRightTimer, pixyResponseTimer, pixyTimer;
+
 
 void debugln(long num, bool space=true);
 void debugln(String str="", bool space=true);
@@ -46,11 +49,35 @@ void endSegment();
 // DEBUG
 #define DEBUG_STATE         1       // soll der Statuswechsel gezeigt werden?
 #define DEBUG_SEGMENT       1       // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_LOOP          1       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_SERIAL        Serial  // Serial der Usb-Schnittstelle
 #define START_MARKER        254     // Startzeichen einer Bluetooth-Nachricht
 #define END_MARKER          255     // Endzeichen einer Bluetooth-Nachricht
+
+
+/* WATCHDOG
+  gemessen  theoretisch
+  17mS      WDTO_15MS
+  34mS      WDTO_30MS
+  68mS      WDTO_60MS
+  136mS     WDTO_120MS
+  272mS     WDTO_250MS
+  544mS     WDTO_500MS
+  1088mS    WDTO_1S
+  2176mS    WDTO_2S
+  4352mS    WDTO_4S
+  8705mS    WDTO_8S
+*/
+#define WATCHDOG            0           // Soll bei Absturz automatisch neu gestartet werden?
+#define WATCHDOG_TIME       WDTO_120MS  // Schleifenzeit, nach der Neugestartet wird
+
+// PIYX
+#define SIGNATURE_BALL 1                      // Pixy-Signature des Balls
+#define SIGNATURE_GOAL 2                      // Pixy-Signature des Tors
+#define X_CENTER ((PIXY_MAX_X-PIXY_MIN_X)/2)  // PIXY: Die Mitte des Bildes der Pixy (in Pixeln)
+#define BALL_WIDTH_TRIGGER 40                 // Schwellwert eines großen Balles
+#define BALL_ANGLE_TRIGGER 40                 // Schwellenwert der Ballrichtung
 
 // Zeitumwandlung
 #define MILS_PER_SEC  (1000UL)  // Millisekunden pro Sekunde
