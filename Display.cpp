@@ -41,7 +41,7 @@ void Display::update() {
     set();
   }
 
-  beginSegment("d:render");
+  beginSegment("d.r");
   clearDisplay();
   setTextColor(WHITE);
 
@@ -69,7 +69,7 @@ void Display::update() {
   //invertDisplay(m.getMotEn());
   endSegment();
 
-  beginSegment("d:exe");
+  beginSegment("d:e");
   display();      // aktualisiere Display
   endSegment();
 }
@@ -108,7 +108,7 @@ void Display::change(int change) {
 }
 
 bool Display::set() {
-  beginSegment("d:set");
+  beginSegment("d:s");
   runtime = "";
   int min = numberOfMinutes(millis());
   if (min < 10) {

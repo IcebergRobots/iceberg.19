@@ -3,17 +3,18 @@
 /*****************************************************
   sende Text zum PC
 *****************************************************/
-void debugln(long num) {   debugln(String(num)); }
-void debugln(String str) { debug(str + "\n");    }
-void debug(long num) {     debug(String(num));   }
-void debug(String str) {
+void debugln(long num, bool space) {   debugln(String(num)); }
+void debugln(String str, bool space) { debug(str + "\n");    }
+void debug(long num, bool space) {     debug(String(num), space);   }
+void debug(String str, bool space) {
   if (DEBUG && !silent) {
+    if (hasDebugHead && space) str = " " + str;
     if (!hasDebugHead) {
       hasDebugHead = true;
       str = "\nt" + String(millis() - lastLoop) + " " + str;
       lastLoop = millis();
     }
-    DEBUG_SERIAL.print(str + " ");
+    DEBUG_SERIAL.print(str);
   }
 }
 
@@ -61,5 +62,5 @@ void beginSegment(String name) {
   }
 }
 void endSegment() {
-  if(DEBUG_SEGMENT) debug("}"+ String(millis() - lastSegment));
+  if(DEBUG_SEGMENT) debug("}"+ String(millis() - lastSegment), false);
 }
