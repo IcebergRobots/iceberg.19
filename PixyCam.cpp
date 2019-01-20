@@ -11,19 +11,22 @@ PixyCam::PixyCam() {}
 void PixyCam::init() {  
     beginSegment("cam");
     SPI.begin();
+    Pixy::init();
     pixyResponseTimer = SPI.transfer(0x00) == 255;
     endSegment();
 }
 
 void PixyCam::frame() {
     beginSegment("c:r");
-    if (silent) setLED(0, 0, 0); // schalte die Front-LED aus
+    if (silent) setLED(255, 255, 255); // schalte die Front-LED aus
+    debug("setLed");
     int ballAreaMax = 0;  // Ballgröße, 0: blind, >0: Flächeninhalt
     int goalAreaMax = 0;  // Torgröße,  0: blind, >0: Flächeninhalt
     int eastHeightMax = 0;  // Farbmarkierungsgröße,  0: blind, >0: Flächeninhalt
     int westHeightMax = 0;  // Farbmarkierungsgröße,  0: blind, >0: Flächeninhalt
 
     blockCount = getBlocks();
+    debug("getBlocks");
     blockCountBall = 0;
     blockCountGoal = 0;
     // Liest alle Blöcke aus und zählt diese

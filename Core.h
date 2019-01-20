@@ -48,7 +48,7 @@ void endSegment();
 
 // DEBUG
 #define DEBUG_STATE         1       // soll der Statuswechsel gezeigt werden?
-#define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
+#define DEBUG_SEGMENT       1       // sollen Methoden gezeigt werden?
 #define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_SERIAL        Serial  // Serial der Usb-Schnittstelle

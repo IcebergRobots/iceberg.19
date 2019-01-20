@@ -8,7 +8,7 @@ void setup() {
   d.init();  // initialisiere Display mit Iceberg Schriftzug
   initI2C();
   pui.init();
-  //camera.init();
+  camera.init();
   //createCrashlog();
   //restoreSession();
   setupDone();
@@ -19,7 +19,7 @@ void loop() {
   initWatchdog();
 
   //readCompass();
-  //readPixy();
+  camera.frame();
   //readUltrasonic();
 
   io.update();
