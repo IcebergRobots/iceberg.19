@@ -201,7 +201,7 @@ Pui pui = Pui();
 IO::IO() {}
 
 void IO::update() {
-  beginSegment("io");
+  //beginSegment("io");
 
   temperaturePcb.update();
   brightnessPcb.update();
@@ -294,7 +294,7 @@ void IO::update() {
   kickerStart.update();
   kickerStop.update();
 
-  endSegment();
+  //endSegment();
 }
 
 IO io = IO();

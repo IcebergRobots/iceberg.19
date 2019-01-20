@@ -3,7 +3,9 @@
 /*****************************************************
   Konstruktor
 *****************************************************/
-Light::Light() {}
+Light::Light() {
+  setCooldown(100);
+}
 
 void Light::light() {
   beginSegment("l:s");

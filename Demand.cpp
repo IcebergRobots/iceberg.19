@@ -25,9 +25,12 @@ void Demand::request() {
 }
 
 bool Demand::onDemand() {
-    bool d = demand;
-    demand = false;
-    return lastRun == 0
-     || (d && millis() - lastRun > minDelay)
-     || millis() - lastRun > maxDelay;
+    if (lastRun == 0
+     || (demand && millis() - lastRun > minDelay)
+     || millis() - lastRun > maxDelay) {
+        demand = false;
+        lastRun = millis();
+        return true;
+    }
+    return false;
 }

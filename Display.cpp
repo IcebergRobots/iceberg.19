@@ -41,7 +41,7 @@ void Display::update() {
     set();
   }
 
-  beginSegment("d.r");
+  beginSegment("d:r");
   clearDisplay();
   setTextColor(WHITE);
 

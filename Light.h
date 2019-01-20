@@ -3,7 +3,7 @@
 
 #include "core.h"
 
-class Light
+class Light : public Demand
 {
   public:
     Light();

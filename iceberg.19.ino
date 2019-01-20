@@ -58,7 +58,7 @@ void loop() {
   //calibrateLightBeam();
   //calibrateLine();
 
-  light.light();
+  if (light.onDemand()) light.light();
   //pilot();
   //bluetoth();
   if (d.onDemand()) d.update();
