@@ -1,8 +1,78 @@
 #include "IO.h"
 
 /*****************************************************
+  create a timer
+  @param _surviveTime:
+  - if positiv:  leave output active for a delay
+  - if negative: activate output only after delay
+*****************************************************/
+Timer::Timer(long _surviveTime=0) {
+  surviveTime = _surviveTime;
+}
+
+/*****************************************************
+  set survive time
+  @param _surviveTime:
+  - if positiv:  leave output active for a delay
+  - if negative: activate output only after delay
+*****************************************************/
+void Timer::setSurviveTime(long surviveTime) {
+  surviveTime = _surviveTime;
+}
+
+/*****************************************************
+  refresh timer
+  - set timer to current time
+*****************************************************/
+void Timer::now() {
+  timer = millis();
+}
+
+/*****************************************************
+  is the timer on?
+*****************************************************/
+bool Timer::get() {
+  return active;
+}
+bool Timer::on() {
+  return active;
+}
+
+/*****************************************************
+  is the timer off?
+*****************************************************/
+bool Timer:off() {
+  return !active;
+}
+
+/*****************************************************
+  is the timer active?
+*****************************************************/
+bool Timer::on() {
+  return active;
+}
+
+
+/*****************************************************
+  calculate timings to update active flag
+*****************************************************/
+void Timer::update(bool require) {
+  if(surviveTime >= 0) active = require && millis() <= timer + surviveTime;
+  else active = require && millis() >= timer - surviveTime; 
+}
+
+
+400 250+100=350 true
+
+unsigned long Timer:since() {
+  if(active) return 0;
+  else if(surviveTime >= 0) return millis() - timer - surviveTime;
+  else active = require && millis() >= timer - surviveTime; 
+}
+
+/*****************************************************
   create a new value
-  @param _value: processing mode (LIMITS, MODULATION)
+  @param processing: processing mode (LIMITS, MODULATION)
   @param min:
     - in case of modulation: upper limit
     - in case of limits: lower limit

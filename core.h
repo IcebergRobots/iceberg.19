@@ -18,8 +18,6 @@
 
 extern bool silent, hasDebugHead;
 extern unsigned long lastSegment, lastLoop, seeBallTimer, seeGoalTimer, closeBallTimer, driftTimer, ballLeftTimer, ballRightTimer, pixyResponseTimer, pixyTimer;
-
-
 void debugln(long num, bool space=true);
 void debugln(String str="", bool space=true);
 void debug(long num, bool space=true);

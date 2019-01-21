@@ -28,6 +28,23 @@
 #define UINT32_T_MIN 0
 #define UINT32_T_MAX 4294967295
 
+class Timer
+{
+  public:
+    Timer(long _surviveTime=0);
+    void setSurviveTime(long _surviveTime);
+    void now();
+    bool get();
+    bool on();
+    bool off();
+    void update(bool require=true);
+    unsigned long since();
+  private:
+    unsigned long timer = 0;
+    long surviveTime = 0;
+    bool active = false;
+};
+
 /*****************************************************
   class Value
   1) supports modulation:      2) supports limits:                  
@@ -288,6 +305,21 @@ public:
   Value goal       = Value(  LIMITS,  -160,  159  );  // Abweichung der Tor X-Koordinate
   Value goalWidth  = Value(  LIMITS,     0        );  // Torbreite
   Value goalArea   = Value(  LIMITS,     0        );  // Torgröße (Flächeninhalt)
+
+  Timer flat            = Timer(         );                        millis() - flatTimer > FLAT_DURATION             );
+  Timer onLine          = Timer(    300  );                        millis() - lineTimer < LINE_DURATION             );
+  Timer isHeadstart     = Timer(    350  );                         millis() - headstartTimer < HEADSTART_DURATION   );
+  Timer isDodge         = Timer(    200  );                         millis() - dodgeTimer < DODGE_DURATION           );
+  Timer hasBall         = Timer(     50  );    analogRead(LIGHT_BARRIER) > lightBarrierTriggerLevel;  
+  Timer lastSegment     = Timer(         );
+  Timer lastLoop        = Timer(         );
+  Timer seeBall         = Timer(    100  );  // letzte Ballsicht
+  Timer seeGoal         = Timer(    500  );  // letzte Torsicht
+  Timer closeBall       = Timer(    500  );  // letzter großer Ball
+  Timer drift           = Timer(    200  );  // letztes Gegensteuern
+  Timer ballLeft        = Timer(         );  // letzter Ball auf der linken Seite
+  Timer ballRight       = Timer(         );  // letzter Ball auf der rechten Seite
+  Timer cameraResponse  = Timer(  20000  );  // letzte Camera Antwort
 
   void update();
 
