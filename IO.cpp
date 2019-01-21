@@ -2,26 +2,22 @@
 
 /*****************************************************
   create a timer
-  @param _surviveTime:
-  - if positiv:  leave output active for a delay
-  - if negative: activate output only after delay
+  @param _surviveTime: leave output active for a delay
 *****************************************************/
-Timer::Timer(long _surviveTime=0) {
+Timer::Timer(unsigned long _surviveTime) {
   surviveTime = _surviveTime;
 }
 
 /*****************************************************
   set survive time
-  @param _surviveTime:
-  - if positiv:  leave output active for a delay
-  - if negative: activate output only after delay
+  @param _surviveTime: leave output active for a delay
 *****************************************************/
-void Timer::setSurviveTime(long surviveTime) {
+void Timer::setSurviveTime(unsigned long surviveTime) {
   surviveTime = _surviveTime;
 }
 
 /*****************************************************
-  refresh timer
+  trigger time
   - set timer to current time
 *****************************************************/
 void Timer::now() {
@@ -31,43 +27,51 @@ void Timer::now() {
 /*****************************************************
   is the timer on?
 *****************************************************/
-bool Timer::get() {
-  return active;
-}
 bool Timer::on() {
-  return active;
+  return state == ON || state == RISING;
 }
 
 /*****************************************************
   is the timer off?
 *****************************************************/
 bool Timer:off() {
-  return !active;
+  return state == OFF || state == FALLING;
 }
 
 /*****************************************************
-  is the timer active?
+  is the timer rising?
 *****************************************************/
-bool Timer::on() {
-  return active;
+bool Timer::rising() {
+  return state == RISING;
 }
 
+/*****************************************************
+  is the timer falling?
+*****************************************************/
+bool Timer::rising() {
+  return state == FALLING;
+}
 
 /*****************************************************
   calculate timings to update active flag
+  @param require: external condition to be active
 *****************************************************/
 void Timer::update(bool require) {
-  if(surviveTime >= 0) active = require && millis() <= timer + surviveTime;
-  else active = require && millis() >= timer - surviveTime; 
+  bool new = false;
+  new = require && timer > 0 && millis() <= timer + surviveTime;
+  if (       on()   &&  new   )  state = ON;
+  else if (  off()  &&  !new  )  state = OFF;
+  else if (  on()   &&  !new  )  state = FALLING;
+  else if (  off()  &&  new   )  state = RISING;
+
 }
 
-
-400 250+100=350 true
-
+/*****************************************************
+  return delay since last trigger
+*****************************************************/
 unsigned long Timer:since() {
-  if(active) return 0;
-  else if(surviveTime >= 0) return millis() - timer - surviveTime;
-  else active = require && millis() >= timer - surviveTime; 
+  if (timer == 0) return -1;
+  else return millis() - timer;
 }
 
 /*****************************************************

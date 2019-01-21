@@ -28,21 +28,28 @@
 #define UINT32_T_MIN 0
 #define UINT32_T_MAX 4294967295
 
+// Timer values
+#define ON 0
+#define OFF 1
+#define FALLING 2
+#define RISING 3
+
 class Timer
 {
   public:
     Timer(long _surviveTime=0);
     void setSurviveTime(long _surviveTime);
     void now();
-    bool get();
     bool on();
     bool off();
+    bool rising();
+    bool falling();
     void update(bool require=true);
     unsigned long since();
   private:
     unsigned long timer = 0;
-    long surviveTime = 0;
-    bool active = false;
+    unsigned long surviveTime = 0;
+    byte state = false;
 };
 
 /*****************************************************
@@ -277,15 +284,6 @@ public:
   Key bottom                = Key(  4,   PUI,      0                   );  // bottom    (lever)
   Key debug                 = Key(  5,   PUI,      0                   );  // debug     (lever)
 
-  Key lifted                = Key(  0,   VIRTUAL,  0                   );  // erkennen wir den Ball?
-  Key onLine                = Key(  0,   VIRTUAL,  0                   );  // erkennen wir das Tor?
-  Key isHeadstart           = Key(  0,   VIRTUAL,  0                   );  // befinden wir uns im schnellstart?
-  Key isDodge               = Key(  0,   VIRTUAL,  0                   );  // weichen wir dem gegner aus?
-  Key hasBall               = Key(  0,   VIRTUAL,  0                   );  // besitzen wir den Ball
-  Key seeBall               = Key(  0,   VIRTUAL,  0                   );  // erkennen wir den Ball?
-  Key seeGoal               = Key(  0,   VIRTUAL,  0                   );  // erkennen wir das Tor?
-  Key closeBall             = Key(  0,   VIRTUAL,  0                   );  // ist der Ball nah?
-
   // PUI: shortcut
   Key *_record[2] = { &start, &stop }; 
   Shortcut record = Shortcut(_record, 2, FIRE_KEYS, 0);  // Spiel aufzeichnen (start + stop)
@@ -306,20 +304,20 @@ public:
   Value goalWidth  = Value(  LIMITS,     0        );  // Torbreite
   Value goalArea   = Value(  LIMITS,     0        );  // Torgröße (Flächeninhalt)
 
-  Timer flat            = Timer(         );                        millis() - flatTimer > FLAT_DURATION             );
-  Timer onLine          = Timer(    300  );                        millis() - lineTimer < LINE_DURATION             );
-  Timer isHeadstart     = Timer(    350  );                         millis() - headstartTimer < HEADSTART_DURATION   );
-  Timer isDodge         = Timer(    200  );                         millis() - dodgeTimer < DODGE_DURATION           );
-  Timer hasBall         = Timer(     50  );    analogRead(LIGHT_BARRIER) > lightBarrierTriggerLevel;  
-  Timer lastSegment     = Timer(         );
-  Timer lastLoop        = Timer(         );
-  Timer seeBall         = Timer(    100  );  // letzte Ballsicht
-  Timer seeGoal         = Timer(    500  );  // letzte Torsicht
-  Timer closeBall       = Timer(    500  );  // letzter großer Ball
-  Timer drift           = Timer(    200  );  // letztes Gegensteuern
-  Timer ballLeft        = Timer(         );  // letzter Ball auf der linken Seite
-  Timer ballRight       = Timer(         );  // letzter Ball auf der rechten Seite
-  Timer cameraResponse  = Timer(  20000  );  // letzte Camera Antwort
+  Timer flat            = Timer(    600  );  // liegen wir flach?
+  Timer onLine          = Timer(    300  );  // berühren wir die Linie?
+  Timer isHeadstart     = Timer(    350  );  // führen wir einen Schnellstart aus ?
+  Timer isDodge         = Timer(    200  );  // weichen wir dem Gegner aus?
+  Timer hasBall         = Timer(     50  );  // haben wir Ballbesitz?
+  Timer lastSegment     = Timer(         );  // Laufzeit eines Codeblockes
+  Timer lastLoop        = Timer(         );  // Laufzeit der Schleife 
+  Timer seeBall         = Timer(    100  );  // sehen wir den Ball?
+  Timer seeGoal         = Timer(    500  );  // sehen wir das Tor?
+  Timer closeBall       = Timer(    500  );  // ist der Ball nahe?
+  Timer drift           = Timer(    200  );  // müssen wir ein Driften verhindern?
+  Timer ballLeft        = Timer(         );  // ist der Ball links?
+  Timer ballRight       = Timer(         );  // ist der Ball rechts?
+  Timer cameraResponse  = Timer(  20000  );  // ist die Kamera verbunden?
 
   void update();
 
