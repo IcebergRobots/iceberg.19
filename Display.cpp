@@ -101,11 +101,11 @@ void Display::toggle() {
 void Display::change(int change) {
   if (level == 0) {
     page += change;
-    shift(page, 0, PAGE_RANGE);
+    page = circulate(page, 0, PAGE_RANGE);
     subpage = 0;
   } else if (level == 1) {
     subpage += change;
-    shift(subpage, 0, subpageRange[page]);
+    subpage = circulate(subpage, 0, subpageRange[page]);
   }
   update();
 }
@@ -150,7 +150,7 @@ void Display::addLine(String title, String value) {
   title += value;
   title = title.substring(0, 10);
   int line = lineIndex - subpage;
-  shift(line, 0, subpageRange[page]);
+  line = circulate(line, 0, subpageRange[page]);
   if (line == 0) {
     line0 = title;
   } else if (line == 1) {

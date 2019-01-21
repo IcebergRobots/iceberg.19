@@ -44,7 +44,12 @@ void loop() {
     debug(io.ballWidth.str() + ",");
     debug(io.ballArea.str());
   } // start motors, activate bluetooth
-  if (io.stop.stroke())                { debug("stop"); } // stop motors, activate bluetooth
+  if (io.stop.stroke())                { 
+    debug("goal:");
+    debug(io.goal.str() + ",");
+    debug(io.goalWidth.str() + ",");
+    debug(io.goalArea.str());
+  } // stop motors, activate bluetooth
   if (io.record.stroke())              { debug("record");  } // start / stop recording, activate bluetooth
   if (io.headstart.stroke())           { /* debug("1"); */ } // ?
   if (io.motor.stroke())               { /* debug("2"); */ } // ?

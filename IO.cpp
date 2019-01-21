@@ -1,36 +1,88 @@
 #include "IO.h"
 
-Value::Value(int _min, int _max) {
-  min = _min;
-  max = _max;
+/*****************************************************
+  create a new value
+  @param _value: processing mode (LIMITS, MODULATION)
+  @param min:
+    - in case of modulation: upper limit
+    - in case of limits: lower limit
+  @param max:
+    - in case of modulation: lower limit
+    - in case of limits: upper limit
+*****************************************************/
+Value::Value(bool processing, int min, int max) {
+  if(processing == LIMITS) setLimits(min, max);
+  else setModulation(min, max);
 }
 
+/*****************************************************
+  set a new value process it
+  @param _value: new value
+  - modulate or limit the value
+*****************************************************/
 void Value::set(int _value) {
-  value = constrain(_value, min, max);
+  if(a <= b) value = constrain(_value, a, b); // limit
+  else value = circulate(_value, a, b);           // modulate
 }
 
-void Value::setRange(int _min, int _max) {
-  min = _min;
-  max = _max;
+/*****************************************************
+  configurate limits
+  @param min: lower limit
+  @param max: upper limit
+  - see header file for visualisation
+*****************************************************/
+void Value::setLimits(int min, int max) {
+  a = min(min, max);
+  b = max(min, max);
 }
 
+/*****************************************************
+  configurate modulation
+  @param min: lower limit
+  @param max: upper limit
+  - see header file for visualisation
+*****************************************************/
+void Value::setModulation(int min, int max) {
+  a = max(min, max);
+  b = min(min, max);
+}
+
+/*****************************************************
+  return value
+*****************************************************/
 int Value::get() {
   return value;
 }
 
+/*****************************************************
+  is value active?
+*****************************************************/
 bool Value::on() {
   return value != 0;
 }
 
+/*****************************************************
+  is value passive?
+*****************************************************/
 bool Value::off() {
   return value == 0;
 }
 
+/*****************************************************
+  convert number to String
+*****************************************************/
 String Value::str() {
   return String(value);
 }
 
-
+/*****************************************************
+  configurate an arduino pin
+  @param _pin: pin address
+  @param _mode: pinmode (OUTPUT, INPUT, INPUT_PULLUP)
+  @param _type: type of pin (ANALOG, DIGITAL, PWM, PUI, VIRTUAL)
+  - set pinMode
+  - configurate limits automatically
+*****************************************************/
 Pin::Pin(byte _pin, byte _mode, byte _type) : Value() {
   pin = _pin;
   mode = _mode;
@@ -55,21 +107,24 @@ Pin::Pin(byte _pin, byte _mode, byte _type) : Value() {
       break;
   }
   if(type != VIRTUAL) {
-    if(digital) setRange(0, 1);
-    else setRange(0, 255);
+    if(digital) setLimits(0, 1);
+    else setLimits(0, 255);
   }
 }
 
+/*****************************************************
+  output a signal on the arduino pin
+  @param _value: output signal
+*****************************************************/
 void Pin::set(int _value) {
-  temp();
-  execute();
+  temp(_value);
+  set();
 }
 
-void Pin::temp(int _value) {
-  Value::set(_value);
-}
-
-void Pin::execute() {
+/*****************************************************
+  output the temporary saved signal on the arduino pin
+*****************************************************/
+void Pin::set() {
   if (mode == OUTPUT) {
     switch (type) {
       case ANALOG:
@@ -90,42 +145,58 @@ void Pin::execute() {
   }
 }
 
-void Pin::update() {
-  execute();
-  switch (type)
-  {
-    case VIRTUAL:
-      return;
-    case ANALOG:
-    case DIGITAL:
-    case PWM:
-      if (digital) set(digitalRead(pin));
-	    else Pin::set(analogRead(pin));
-    break;
-    case PUI:
-      pui.get(pin);
-    break;
-  }
-  if(mode == INPUT_PULLUP && type != VIRTUAL) set(!get());
+/*****************************************************
+  save value temporary without changing the arduino pin output
+  @param _value: output signal
+  - wait for set() to execute changes
+*****************************************************/
+void Pin::temp(int _value) {
+  Value::set(_value);
 }
 
+/*****************************************************
+  read the arduino pin
+  - will ignore output pins
+*****************************************************/
+void Pin::update() {
+  if(mode != OUTPUT) {
+    switch (type)
+    {
+      case VIRTUAL:
+        return;
+      case ANALOG:
+      case DIGITAL:
+      case PWM:
+        if (digital) set(digitalRead(pin));
+        else Pin::set(analogRead(pin));
+      break;
+      case PUI:
+        pui.get(pin);
+      break;
+    }
+    if(mode == INPUT_PULLUP && type != VIRTUAL) set(!get());
+  }
+}
+
+/*****************************************************
+  return pin address
+*****************************************************/
 byte Pin::getPin() {
 	return pin;
 }
 
 
-/******************************************************************************
-                                  click
-                 ┌─────────┬────────┴──────┬───────────────┬─╌                                                
-              stroke   permanent       permanent       permanent    
-      on╔════════╪═════════╪═══════════════╪═══════════════╪═════ ... ═╗
-Button  ║        ┊         ┊               ┊               ┊           ║
-     off║        ┊         ┊               ┊               ┊           ║
-════════╝        ┊postDelay┊               ┊               ┊           ╚══════                
-        ┊preDelay┊         ┊repititionDelay┊repititionDelay┊                                             
 
-******************************************************************************/
 
+/*****************************************************
+  configurate an arduino pin as a key
+  @param _pin: pin address
+  @param _type: type of pin (ANALOG, DIGITAL, PWM, PUI, VIRTUAL)
+  @param _preDelay: delay befor the first click
+  @param _postDelay: delay after the first click
+  @param _repititionDelay: delay after second or later click
+  - see header file for visualisation
+*****************************************************/
 Key::Key(byte _pin, byte _type, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay)
  : Pin(_pin, INPUT_PULLUP, _type) {
   preDelay = _preDelay;
@@ -133,16 +204,30 @@ Key::Key(byte _pin, byte _type, unsigned long _preDelay, unsigned long _postDela
   repititionDelay = _repititionDelay;
 }
 
+/*****************************************************
+  is there a first click?
+*****************************************************/
 bool Key::stroke() {
 	return active && clicks == 1;
 }
+
+/*****************************************************
+  is there a second or later click?
+*****************************************************/
 bool Key::permanent() {
 	return active && clicks > 1;
 }
+
+/*****************************************************
+  is there any click?
+*****************************************************/
 bool Key::click() {
 	return active;
 }
 
+/*****************************************************
+  read the arduino pins and process it to detect clicks
+*****************************************************/
 void Key::update() {
   Pin::update();
 	if(off()) {
@@ -162,13 +247,29 @@ void Key::update() {
 	}
 }
 
+/*****************************************************
+  ignore click for the next milliseconds
+  @param delay: cooldown time
+*****************************************************/
 void Key::cooldown(unsigned long delay) {
 	if(delay + 1 == 0) cooldownTimer = -1;
 	else cooldownTimer = millis() + delay;
 }
 
 
-
+/*****************************************************
+  combine keys to a shortcut
+  @param _keys: two dimensional array of key pointers:
+    - create array: Key *array = {&key1, &key2, ...};
+    - insert array
+  @param _keysLength: 
+    - length of the keys array
+    - number of keys in the shortcut
+  @param _muteKeys: if the shortcut is active, should the individual keys detect clicks?
+  @param _preDelay: delay befor the first shortcut click
+  @param _postDelay: delay after the first shortcut click
+  @param _repititionDelay: delay after second or later shortcut click
+*****************************************************/
 Shortcut::Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay)
  : Key(0, VIRTUAL, _preDelay, _postDelay, _repititionDelay) {
   keys = _keys;
@@ -176,6 +277,9 @@ Shortcut::Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long 
   muteKeys = _muteKeys;
 }
 
+/*****************************************************
+  scan all individual keys and process to detect clicks
+*****************************************************/
 void Shortcut::update() {
   set(true); // activate virtual key
   for(int i = 0; i < keysLength; i++) {
@@ -195,9 +299,14 @@ void Shortcut::update() {
 
 
 
-
+/*****************************************************
+  create a physical user interface
+*****************************************************/
 Pui::Pui() {}
 
+/*****************************************************
+  initialise communication
+*****************************************************/
 void Pui::init() {
   beginSegment("pui");
   I2c.write(ADDRESS, A_PINMODE, 0x00); // set OUTPUT
@@ -206,6 +315,10 @@ void Pui::init() {
   endSegment();
 }
 
+/*****************************************************
+  output a signal on the pui pin
+  @param _value: output signal
+*****************************************************/
 void Pui::set(byte pin, bool value) {
   if(pin < 8) {
     bitWrite(a, pin, value);
@@ -213,11 +326,17 @@ void Pui::set(byte pin, bool value) {
   }
 }
 
+/*****************************************************
+  return the temporary saved pui pin signal
+*****************************************************/
 bool Pui::get(byte pin) {
   if(pin < 8) return bitRead(a, pin);
   else return bitRead(b, pin-8);
 }
 
+/*****************************************************
+  read all pui pins
+*****************************************************/
 void Pui::update() {
   I2c.read(ADDRESS, A_VALUE, 1);
   b = I2c.receive();

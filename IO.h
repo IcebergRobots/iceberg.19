@@ -6,10 +6,13 @@
 // Mode
 #define ANALOG 0
 #define DIGITAL 1
-#define INVERTED 2
-#define PWM 3
-#define PUI 4
-#define VIRTUAL 5
+#define PWM 2
+#define PUI 3
+#define VIRTUAL 4
+
+// Processing
+#define LIMITS 0
+#define MODULATION 1
 
 // DATA TYPES
 #define INT8_T_MIN -128
@@ -25,11 +28,23 @@
 #define UINT32_T_MIN 0
 #define UINT32_T_MAX 4294967295
 
+/*****************************************************
+  class Value
+  1) supports modulation:      2) supports limits:                  
+  - values are saved circular  - values are saved limited                      
+  - eg:                        - eg:
+      setModulation(0, 9);         setLimits(0, 9);                   
+      set(11) => 1                 set(11) => 9           
+      set(4)  => 4                 set(4)  => 4           
+      set(-1) => 9                 set(-1) => 0           
+
+*****************************************************/
 class Value
 {
   public:
-    Value(int _min=INT16_T_MIN, int _max=INT16_T_MAX);
-    void setRange(int _min=INT16_T_MIN, int _max=INT16_T_MAX);
+    Value(bool processing=LIMITS, int min=INT16_T_MIN, int max=INT16_T_MAX);
+    void setLimits(int min=INT16_T_MIN, int max=INT16_T_MAX); //huhu
+    void setModulation(int min, int max);
     void set(int _value);
 		int get();
     bool on();
@@ -37,8 +52,10 @@ class Value
     String str();
   private:
     int value = 0;
-    int min = 0;
-    int max = 0;
+    int a = 0;  // in case of modulation: upper limit
+                // in case of limits: lower limit
+    int b = 0;  // in case of modulation: lower limit
+                // in case of limits: upper limit
 };
 
 class Pin: public Value
@@ -46,17 +63,29 @@ class Pin: public Value
 	public:
 		Pin(byte _pin, byte _mode, byte _type);
 		void set(int _value);
+    void set();
     void temp(int _value);
 		void update();
 		byte getPin();
 	private:
-    void execute();
 		byte pin = 0;
 		byte mode = 0;  // OUTPUT, INPUT, INPUT_PULLUP
 		byte type = 0;  // ANALOG, DIGITAL, PWM, PUI, VIRTUAL
 		bool digital = false;
 };
 
+
+/******************************************************************************
+                                  click
+                 ┌─────────┬────────┴──────┬───────────────┬─╌                                                
+              stroke   permanent       permanent       permanent    
+      on╔════════╪═════════╪═══════════════╪═══════════════╪═════ ... ═╗
+Button  ║        ┊         ┊               ┊               ┊           ║
+     off║        ┊         ┊               ┊               ┊           ║
+════════╝        ┊postDelay┊               ┊               ┊           ╚══════                
+        ┊preDelay┊         ┊repititionDelay┊repititionDelay┊                                             
+
+******************************************************************************/
 class Key: public Pin
 {
 	public:
@@ -82,7 +111,7 @@ class Shortcut: public Key
 {
 	public:
 		Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long _preDelay=-1, unsigned long _postDelay=-1, unsigned long _repititionDelay=-1);
-    void update();  // => set fix value from Key.get() objects
+    void update();
 	private:
 		Key **keys;
     byte keysLength = 0;
@@ -253,12 +282,12 @@ public:
   Key *_kickerStop[2] = { &testKick, &stop };
   Shortcut kickerStop = Shortcut(_kickerStop, 2, MUTE_KEYS, 0);  // deaktiviere einen dauerhaften Schuss
 
-  Value ball       = Value(  -160,  159  );  // Abweichung der Ball X-Koordinate
-  Value ballWidth  = Value(     0        );  // Ballbreite
-  Value ballArea   = Value(     0        );  // Ballgröße (Flächeninhalt)
-  Value goal       = Value(  -160,  159  );  // Abweichung der Tor X-Koordinate
-  Value goalWidth  = Value(     0        );  // Torbreite
-  Value goalArea   = Value(     0        );  // Torgröße (Flächeninhalt)
+  Value ball       = Value(  LIMITS,  -160,  159  );  // Abweichung der Ball X-Koordinate
+  Value ballWidth  = Value(  LIMITS,     0        );  // Ballbreite
+  Value ballArea   = Value(  LIMITS,     0        );  // Ballgröße (Flächeninhalt)
+  Value goal       = Value(  LIMITS,  -160,  159  );  // Abweichung der Tor X-Koordinate
+  Value goalWidth  = Value(  LIMITS,     0        );  // Torbreite
+  Value goalArea   = Value(  LIMITS,     0        );  // Torgröße (Flächeninhalt)
 
   void update();
 

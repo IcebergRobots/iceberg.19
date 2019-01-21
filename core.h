@@ -25,7 +25,7 @@ void debugln(String str="", bool space=true);
 void debug(long num, bool space=true);
 void debug(String str="", bool space=true);
 
-int shift(int &value, int min, int max);
+int circulate(int value, int min, int max);
 int pinMode(byte pin);
 void reset();
 String format(String str, byte length);

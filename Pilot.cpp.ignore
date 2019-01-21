@@ -1,13 +1,5 @@
 #include "Pilot.h"
 
-// Implementierung: OBJEKTE
-extern Display d;
-//extern Pilot p;
-extern Led led;
-extern Mate mate;
-extern Chassis m;
-extern Ultrasonic us;
-
 Pilot::Pilot() {
 }
 

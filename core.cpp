@@ -18,9 +18,12 @@ void debug(String str, bool space) {
   }
 }
 
-int shift(int &value, int min, int max) {
-  max -= min;
-  value = (max + (value - min % max)) % max + min; // wandle Drehposition in Zustand von 0 bis ROTARY_RANGE um
+int circulate(int value, int min, int max) {
+  max = max(min, max - min + 1);
+  value -= min;
+  value %= max;
+  if (value < 0) value += max;
+  value += min;
   return value;
 }
 

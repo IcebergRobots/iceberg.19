@@ -1,7 +1,7 @@
 #ifndef Pilot_h
 #define Pilot_h
 
-#include "Config.h"
+#include "core.h"
 
 class Pilot
 {
