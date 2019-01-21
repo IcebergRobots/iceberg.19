@@ -1,13 +1,5 @@
 #include "Chassis.h"
 
-// Implementierung: OBJEKTE
-extern Display d;
-extern Pilot p;
-extern Led led;
-extern Mate mate;
-//extern Chassis m;
-extern Ultrasonic us;
-
 // array auslesen ist schneller als berechnen
 const int sinus[360] = {0, 175, 349, 523, 698, 872, 1045, 1219, 1392, 1564, 1736, 1908, 2079, 2250, 2419, 2588, 2756, 2924, 3090, 3256, 3420, 3584, 3746, 3907, 4067, 4226, 4384, 4540, 4695, 4848, 5000, 5150, 5299, 5446, 5592, 5736, 5878, 6018, 6157, 6293, 6428, 6561, 6691, 6820, 6947, 7071, 7193, 7314, 7431, 7547, 7660, 7771, 7880, 7986, 8090, 8192, 8290, 8387, 8480, 8572, 8660, 8746, 8829, 8910, 8988, 9063, 9135, 9205, 9272, 9336, 9397, 9455, 9511, 9563, 9613, 9659, 9703, 9744, 9781, 9816, 9848, 9877, 9903, 9925, 9945, 9962, 9976, 9986, 9994, 9998, 10000, 9998, 9994, 9986, 9976, 9962, 9945, 9925, 9903, 9877, 9848, 9816, 9781, 9744, 9703, 9659, 9613, 9563, 9511, 9455, 9397, 9336, 9272, 9205, 9135, 9063, 8988, 8910, 8829, 8746, 8660, 8572, 8480, 8387, 8290, 8192, 8090, 7986, 7880, 7771, 7660, 7547, 7431, 7314, 7193, 7071, 6947, 6820, 6691, 6561, 6428, 6293, 6157, 6018, 5878, 5736, 5592, 5446, 5299, 5150, 5000, 4848, 4695, 4540, 4384, 4226, 4067, 3907, 3746, 3584, 3420, 3256, 3090, 2924, 2756, 2588, 2419, 2250, 2079, 1908, 1736, 1564, 1392, 1219, 1045, 872, 698, 523, 349, 175, 0, -175, -349, -523, -698, -872, -1045, -1219, -1392, -1564, -1736, -1908, -2079, -2250, -2419, -2588, -2756, -2924, -3090, -3256, -3420, -3584, -3746, -3907, -4067, -4226, -4384, -4540, -4695, -4848, -5000, -5150, -5299, -5446, -5592, -5736, -5878, -6018, -6157, -6293, -6428, -6561, -6691, -6820, -6947, -7071, -7193, -7314, -7431, -7547, -7660, -7771, -7880, -7986, -8090, -8192, -8290, -8387, -8480, -8572, -8660, -8746, -8829, -8910, -8988, -9063, -9135, -9205, -9272, -9336, -9397, -9455, -9511, -9563, -9613, -9659, -9703, -9744, -9781, -9816, -9848, -9877, -9903, -9925, -9945, -9962, -9976, -9986, -9994, -9998, -10000, -9998, -9994, -9986, -9976, -9962, -9945, -9925, -9903, -9877, -9848, -9816, -9781, -9744, -9703, -9659, -9613, -9563, -9511, -9455, -9397, -9336, -9272, -9205, -9135, -9063, -8988, -8910, -8829, -8746, -8660, -8572, -8480, -8387, -8290, -8192, -8090, -7986, -7880, -7771, -7660, -7547, -7431, -7314, -7193, -7071, -6947, -6820, -6691, -6561, -6428, -6293, -6157, -6018, -5878, -5736, -5592, -5446, -5299, -5150, -5000, -4848, -4695, -4540, -4384, -4226, -4067, -3907, -3746, -3584, -3420, -3256, -3090, -2924, -2756, -2588, -2419, -2250, -2079, -1908, -1736, -1564, -1392, -1219, -1045, -872, -698, -523, -349, -175};
 
@@ -15,32 +7,32 @@ const int sinus[360] = {0, 175, 349, 523, 698, 872, 1045, 1219, 1392, 1564, 1736
   setze Achsenwinkel
   @param angle: Achsenwinkel
 *****************************************************/
-Chassis::Chassis(byte angle) {
-  _angle = angle;
-  _motEn = false;
+Chassis::Chassis(byte _angle) {
+  angle = _angle;
+  motEn = false;
 }
 
 /*****************************************************
   setze Motor-Ansteuerungspins
   @param id: Motor-ID
-  @param fwd: Pin für Vorwärtsdrehung
-  @param bwd: Pin für Rückwärtsdrehung
-  @param pwm: Pin für Geschwindigkeit
+  @param _fwd: Pin für Vorwärtsdrehung
+  @param _bwd: Pin für Rückwärtsdrehung
+  @param _pwm: Pin für Geschwindigkeit
 *****************************************************/
-void Chassis::setPins(byte id, byte fwd, byte bwd, byte pwm, int curSens) {
+void Chassis::setPins(byte id, byte _fwd, byte _bwd, byte _pwm, int _curSens) {
   if (id < 0 || id > 3) { // ungueltige Eingabe
     return;
   }
 
-  _fwd[id] = fwd;         // speichere Pins
-  _bwd[id] = bwd;
-  _pwm[id] = pwm;
+  fwd[id] = _fwd;         // speichere Pins
+  bwd[id] = _bwd;
+  pwm[id] = _pwm;
 
-  _curSens[id] = curSens;
+  curSens[id] = _curSens;
 
-  pinMode(fwd, OUTPUT);   // definiere Pins als Output
-  pinMode(bwd, OUTPUT);
-  pinMode(pwm, OUTPUT);
+  pinMode(_fwd, OUTPUT);   // definiere Pins als Output
+  pinMode(_bwd, OUTPUT);
+  pinMode(_pwm, OUTPUT);
 }
 
 /*****************************************************
@@ -48,7 +40,7 @@ void Chassis::setPins(byte id, byte fwd, byte bwd, byte pwm, int curSens) {
   @param angle: Achsenwinkel
 *****************************************************/
 void Chassis::setAngle(byte angle) {
-  _angle = angle % 180;
+  angle = _angle % 180;
 }
 
 /*****************************************************
@@ -63,7 +55,7 @@ void Chassis::setAngle(byte angle) {
      '--'
 *****************************************************/
 void Chassis::steerMotor(byte id, int power) {
-  if (_motEn) {
+  if (motEn) {
     if (id < 0 || id > 3) {     //Eingabeueberpruefung
       return;
     }
@@ -71,9 +63,9 @@ void Chassis::steerMotor(byte id, int power) {
     power = min(255, power);    //Eingabekorrektur
     power = max(-255, power);
 
-    digitalWrite(_fwd[id], power > 0);  //drehe Motor vorwarts
-    digitalWrite(_bwd[id], power <= 0); //drehe Motor rueckwaerts
-    analogWrite(_pwm[id], abs(power));  //drehe Motor mit Geschwindigkeit
+    digitalWrite(fwd[id], power > 0);  //drehe Motor vorwarts
+    digitalWrite(bwd[id], power <= 0); //drehe Motor rueckwaerts
+    analogWrite(pwm[id], abs(power));  //drehe Motor mit Geschwindigkeit
   }
 }
 
@@ -98,17 +90,17 @@ void Chassis::drive(int angle, int power) {
   drive();
 }
 void Chassis::drive() {
-  drive(_values);
+  drive(values);
 }
 
 /*****************************************************
   steuere die Motoren an, um zu fahren
-  @param values: Zwischenspeicher
+  @param _values: Zwischenspeicher
   - nutze Berechnungen des Zwischenspeichers
 *****************************************************/
-void Chassis::drive(int values[]) {
+void Chassis::drive(int _values[]) {
   for (int i = 0; i < 4; i++) {
-    steerMotor(i, values[i]);
+    steerMotor(i, _values[i]);
   }
 }
 
@@ -139,40 +131,40 @@ void Chassis::calculate(int angle, int power, int rotation) {
   }
 
   //                                                      IDs:  .--.
-  int sinA02 = sinus[(((_angle / 2) - angle) + 360) % 360]; //berechne Zwischenwert für Achse der Motoren 1 und 3      3 /    \ 0
-  int sinA13 = sinus[(((_angle / 2) + angle) + 360) % 360]; //berechne Zwischenwert für Achse der Motoren 2 und 4      2 \    / 1
+  int sinA02 = sinus[(((angle / 2) - angle) + 360) % 360]; //berechne Zwischenwert für Achse der Motoren 1 und 3      3 /    \ 0
+  int sinA13 = sinus[(((angle / 2) + angle) + 360) % 360]; //berechne Zwischenwert für Achse der Motoren 2 und 4      2 \    / 1
   //                                                            '--'
   int axis02 = power * (double)sinA02 / 10000; //berechne Motorstärken für Achse 1&3
   int axis13 = power * (double)sinA13 / 10000; //berechne Motorstärken für Achse 2&4
 
 
-  _values[0] = axis02 - rotation;       //erstelle Zwischenspeicher für alle Motorstärken
-  _values[1] = axis13 - rotation;
-  _values[2] = axis02 + rotation;
-  _values[3] = axis13 + rotation;
+  values[0] = axis02 - rotation;       //erstelle Zwischenspeicher für alle Motorstärken
+  values[1] = axis13 - rotation;
+  values[2] = axis02 + rotation;
+  values[3] = axis13 + rotation;
 
   int totalCurr = 0;
   int totalPwr = 0;
 
   for (int i = 0; i < 4; i++) {
-    int value = analogRead(_curSens[i]) - 512;
+    int value = analogRead(curSens[i]) - 512;
     totalCurr += abs(value);
-    totalPwr += abs(_values[i]);
+    totalPwr += abs(values[i]);
   }
-  if (_halfSpeed) {
+  if (halfSpeed) {
     totalPwr /= 2;
   }
   if (totalPwr != 0) {
-    _curr = (totalCurr / (float)totalPwr) * 255;
+    curr = (totalCurr / (float)totalPwr) * 255;
   }
 
-  _halfSpeed = !onLine && (power > 30 && _curr < 15) || _halfSpeed && (power > 15 && _curr < 50);
+  halfSpeed = !onLine && (power > 30 && curr < 15) || halfSpeed && (power > 15 && curr < 50);
 
-  if (_halfSpeed) {
+  if (halfSpeed) {
     for (int i = 0; i < 4; i++) {
-      _values[i] /= 2;
+      values[i] /= 2;
     }
-    if (_motEn)tone(BUZZER, 700);
+    if (motEn)tone(BUZZER, 700);
   } else {
     noTone(BUZZER);
   }
@@ -192,16 +184,16 @@ void Chassis::brake(bool activ) {
   driveRotation = 0;  // setze die Displaywerte
 
   for (byte i = 0; i < 4; i++) {
-    digitalWrite(_fwd[i], activ);
-    digitalWrite(_bwd[i], activ);
-    analogWrite(_pwm[i], 255);
+    digitalWrite(fwd[i], activ);
+    digitalWrite(bwd[i], activ);
+    analogWrite(pwm[i], 255);
   }
 }
 
-void Chassis::setMotEn(bool motEn) {
-  if (_motEn != motEn) {
-    _motEn = motEn;
-    if (motEn) {
+void Chassis::setMotEn(bool _motEn) {
+  if (motEn != _motEn) {
+    motEn = _motEn;
+    if (_motEn) {
       p.setRusher(true);
       p.setKeeper(true);
     } else {
@@ -211,9 +203,9 @@ void Chassis::setMotEn(bool motEn) {
 }
 
 void Chassis::switchMotEn() {
-  setMotEn(!_motEn);
+  setMotEn(!motEn);
 }
 
 bool Chassis::getMotEn() {
-  return _motEn;
+  return motEn;
 }
