@@ -16,8 +16,6 @@
 #include "IO.h"
 #include "Demand.h"
 
-extern bool silent, hasDebugHead;
-
 void debugln(long num, bool space=true);
 void debugln(String str="", bool space=true);
 void debug(long num, bool space=true);
@@ -45,8 +43,8 @@ void endSegment();
 
 // DEBUG
 #define DEBUG_STATE         1       // soll der Statuswechsel gezeigt werden?
-#define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_SEGMENT       1       // sollen Methoden gezeigt werden?
+#define DEBUG_LOOP          1       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_SERIAL        Serial  // Serial der Usb-Schnittstelle
 #define START_MARKER        254     // Startzeichen einer Bluetooth-Nachricht

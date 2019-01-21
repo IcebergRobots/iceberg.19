@@ -13,6 +13,10 @@ void setup() {
   //createCrashlog();
   //restoreSession();
   setupDone();
+
+  /*****************************************************/
+  io.turbo.setLimits(false, false); // set broken turbo key to off
+  /*****************************************************/
 }
 
 void loop() {
@@ -46,7 +50,7 @@ void loop() {
   } // start motors, activate bluetooth
   if (io.stop.stroke())                { 
     debug("goal:");
-    debug(io.goal.get(), 4, -1, true) + ",");
+    debug(io.goal.str(4, -1, true) + ",");
     debug(io.goalWidth.str(4) + ",");
     debug(io.goalArea.str(4));
   } // stop motors, activate bluetooth
@@ -56,7 +60,7 @@ void loop() {
   if (io.bluetooth.stroke())           { /* debug("3"); */ } // activate bluetooth
   if (io.kicker.stroke())              { /* debug("4"); */ } // ?
   if (io.bottom.stroke())              { /* debug("5"); */ } // activate light
-  if (io.debug.stroke())               { /* debug("6"); */ } // send hello
+  if (io.turbo.stroke())               { /* debug("6"); */ } // send hello
 
   updateStates();
   //updateRating();

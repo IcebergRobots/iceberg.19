@@ -20,7 +20,7 @@ void Camera::init() {
 
 void Camera::frame() {
     beginSegment("c:r");
-    if (silent) setLED(0, 0, 0); // schalte die Front-LED aus
+    if (io.turbo.on()) setLED(0, 0, 0); // schalte die Front-LED aus
     int ballAreaMax = 0;  // Ballgröße, 0: blind, >0: Flächeninhalt
     int goalAreaMax = 0;  // Torgröße,  0: blind, >0: Flächeninhalt
     int eastHeightMax = 0;  // Farbmarkierungsgröße,  0: blind, >0: Flächeninhalt

@@ -7,11 +7,11 @@ void debugln(long num, bool space) {   debugln(String(num)); }
 void debugln(String str, bool space) { debug(str + "\n");    }
 void debug(long num, bool space) {     debug(String(num), space);   }
 void debug(String str, bool space) {
-  if (DEBUG && !silent) {
-    if (hasDebugHead && space) str = " " + str;
-    if (!hasDebugHead) {
-      hasDebugHead = true;
-      str = "\n" + format("t" + io.runtime.str()), 6) + " " + str;
+  if (DEBUG && io.turbo.off()) {
+    if (io.hasDebugHead.on() && space) str = " " + str;
+    if (io.hasDebugHead.off()) {
+      io.hasDebugHead.set(true);
+      str = "\n" + format("t" + io.runtime.str(), 6) + " " + str;
       io.runtime.set();
     }
     DEBUG_SERIAL.print(str);

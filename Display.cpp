@@ -12,7 +12,7 @@ void Display::init() {
   beginSegment("d");
   begin(SH1106_SWITCHCAPVCC, 0x3C);  // initialisiere das Displays
   clearDisplay(); // leere den Bildschirm
-  if (!silent) { 
+  if (io.turbo.off()) { 
     drawBitmap(0, 0, LOGO, 114, 64, WHITE); // zeige das Logo
     drawRect(0, 29, 128, 2, WHITE);
   }
@@ -21,7 +21,7 @@ void Display::init() {
 }
 
 void Display::setupMessage(byte pos, String title, String description) {
-  if (!silent) {
+  if (io.turbo.off()) {
     fillRect(47, 0, 81, 31, BLACK); // lösche das Textfeld
     drawRect(0, 29, map(pos, 0, SETUP_MESSAGE_RANGE, 0, 128), 2, WHITE);
     setTextColor(WHITE);

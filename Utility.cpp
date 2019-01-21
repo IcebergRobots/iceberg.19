@@ -45,7 +45,7 @@ void calculateStates() {
 }
 
 void prepareDebug() {
-  hasDebugHead = false;
+  io.hasDebugHead.set(false);
   if (DEBUG_LOOP) debug();
 }
 

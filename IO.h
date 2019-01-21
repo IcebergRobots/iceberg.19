@@ -284,7 +284,7 @@ public:
   Key bluetooth             = Key(  2,   PUI,      0                   );  // bluetooth (lever)
   Key kicker                = Key(  3,   PUI,      0                   );  // kicker    (lever)
   Key bottom                = Key(  4,   PUI,      0                   );  // bottom    (lever)
-  Key debug                 = Key(  5,   PUI,      0                   );  // debug     (lever)
+  Key turbo                 = Key(  5,   PUI,      0                   );  // debug     (lever)
 
   // PUI: shortcut
   Key *_record[2] = { &start, &stop }; 
@@ -298,13 +298,6 @@ public:
 
   Key *_kickerStop[2] = { &testKick, &stop };
   Shortcut kickerStop = Shortcut(_kickerStop, 2, MUTE_KEYS, 0);  // deaktiviere einen dauerhaften Schuss
-
-  Value ball       = Value(  LIMITS,  -160,  159  );  // Abweichung der Ball X-Koordinate
-  Value ballWidth  = Value(  LIMITS,     0        );  // Ballbreite
-  Value ballArea   = Value(  LIMITS,     0        );  // Ballgröße (Flächeninhalt)
-  Value goal       = Value(  LIMITS,  -160,  159  );  // Abweichung der Tor X-Koordinate
-  Value goalWidth  = Value(  LIMITS,     0        );  // Torbreite
-  Value goalArea   = Value(  LIMITS,     0        );  // Torgröße (Flächeninhalt)
 
   Timer flat            = Timer(    600             );  // liegen wir flach?
   Timer onLine          = Timer(    300             );  // berühren wir die Linie?
@@ -322,6 +315,14 @@ public:
   Timer cameraResponse  = Timer(  20000             );  // ist die Kamera verbunden?
 
   void update();
+
+  Value ball         = Value(  LIMITS,   -160,   159  );  // Abweichung der Ball X-Koordinate
+  Value ballWidth    = Value(  LIMITS,      0         );  // Ballbreite
+  Value ballArea     = Value(  LIMITS,      0         );  // Ballgröße (Flächeninhalt)
+  Value goal         = Value(  LIMITS,   -160,   159  );  // Abweichung der Tor X-Koordinate
+  Value goalWidth    = Value(  LIMITS,      0         );  // Torbreite
+  Value goalArea     = Value(  LIMITS,      0         );  // Torgröße (Flächeninhalt)
+  Value hasDebugHead = Value(  LIMITS,  false,  true  );  // Debug-Zeilenanfang
 
 private:
 };

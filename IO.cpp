@@ -105,7 +105,7 @@ Value::Value(bool processing, int min, int max) {
 *****************************************************/
 void Value::set(int _value) {
   if(a <= b) value = constrain(_value, a, b); // limit
-  else value = circulate(_value, a, b);           // modulate
+  else value = circulate(_value, a, b);       // modulate
 }
 
 /*****************************************************
@@ -251,10 +251,10 @@ void Pin::update() {
       case DIGITAL:
       case PWM:
         if (digital) set(digitalRead(pin));
-        else Pin::set(analogRead(pin));
+        else set(analogRead(pin));
       break;
       case PUI:
-        pui.get(pin);
+        set(pui.get(pin));
       break;
     }
     if(mode == INPUT_PULLUP && type != VIRTUAL) set(!get());
@@ -435,7 +435,7 @@ IO::IO() {}
 
 void IO::update() {
   if (DEBUG_LOOP) beginSegment("io");
-
+  
   // pins
   temperaturePcb.update();
   brightnessPcb.update();
@@ -502,7 +502,7 @@ void IO::update() {
   spiMosi.update();
   usbTx.update();
   usbRx.update();
-
+  
   // keys
   decreasePage.update();
   increasePage.update();
@@ -522,8 +522,8 @@ void IO::update() {
   bluetooth.update();
   kicker.update();
   bottom.update();
-  debug.update();
-  
+  turbo.update();
+
   // shortcuts
   record.update();
   resetProperties.update();
