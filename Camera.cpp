@@ -11,7 +11,7 @@ Camera::Camera() {
 - initialisiert die SPI Kommunikation
 *********************************************************************/
 void Camera::init() {  
-    beginSegment("cam");
+    beginSegment("c");
     SPI.begin();
     Pixy::init();
     pixyResponseTimer = SPI.transfer(0x00) == 255;
