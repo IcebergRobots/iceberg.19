@@ -66,4 +66,4 @@ void Camera::frame() {
     endSegment();
 }
 
-Camera camera = Camera();
+Camera camera;

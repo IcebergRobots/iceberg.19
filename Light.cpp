@@ -109,4 +109,4 @@ uint32_t Light::wheelToColor(Adafruit_NeoPixel & board, byte pos) {
   }
 }
 
-Light light = Light();
+Light light;

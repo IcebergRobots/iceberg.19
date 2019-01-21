@@ -72,6 +72,7 @@ class Value
     void setLimits(int min=INT16_T_MIN, int max=INT16_T_MAX); //huhu
     void setModulation(int min, int max);
     void set(int _value);
+    void add(int _value=1);
 		int get();
     bool on();
     bool off();
@@ -316,13 +317,19 @@ public:
 
   void update();
 
-  Value ball         = Value(  LIMITS,   -160,   159  );  // Abweichung der Ball X-Koordinate
-  Value ballWidth    = Value(  LIMITS,      0         );  // Ballbreite
-  Value ballArea     = Value(  LIMITS,      0         );  // Ballgröße (Flächeninhalt)
-  Value goal         = Value(  LIMITS,   -160,   159  );  // Abweichung der Tor X-Koordinate
-  Value goalWidth    = Value(  LIMITS,      0         );  // Torbreite
-  Value goalArea     = Value(  LIMITS,      0         );  // Torgröße (Flächeninhalt)
-  Value hasDebugHead = Value(  LIMITS,  false,  true  );  // Debug-Zeilenanfang
+  Value driveAngle     = Value(  MODULATION,      0,   359  ); // Zielwinkel
+  Value drivePower     = Value(      LIMITS,      0,   255  ); // Geschwindigkeit
+  Value driveRotation  = Value(      LIMITS,   -255,   255  ); // Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
+  Value driveEnabled   = Value(      LIMITS,  false,  true  ); // Aktivierung des Fahrgestells
+
+  Value ball           = Value(      LIMITS,   -160,   159  );  // Abweichung der Ball X-Koordinate
+  Value ballWidth      = Value(      LIMITS,      0         );  // Ballbreite
+  Value ballArea       = Value(      LIMITS,      0         );  // Ballgröße (Flächeninhalt)
+  Value goal           = Value(      LIMITS,   -160,   159  );  // Abweichung der Tor X-Koordinate
+  Value goalWidth      = Value(      LIMITS,      0         );  // Torbreite
+  Value goalArea       = Value(      LIMITS,      0         );  // Torgröße (Flächeninhalt)
+  
+  Value hasDebugHead   = Value(      LIMITS,  false,  true  );  // Debug-Zeilenanfang
 
 private:
 };

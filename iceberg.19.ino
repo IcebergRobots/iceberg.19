@@ -45,7 +45,7 @@ void loop() {
   if (io.start.stroke())               {
     debug("ball:");
     debug(io.ball.str(4, -1, true) + ",");
-    debug(io.ballWidth.str(4), + ",");
+    debug(io.ballWidth.str(4) + ",");
     debug(io.ballArea.str(4));
   } // start motors, activate bluetooth
   if (io.stop.stroke())                { 

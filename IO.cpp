@@ -109,6 +109,15 @@ void Value::set(int _value) {
 }
 
 /*****************************************************
+  change the value
+  @param _value: summand
+  - modulate or limit the value
+*****************************************************/
+void Value::add(int _value) {
+  set(value + _value);
+}
+
+/*****************************************************
   configurate limits
   @param min: lower limit
   @param max: upper limit
@@ -117,6 +126,7 @@ void Value::set(int _value) {
 void Value::setLimits(int min, int max) {
   a = min(min, max);
   b = max(min, max);
+  set(value);
 }
 
 /*****************************************************
@@ -128,6 +138,7 @@ void Value::setLimits(int min, int max) {
 void Value::setModulation(int min, int max) {
   a = max(min, max);
   b = min(min, max);
+  set(value);
 }
 
 /*****************************************************
@@ -549,4 +560,4 @@ void IO::update() {
   if (DEBUG_LOOP) endSegment();
 }
 
-IO io = IO();
+IO io;
