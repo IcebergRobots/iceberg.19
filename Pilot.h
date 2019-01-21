@@ -5,43 +5,36 @@
 
 class Pilot
 {
+#define TOGGLE 2
+#define LEFT 1
+#define RIGHT 0
+
   public:
     Pilot();
-    Pilot(byte angle);
 
-    void setPins(byte id, byte fwd, byte bwd, byte pwm, int curSens);
-    void setAngle(byte angle);
+    bool isKeeper();
+    bool isRusher();
+    void setKeeper(bool force);
+    void setRusher(bool force);
+    unsigned long lastRoleToggle();
 
-    void steerMotor(byte id, int power);
+    byte getState();
+    void play();
 
-    void drive();
-    void drive(int values[]);
-    void drive(int angle, int power);
-    void drive(int angle, int power, int rotation);
-
-    void calculate(int angle, int power);
-    void calculate(int angle, int power, int rotation);
-
-    void brake(bool activ);
-
-    void setMotEn(bool motEn);
-    bool getMotEn();
-    void switchMotEn();
+    bool atGatepost();
 
   private:
-    byte _fwd[4];    // digitaler PIN fuer Vorwaertsrotation
-    byte _bwd[4];    // digitaler PIN fuer Rueckwaertsrotation
-    byte _pwm[4];    // analoger PIN fuer Geschwindigkeit
+    void setState(byte s, String reason);
+    void changeState();
+    void setDirection(byte dir, String reason);
 
-    byte _curSens[4];
+    byte role = 0;                // Spielrolle: Torwart(0) / Stürmer(1)
+    unsigned long roleTimer = 0;  // Zeitpunkt des letzten Rollenwechsels
 
-    int _values[4];  // Zwischenspeicher für Outputsignale
-
-    byte _angle;
-    bool _motEn;    // gibt an, ob die Motoren an sind
-    bool _halfSpeed = false;
-
-    int _curr;
+    bool stateLeft = false;           // Fahrrichtung: rechts(0) / links(1)
+    byte state = 0;               // Verteidigerrolle: Nach hinten(0) / Torverteidigung(1) / Pfostendrehung hin(2) / Pfostendrehung zurück(3) / Befreiung(4) / Seitlich verloren(5)
+    // Angriffsrolle: Ballverfolgung(6) / Torausrichtung(7) / Angriff(8) / Ausweichen(9)
+    unsigned long stateTimer = 0; // Zeitpunkt des letzten Statuswechsels
 };
 
 #endif

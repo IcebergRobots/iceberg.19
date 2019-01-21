@@ -2,226 +2,371 @@
 
 // Implementierung: OBJEKTE
 extern Display d;
-extern Player p;
+//extern Pilot p;
 extern Led led;
 extern Mate mate;
-//extern Pilot m;
+extern Chassis m;
 extern Ultrasonic us;
 
-// array auslesen ist schneller als berechnen
-const int sinus[360] = {0, 175, 349, 523, 698, 872, 1045, 1219, 1392, 1564, 1736, 1908, 2079, 2250, 2419, 2588, 2756, 2924, 3090, 3256, 3420, 3584, 3746, 3907, 4067, 4226, 4384, 4540, 4695, 4848, 5000, 5150, 5299, 5446, 5592, 5736, 5878, 6018, 6157, 6293, 6428, 6561, 6691, 6820, 6947, 7071, 7193, 7314, 7431, 7547, 7660, 7771, 7880, 7986, 8090, 8192, 8290, 8387, 8480, 8572, 8660, 8746, 8829, 8910, 8988, 9063, 9135, 9205, 9272, 9336, 9397, 9455, 9511, 9563, 9613, 9659, 9703, 9744, 9781, 9816, 9848, 9877, 9903, 9925, 9945, 9962, 9976, 9986, 9994, 9998, 10000, 9998, 9994, 9986, 9976, 9962, 9945, 9925, 9903, 9877, 9848, 9816, 9781, 9744, 9703, 9659, 9613, 9563, 9511, 9455, 9397, 9336, 9272, 9205, 9135, 9063, 8988, 8910, 8829, 8746, 8660, 8572, 8480, 8387, 8290, 8192, 8090, 7986, 7880, 7771, 7660, 7547, 7431, 7314, 7193, 7071, 6947, 6820, 6691, 6561, 6428, 6293, 6157, 6018, 5878, 5736, 5592, 5446, 5299, 5150, 5000, 4848, 4695, 4540, 4384, 4226, 4067, 3907, 3746, 3584, 3420, 3256, 3090, 2924, 2756, 2588, 2419, 2250, 2079, 1908, 1736, 1564, 1392, 1219, 1045, 872, 698, 523, 349, 175, 0, -175, -349, -523, -698, -872, -1045, -1219, -1392, -1564, -1736, -1908, -2079, -2250, -2419, -2588, -2756, -2924, -3090, -3256, -3420, -3584, -3746, -3907, -4067, -4226, -4384, -4540, -4695, -4848, -5000, -5150, -5299, -5446, -5592, -5736, -5878, -6018, -6157, -6293, -6428, -6561, -6691, -6820, -6947, -7071, -7193, -7314, -7431, -7547, -7660, -7771, -7880, -7986, -8090, -8192, -8290, -8387, -8480, -8572, -8660, -8746, -8829, -8910, -8988, -9063, -9135, -9205, -9272, -9336, -9397, -9455, -9511, -9563, -9613, -9659, -9703, -9744, -9781, -9816, -9848, -9877, -9903, -9925, -9945, -9962, -9976, -9986, -9994, -9998, -10000, -9998, -9994, -9986, -9976, -9962, -9945, -9925, -9903, -9877, -9848, -9816, -9781, -9744, -9703, -9659, -9613, -9563, -9511, -9455, -9397, -9336, -9272, -9205, -9135, -9063, -8988, -8910, -8829, -8746, -8660, -8572, -8480, -8387, -8290, -8192, -8090, -7986, -7880, -7771, -7660, -7547, -7431, -7314, -7193, -7071, -6947, -6820, -6691, -6561, -6428, -6293, -6157, -6018, -5878, -5736, -5592, -5446, -5299, -5150, -5000, -4848, -4695, -4540, -4384, -4226, -4067, -3907, -3746, -3584, -3420, -3256, -3090, -2924, -2756, -2588, -2419, -2250, -2079, -1908, -1736, -1564, -1392, -1219, -1045, -872, -698, -523, -349, -175};
-
-/*****************************************************
-  setze Achsenwinkel auf 70°
-*****************************************************/
 Pilot::Pilot() {
-  _angle = 70;
-  _motEn = false;
 }
 
-/*****************************************************
-  setze Achsenwinkel
-  @param angle: Achsenwinkel
-*****************************************************/
-Pilot::Pilot(byte angle) {
-  _angle = angle;
-  _motEn = false;
-}
-
-/*****************************************************
-  setze Motor-Ansteuerungspins
-  @param id: Motor-ID
-  @param fwd: Pin für Vorwärtsdrehung
-  @param bwd: Pin für Rückwärtsdrehung
-  @param pwm: Pin für Geschwindigkeit
-*****************************************************/
-void Pilot::setPins(byte id, byte fwd, byte bwd, byte pwm, int curSens) {
-  if (id < 0 || id > 3) { // ungueltige Eingabe
-    return;
-  }
-
-  _fwd[id] = fwd;         // speichere Pins
-  _bwd[id] = bwd;
-  _pwm[id] = pwm;
-
-  _curSens[id] = curSens;
-
-  pinMode(fwd, OUTPUT);   // definiere Pins als Output
-  pinMode(bwd, OUTPUT);
-  pinMode(pwm, OUTPUT);
-}
-
-/*****************************************************
-  setze den Winkel zwischen zwei Motoren einer Seite (Achsenwinkel)
-  @param angle: Achsenwinkel
-*****************************************************/
-void Pilot::setAngle(byte angle) {
-  _angle = angle % 180;
-}
-
-/*****************************************************
-  setze Ausgangssignale fuer einen Motor
-  @param id [0 bis 3]: Motor-ID
-  @param power [-255 bis 255]: Gescwindigkeit
-
-  IDs:
-     .--.
-  0 /    \ 3
-  1 \    / 2
-     '--'
-*****************************************************/
-void Pilot::steerMotor(byte id, int power) {
-  if (_motEn) {
-    if (id < 0 || id > 3) {     //Eingabeueberpruefung
-      return;
-    }
-
-    power = min(255, power);    //Eingabekorrektur
-    power = max(-255, power);
-
-    digitalWrite(_fwd[id], power > 0);  //drehe Motor vorwarts
-    digitalWrite(_bwd[id], power <= 0); //drehe Motor rueckwaerts
-    analogWrite(_pwm[id], abs(power));  //drehe Motor mit Geschwindigkeit
-  }
-}
-
-/*****************************************************
-  fahre mit Geschwindigkeit, Zielwinkel und Eigenrotation
-  @param (optional) angle [180 bis 180]: Zielwinkel
-  @param (optional) power [-255 bis 255]: Geschwindigkeit
-  @param (optional) rotation [-255 bis 255]: Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
-
-  Winkel:0
-      .--.
-  90 /    \ -90
-     \    /
-      '--'
-*****************************************************/
-void Pilot::drive(int angle, int power, int rotation) {
-  calculate(angle, power, rotation);
-  drive();
-}
-void Pilot::drive(int angle, int power) {
-  calculate(angle, power);
-  drive();
-}
-void Pilot::drive() {
-  drive(_values);
-}
-
-/*****************************************************
-  steuere die Motoren an, um zu fahren
-  @param values: Zwischenspeicher
-  - nutze Berechnungen des Zwischenspeichers
-*****************************************************/
-void Pilot::drive(int values[]) {
-  for (int i = 0; i < 4; i++) {
-    steerMotor(i, values[i]);
-  }
-}
-
-
-/*****************************************************
-  berechne Zwischenspeicher für Motoransteuerung
-  @param angle [180 bis 180]: Zielwinkel
-  @param power [-255 bis 255]: Geschwindigkeit
-  @param (optional) rotation [-255 bis 255]: Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
-*****************************************************/
-void Pilot::calculate(int angle, int power, int rotation) {
-  driveDirection = angle;   // setze die Displaywerte
-  drivePower = power;       // setze die Displaywerte
-  driveRotation = rotation; // setze die Displaywerte
-
-  if (power < 0) {      //bei negativen Geschwindigkeiten,
-    power = -power;     //positive Geschwindigkeit
-    angle += 180;       //bei 180° Drehung verwenden
-  }
-
-  while (angle < 0) {   //Eingabekorrektur
-    angle += 360;       //
-  }                     //
-  angle %= 360;         //
-
-  if (power + abs(rotation) > 255) {        //Wenn die Gesamtgeschwindigkeit zu groß ist,
-    power -= (power + abs(rotation)) - 255; //wird die Geschwindigkeit ausreichend reduziert
-  }
-
-  //                                                      IDs:  .--.
-  int sinA02 = sinus[(((_angle / 2) - angle) + 360) % 360]; //berechne Zwischenwert für Achse der Motoren 1 und 3      3 /    \ 0
-  int sinA13 = sinus[(((_angle / 2) + angle) + 360) % 360]; //berechne Zwischenwert für Achse der Motoren 2 und 4      2 \    / 1
-  //                                                            '--'
-  int axis02 = power * (double)sinA02 / 10000; //berechne Motorstärken für Achse 1&3
-  int axis13 = power * (double)sinA13 / 10000; //berechne Motorstärken für Achse 2&4
-
-
-  _values[0] = axis02 - rotation;       //erstelle Zwischenspeicher für alle Motorstärken
-  _values[1] = axis13 - rotation;
-  _values[2] = axis02 + rotation;
-  _values[3] = axis13 + rotation;
-
-  int totalCurr = 0;
-  int totalPwr = 0;
-
-  for (int i = 0; i < 4; i++) {
-    int value = analogRead(_curSens[i]) - 512;
-    totalCurr += abs(value);
-    totalPwr += abs(_values[i]);
-  }
-  if (_halfSpeed) {
-    totalPwr /= 2;
-  }
-  if (totalPwr != 0) {
-    _curr = (totalCurr / (float)totalPwr) * 255;
-  }
-
-  _halfSpeed = !onLine && (power > 30 && _curr < 15) || _halfSpeed && (power > 15 && _curr < 50);
-
-  if (_halfSpeed) {
-    for (int i = 0; i < 4; i++) {
-      _values[i] /= 2;
-    }
-    if (_motEn)tone(BUZZER, 700);
+void Pilot::changeState() {
+  // set state
+  byte tempState = state;
+  if (state >= 6) {
+    // aktiv
+    if (isKeeper() && !mate.timeout()) setState(0, "passive"); // werden passiv
+    else if (!seeBall) setState(5, "blind"); // wir werden blind
   } else {
-    noTone(BUZZER);
+    // passiv
+    if (seeBall && state != 3 && state != 4 && (isRusher() || mate.timeout())) setState(6, "active"); // wir werden aktiv
+    // sehenBall &   keine Pfostendrehung   &  (Stürmer   oder  Singleplayer)
   }
-}
-void Pilot::calculate(int angle, int power) {
-  calculate(angle, power, 0);
-}
+
+  switch (state) {
+    // Passivspiel
+    case 0: // Nach hinten
+      if (us.back() <= COURT_REARWARD_MAX) setState(1, "rearward<");
+      else if (millis() - stateTimer > BACKWARD_MAX_DURATION) setState(4, "time>");
+      break;
+
+    case 1: // Torverteidigung
+      if (!seeBall && millis() - stateTimer > SIDEWARD_MAX_DURATION) {
+        if (us.back() > COURT_REARWARD_MAX) setState(0, "rearward>"); // fahre rückwärts
+        else if (isKeeper()) setState(2, "time>,keeper");     // wechsle in Drehmodus
+        else setDirection(TOGGLE, "time>,rusher");  // wechsle Fahrrichtung
+      } else if (millis() - stateTimer > SIDEWARD_MIN_DURATION) {
+        if (us.back() > COURT_REARWARD_MAX) setState(0, "rearward>"); // fahre rückwärts
+        else if (millis() - lineTimer < 100) setDirection(TOGGLE, "line");
+        else if (seeBall) {
+          if (ball < -BALL_ANGLE_TRIGGER) {
+            setDirection(LEFT, "ball<");
+            stateTimer += 200 - SIDEWARD_MIN_DURATION;
+          } else if (ball > BALL_ANGLE_TRIGGER) {
+            setDirection(RIGHT, "ball>");
+            stateTimer += 200 - SIDEWARD_MIN_DURATION;
+          }
+        } else if (atGatepost() && isKeeper()) setState(2, "gatepost");  // wechsle in Drehmodus
+      }
+      break;
+
+    case 2: // Pfostendrehung hin
+      if (seeBall) {
+        if (stateLeft && ball > BALL_ANGLE_TRIGGER) setState(3, "ball>");
+        else if (!stateLeft && ball < -BALL_ANGLE_TRIGGER) setState(3, "ball<");
+      }
+      else if (millis() - stateTimer > TURN_MAX_DURATION) setState(3, "time>");
+      else if (stateLeft && heading < -ANGLE_TURN_MAX * 0.9) setState(3, "angle<");
+      else if (!stateLeft && heading > ANGLE_TURN_MAX * 0.9) setState(3, "angle>");
+      break;
+
+    case 3: // Pfostendrehung zurück
+      if (seeBall) {
+        if (stateLeft) {
+          if ((ball / 3 + heading) > -ANGLE_RETURN_MIN) setDirection(TOGGLE, "ball|");
+          else if (ball < -BALL_ANGLE_TRIGGER) setState(2, "ball<");
+        } else {
+          if ((ball / 3 + heading) < ANGLE_RETURN_MIN) setDirection(TOGGLE, "ball|");
+          else if (ball > BALL_ANGLE_TRIGGER) setState(2, "ball>");
+        }
+      }
+      else if (millis() - stateTimer > RETURN_MAX_DURATION) setDirection(TOGGLE, "time>");
+      else if (abs(heading) < ANGLE_RETURN_MIN) setDirection(TOGGLE, "angle|");
+      break;
+
+    case 4: // Befreiung
+      if (millis() - stateTimer > GOAL_STUCK_DURATION) setState(0, "time>"); // fahre wieder rückwärts und warte erneut * Sekunden
+      break;
+
+    case 5: // Seitlich verloren
+      if (millis() - stateTimer > LOST_DURATION) setState(0, "time>");
+      else if (seeBall && stateLeft && ball > BALL_ANGLE_TRIGGER) setDirection(RIGHT, "ball>");
+      else if (seeBall && !stateLeft && ball < -BALL_ANGLE_TRIGGER) setDirection(LEFT, "ball<");
+      break;
 
 
+    // Aktivspiel
+    case 6: // Ballverfolgung
+      if (seeBall && ball > BALL_ANGLE_TRIGGER) stateLeft = RIGHT;
+      else if (seeBall && ball < -BALL_ANGLE_TRIGGER) stateLeft = LEFT;
 
-/*****************************************************
-  bremse aktiv oder passiv alle Motoren
-  @param activ: aktives Bremsen?
-*****************************************************/
-void Pilot::brake(bool activ) {
-  drivePower = 0;     // setze die Displaywerte
-  driveRotation = 0;  // setze die Displaywerte
+      if (closeBall && seeGoal) setState(7, "closeBall");
+      break;
 
-  for (byte i = 0; i < 4; i++) {
-    digitalWrite(_fwd[i], activ);
-    digitalWrite(_bwd[i], activ);
-    analogWrite(_pwm[i], 255);
+    case 7: // Torausrichtung
+      if (!closeBall) setState(6, "farBall");
+      else if (!seeGoal) setState(6, "!goal");
+      else if (goal < -BALL_ANGLE_TRIGGER) stateLeft = LEFT;
+      else if (goal > BALL_ANGLE_TRIGGER) stateLeft = RIGHT;
+      else if (abs(ball) < BALL_ANGLE_TRIGGER) setState(8, "goal|");
+      break;
+
+    case 8: // Angriff
+      if (seeBall && ball > BALL_ANGLE_TRIGGER) stateLeft = RIGHT;
+      else if (seeBall && ball < -BALL_ANGLE_TRIGGER) stateLeft = LEFT;
+
+      if (!closeBall) setState(6, "!closeBall");
+      break;
   }
-}
+  if (tempState == 0 && state == 1) stateTimer = max(0, millis() - SIDEWARD_MIN_DURATION / 2);
+  else if (tempState != state) stateTimer = millis();
 
-void Pilot::setMotEn(bool motEn) {
-  if (_motEn != motEn) {
-    _motEn = motEn;
-    if (motEn) {
-      p.setRusher(true);
-      p.setKeeper(true);
-    } else {
-      brake(true);
+  if (seeWest || seeEast) {
+    int angle = 0;
+    if (seeWest) angle += west;
+    else angle += east - 30;
+    if (seeEast) angle += east;
+    else angle += west + 30;
+
+    angle /= 2;
+    if (sendAvoidTimer > 200)  ccLeft = angle < 0;
+    else {
+      if (angle > BALL_ANGLE_TRIGGER) ccLeft = RIGHT;
+      else if (angle < -BALL_ANGLE_TRIGGER) ccLeft = LEFT;
+    }
+
+    if (state >= 6) {
+      if (millis() - sendAvoidTimer > 100) {
+        sendAvoidTimer = millis();
+        byte data[1];
+        if (ccLeft) data[0] = 'w';
+        else data[0] = 'e';
+        mate.send(data, 1); // avoid mate
+      }
     }
   }
 }
 
-void Pilot::switchMotEn() {
-  setMotEn(!_motEn);
+void Pilot::play() {
+  changeState();
+
+  switch (state) {
+    case 0: // Nach hinten
+      if (us.back() && us.back() < 80) {
+        drivePower = SPEED_PENALTY;
+        driveState = "v penalty";
+      } else {
+        drivePower = SPEED_BACKWARDS;
+        driveState = "v backward";
+      }
+      // fahre rückwärts und lenke zur Mitte vor dem Tor
+      if (us.left() && us.left() < COURT_BORDER_MIN) driveDirection = -constrain(map(COURT_BORDER_MIN - us.left(), 0, 30, 180, 180 - ANGLE_PASSIVE_MAX), 180 - ANGLE_PASSIVE_MAX, 180);
+      else if (us.right() && us.right() < COURT_BORDER_MIN) driveDirection = constrain(map(COURT_BORDER_MIN - us.right(), 0, 30, 180, 180 - ANGLE_PASSIVE_MAX), 180 - ANGLE_PASSIVE_MAX, 180);
+      else driveDirection = 180;
+
+      driveRotation = ausrichten(0);
+      drivePower = max(drivePower - abs(driveRotation), 0);
+      m.drive(driveDirection, drivePower, driveRotation);
+      break;
+
+    case 1: // Torverteidigung
+      // fahre seitlich vor dem Tor
+      if (seeBall) drivePower = map(abs(ball), 0, BALL_ANGLE_TRIGGER, SPEED_KEEPER, 0.6 * SPEED_KEEPER);
+      else drivePower = SPEED_KEEPER;
+      if (stateLeft) {
+        driveDirection = ANGLE_SIDEWAY;
+        driveState = "< sideward";
+        if (us.left() < COURT_BORDER_MIN) drivePower = SPEED_KEEPER * 0.7; // fahre langsamer am Spielfeldrand
+      } else {
+        driveDirection = -ANGLE_SIDEWAY;
+        driveState = "> sideward";
+        if (us.right() < COURT_BORDER_MIN) drivePower = SPEED_KEEPER * 0.7; // fahre langsamer am Spielfeldrand
+      }
+      if (us.back() < COURT_REARWARD_MIN) driveDirection *= map(us.back(), 0, COURT_REARWARD_MIN, 8, 10) / 10.0; // fahre leicht schräg nach vorne
+
+      driveRotation = ausrichten(0);
+      drivePower = max(drivePower - abs(driveRotation), 0);
+      m.drive(driveDirection, drivePower, driveRotation);
+      break;
+
+    case 2: // Pfostendrehung hin
+      if (seeBall && ball < BALL_ANGLE_TRIGGER) driveRotation = 160;
+      if (stateLeft) {
+        if (seeBall) driveOrientation = constrain(ball / 3 + heading, -ANGLE_TURN_MAX, 0);
+        else driveOrientation = -ANGLE_TURN_MAX;
+        driveState = "< turn";
+      } else {
+        if (seeBall) driveOrientation = constrain(ball / 3 + heading, 0, ANGLE_TURN_MAX);
+        else driveOrientation = ANGLE_TURN_MAX;
+        driveState = "> turn";
+      }
+
+      if (seeBall && ball < BALL_ANGLE_TRIGGER) driveRotation = 0.9 * ausrichten(driveOrientation);
+      else driveRotation = ausrichten(driveOrientation);
+      m.drive(0, 0, driveRotation);
+      break;
+
+    case 3: // Pfostendrehung zurück
+      if (stateLeft) {
+        if (seeBall) driveOrientation = constrain(ball / 3 + heading, -ANGLE_TURN_MAX, 0);
+        else driveOrientation = 0;
+        driveState = "< return";
+      } else {
+        if (seeBall) driveOrientation = constrain(ball / 3 + heading, 0, ANGLE_TURN_MAX);
+        else driveOrientation = 0;
+        driveState = "> return";
+      }
+
+      if (seeBall && ball < BALL_ANGLE_TRIGGER) driveRotation = 0.9 * ausrichten(driveOrientation);
+      else driveRotation = ausrichten(driveOrientation);
+      m.drive(0, 0, driveRotation);
+      break;
+
+    case 4: // Befreiung
+      // fahre * Sekunden geradeaus, um nicht mehr am Tor hängenzubleiben
+      driveState = "^ free";
+
+      driveRotation = ausrichten(0);
+      drivePower = max(SPEED_FREE - abs(driveRotation), 0);
+      m.drive(0, drivePower, driveRotation);
+      break;
+
+    case 5: // Seitlich verloren
+      // fahre * Sekunden zur Seite, um den Ball wiederzufinden
+      if (stateLeft) {
+        driveDirection = ANGLE_SIDEWAY;
+        driveState = "< lost";
+        if (us.left() < 60) drivePower *= 0.7;  // fahre langsamer am Spielfeldrand
+      } else {
+        driveDirection = -ANGLE_SIDEWAY;
+        driveState = "> lost";
+        if (us.right() < 60) drivePower *= 0.7; // fahre langsamer am Spielfeldrand
+      }
+
+      driveRotation = ausrichten(0);
+      drivePower = max(SPEED_LOST - abs(driveRotation), 0);
+      m.drive(driveDirection, drivePower, driveRotation);
+      break;
+
+    case 6: // Ballverfolgung
+      if (!seeBall) rotMulti = ROTATION_SIDEWAY;
+      else if (ballWidth > 100) rotMulti = ROTATION_TOUCH;
+      else if (ballWidth > 40) rotMulti = ROTATION_10CM;
+      else if (ballWidth > 20) rotMulti = ROTATION_18CM;
+      else rotMulti = ROTATION_AWAY;
+
+      drivePower = map(constrain(ballWidth, 5, 35), 5, 35, SPEED_BALL_FAR, SPEED_BALL);
+      driveDirection = map(ball, -X_CENTER, X_CENTER, (float)rotMulti, -(float)rotMulti);
+      if (driveDirection > 60) {
+        // seitwärts bewegen, um Torsusrichtung aufrecht zu erhalten
+        driveState = "> follow";
+        driveDirection = 100;
+        drivePower = SPEED_SIDEWAY;
+      } else if (driveDirection < -60) {
+        // seitwärts bewegen, um Torsusrichtung aufrecht zu erhalten
+        driveState = "< follow";
+        driveDirection = -100;
+        drivePower = SPEED_SIDEWAY;
+      } else {
+        driveState = "^ follow";
+
+        driveRotation = ausrichten(0);
+        drivePower = max(drivePower - abs(driveRotation), 0);
+        m.drive(driveDirection, drivePower, driveRotation);
+      }
+
+      if (hasBall && !seeGoal) kick();
+      break;
+
+    case 7: // Torausrichtung
+      // orientiere dich zum Ball
+      // bringe Ball und Tor in eine Linie
+      if (!stateLeft) {
+        // Tor ist links
+        driveDirection = ANGLE_GOAL;
+        driveState = "< close";
+      } else {
+        // Tor ist rechts
+        driveDirection = -ANGLE_GOAL;
+        driveState = "> close";
+      }
+      driveOrientation = constrain(ball / 3 + heading, -ANGLE_GOAL_MAX, ANGLE_GOAL_MAX);
+
+      if (millis() - stateTimer < 200) m.brake(true); // bremse kurz ab
+      else {
+        driveRotation = ausrichten(driveOrientation);
+        drivePower = max(SPEED_CLOSE - abs(driveRotation), 0);
+        m.drive(driveDirection, drivePower, driveRotation);
+      }
+      break;
+
+    case 8: // Angriff
+      if (seeBall) driveDirection = constrain(map(ball, -X_CENTER, X_CENTER, 50, -50), -50, 50);
+      else driveDirection = 0;
+      driveState = "^ attack";
+      if (hasBall) kick();
+
+      driveRotation = ausrichten(driveOrientation);           // übernehme den letzten Kompasswinkel
+      drivePower = max(SPEED_ATTACK - abs(driveRotation), 0);
+      m.drive(driveDirection, drivePower, driveRotation);
+      break;
+  }
 }
 
-bool Pilot::getMotEn() {
-  return _motEn;
+void Pilot::setState(byte s, String reason) {
+  if (s != state) {
+    if (DEBUG_STATE) debug(String(state) + "->" + String(s) + ":" + reason);
+    state = s;
+    stateTimer = millis();
+  }
+}
+
+void Pilot::setDirection(byte dir, String reason) {
+  if (dir > 1) dir = !stateLeft;
+  if (dir != stateLeft) {
+    stateLeft = dir;
+    if (DEBUG_STATE && stateLeft)  debug(String(state) + "<:" + reason);
+    if (DEBUG_STATE && !stateLeft) debug(String(state) + ">:" + reason);
+    stateTimer = millis();
+    setState(1, "toggle");
+  }
+}
+
+void Pilot::setRusher(bool force) {
+  if (isKeeper()) {
+    if (force || millis() - roleTimer > ROLE_COOLDOWN) {
+      role = 1;
+      roleTimer = millis();
+      ledTimer = millis() - 101;
+    }
+  }
+}
+
+void Pilot::setKeeper(bool force) {
+  if (isRusher()) {
+    if (force || millis() - roleTimer > ROLE_COOLDOWN) {
+      role = 0;
+      roleTimer = millis();
+      ledTimer = millis() - 101;
+    }
+  }
+}
+
+bool Pilot::isRusher() {
+  return role;
+}
+
+bool Pilot::isKeeper() {
+  return !role;
+}
+
+unsigned long Pilot::lastRoleToggle() {
+  return millis() - roleTimer;
+}
+
+byte Pilot::getState() {
+  return state;
+}
+
+bool Pilot::atGatepost() {
+  //if (true || isPenaltyFree) {
+  // benutze Abstand in Bewegungsrichtung
+  if (stateLeft) return us.left() < COURT_BORDER_MIN;
+  else           return us.right() < COURT_BORDER_MIN;
+  /*} else {
+    // benutze Abstand gegen Bewegungsrichtung
+    if (stateLeft) return us.right() > COURT_POST_TO_BORDER;
+    else           return us.left() > COURT_POST_TO_BORDER;
+    }*/
 }
