@@ -46,9 +46,11 @@ class Pin: public Value
 	public:
 		Pin(byte _pin, byte _mode, byte _type);
 		void set(int _value);
+    void temp(int _value);
 		void update();
 		byte getPin();
 	private:
+    void execute();
 		byte pin = 0;
 		byte mode = 0;  // OUTPUT, INPUT, INPUT_PULLUP
 		byte type = 0;  // ANALOG, DIGITAL, PWM, PUI, VIRTUAL

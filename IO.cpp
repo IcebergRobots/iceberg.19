@@ -61,8 +61,16 @@ Pin::Pin(byte _pin, byte _mode, byte _type) : Value() {
 }
 
 void Pin::set(int _value) {
+  temp();
+  execute();
+}
+
+void Pin::temp(int _value) {
   Value::set(_value);
-  if(mode == OUTPUT) {
+}
+
+void Pin::execute() {
+  if (mode == OUTPUT) {
     switch (type) {
       case ANALOG:
       case DIGITAL:
@@ -83,6 +91,7 @@ void Pin::set(int _value) {
 }
 
 void Pin::update() {
+  execute();
   switch (type)
   {
     case VIRTUAL:
