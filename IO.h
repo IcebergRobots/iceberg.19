@@ -37,9 +37,9 @@
 class Timer
 {
   public:
-    Timer(long _surviveTime=0);
-    void setSurviveTime(long _surviveTime);
-    void now();
+    Timer(long _surviveTime=0, Timer *_requirement=NULL);
+    void setSurviveTime(unsigned long _surviveTime);
+    void set(bool active=true);
     bool on();
     bool off();
     bool rising();
@@ -50,6 +50,7 @@ class Timer
     unsigned long timer = 0;
     unsigned long surviveTime = 0;
     byte state = false;
+    Timer *requirement;
 };
 
 /*****************************************************
@@ -214,8 +215,8 @@ public:
   Pin navigationLight     = Pin(  4,      OUTPUT,        PWM      );  // aktiviert Pulse-IR-Positionslichter
 
   // Lichtschranke
-  Pin lightBeamTx         = Pin(  47,     INPUT,         DIGITAL  );  // leuchtet den Ball an, Sensor misst Reflexion
-  Pin lightBeamRx         = Pin(  A15,    INPUT,         ANALOG   );  // Fotowiderstand misst Helligkeit der Lichtschranke
+  Pin ballLight        = Pin(  47,     INPUT,         DIGITAL  );  // leuchtet den Ball an, Sensor misst Reflexion
+  Pin ballTouch       = Pin(  A15,    INPUT,         ANALOG   );  // Fotowiderstand misst Helligkeit der Lichtschranke
 
   // Logger
   Pin loggerTx            = Pin(  18,     INPUT,         DIGITAL  );  // Logger <- Mega, Black Box Ereignissprotokoll
@@ -274,7 +275,7 @@ public:
   Key compassCalibration    = Key(  0,   VIRTUAL,  0,     0,     0     );  // Torrichtung kalibrieren
   Key animation             = Key(  0,   VIRTUAL,  0                   );  // Starte Leucht Animation
   Key lineCalibration       = Key(  6,   PUI,      0,     500          );  // Linienhelligkeit kalibrieren
-  Key lightBeamCalibration  = Key(  7,   PUI,      0,     500          );  // Lichtschranke kalibrieren
+  Key ballTouchCalibration  = Key(  7,   PUI,      0,     500          );  // Lichtschranke kalibrieren
   Key start                 = Key(  22,  DIGITAL,  0                   );  // Losfahren
   Key stop                  = Key(  24,  DIGITAL,  0                   );  // Anhalten
   Key headstart             = Key(  0,   PUI,      0                   );  // headstart (lever)
@@ -304,20 +305,20 @@ public:
   Value goalWidth  = Value(  LIMITS,     0        );  // Torbreite
   Value goalArea   = Value(  LIMITS,     0        );  // Torgröße (Flächeninhalt)
 
-  Timer flat            = Timer(    600  );  // liegen wir flach?
-  Timer onLine          = Timer(    300  );  // berühren wir die Linie?
-  Timer isHeadstart     = Timer(    350  );  // führen wir einen Schnellstart aus ?
-  Timer isDodge         = Timer(    200  );  // weichen wir dem Gegner aus?
-  Timer hasBall         = Timer(     50  );  // haben wir Ballbesitz?
-  Timer lastSegment     = Timer(         );  // Laufzeit eines Codeblockes
-  Timer lastLoop        = Timer(         );  // Laufzeit der Schleife 
-  Timer seeBall         = Timer(    100  );  // sehen wir den Ball?
-  Timer seeGoal         = Timer(    500  );  // sehen wir das Tor?
-  Timer closeBall       = Timer(    500  );  // ist der Ball nahe?
-  Timer drift           = Timer(    200  );  // müssen wir ein Driften verhindern?
-  Timer ballLeft        = Timer(         );  // ist der Ball links?
-  Timer ballRight       = Timer(         );  // ist der Ball rechts?
-  Timer cameraResponse  = Timer(  20000  );  // ist die Kamera verbunden?
+  Timer flat            = Timer(    600             );  // liegen wir flach?
+  Timer onLine          = Timer(    300             );  // berühren wir die Linie?
+  Timer isHeadstart     = Timer(    350             );  // führen wir einen Schnellstart aus ?
+  Timer isDodge         = Timer(    200             );  // weichen wir dem Gegner aus?
+  Timer hasBall         = Timer(     50             );  // haben wir Ballbesitz?
+  Timer segment         = Timer(                    );  // Laufzeit eines Codeblockes
+  Timer runtime         = Timer(                    );  // Laufzeit der Schleife 
+  Timer seeBall         = Timer(    100,  &flat     );  // sehen wir den Ball?
+  Timer seeGoal         = Timer(    500,  &flat     );  // sehen wir das Tor?
+  Timer closeBall       = Timer(    500,  &seeBall  );  // ist der Ball nahe?
+  Timer drift           = Timer(    200             );  // müssen wir ein Driften verhindern?
+  Timer ballLeft        = Timer(                    );  // ist der Ball links?
+  Timer ballRight       = Timer(                    );  // ist der Ball rechts?
+  Timer cameraResponse  = Timer(  20000             );  // ist die Kamera verbunden?
 
   void update();
 

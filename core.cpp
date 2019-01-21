@@ -11,8 +11,8 @@ void debug(String str, bool space) {
     if (hasDebugHead && space) str = " " + str;
     if (!hasDebugHead) {
       hasDebugHead = true;
-      str = "\nt" + String(millis() - lastLoop) + " " + str;
-      lastLoop = millis();
+      str = "\nt" + String(io.runtime.since()) + " " + str;
+      io.runtime.set();
     }
     DEBUG_SERIAL.print(str);
   }
@@ -61,9 +61,9 @@ String format(long num, byte length, bool sign) {
 void beginSegment(String name) {
   if(DEBUG_SEGMENT) {
     debug(name + "{");
-    lastSegment = millis();
+    io.segment.set();
   }
 }
 void endSegment() {
-  if(DEBUG_SEGMENT) debug("}"+ String(millis() - lastSegment), false);
+  if(DEBUG_SEGMENT) debug("}"+ String(io.segment.since()), false);
 }

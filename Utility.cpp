@@ -50,16 +50,9 @@ void prepareDebug() {
 
 
 void updateStates() {
-  //io.lifted.set(                        millis() - flatTimer > FLAT_DURATION             );
-  //io.onLine.set(                        millis() - lineTimer < LINE_DURATION             );
-  //io.isHeadstart.set(                     millis() - headstartTimer < HEADSTART_DURATION   );
-  //io.isDodge.set(                         millis() - dodgeTimer < DODGE_DURATION           );
-  //io.hasBall.set(    analogRead(LIGHT_BARRIER) > lightBarrierTriggerLevel;               );
-  io.seeBall.set(    io.lifted.off() && millis() - seeBallTimer < 100                    );
-  io.seeGoal.set(    io.lifted.off() && millis() - seeGoalTimer < 500                    );
-  io.closeBall.set(  io.seeBall.on() && millis() - closeBallTimer < 500                  );
+  io.hasBall.set(io.ballTouch.get() > 30/*lightBarrierTriggerLevel*/);
 
   // erkenne Hochheben
   //dof.accelGetOrientation(&accel_event, &orientation);
-  //if (!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7)) flatTimer = millis();
+  //io.flat.set(!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7));
 }

@@ -14,7 +14,7 @@ void Camera::init() {
     beginSegment("c");
     SPI.begin();
     Pixy::init();
-    pixyResponseTimer = SPI.transfer(0x00) == 255;
+    io.cameraResponse.set(SPI.transfer(0x00) == 255);
     endSegment();
 }
 
@@ -47,8 +47,8 @@ void Camera::frame() {
                     io.ball.set(x);           // merke Ballwinkel
                     io.ballWidth.set(width);  // merke Ballbreite
                     io.ballArea.set(area);    // merke Ballgröße
-                    seeBallTimer = millis();
-                    if (width > BALL_WIDTH_TRIGGER) closeBallTimer = millis();
+                    io.seeBall.set();
+                    io.closeBall.set(width > BALL_WIDTH_TRIGGER);
                 }
             break;
             case SIGNATURE_GOAL:
@@ -58,7 +58,7 @@ void Camera::frame() {
                     io.goal.set(x);           // merke Torwinkel
                     io.goalWidth.set(width);  // merke Torbreite
                     io.goalArea.set(area);    // merke Torgröße
-                    seeGoalTimer = millis();
+                    io.seeGoal.set();
                 }
             break;
         }

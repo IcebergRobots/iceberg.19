@@ -37,7 +37,7 @@ void loop() {
   if (io.animation.stroke())           {} // activate animation
   if (io.animation.permanent())        {} // hymne
   if (io.lineCalibration.stroke())     { /* debug("6"); */ } // activate line calibration, setpage, setmenu to value
-  if (io.lightBeamCalibration.click()) { /* debug("7"); */ } // activate light beam calibration, setpage, setmenu to value
+  if (io.ballTouchCalibration.click()) { /* debug("7"); */ } // activate light beam calibration, setpage, setmenu to value
   if (io.start.stroke())               {
     debug("ball:");
     debug(io.ball.str() + ",");

@@ -4,15 +4,16 @@
   create a timer
   @param _surviveTime: leave output active for a delay
 *****************************************************/
-Timer::Timer(unsigned long _surviveTime) {
+  Timer::Timer(long _surviveTime, Timer *_requirement) {
   surviveTime = _surviveTime;
+  requirement = _requirement;
 }
 
 /*****************************************************
   set survive time
   @param _surviveTime: leave output active for a delay
 *****************************************************/
-void Timer::setSurviveTime(unsigned long surviveTime) {
+void Timer::setSurviveTime(unsigned long _surviveTime) {
   surviveTime = _surviveTime;
 }
 
@@ -20,8 +21,8 @@ void Timer::setSurviveTime(unsigned long surviveTime) {
   trigger time
   - set timer to current time
 *****************************************************/
-void Timer::now() {
-  timer = millis();
+void Timer::set(bool active) {
+  if (active && (requirement == NULL || requirement->on())) timer = millis();
 }
 
 /*****************************************************
@@ -34,7 +35,7 @@ bool Timer::on() {
 /*****************************************************
   is the timer off?
 *****************************************************/
-bool Timer:off() {
+bool Timer::off() {
   return state == OFF || state == FALLING;
 }
 
@@ -48,7 +49,7 @@ bool Timer::rising() {
 /*****************************************************
   is the timer falling?
 *****************************************************/
-bool Timer::rising() {
+bool Timer::falling() {
   return state == FALLING;
 }
 
@@ -57,19 +58,19 @@ bool Timer::rising() {
   @param require: external condition to be active
 *****************************************************/
 void Timer::update(bool require) {
-  bool new = false;
-  new = require && timer > 0 && millis() <= timer + surviveTime;
-  if (       on()   &&  new   )  state = ON;
-  else if (  off()  &&  !new  )  state = OFF;
-  else if (  on()   &&  !new  )  state = FALLING;
-  else if (  off()  &&  new   )  state = RISING;
+  bool now = false;
+  now = require && timer > 0 && millis() <= timer + surviveTime;
+  if (       on()   &&  now   )  state = ON;
+  else if (  off()  &&  !now  )  state = OFF;
+  else if (  on()   &&  !now  )  state = FALLING;
+  else if (  off()  &&  now   )  state = RISING;
 
 }
 
 /*****************************************************
   return delay since last trigger
 *****************************************************/
-unsigned long Timer:since() {
+unsigned long Timer::since() {
   if (timer == 0) return -1;
   else return millis() - timer;
 }
@@ -427,6 +428,7 @@ IO::IO() {}
 void IO::update() {
   if (DEBUG_LOOP) beginSegment("io");
 
+  // pins
   temperaturePcb.update();
   brightnessPcb.update();
   batteryVoltage.update();
@@ -460,8 +462,8 @@ void IO::update() {
   navigationAntennaC.update();
   navigationAntennaD.update();
   navigationLight.update();
-  lightBeamTx.update();
-  lightBeamRx.update();
+  ballLight.update();
+  ballTouch.update();
   loggerTx.update();
   loggerRx.update();
   loggerTrigger.update();
@@ -493,6 +495,7 @@ void IO::update() {
   usbTx.update();
   usbRx.update();
 
+  // keys
   decreasePage.update();
   increasePage.update();
   selectPage.update();
@@ -503,7 +506,7 @@ void IO::update() {
   compassCalibration.update();
   animation.update();
   lineCalibration.update();
-  lightBeamCalibration.update();
+  ballTouchCalibration.update();
   start.update();
   stop.update();
   headstart.update();
@@ -513,19 +516,27 @@ void IO::update() {
   bottom.update();
   debug.update();
   
-  lifted.update();
-  onLine.update();
-  isHeadstart.update();
-  isDodge.update();
-  hasBall.update();
-  seeBall.update();
-  seeGoal.update();
-  closeBall.update();
-  
+  // shortcuts
   record.update();
   resetProperties.update();
   kickerStart.update();
   kickerStop.update();
+
+  // timers
+  flat.update();
+  onLine.update();
+  isHeadstart.update();
+  isDodge.update();
+  hasBall.update();
+  segment.update();
+  runtime.update();
+  seeBall.update();
+  seeGoal.update();
+  closeBall.update();
+  drift.update();
+  ballLeft.update();
+  ballRight.update();
+  cameraResponse.update();
 
   if (DEBUG_LOOP) endSegment();
 }
