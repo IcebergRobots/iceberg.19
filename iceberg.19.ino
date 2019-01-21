@@ -40,15 +40,15 @@ void loop() {
   if (io.ballTouchCalibration.click()) { /* debug("7"); */ } // activate light beam calibration, setpage, setmenu to value
   if (io.start.stroke())               {
     debug("ball:");
-    debug(io.ball.str() + ",");
-    debug(io.ballWidth.str() + ",");
-    debug(io.ballArea.str());
+    debug(io.ball.str(4, -1, true) + ",");
+    debug(io.ballWidth.str(4), + ",");
+    debug(io.ballArea.str(4));
   } // start motors, activate bluetooth
   if (io.stop.stroke())                { 
     debug("goal:");
-    debug(io.goal.str() + ",");
-    debug(io.goalWidth.str() + ",");
-    debug(io.goalArea.str());
+    debug(io.goal.get(), 4, -1, true) + ",");
+    debug(io.goalWidth.str(4) + ",");
+    debug(io.goalArea.str(4));
   } // stop motors, activate bluetooth
   if (io.record.stroke())              { debug("record");  } // start / stop recording, activate bluetooth
   if (io.headstart.stroke())           { /* debug("1"); */ } // ?

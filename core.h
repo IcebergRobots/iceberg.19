@@ -26,8 +26,8 @@ void debug(String str="", bool space=true);
 int circulate(int value, int min, int max);
 int pinMode(byte pin);
 void reset();
-String format(String str, byte length);
-String format(long num, byte length, bool sign=false);
+String format(String str, unsigned int minLength=0, unsigned int maxLength=-1);
+String format(long num, unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
 
 void beginSegment(String name="");
 void endSegment();

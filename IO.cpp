@@ -76,6 +76,14 @@ unsigned long Timer::since() {
 }
 
 /*****************************************************
+  convert number to formatted string
+*****************************************************/
+String Timer::str(unsigned int minLength, unsigned int maxLength, bool sign) {
+  return format(since(), minLength, maxLength, sign);
+}
+
+
+/*****************************************************
   create a new value
   @param processing: processing mode (LIMITS, MODULATION)
   @param min:
@@ -144,10 +152,10 @@ bool Value::off() {
 }
 
 /*****************************************************
-  convert number to String
+  convert number to formatted string
 *****************************************************/
-String Value::str() {
-  return String(value);
+String Value::str(unsigned int minLength, unsigned int maxLength, bool sign) {
+  return format(value, minLength, maxLength, sign);
 }
 
 /*****************************************************

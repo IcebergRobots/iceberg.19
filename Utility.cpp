@@ -32,9 +32,10 @@ void initDebug() {
 }
 
 void setupDone() {
-  String str = "\n";
+  String str = "=" + String(millis()) + "\n";
   for (int i = 0; i < 60; i++) str += "=";
   debug(str);
+  io.runtime.set();
 }
 
 /*****************************************************

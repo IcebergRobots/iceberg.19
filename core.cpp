@@ -11,7 +11,7 @@ void debug(String str, bool space) {
     if (hasDebugHead && space) str = " " + str;
     if (!hasDebugHead) {
       hasDebugHead = true;
-      str = "\nt" + String(io.runtime.since()) + " " + str;
+      str = "\n" + format("t" + io.runtime.str()), 6) + " " + str;
       io.runtime.set();
     }
     DEBUG_SERIAL.print(str);
@@ -43,27 +43,26 @@ void reset() {
   asm ("jmp 0");   // starte den Arduino neu
 }
 
-String format(String str, byte length) {
+String format(String str, unsigned int minLength, unsigned int maxLength) {
   byte l = str.length();
-  for(int i = 0; l + i < length; i++) {
+  for(int i = 0; l + i < minLength; i++) {
     str = " " + str;
   }
-  return str.substring(l-length,l);
+  if (maxLength + 1 != 0) return str.substring(str.length()-maxLength,str.length());
+  else return str;
 }
-String format(long num, byte length, bool sign) {
+String format(long num, unsigned int minLength, unsigned int maxLength, bool sign) {
   String str = String(num);
   if(sign && num >= 0) str = "+" + str;
-  return format(str, length);
+  return format(str, minLength, maxLength);
 }
 
-
-
 void beginSegment(String name) {
-  if(DEBUG_SEGMENT) {
+  if(io.runtime.since() + 1 == 0 || DEBUG_SEGMENT) { // if in setup or DEBUG_SEGMENT
     debug(name + "{");
     io.segment.set();
   }
 }
 void endSegment() {
-  if(DEBUG_SEGMENT) debug("}"+ String(io.segment.since()), false);
+  if(io.runtime.since() + 1 == 0 || DEBUG_SEGMENT) debug("}"+ io.segment.str(), false); // if in setup or DEBUG_SEGMENT
 }

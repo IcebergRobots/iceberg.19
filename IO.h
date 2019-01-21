@@ -46,6 +46,7 @@ class Timer
     bool falling();
     void update(bool require=true);
     unsigned long since();
+    String str(unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
   private:
     unsigned long timer = 0;
     unsigned long surviveTime = 0;
@@ -74,7 +75,7 @@ class Value
 		int get();
     bool on();
     bool off();
-    String str();
+    String str(unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
   private:
     int value = 0;
     int a = 0;  // in case of modulation: upper limit
