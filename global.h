@@ -2,7 +2,7 @@
 #define global_h
 
 #include "Utility.h"
-#include "PixyCam.h"
+#include "Camera.h"
 #include "Light.h"
 #include "Display.h"
 

@@ -1,16 +1,16 @@
-#include "PixyCam.h"
+#include "Camera.h"
 
 /*********************************************************************
 - Konstruktor
 *********************************************************************/
-PixyCam::PixyCam() {
+Camera::Camera() {
     setCooldown(30, 100);
 }
 
 /*********************************************************************
 - initialisiert die SPI Kommunikation
 *********************************************************************/
-void PixyCam::init() {  
+void Camera::init() {  
     beginSegment("cam");
     SPI.begin();
     Pixy::init();
@@ -18,7 +18,7 @@ void PixyCam::init() {
     endSegment();
 }
 
-void PixyCam::frame() {
+void Camera::frame() {
     beginSegment("c:r");
     if (silent) setLED(0, 0, 0); // schalte die Front-LED aus
     int ballAreaMax = 0;  // Ballgröße, 0: blind, >0: Flächeninhalt
@@ -66,4 +66,4 @@ void PixyCam::frame() {
     endSegment();
 }
 
-PixyCam camera = PixyCam();
+Camera camera = Camera();

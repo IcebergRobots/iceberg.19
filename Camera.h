@@ -5,10 +5,10 @@
 
 #define BUFFER_SIZE 128
 
-class PixyCam : private Pixy, public Demand
+class Camera : private Pixy, public Demand
 {
   public:
-    PixyCam();
+    Camera();
     void init();
     void frame();
     
@@ -17,6 +17,6 @@ class PixyCam : private Pixy, public Demand
     byte blockCountBall = 0;// Anzahl der Ball Blöcke
     byte blockCountGoal = 0;// Anzahl der Tor Blöcke
 };
-extern PixyCam camera;
+extern Camera camera;
 
 #endif
