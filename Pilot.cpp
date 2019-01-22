@@ -9,33 +9,33 @@ void Pilot::changeState() {
   if (state >= 6) {
     // aktiv
     if (isKeeper() && !mate.timeout()) setState(0, "passive"); // werden passiv
-    else if (!seeBall) setState(5, "blind"); // wir werden blind
+    else if (io.seeBall.off()) setState(5, "blind"); // wir werden blind
   } else {
     // passiv
-    if (seeBall && state != 3 && state != 4 && (isRusher() || mate.timeout())) setState(6, "active"); // wir werden aktiv
+    if (io.seeBall.on() && io.state.is(BACK) && io.state.is(FREEING) && (isRusher() || mate.timeout())) setState(6, "active"); // wir werden aktiv
     // sehenBall &   keine Pfostendrehung   &  (Stürmer   oder  Singleplayer)
   }
 
   switch (state) {
     // Passivspiel
-    case 0: // Nach hinten
+    case BACK: // Nach hinten
       if (us.back() <= COURT_REARWARD_MAX) setState(1, "rearward<");
       else if (millis() - stateTimer > BACKWARD_MAX_DURATION) setState(4, "time>");
       break;
 
     case 1: // Torverteidigung
-      if (!seeBall && millis() - stateTimer > SIDEWARD_MAX_DURATION) {
+      if (io.seeBall.off() && millis() - stateTimer > SIDEWARD_MAX_DURATION) {
         if (us.back() > COURT_REARWARD_MAX) setState(0, "rearward>"); // fahre rückwärts
         else if (isKeeper()) setState(2, "time>,keeper");     // wechsle in Drehmodus
         else setDirection(TOGGLE, "time>,rusher");  // wechsle Fahrrichtung
       } else if (millis() - stateTimer > SIDEWARD_MIN_DURATION) {
         if (us.back() > COURT_REARWARD_MAX) setState(0, "rearward>"); // fahre rückwärts
         else if (millis() - lineTimer < 100) setDirection(TOGGLE, "line");
-        else if (seeBall) {
-          if (ball < -BALL_ANGLE_TRIGGER) {
+        else if (io.seeBall.on()) {
+          if (io.ballLeft.on()) {
             setDirection(LEFT, "ball<");
             stateTimer += 200 - SIDEWARD_MIN_DURATION;
-          } else if (ball > BALL_ANGLE_TRIGGER) {
+          } else if (io.ballRight.on()) {
             setDirection(RIGHT, "ball>");
             stateTimer += 200 - SIDEWARD_MIN_DURATION;
           }
@@ -44,9 +44,9 @@ void Pilot::changeState() {
       break;
 
     case 2: // Pfostendrehung hin
-      if (seeBall) {
-        if (stateLeft && ball > BALL_ANGLE_TRIGGER) setState(3, "ball>");
-        else if (!stateLeft && ball < -BALL_ANGLE_TRIGGER) setState(3, "ball<");
+      if (io.seeBall.on()) {
+        if (stateLeft && io.ballRight.on()) setState(3, "ball>");
+        else if (!stateLeft && io.ballLeft.on()) setState(3, "ball<");
       }
       else if (millis() - stateTimer > TURN_MAX_DURATION) setState(3, "time>");
       else if (stateLeft && heading < -ANGLE_TURN_MAX * 0.9) setState(3, "angle<");
@@ -54,13 +54,13 @@ void Pilot::changeState() {
       break;
 
     case 3: // Pfostendrehung zurück
-      if (seeBall) {
+      if (io.seeBall.on()) {
         if (stateLeft) {
           if ((ball / 3 + heading) > -ANGLE_RETURN_MIN) setDirection(TOGGLE, "ball|");
-          else if (ball < -BALL_ANGLE_TRIGGER) setState(2, "ball<");
+          else if (io.ballLeft.on()) setState(2, "ball<");
         } else {
           if ((ball / 3 + heading) < ANGLE_RETURN_MIN) setDirection(TOGGLE, "ball|");
-          else if (ball > BALL_ANGLE_TRIGGER) setState(2, "ball>");
+          else if (io.ballRight.on()) setState(2, "ball>");
         }
       }
       else if (millis() - stateTimer > RETURN_MAX_DURATION) setDirection(TOGGLE, "time>");
@@ -73,15 +73,15 @@ void Pilot::changeState() {
 
     case 5: // Seitlich verloren
       if (millis() - stateTimer > LOST_DURATION) setState(0, "time>");
-      else if (seeBall && stateLeft && ball > BALL_ANGLE_TRIGGER) setDirection(RIGHT, "ball>");
-      else if (seeBall && !stateLeft && ball < -BALL_ANGLE_TRIGGER) setDirection(LEFT, "ball<");
+      else if (io.ballRight.on() && stateLeft) setDirection(RIGHT, "ball>");
+      else if (io.ballLeft.on() && !stateLeft) setDirection(LEFT, "ball<");
       break;
 
 
     // Aktivspiel
     case 6: // Ballverfolgung
-      if (seeBall && ball > BALL_ANGLE_TRIGGER) stateLeft = RIGHT;
-      else if (seeBall && ball < -BALL_ANGLE_TRIGGER) stateLeft = LEFT;
+      if (io.ballRight.on()) stateLeft = RIGHT;
+      else if (io.ballLeft.on()) stateLeft = LEFT;
 
       if (closeBall && seeGoal) setState(7, "closeBall");
       break;
@@ -95,8 +95,8 @@ void Pilot::changeState() {
       break;
 
     case 8: // Angriff
-      if (seeBall && ball > BALL_ANGLE_TRIGGER) stateLeft = RIGHT;
-      else if (seeBall && ball < -BALL_ANGLE_TRIGGER) stateLeft = LEFT;
+      if (io.ballRight.on()) stateLeft = RIGHT;
+      else if (io.ballLeft.on()) stateLeft = LEFT;
 
       if (!closeBall) setState(6, "!closeBall");
       break;
@@ -154,7 +154,7 @@ void Pilot::play() {
 
     case 1: // Torverteidigung
       // fahre seitlich vor dem Tor
-      if (seeBall) drivePower = map(abs(ball), 0, BALL_ANGLE_TRIGGER, SPEED_KEEPER, 0.6 * SPEED_KEEPER);
+      if (io.seeBall.on()) drivePower = map(abs(ball), 0, BALL_ANGLE_TRIGGER, SPEED_KEEPER, 0.6 * SPEED_KEEPER);
       else drivePower = SPEED_KEEPER;
       if (stateLeft) {
         driveDirection = ANGLE_SIDEWAY;
@@ -173,34 +173,34 @@ void Pilot::play() {
       break;
 
     case 2: // Pfostendrehung hin
-      if (seeBall && ball < BALL_ANGLE_TRIGGER) driveRotation = 160;
+      if (io.ballRight.on()) driveRotation = 160;
       if (stateLeft) {
-        if (seeBall) driveOrientation = constrain(ball / 3 + heading, -ANGLE_TURN_MAX, 0);
+        if (io.seeBall.on()) driveOrientation = constrain(ball / 3 + heading, -ANGLE_TURN_MAX, 0);
         else driveOrientation = -ANGLE_TURN_MAX;
         driveState = "< turn";
       } else {
-        if (seeBall) driveOrientation = constrain(ball / 3 + heading, 0, ANGLE_TURN_MAX);
+        if (io.seeBall.on()) driveOrientation = constrain(ball / 3 + heading, 0, ANGLE_TURN_MAX);
         else driveOrientation = ANGLE_TURN_MAX;
         driveState = "> turn";
       }
 
-      if (seeBall && ball < BALL_ANGLE_TRIGGER) driveRotation = 0.9 * ausrichten(driveOrientation);
+      if (io.ballRight.on()) driveRotation = 0.9 * ausrichten(driveOrientation);
       else driveRotation = ausrichten(driveOrientation);
       m.drive(0, 0, driveRotation);
       break;
 
     case 3: // Pfostendrehung zurück
       if (stateLeft) {
-        if (seeBall) driveOrientation = constrain(ball / 3 + heading, -ANGLE_TURN_MAX, 0);
+        if (io.seeBall.on()) driveOrientation = constrain(ball / 3 + heading, -ANGLE_TURN_MAX, 0);
         else driveOrientation = 0;
         driveState = "< return";
       } else {
-        if (seeBall) driveOrientation = constrain(ball / 3 + heading, 0, ANGLE_TURN_MAX);
+        if (io.seeBall.on()) driveOrientation = constrain(ball / 3 + heading, 0, ANGLE_TURN_MAX);
         else driveOrientation = 0;
         driveState = "> return";
       }
 
-      if (seeBall && ball < BALL_ANGLE_TRIGGER) driveRotation = 0.9 * ausrichten(driveOrientation);
+      if (io.ballRight.on()) driveRotation = 0.9 * ausrichten(driveOrientation);
       else driveRotation = ausrichten(driveOrientation);
       m.drive(0, 0, driveRotation);
       break;
@@ -232,7 +232,7 @@ void Pilot::play() {
       break;
 
     case 6: // Ballverfolgung
-      if (!seeBall) rotMulti = ROTATION_SIDEWAY;
+      if (io.seeBall.off()) rotMulti = ROTATION_SIDEWAY;
       else if (ballWidth > 100) rotMulti = ROTATION_TOUCH;
       else if (ballWidth > 40) rotMulti = ROTATION_10CM;
       else if (ballWidth > 20) rotMulti = ROTATION_18CM;
@@ -284,7 +284,7 @@ void Pilot::play() {
       break;
 
     case 8: // Angriff
-      if (seeBall) driveDirection = constrain(map(ball, -X_CENTER, X_CENTER, 50, -50), -50, 50);
+      if (io.seeBall.on()) driveDirection = constrain(map(ball, -X_CENTER, X_CENTER, 50, -50), -50, 50);
       else driveDirection = 0;
       driveState = "^ attack";
       if (hasBall) kick();
@@ -362,3 +362,5 @@ bool Pilot::atGatepost() {
     else           return us.left() > COURT_POST_TO_BORDER;
     }*/
 }
+
+Pilot pilot();

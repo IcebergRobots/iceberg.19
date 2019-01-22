@@ -14,6 +14,10 @@
 #define LIMITS 0
 #define MODULATION 1
 
+// Values
+#define LEFT false
+#define RIGHT true
+
 // DATA TYPES
 #define INT8_T_MIN -128
 #define INT8_T_MAX 127
@@ -29,10 +33,11 @@
 #define UINT32_T_MAX 4294967295
 
 // Timer values
-#define ON 0
-#define OFF 1
+#define OFF 0
+#define ON 1
 #define FALLING 2
 #define RISING 3
+#define CHANGE 4
 
 class Timer
 {
@@ -50,7 +55,7 @@ class Timer
   private:
     unsigned long timer = 0;
     unsigned long surviveTime = 0;
-    byte state = false;
+    byte state = OFF;
     Timer *requirement;
 };
 
@@ -76,6 +81,11 @@ class Value
 		int get();
     bool on();
     bool off();
+    bool right(int tolerance=0);
+    bool left(int tolerance=0);
+    bool center(int tolerance=0);
+    bool is(int comparison);
+    bool no(int comparison);
     String str(unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
   private:
     int value = 0;
@@ -217,7 +227,7 @@ public:
   Pin navigationLight     = Pin(  4,      OUTPUT,        PWM      );  // aktiviert Pulse-IR-Positionslichter
 
   // Lichtschranke
-  Pin ballLight           = Pin(  47,     INPUT,         DIGITAL  );  // leuchtet den Ball an, Sensor misst Reflexion
+  Pin ballLight           = Pin(  47,     OUTPUT,        DIGITAL  );  // leuchtet den Ball an, Sensor misst Reflexion
   Pin ballTouch           = Pin(  A15,    INPUT_PULLUP,  ANALOG   );  // Fotowiderstand misst Helligkeit der Lichtschranke
 
   // Logger
@@ -286,6 +296,7 @@ public:
   Key kicker                = Key(  3,   PUI,      0                   );  // kicker    (lever)
   Key bottom                = Key(  4,   PUI,      0                   );  // bottom    (lever)
   Key turbo                 = Key(  5,   PUI,      0                   );  // debug     (lever)
+  Key state                 = Key(  0,   VIRTUAL,  0                   );
 
   // PUI: shortcut
   Key *_record           [2]  = {  &start,         &stop          }; Shortcut  record           = Shortcut(  _record,           2,  FIRE_KEYS,     0  );  // Spiel aufzeichnen (start + stop)
@@ -306,16 +317,23 @@ public:
   Timer seeGoal         = Timer(    500,  &flat     );  // sehen wir das Tor?
   Timer closeBall       = Timer(    500,  &seeBall  );  // ist der Ball nahe?
   Timer drift           = Timer(    200             );  // müssen wir ein Driften verhindern?
-  Timer ballLeft        = Timer(                    );  // ist der Ball links?
-  Timer ballRight       = Timer(                    );  // ist der Ball rechts?
+  Timer ballLeft        = Timer(      0,  &seeBall  );  // ist der Ball links?
+  Timer ballRight       = Timer(      0,  &seeBall  );  // ist der Ball rechts?
+  Timer ballCenter      = Timer(      0,  &seeBall  );  // ist der Ball mittig?
   Timer cameraResponse  = Timer(  20000             );  // ist die Kamera verbunden?
+  Timer striker         = Timer(                    );
 
   void update();
+
+  Value aggressive     = Value(  MODULATION,  false,  true  );
+  Value striker        = Value(  MODULATION,  false,  true  );
+  Value state          = Value(      LIMITS,      0,     9  );
+  Value stateDirection = Value(  MODULATION,  false,  true  );
 
   Value driveAngle     = Value(  MODULATION,      0,   359  ); // Zielwinkel
   Value drivePower     = Value(      LIMITS,      0,   255  ); // Geschwindigkeit
   Value driveRotation  = Value(      LIMITS,   -255,   255  ); // Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
-  Value driveEnabled   = Value(      LIMITS,  false,  true  ); // Aktivierung des Fahrgestells
+  Value driveEnabled   = Value(  MODULATION,  false,  true  ); // Aktivierung des Fahrgestells
 
   Value ball           = Value(      LIMITS,   -160,   159  );  // Abweichung der Ball X-Koordinate
   Value ballWidth      = Value(      LIMITS,      0         );  // Ballbreite
@@ -324,7 +342,7 @@ public:
   Value goalWidth      = Value(      LIMITS,      0         );  // Torbreite
   Value goalArea       = Value(      LIMITS,      0         );  // Torgröße (Flächeninhalt)
   
-  Value hasDebugHead   = Value(      LIMITS,  false,  true  );  // Debug-Zeilenanfang
+  Value hasDebugHead   = Value(  MODULATION,  false,  true  );  // Debug-Zeilenanfang
 
 private:
 };

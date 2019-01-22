@@ -57,7 +57,7 @@ bool Timer::falling() {
   calculate timings to update active flag
   @param require: external condition to be active
 *****************************************************/
-void Timer::update(bool require) {
+void Timer::update() {
   bool now = false;
   now = require && timer > 0 && millis() <= timer + surviveTime;
   if (       on()   &&  now   )  state = ON;
@@ -144,30 +144,46 @@ void Value::setModulation(int min, int max) {
 /*****************************************************
   return value
 *****************************************************/
-int Value::get() {
-  return value;
-}
-
+int Value::get() { return value; }
 /*****************************************************
-  is value active?
+  is the value active?
 *****************************************************/
-bool Value::on() {
-  return value != 0;
-}
-
+bool Value::on() { return value != 0; }
 /*****************************************************
   is value passive?
 *****************************************************/
-bool Value::off() {
-  return value == 0;
-}
-
+bool Value::off() { return value == 0; }
+/*****************************************************
+  points the angle right?
+  @param tolerance: tolerance angle for center direction
+  - value=true is right
+*****************************************************/
+bool Value::right(int tolerance) { return value > tolerance; }
+/*****************************************************
+  points the angle left?
+  @param tolerance: tolerance angle for center direction
+  - value=false is left
+*****************************************************/
+bool Value::left(int tolerance) { return value <= tolerance; }
+/*****************************************************
+  points the angle straight
+  @param tolerance: tolerance angle for center direction
+*****************************************************/
+bool Value::center(int tolerance) { return abs(value) <= tolerance; }
+/*****************************************************
+  is the comparison true?
+  @param comparison: value to compare
+*****************************************************/
+bool Value::is(int comparison) { return value == comparison; }
+/*****************************************************
+  is the comparison false?  
+  @param comparison: value to compare
+*****************************************************/
+bool Value::no(int comparison) { return value != comparison; }
 /*****************************************************
   convert number to formatted string
 *****************************************************/
-String Value::str(unsigned int minLength, unsigned int maxLength, bool sign) {
-  return format(value, minLength, maxLength, sign);
-}
+String Value::str(unsigned int minLength, unsigned int maxLength, bool sign) { return format(value, minLength, maxLength, sign); }
 
 /*****************************************************
   configurate an arduino pin
@@ -324,6 +340,9 @@ bool Key::click() {
 *****************************************************/
 void Key::update() {
   Pin::update();
+  if(mode == VIRTUAL) {
+    
+  }
 	if(off()) {
 		// Knopf ist losgelassen
 		cooldownTimer = 0;

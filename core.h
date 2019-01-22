@@ -50,6 +50,9 @@ void endSegment();
 #define START_MARKER        254     // Startzeichen einer Bluetooth-Nachricht
 #define END_MARKER          255     // Endzeichen einer Bluetooth-Nachricht
 
+// 
+#define BALL_CENTER_TOLERANCE 40 
+
 
 /* WATCHDOG
   gemessen  theoretisch
