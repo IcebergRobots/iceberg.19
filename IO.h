@@ -342,6 +342,7 @@ public:
   Timer ballRight       = Timer(      0,  &seeBall  );  // ist der Ball rechts?
   Timer ballCenter      = Timer(      0,  &seeBall  );  // ist der Ball mittig?
   Timer cameraResponse  = Timer(  20000             );  // ist die Kamera verbunden?
+  Timer battery         = Timer(                    );  // ist der Akku angeschlosse?
 
   // all global variables
   Value aggressive     = Value(     BOOLEAN                 );

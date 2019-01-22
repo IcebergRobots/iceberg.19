@@ -590,7 +590,27 @@ void IO::update() {
   drift.update();
   ballLeft.update();
   ballRight.update();
+  ballCenter.update();
   cameraResponse.update();
+
+  // values
+  striker.update();
+  state.update();
+  stateDirection.update();
+
+  driveAngle.update();
+  drivePower.update();
+  driveRotation.update();
+  driveEnabled.update();
+
+  ball.update();
+  ballWidth.update();
+  ballArea.update();
+  goal.update();
+  goalWidth.update();
+  goalArea.update();
+  
+  hasDebugHead.update();
 
   if (DEBUG_LOOP) endSegment();
 }
