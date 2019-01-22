@@ -288,17 +288,12 @@ public:
   Key turbo                 = Key(  5,   PUI,      0                   );  // debug     (lever)
 
   // PUI: shortcut
-  Key *_record[2] = { &start, &stop }; 
-  Shortcut record = Shortcut(_record, 2, FIRE_KEYS, 0);  // Spiel aufzeichnen (start + stop)
-
-  Key *_resetProperties[2] = { &decreasePage, &increasePage };
-  Shortcut resetProperties = Shortcut(_resetProperties, 2, MUTE_KEYS,  2000);  // Alle Konfigurationen und Kalibrierungen zurücksetzten
-
-  Key *_kickerStart[2] = { &testKick, &start };
-  Shortcut kickerStart = Shortcut(_kickerStart, 2, MUTE_KEYS, 0);  // aktiviere einen dauerhaften Schuss
-
-  Key *_kickerStop[2] = { &testKick, &stop };
-  Shortcut kickerStop = Shortcut(_kickerStop, 2, MUTE_KEYS, 0);  // deaktiviere einen dauerhaften Schuss
+  Key *_record           [2]  ={  &start,         &stop          }; Shortcut  record           = Shortcut(_record,           2,  FIRE_KEYS,     0  );  // Spiel aufzeichnen (start + stop)
+  Key *_resetProperties  [2]  ={  &decreasePage,  &increasePage  }; Shortcut  resetProperties  = Shortcut(_resetProperties,  2,  MUTE_KEYS,  2000  );  // Alle Konfigurationen und Kalibrierungen zurücksetzten
+  Key *_kickerStart      [2]  ={  &testKick,      &start         }; Shortcut  kickerStart      = Shortcut(_kickerStart,      2,  MUTE_KEYS,     0  );  // aktiviere einen dauerhaften Schuss
+  Key *_kickerStop       [2]  ={  &testKick,      &stop          }; Shortcut  kickerStop       = Shortcut(_kickerStop,       2,  MUTE_KEYS,     0  );  // deaktiviere einen dauerhaften Schuss
+  Key *_shiftStart       [2]  ={  &selectMenu,    &start         }; Shortcut  shiftStart       = Shortcut(_shiftStart,       2,  MUTE_KEYS,     0  );  // 
+  Key *_shiftStop        [2]  ={  &selectMenu,    &stop          }; Shortcut  shiftStop        = Shortcut(_shiftStop,        2,  MUTE_KEYS,     0  );  // 
 
   Timer flat            = Timer(    600             );  // liegen wir flach?
   Timer onLine          = Timer(    300             );  // berühren wir die Linie?

@@ -540,6 +540,8 @@ void IO::update() {
   resetProperties.update();
   kickerStart.update();
   kickerStop.update();
+  shiftStart.update();
+  shiftStop.update();
 
   // timers
   flat.update();

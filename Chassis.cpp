@@ -9,6 +9,7 @@ const int sinus[360] = {0, 175, 349, 523, 698, 872, 1045, 1219, 1392, 1564, 1736
 *****************************************************/
 Chassis::Chassis(byte _axisAngle) {
   setAxisAngle(_axisAngle);
+  io.driveEnabled.set(true);
   m[0].setPins(&io.m0Current, &io.m0Dir1, &io.m0Dir2, &io.m0Speed);
   m[1].setPins(&io.m1Current, &io.m1Dir1, &io.m1Dir2, &io.m1Speed);
   m[2].setPins(&io.m2Current, &io.m2Dir1, &io.m2Dir2, &io.m2Speed);
@@ -32,23 +33,22 @@ void Chassis::setAxisAngle(byte _axisAngle) {
 *****************************************************/
 void Chassis::temp(int angle, int power, int rotation) {
   io.driveAngle.set(angle);
+  if (power < 0)  io.driveAngle.add(180);       //bei 180° Drehung verwenden
   io.drivePower.set(abs(power));
   io.driveRotation.set(rotation);
   
-  if (power < 0) io.driveAngle.add(180);       //bei 180° Drehung verwenden
+  io.drivePower.add(min(0, 255 - io.drivePower.get() - abs(io.driveRotation.get()))); // Wenn die Gesamtgeschwindigkeit zu groß ist, wird die Geschwindigkeit ausreichend reduziert
 
-  io.drivePower.add(min(0, 255 - power - abs(rotation))); // Wenn die Gesamtgeschwindigkeit zu groß ist, wird die Geschwindigkeit ausreichend reduziert
+  int sinA02 = sinus[circulate((axisAngle / 2) - io.driveAngle.get(), 0, 359)]; //berechne Zwischenwert für Achse der Motoren 1 und 3 
+  int sinA13 = sinus[circulate((axisAngle / 2) + io.driveAngle.get(), 0, 359)]; //berechne Zwischenwert für Achse der Motoren 2 und 4
 
-  int sinA02 = sinus[(((angle / 2) - angle) + 360) % 360]; //berechne Zwischenwert für Achse der Motoren 1 und 3      3 /    \ 0
-  int sinA13 = sinus[(((angle / 2) + angle) + 360) % 360]; //berechne Zwischenwert für Achse der Motoren 2 und 4      2 \    / 1
+  int axis02 = io.drivePower.get() * (double)sinA02 / 10000; //berechne Motorstärken für Achse 1&3
+  int axis13 = io.drivePower.get() * (double)sinA13 / 10000; //berechne Motorstärken für Achse 2&4
 
-  int axis02 = power * (double)sinA02 / 10000; //berechne Motorstärken für Achse 1&3
-  int axis13 = power * (double)sinA13 / 10000; //berechne Motorstärken für Achse 2&4
-
-  m[0].temp(axis02 - rotation);
-  m[1].temp(axis13 - rotation);
-  m[2].temp(axis02 + rotation);
-  m[3].temp(axis13 + rotation);
+  m[0].temp(axis02 - io.driveRotation.get());
+  m[1].temp(axis13 - io.driveRotation.get());
+  m[2].temp(axis02 + io.driveRotation.get());
+  m[3].temp(axis13 + io.driveRotation.get());
 }
 
 /*****************************************************
@@ -97,6 +97,7 @@ void Motor::setPins(Pin *_current, Pin *_forward, Pin *_backward, Pin *_speed) {
 }
 
 void Motor::temp(int power) {
+  debug(power);
   forward->temp(power > 0);
   backward->temp(power <= 0);
   speed->temp(abs(power)); 

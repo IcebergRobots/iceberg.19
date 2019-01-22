@@ -5,5 +5,6 @@
 #include "Camera.h"
 #include "Light.h"
 #include "Display.h"
+#include "Chassis.h"
 
 #endif
