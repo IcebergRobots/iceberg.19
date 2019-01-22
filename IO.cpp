@@ -1,89 +1,6 @@
 #include "IO.h"
 
 /*****************************************************
-  create a timer
-  @param _surviveTime: leave output active for a delay
-*****************************************************/
-  Timer::Timer(long _surviveTime, Timer *_requirement) {
-  surviveTime = _surviveTime;
-  requirement = _requirement;
-}
-
-/*****************************************************
-  set survive time
-  @param _surviveTime: leave output active for a delay
-*****************************************************/
-void Timer::setSurviveTime(unsigned long _surviveTime) {
-  surviveTime = _surviveTime;
-}
-
-/*****************************************************
-  trigger time
-  - set timer to current time
-*****************************************************/
-void Timer::set(bool active) {
-  if (active && (requirement == NULL || requirement->on())) timer = millis();
-}
-
-/*****************************************************
-  is the timer on?
-*****************************************************/
-bool Timer::on() {
-  return state == ON || state == RISING;
-}
-
-/*****************************************************
-  is the timer off?
-*****************************************************/
-bool Timer::off() {
-  return state == OFF || state == FALLING;
-}
-
-/*****************************************************
-  is the timer rising?
-*****************************************************/
-bool Timer::rising() {
-  return state == RISING;
-}
-
-/*****************************************************
-  is the timer falling?
-*****************************************************/
-bool Timer::falling() {
-  return state == FALLING;
-}
-
-/*****************************************************
-  calculate timings to update active flag
-  @param require: external condition to be active
-*****************************************************/
-void Timer::update() {
-  bool now = false;
-  now = require && timer > 0 && millis() <= timer + surviveTime;
-  if (       on()   &&  now   )  state = ON;
-  else if (  off()  &&  !now  )  state = OFF;
-  else if (  on()   &&  !now  )  state = FALLING;
-  else if (  off()  &&  now   )  state = RISING;
-
-}
-
-/*****************************************************
-  return delay since last trigger
-*****************************************************/
-unsigned long Timer::since() {
-  if (timer == 0) return -1;
-  else return millis() - timer;
-}
-
-/*****************************************************
-  convert number to formatted string
-*****************************************************/
-String Timer::str(unsigned int minLength, unsigned int maxLength, bool sign) {
-  return format(since(), minLength, maxLength, sign);
-}
-
-
-/*****************************************************
   create a new value
   @param processing: processing mode (LIMITS, MODULATION)
   @param min:
@@ -93,30 +10,20 @@ String Timer::str(unsigned int minLength, unsigned int maxLength, bool sign) {
     - in case of modulation: lower limit
     - in case of limits: upper limit
 *****************************************************/
-Value::Value(bool processing, int min, int max) {
-  if(processing == LIMITS) setLimits(min, max);
-  else setModulation(min, max);
+Value::Value(byte processing, int min, int max) {
+  switch (processing) {
+    default:
+    case LIMITS:
+      setLimits(min, max);
+      break;
+    case MODULATION:
+      setModulation(min, max);
+      break;
+    case BOOLEAN:
+      setLimits(false, true);
+      break;
+  }
 }
-
-/*****************************************************
-  set a new value process it
-  @param _value: new value
-  - modulate or limit the value
-*****************************************************/
-void Value::set(int _value) {
-  if(a <= b) value = constrain(_value, a, b); // limit
-  else value = circulate(_value, a, b);       // modulate
-}
-
-/*****************************************************
-  change the value
-  @param _value: summand
-  - modulate or limit the value
-*****************************************************/
-void Value::add(int _value) {
-  set(value + _value);
-}
-
 /*****************************************************
   configurate limits
   @param min: lower limit
@@ -128,7 +35,6 @@ void Value::setLimits(int min, int max) {
   b = max(min, max);
   set(value);
 }
-
 /*****************************************************
   configurate modulation
   @param min: lower limit
@@ -142,17 +48,61 @@ void Value::setModulation(int min, int max) {
 }
 
 /*****************************************************
+  reset change state as the change happend durring the previous loop
+*****************************************************/
+void Value::update() {
+  if      (state == FALLING) state = OFF;
+  else if (state == RISING)  state = ON;
+}
+
+/*****************************************************
+  there is a current event, so save its time (now)
+*****************************************************/
+void Value::now() {
+  eventTimer = millis();
+}
+/*****************************************************
+  set a new value process it
+  @param _value: new value
+  - modulate or limit the value
+*****************************************************/
+void Value::set(int _value, bool trigger) {
+  if (value != _value) {
+    if (a <= b) value = constrain(_value, a, b); // limit
+    else value = circulate(_value, a, b);       // modulate
+
+    if (value != _value) return; // value didn't change
+
+    if (trigger) now(); // trigger the timer because value changed
+
+    // if sign doesn't change, keep falling or rising state and wait for update()
+    if (state == OFF || state == FALLING) if (on())  state = RISING;  // detect rising (off -> on) change
+    else                                  if (off()) state = FALLING; // detect falling (on -> off) change
+  }
+}
+/*****************************************************
+  change the value
+  @param _summand: summand
+*****************************************************/
+void Value::add(int _summand) { set(value + _summand); }
+/*****************************************************
+  scale the value
+  @param _factor: factor
+*****************************************************/
+void Value::mul(float _factor) { set(value * _factor); }
+
+/*****************************************************
   return value
 *****************************************************/
 int Value::get() { return value; }
 /*****************************************************
-  is the value active?
+  is the value positive?
 *****************************************************/
-bool Value::on() { return value != 0; }
+bool Value::on() { return value > 0; }
 /*****************************************************
-  is value passive?
+  is value negative or zero?
 *****************************************************/
-bool Value::off() { return value == 0; }
+bool Value::off() { return value <= 0; }
 /*****************************************************
   points the angle right?
   @param tolerance: tolerance angle for center direction
@@ -164,7 +114,7 @@ bool Value::right(int tolerance) { return value > tolerance; }
   @param tolerance: tolerance angle for center direction
   - value=false is left
 *****************************************************/
-bool Value::left(int tolerance) { return value <= tolerance; }
+bool Value::left(int tolerance) { return value <= -tolerance; }
 /*****************************************************
   points the angle straight
   @param tolerance: tolerance angle for center direction
@@ -183,7 +133,77 @@ bool Value::no(int comparison) { return value != comparison; }
 /*****************************************************
   convert number to formatted string
 *****************************************************/
-String Value::str(unsigned int minLength, unsigned int maxLength, bool sign) { return format(value, minLength, maxLength, sign); }
+String Value::str(unsigned int minLength, unsigned int maxLength, bool sign) { 
+  return format(value, minLength, maxLength, sign); 
+}
+
+/*****************************************************
+  did the value fall?
+*****************************************************/
+bool Value::falling() { return state == FALLING; }
+/*****************************************************
+  did the value fall?
+*****************************************************/
+bool Value::rising() { return state == RISING; }
+/*****************************************************
+  did the value fall?
+*****************************************************/
+bool Value::change() { return falling() || rising(); }
+
+/*****************************************************
+  was there ever an event?
+*****************************************************/
+bool Value::ever() { return eventTimer != 0; }
+/*****************************************************
+  time since last event
+*****************************************************/
+unsigned long Value::since() {
+  if (!ever()) return -1;
+  else return millis() - eventTimer;
+}
+String Value::sinceStr(unsigned int minLength, unsigned int maxLength, bool sign) {
+  return format(since(), minLength, maxLength, sign); 
+}
+
+
+
+
+
+/*****************************************************
+  create a timer
+  @param _surviveTime: leave output active for a delay
+*****************************************************/
+  Timer::Timer(long _surviveTime, Timer *_requirement) : Value(MODULATION, false, true) {
+  surviveTime = _surviveTime;
+  requirement = _requirement;
+}
+/*****************************************************
+  set survive time
+  @param _surviveTime: leave output active for a delay
+*****************************************************/
+void Timer::setSurviveTime(unsigned long _surviveTime) {
+  surviveTime = _surviveTime;
+}
+/*****************************************************
+  calculate timings to update active flag
+  @param require: external condition to be active
+*****************************************************/
+void Timer::update() {
+  Value::update();
+  if(ever()) Value::set(since() <= surviveTime, false);
+}
+/*****************************************************
+  trigger time
+  - set timer to current time
+*****************************************************/
+void Timer::set(bool active) {
+  if (active && (requirement == NULL || requirement->on())) now();
+  update();
+}
+
+
+
+
 
 /*****************************************************
   configurate an arduino pin
@@ -269,6 +289,7 @@ void Pin::temp(int _value) {
   - will ignore output pins
 *****************************************************/
 void Pin::update() {
+  Value::update();
   if(mode != OUTPUT) {
     switch (type)
     {
@@ -302,72 +323,65 @@ byte Pin::getPin() {
   configurate an arduino pin as a key
   @param _pin: pin address
   @param _type: type of pin (ANALOG, DIGITAL, PWM, PUI, VIRTUAL)
-  @param _preDelay: delay befor the first click
-  @param _postDelay: delay after the first click
-  @param _repititionDelay: delay after second or later click
+  @param _preStroke: delay befor the first click
+  @param _postStroke: delay after the first click
+  @param _postFurther: delay after second or later click
   - see header file for visualisation
 *****************************************************/
-Key::Key(byte _pin, byte _type, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay)
+Key::Key(byte _pin, byte _type, unsigned long _preStroke, unsigned long _postStroke, unsigned long _postFurther)
  : Pin(_pin, INPUT_PULLUP, _type) {
-  preDelay = _preDelay;
-  postDelay = _postDelay;
-  repititionDelay = _repititionDelay;
+  preStroke = _preStroke;
+  postStroke = _postStroke;
+  postFurther = _postFurther;
 }
 
 /*****************************************************
   is there a first click?
 *****************************************************/
-bool Key::stroke() {
-	return active && clicks == 1;
-}
-
+bool Key::stroke() { return state == STROKE; }
 /*****************************************************
   is there a second or later click?
 *****************************************************/
-bool Key::permanent() {
-	return active && clicks > 1;
-}
-
+bool Key::further() { return state == FURTHER; }
 /*****************************************************
   is there any click?
 *****************************************************/
-bool Key::click() {
-	return active;
-}
+bool Key::click() { return stroke() || further(); }
 
 /*****************************************************
   read the arduino pins and process it to detect clicks
 *****************************************************/
 void Key::update() {
   Pin::update();
-  if(mode == VIRTUAL) {
-    
-  }
-	if(off()) {
-		// Knopf ist losgelassen
-		cooldownTimer = 0;
-		clicks = 0;
-	} else {
-		// Knopf wird gedrückt
-		if (cooldownTimer == 0) cooldown(preDelay); // Erstmaliges Drücken
-		if (millis() >= cooldownTimer) {
-			// Nächster Klick
-			clicks++;
-			active = true;
-			if(clicks == 1) cooldown(postDelay);
-			else cooldown(repititionDelay);
-		} else active = false; // Warte auf nächsten Klick
+	if(off()) state = OFF; // Knopf ist losgelassen
+	else { // Knopf wird gedrückt
+    switch (state) {
+      default:
+      case OFF: // so far no click was detected
+        if (since() >= preStroke) {
+          state = STROKE; // detect the first click
+          now(); // create an event and save click time
+        }
+        break;
+      case ON:
+      case STROKE:
+        if (since() >= postStroke) {
+          state = FURTHER;  // detect a further click
+          now(); // create an event and save click time
+        } else state = ON;
+        break;
+      case FURTHER:
+        if (since() >= preStroke) {
+          state = FURTHER;  // detect a further click
+          now(); // create an event and save click time
+        } else state = ON;
+        break;
+    }
 	}
 }
 
-/*****************************************************
-  ignore click for the next milliseconds
-  @param delay: cooldown time
-*****************************************************/
-void Key::cooldown(unsigned long delay) {
-	if(delay + 1 == 0) cooldownTimer = -1;
-	else cooldownTimer = millis() + delay;
-}
+
+
 
 
 /*****************************************************
@@ -379,12 +393,12 @@ void Key::cooldown(unsigned long delay) {
     - length of the keys array
     - number of keys in the shortcut
   @param _muteKeys: if the shortcut is active, should the individual keys detect clicks?
-  @param _preDelay: delay befor the first shortcut click
-  @param _postDelay: delay after the first shortcut click
-  @param _repititionDelay: delay after second or later shortcut click
+  @param _preStroke: delay befor the first shortcut click
+  @param _postStroke: delay after the first shortcut click
+  @param _postFurther: delay after second or later shortcut click
 *****************************************************/
-Shortcut::Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long _preDelay, unsigned long _postDelay, unsigned long _repititionDelay)
- : Key(0, VIRTUAL, _preDelay, _postDelay, _repititionDelay) {
+Shortcut::Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long _preStroke, unsigned long _postStroke, unsigned long _postFurther)
+ : Key(0, VIRTUAL, _preStroke, _postStroke, _postFurther) {
   keys = _keys;
   keysLength = _keysLength;
   muteKeys = _muteKeys;
@@ -407,7 +421,7 @@ void Shortcut::update() {
       keys[i]->update();
     }
   }
-  Key::update(); // is this shortcut active (stroke, permanent, click)?
+  Key::update(); // is this shortcut active (stroke, further, click)?
 }
 
 

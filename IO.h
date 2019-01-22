@@ -3,21 +3,6 @@
 
 #include "core.h"
 
-// Mode
-#define ANALOG 0
-#define DIGITAL 1
-#define PWM 2
-#define PUI 3
-#define VIRTUAL 4
-
-// Processing
-#define LIMITS 0
-#define MODULATION 1
-
-// Values
-#define LEFT false
-#define RIGHT true
-
 // DATA TYPES
 #define INT8_T_MIN -128
 #define INT8_T_MAX 127
@@ -32,32 +17,29 @@
 #define UINT32_T_MIN 0
 #define UINT32_T_MAX 4294967295
 
-// Timer values
+// Mode
+#define ANALOG 0
+#define DIGITAL 1
+#define PWM 2
+#define PUI 3
+#define VIRTUAL 4
+
+// Processing
+#define LIMITS 0
+#define MODULATION 1
+#define BOOLEAN 2
+
+// Values
+#define LEFT false
+#define RIGHT true
+
+// States
 #define OFF 0
 #define ON 1
 #define FALLING 2
 #define RISING 3
-#define CHANGE 4
-
-class Timer
-{
-  public:
-    Timer(long _surviveTime=0, Timer *_requirement=NULL);
-    void setSurviveTime(unsigned long _surviveTime);
-    void set(bool active=true);
-    bool on();
-    bool off();
-    bool rising();
-    bool falling();
-    void update(bool require=true);
-    unsigned long since();
-    String str(unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
-  private:
-    unsigned long timer = 0;
-    unsigned long surviveTime = 0;
-    byte state = OFF;
-    Timer *requirement;
-};
+#define STROKE 4
+#define FURTHER 6
 
 /*****************************************************
   class Value
@@ -73,11 +55,21 @@ class Timer
 class Value
 {
   public:
-    Value(bool processing=LIMITS, int min=INT16_T_MIN, int max=INT16_T_MAX);
+    // configutate
+    Value(byte processing=LIMITS, int min=INT16_T_MIN, int max=INT16_T_MAX);
     void setLimits(int min=INT16_T_MIN, int max=INT16_T_MAX); //huhu
     void setModulation(int min, int max);
-    void set(int _value);
-    void add(int _value=1);
+
+    // tick
+    void update();
+
+    // interact
+    void now();
+    void set(int _value, bool trigger=true);
+    void add(int _summand=1);
+    void mul(float _factor);
+
+    // read
 		int get();
     bool on();
     bool off();
@@ -87,13 +79,40 @@ class Value
     bool is(int comparison);
     bool no(int comparison);
     String str(unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
+
+    // read change
+    bool falling();
+    bool rising();
+    bool change();
+
+    // events
+    bool ever();
+    unsigned long since();
+    String sinceStr(unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
+
   private:
     int value = 0;
     int a = 0;  // in case of modulation: upper limit
                 // in case of limits: lower limit
     int b = 0;  // in case of modulation: lower limit
                 // in case of limits: upper limit
+    unsigned long eventTimer = 0; // time of last event
+    byte state = OFF; // OFF, ON, FALLING, RISING
 };
+
+
+class Timer : public Value
+{
+  public:
+    Timer(long _surviveTime=0, Timer *_requirement=NULL);
+    void setSurviveTime(unsigned long _surviveTime);
+    void update();
+    void set(bool active=true);
+  private:
+    unsigned long surviveTime = 0;
+    Timer *requirement;
+};
+
 
 class Pin: public Value
 {
@@ -105,7 +124,7 @@ class Pin: public Value
 		void update();
 		byte getPin();
 	private:
-		byte pin = 0;
+		byte pin = 0;   // pin address
 		byte mode = 0;  // OUTPUT, INPUT, INPUT_PULLUP
 		byte type = 0;  // ANALOG, DIGITAL, PWM, PUI, VIRTUAL
 		bool digital = false;
@@ -114,32 +133,34 @@ class Pin: public Value
 
 /******************************************************************************
                                   click
-                 ┌─────────┬────────┴──────┬───────────────┬─╌                                                
-              stroke   permanent       permanent       permanent    
-      on╔════════╪═════════╪═══════════════╪═══════════════╪═════ ... ═╗
-Button  ║        ┊         ┊               ┊               ┊           ║
-     off║        ┊         ┊               ┊               ┊           ║
-════════╝        ┊postDelay┊               ┊               ┊           ╚══════                
-        ┊preDelay┊         ┊repititionDelay┊repititionDelay┊                                             
+                  ┌──────────┬──────┴──────┬─────────────┬─╌                                                
+               stroke     further       further       further    
+      on╔═════════╪══════════╪═════════════╪═════════════╪═════ ... ═╗
+Button  ║         ┊          ┊             ┊             ┊           ║
+     off║         ┊          ┊             ┊             ┊           ║
+════════╝         ┊postStroke┊             ┊             ┊           ╚══════                
+        ┊preStroke┊          ┊ postFurther ┊ postFurther ┊      ...  ┊                 
+        ┊         ┊          ┊             ┊             ┊           ┊
+state:  ┊        STROKE    FURTHER       FURTHER       FURTHER       ┊
+  OFF   ┊  OFF    ┊   ON     ┊       ON    ┊       ON    ┊      ...  ┊  OFF
 
 ******************************************************************************/
 class Key: public Pin
 {
 	public:
-    Key(byte _pin, byte _type, unsigned long _preDelay=-1, unsigned long _postDelay=-1, unsigned long _repititionDelay=-1);
+    Key(byte _pin, byte _type, unsigned long _preStroke=-1, unsigned long _postStroke=-1, unsigned long _postFurther=-1);
 		bool stroke();
-		bool permanent();
+		bool further();
 		bool click();
 		void update();
 	private:
-		void cooldown(unsigned long delay);
-    bool active = false;
+    byte state = OFF; // OFF, ON, STROKE, FURTHER
 		unsigned long clicks = 0;
-		unsigned long preDelay = -1;         // infinity
-		unsigned long postDelay = -1;        // infinity
-		unsigned long repititionDelay = -1;  // infinity
-		unsigned long cooldownTimer = 0;
+		unsigned long preStroke = -1;   // by default set to infinity
+		unsigned long postStroke = -1;  // by default set to infinity
+		unsigned long postFurther = -1; // by default set to infinity
 };
+
 
 #define MUTE_KEYS true
 #define FIRE_KEYS false
@@ -147,7 +168,7 @@ class Key: public Pin
 class Shortcut: public Key
 {
 	public:
-		Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long _preDelay=-1, unsigned long _postDelay=-1, unsigned long _repititionDelay=-1);
+		Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long _preStroke=-1, unsigned long _postStroke=-1, unsigned long _postFurther=-1);
     void update();
 	private:
 		Key **keys;
@@ -276,7 +297,7 @@ public:
   Pin usbTx               = Pin(  1,      INPUT,         DIGITAL  );  // Computer <- Mega, Computer Kommunikation
   Pin usbRx               = Pin(  0,      OUTPUT,        DIGITAL  );  // Computer -> Mega, Computer Kommunikation   
 
-  // PUI: Keys and levers
+  // PUI: keys and levers
   Key decreasePage          = Key(  0,   VIRTUAL,  0,     500,   200   );  // vorherige Bildschirmseite
   Key increasePage          = Key(  0,   PUI,      0,     500,   200   );  // nächste   Bildschirmseite
   Key selectPage            = Key(  0,   PUI,      0,     5000         );  // Seite auswählen
@@ -296,9 +317,8 @@ public:
   Key kicker                = Key(  3,   PUI,      0                   );  // kicker    (lever)
   Key bottom                = Key(  4,   PUI,      0                   );  // bottom    (lever)
   Key turbo                 = Key(  5,   PUI,      0                   );  // debug     (lever)
-  Key state                 = Key(  0,   VIRTUAL,  0                   );
 
-  // PUI: shortcut
+  // PUI: shortcuts
   Key *_record           [2]  = {  &start,         &stop          }; Shortcut  record           = Shortcut(  _record,           2,  FIRE_KEYS,     0  );  // Spiel aufzeichnen (start + stop)
   Key *_resetProperties  [2]  = {  &decreasePage,  &increasePage  }; Shortcut  resetProperties  = Shortcut(  _resetProperties,  2,  MUTE_KEYS,  2000  );  // Alle Konfigurationen und Kalibrierungen zurücksetzten
   Key *_kickerStart      [2]  = {  &testKick,      &start         }; Shortcut  kickerStart      = Shortcut(  _kickerStart,      2,  MUTE_KEYS,     0  );  // aktiviere einen dauerhaften Schuss
@@ -306,6 +326,7 @@ public:
   Key *_shiftStart       [2]  = {  &selectMenu,    &start         }; Shortcut  shiftStart       = Shortcut(  _shiftStart,       2,  MUTE_KEYS,     0  );  // 
   Key *_shiftStop        [2]  = {  &selectMenu,    &stop          }; Shortcut  shiftStop        = Shortcut(  _shiftStop,        2,  MUTE_KEYS,     0  );  // 
 
+  // binary timers
   Timer flat            = Timer(    600             );  // liegen wir flach?
   Timer onLine          = Timer(    300             );  // berühren wir die Linie?
   Timer isHeadstart     = Timer(    350             );  // führen wir einen Schnellstart aus ?
@@ -321,19 +342,17 @@ public:
   Timer ballRight       = Timer(      0,  &seeBall  );  // ist der Ball rechts?
   Timer ballCenter      = Timer(      0,  &seeBall  );  // ist der Ball mittig?
   Timer cameraResponse  = Timer(  20000             );  // ist die Kamera verbunden?
-  Timer striker         = Timer(                    );
 
-  void update();
-
-  Value aggressive     = Value(  MODULATION,  false,  true  );
-  Value striker        = Value(  MODULATION,  false,  true  );
+  // all global variables
+  Value aggressive     = Value(     BOOLEAN                 );
+  Value striker        = Value(     BOOLEAN                 );
   Value state          = Value(      LIMITS,      0,     9  );
-  Value stateDirection = Value(  MODULATION,  false,  true  );
+  Value stateDirection = Value(     BOOLEAN                 );
 
   Value driveAngle     = Value(  MODULATION,      0,   359  ); // Zielwinkel
   Value drivePower     = Value(      LIMITS,      0,   255  ); // Geschwindigkeit
   Value driveRotation  = Value(      LIMITS,   -255,   255  ); // Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
-  Value driveEnabled   = Value(  MODULATION,  false,  true  ); // Aktivierung des Fahrgestells
+  Value driveEnabled   = Value(     BOOLEAN                 ); // Aktivierung des Fahrgestells
 
   Value ball           = Value(      LIMITS,   -160,   159  );  // Abweichung der Ball X-Koordinate
   Value ballWidth      = Value(      LIMITS,      0         );  // Ballbreite
@@ -342,7 +361,9 @@ public:
   Value goalWidth      = Value(      LIMITS,      0         );  // Torbreite
   Value goalArea       = Value(      LIMITS,      0         );  // Torgröße (Flächeninhalt)
   
-  Value hasDebugHead   = Value(  MODULATION,  false,  true  );  // Debug-Zeilenanfang
+  Value hasDebugHead   = Value(     BOOLEAN                 );  // Debug-Zeilenanfang
+
+  void update();
 
 private:
 };

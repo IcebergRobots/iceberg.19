@@ -52,9 +52,9 @@ void prepareDebug() {
 
 void updateStates() {
   io.hasBall.set(io.ballTouch.get() > 30/*lightBarrierTriggerLevel*/);
-  io.ballLeft.set(io.ball.left(ANGLE_TURN_MAX));
-  io.ballRight.set(io.ball.right(ANGLE_TURN_MAX));
-  io.ballCenter.set(io.ball.center(ANGLE_TURN_MAX));
+  io.ballLeft.set(io.ball.left(BALL_CENTER_TOLERANCE));
+  io.ballRight.set(io.ball.right(BALL_CENTER_TOLERANCE));
+  io.ballCenter.set(io.ball.center(BALL_CENTER_TOLERANCE));
 
   // erkenne Hochheben
   //dof.accelGetOrientation(&accel_event, &orientation);
