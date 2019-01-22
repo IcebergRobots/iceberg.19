@@ -29,19 +29,13 @@ void loop() {
   if (camera.onDemand()) camera.frame();
   //readUltrasonic();
   
-  
-  if (io.selectMenu.stroke()) { 
-    debug("stroke"); 
-  }
-  if (io.selectMenu.permanent()) {
-    debug("permanent"); 
-  }
+
   if(io.start.stroke()) {
-    debug("shiftStart");
+    debug("start");
     drive.set(0, 255);
   }
   if(io.stop.stroke()) {
-    debug("shiftStop");
+    debug("stop");
     drive.brake(1);
   }
   if (io.shiftStart.stroke())               {
