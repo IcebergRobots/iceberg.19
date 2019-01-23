@@ -14,8 +14,9 @@ class Motor
     int get();
     void brake(bool active);
     int amperage();
-  private:
+    
     Pin *current, *forward, *backward, *speed;
+  private:
 };
 
 class Chassis
@@ -32,7 +33,7 @@ class Chassis
     void set();
 
 
-    void brake(bool active);
+    void brake(bool active=true);
 
   private:
     byte axisAngle = 0;

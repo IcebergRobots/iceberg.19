@@ -33,6 +33,9 @@
 #define LEFT  false
 #define RIGHT true
 
+// Timing
+#define INF -1
+
 // States
 #define OFF     0
 #define ON      1
@@ -45,7 +48,7 @@
 #define DEBUG_ENABLE    0
 #define DEBUG_ON_CHANGE 1
 #define DEBUG_ON_REASON 2
-#define DEBUG_ON_EVENT  3
+#define DEBUG_PIN       3
 #define DEBUG_TIME      4
 #define DEBUG_STATE     5
 #define DEBUG_VALUE     6
@@ -66,7 +69,7 @@ class Value
 {
   public:
     // configutate
-    Value(byte processing=LIMITS, int min=INT16_T_MIN, int max=INT16_T_MAX, byte debugSettings=B00000000);
+    Value(byte processing=LIMITS, int min=INT16_T_MIN, int max=INT16_T_MAX);
     void setLimits(int min=INT16_T_MIN, int max=INT16_T_MAX); //huhu
     void setModulation(int min, int max);
 
@@ -74,8 +77,8 @@ class Value
     void update();
 
     // interact
-    void now();
-    void set(int _value, String reason="", bool trigger=true);
+    void now(bool mute=false);
+    void set(int _value, String reason="", bool mute=false, byte pin=INF);
     void add(int _summand=1);
     void mul(float _factor);
 
@@ -88,7 +91,7 @@ class Value
     bool center(int tolerance=0);
     bool is(int comparison);
     bool no(int comparison);
-    String str(unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
+    String str(unsigned int minLength=0, unsigned int maxLength=INF, bool sign=false);
 
     // read change
     bool falling();
@@ -98,9 +101,9 @@ class Value
     // events
     bool ever();
     unsigned long period();
-    bool outsidePeriod(int min);
-    bool insidePeroid(int max);
-    String periodStr(unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
+    bool outsidePeriod(unsigned long min);
+    bool insidePeroid(unsigned long max);
+    String periodStr(unsigned int minLength=0, unsigned int maxLength=INF, bool sign=false);
 
     // debug
     void showDebug(byte type, bool enable=true);
@@ -109,8 +112,8 @@ class Value
     void resetDebug();
 
   private:
-    bool isDebug(byte type);
-    void sendDebug(bool timerChange=false, String reason="");
+    bool isDebug(byte type=DEBUG_ENABLE);
+    void sendDebug(bool timerChange=false, String reason="", byte pin=INF);
 
     int value = 0;
     int a = 0;  // in case of modulation: upper limit
@@ -119,14 +122,14 @@ class Value
                 // in case of limits: upper limit
     unsigned long eventTimer = 0; // time of last event
     byte state = OFF; // OFF, ON, FALLING, RISING
-    byte debugSettings = B00000000; // NO_DEBUG, CHANGES, REASONS, CHANGES_AND_REASONS, FALLING_AND_RISING
+    byte debugSettings = B11000010;
 };
 
 
 class Timer : public Value
 {
   public:
-    Timer(long _surviveTime=0, Timer *_requirement=NULL);
+    Timer(unsigned long _surviveTime=0, Timer *_requirement=NULL);
     void setSurviveTime(unsigned long _surviveTime);
     void update();
     void set(bool active=true);
@@ -170,7 +173,7 @@ state:  ┊        STROKE    FURTHER       FURTHER       FURTHER       ┊
 class Key: public Pin
 {
 	public:
-    Key(byte _pin, byte _type, unsigned long _preStroke=-1, unsigned long _postStroke=-1, unsigned long _postFurther=-1);
+    Key(byte _pin, byte _type, unsigned long _preStroke=INF, unsigned long _postStroke=INF, unsigned long _postFurther=INF);
 		bool stroke();
 		bool further();
 		bool click();
@@ -178,9 +181,9 @@ class Key: public Pin
 	private:
     byte state = OFF; // OFF, ON, STROKE, FURTHER
 		unsigned long clicks = 0;
-		unsigned long preStroke = -1;   // by default set to infinity
-		unsigned long postStroke = -1;  // by default set to infinity
-		unsigned long postFurther = -1; // by default set to infinity
+		unsigned long preStroke = INF;   // by default set to infinity
+		unsigned long postStroke = INF;  // by default set to infinity
+		unsigned long postFurther = INF; // by default set to infinity
 };
 
 
@@ -190,7 +193,7 @@ class Key: public Pin
 class Shortcut: public Key
 {
 	public:
-		Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long _preStroke=-1, unsigned long _postStroke=-1, unsigned long _postFurther=-1);
+		Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long _preStroke=INF, unsigned long _postStroke=INF, unsigned long _postFurther=INF);
     void update();
 	private:
 		Key **keys;
@@ -301,7 +304,7 @@ public:
   // PUI-Anschluss
   Pin puiLight            = Pin(  32,     OUTPUT,        DIGITAL  );  // stellt PUI-LEDs ein
   Pin puiInterrupt        = Pin(  2,      INPUT,         DIGITAL  );  // empfängt Interrupt bei Knopfdruck
-  Pin puiPoti             = Pin(  A0,     INPUT,         ANALOG   );  // misst Drehwiderstand
+  Pin poti             = Pin(  A0,     INPUT,         ANALOG   );  // misst Drehwiderstand
 
   // Schuss-Elektronik
   Pin kick                = Pin(  12,     OUTPUT,        PWM      );  // Schuss auslösen, lässt Elektromagneten anziehen, Wenn MOSFET ausgewählt PWM-fähig
@@ -341,12 +344,12 @@ public:
   Key turbo                 = Key(  5,   PUI,      0                   );  // debug     (lever)
 
   // PUI: shortcuts
-  Key *_record           [2]  = {  &start,         &stop          }; Shortcut  record           = Shortcut(  _record,           2,  FIRE_KEYS,     0  );  // Spiel aufzeichnen (start + stop)
-  Key *_resetProperties  [2]  = {  &decreasePage,  &increasePage  }; Shortcut  resetProperties  = Shortcut(  _resetProperties,  2,  MUTE_KEYS,  2000  );  // Alle Konfigurationen und Kalibrierungen zurücksetzten
-  Key *_kickerStart      [2]  = {  &testKick,      &start         }; Shortcut  kickerStart      = Shortcut(  _kickerStart,      2,  MUTE_KEYS,     0  );  // aktiviere einen dauerhaften Schuss
-  Key *_kickerStop       [2]  = {  &testKick,      &stop          }; Shortcut  kickerStop       = Shortcut(  _kickerStop,       2,  MUTE_KEYS,     0  );  // deaktiviere einen dauerhaften Schuss
-  Key *_shiftStart       [2]  = {  &selectMenu,    &start         }; Shortcut  shiftStart       = Shortcut(  _shiftStart,       2,  MUTE_KEYS,     0  );  // 
-  Key *_shiftStop        [2]  = {  &selectMenu,    &stop          }; Shortcut  shiftStop        = Shortcut(  _shiftStop,        2,  MUTE_KEYS,     0  );  // 
+  Key *_record           [2]  = {  &start,         &stop          }; Shortcut  record           = Shortcut(  _record,           2,  FIRE_KEYS,     0              );  // Spiel aufzeichnen (start + stop)
+  Key *_resetProperties  [2]  = {  &decreasePage,  &increasePage  }; Shortcut  resetProperties  = Shortcut(  _resetProperties,  2,  MUTE_KEYS,  2000              );  // Alle Konfigurationen und Kalibrierungen zurücksetzten
+  Key *_kickerStart      [2]  = {  &testKick,      &start         }; Shortcut  kickerStart      = Shortcut(  _kickerStart,      2,  MUTE_KEYS,     0              );  // aktiviere einen dauerhaften Schuss
+  Key *_kickerStop       [2]  = {  &testKick,      &stop          }; Shortcut  kickerStop       = Shortcut(  _kickerStop,       2,  MUTE_KEYS,     0              );  // deaktiviere einen dauerhaften Schuss
+  Key *_shiftStart       [2]  = {  &selectMenu,    &start         }; Shortcut  shiftStart       = Shortcut(  _shiftStart,       2,  MUTE_KEYS,     0,  600,  200  );  // 
+  Key *_shiftStop        [2]  = {  &selectMenu,    &stop          }; Shortcut  shiftStop        = Shortcut(  _shiftStop,        2,  MUTE_KEYS,     0,  600,  200  );  // 
 
   // binary timers
   Timer flat            = Timer(    600             );  // liegen wir flach?
@@ -367,22 +370,22 @@ public:
   Timer battery         = Timer(                    );  // ist der Akku angeschlosse?
 
   // all global variables
-  Value aggressive     = Value(     BOOLEAN                             );
-  Value striker        = Value(     BOOLEAN                             );
-  Value state          = Value(      LIMITS,      0,     9,  B01000011  );
-  Value stateDirection = Value(     BOOLEAN                             );
+  Value aggressive     = Value(     BOOLEAN                 );
+  Value striker        = Value(     BOOLEAN                 );
+  Value state          = Value(      LIMITS,      0,     9  );
+  Value stateDirection = Value(     BOOLEAN                 );
 
-  Value driveAngle     = Value(  MODULATION,      0,   359              ); // Zielwinkel
-  Value drivePower     = Value(      LIMITS,      0,   255              ); // Geschwindigkeit
-  Value driveRotation  = Value(      LIMITS,   -255,   255              ); // Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
-  Value driveEnabled   = Value(     BOOLEAN                             ); // Aktivierung des Fahrgestells
+  Value driveAngle     = Value(  MODULATION,      0,   359  ); // Zielwinkel
+  Value drivePower     = Value(      LIMITS,      0,   255  ); // Geschwindigkeit
+  Value driveRotation  = Value(      LIMITS,   -255,   255  ); // Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
+  Value driveEnabled   = Value(     BOOLEAN                 ); // Aktivierung des Fahrgestells
 
-  Value ball           = Value(      LIMITS,   -160,   159              );  // Abweichung der Ball X-Koordinate
-  Value ballWidth      = Value(      LIMITS,      0                     );  // Ballbreite
-  Value ballArea       = Value(      LIMITS,      0                     );  // Ballgröße (Flächeninhalt)
-  Value goal           = Value(      LIMITS,   -160,   159              );  // Abweichung der Tor X-Koordinate
-  Value goalWidth      = Value(      LIMITS,      0                     );  // Torbreite
-  Value goalArea       = Value(      LIMITS,      0                     );  // Torgröße (Flächeninhalt)
+  Value ball           = Value(      LIMITS,   -160,   159  );  // Abweichung der Ball X-Koordinate
+  Value ballWidth      = Value(      LIMITS,      0         );  // Ballbreite
+  Value ballArea       = Value(      LIMITS,      0         );  // Ballgröße (Flächeninhalt)
+  Value goal           = Value(      LIMITS,   -160,   159  );  // Abweichung der Tor X-Koordinate
+  Value goalWidth      = Value(      LIMITS,      0         );  // Torbreite
+  Value goalArea       = Value(      LIMITS,      0         );  // Torgröße (Flächeninhalt)
   
   Value hasDebugHead   = Value(     BOOLEAN                             );  // Debug-Zeilenanfang
 

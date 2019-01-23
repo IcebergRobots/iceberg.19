@@ -18,6 +18,16 @@ void debug(String str, bool space) {
   }
 }
 
+bool isFinite(unsigned long value) {
+  return value + 1 != 0;
+}
+bool isFinite(unsigned int value) {
+  return value + 1 != 0;
+}
+bool isFinite(byte value) {
+  return value + 1 != 0;
+}
+
 int circulate(int value, int min, int max) {
   max = max(min, max - min + 1);
   value -= min;
@@ -58,11 +68,11 @@ String format(long num, unsigned int minLength, unsigned int maxLength, bool sig
 }
 
 void beginSegment(String name) {
-  if(io.runtime.period() + 1 == 0 || DEBUG_SEGMENT) { // if in setup or DEBUG_SEGMENT
+  if(!io.runtime.ever() || DEBUG_SEGMENT) { // if in setup or DEBUG_SEGMENT
     debug(name + "{");
     io.segment.set();
   }
 }
 void endSegment() {
-  if(io.runtime.period() + 1 == 0 || DEBUG_SEGMENT) debug("}"+ io.segment.str(), false); // if in setup or DEBUG_SEGMENT
+  if(!io.runtime.ever() || DEBUG_SEGMENT) debug("}"+ io.segment.str(), false); // if in setup or DEBUG_SEGMENT
 }

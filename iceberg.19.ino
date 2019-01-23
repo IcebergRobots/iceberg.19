@@ -16,6 +16,10 @@ void setup() {
 
   /*****************************************************/
   io.turbo.setLimits(false, false); // set broken turbo key to off
+  for(int i = 0; i < 4; i++) {
+    drive.m[i].speed->showDebug(DEBUG_PIN);
+    drive.m[i].speed->startDebug();
+  }
   /*****************************************************/
 }
 
@@ -29,27 +33,38 @@ void loop() {
   if (camera.onDemand()) camera.frame();
   //readUltrasonic();
   
-
-  if(io.start.stroke()) {
-    debug("start");
-    drive.set(0, 255);
-  }
-  if(io.stop.stroke()) {
-    debug("stop");
-    drive.brake(1);
-  }
-  if (io.shiftStart.stroke())               {
+  
+  if (io.shiftStart.further())               {
     debug("ball:");
     debug(io.ball.str(4, -1, true) + ",");
     debug(io.ballWidth.str(4) + ",");
     debug(io.ballArea.str(4));
   }
-  if (io.shiftStop.stroke())                { 
+  if (io.shiftStop.further())                { 
     debug("goal:");
     debug(io.goal.str(4, -1, true) + ",");
     debug(io.goalWidth.str(4) + ",");
     debug(io.goalArea.str(4));
   }
+
+  if (io.start.stroke()) {
+    debug("start");
+    io.driveEnabled.set(true);
+  }
+  if (io.stop.stroke()) {
+    debug("stop");
+    io.driveEnabled.set(false);
+  }
+  if (io.shiftStart.click()) {
+    drive.set(0, io.poti.get());
+  }
+  if (io.shiftStop.click()) {
+    drive.brake(false);
+  }
+
+  if (io.drivePower.outsidePeriod(400)) drive.brake(false);
+  if (io.driveEnabled.falling()) drive.brake(false);
+  //if (io.driveEnabled.off() && io.driveEnabled.outsidePeriod(100)) drive.brake(false);
 
   updateStates();
   //updateRating();

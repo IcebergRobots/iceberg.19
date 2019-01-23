@@ -45,10 +45,10 @@ void Chassis::temp(int angle, int power, int rotation) {
   int axis02 = io.drivePower.get() * (double)sinA02 / 10000; //berechne Motorstärken für Achse 1&3
   int axis13 = io.drivePower.get() * (double)sinA13 / 10000; //berechne Motorstärken für Achse 2&4
 
-  m[0].temp(axis02 - io.driveRotation.get());
-  m[1].temp(axis13 - io.driveRotation.get());
-  m[2].temp(axis02 + io.driveRotation.get());
-  m[3].temp(axis13 + io.driveRotation.get());
+  m[0].temp(-axis02 + io.driveRotation.get());
+  m[1].temp(-axis13 + io.driveRotation.get());
+  m[2].temp( axis02 + io.driveRotation.get());
+  m[3].temp( axis13 + io.driveRotation.get());
 }
 
 /*****************************************************
@@ -97,7 +97,6 @@ void Motor::setPins(Pin *_current, Pin *_forward, Pin *_backward, Pin *_speed) {
 }
 
 void Motor::temp(int power) {
-  debug(power);
   forward->temp(power > 0);
   backward->temp(power <= 0);
   speed->temp(abs(power)); 

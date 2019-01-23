@@ -10,7 +10,7 @@
     - in case of modulation: lower limit
     - in case of limits: upper limit
 *****************************************************/
-Value::Value(byte processing, int min, int max, byte _debugSettings) {
+Value::Value(byte processing, int min, int max) {
   switch (processing) {
     default:
     case LIMITS:
@@ -23,7 +23,6 @@ Value::Value(byte processing, int min, int max, byte _debugSettings) {
       setLimits(false, true);
       break;
   }
-  debugSettings = _debugSettings;
 }
 /*****************************************************
   configurate limits
@@ -59,8 +58,8 @@ void Value::update() {
 /*****************************************************
   there is a current event, so save its time (now)
 *****************************************************/
-void Value::now() {
-  if (isDebug(DEBUG_ON_EVENT)) sendDebug(true);
+void Value::now(bool mute) {
+  if (!mute) sendDebug(true);
   eventTimer = millis();
 }
 /*****************************************************
@@ -68,18 +67,19 @@ void Value::now() {
   @param _value: new value
   - modulate or limit the value
 *****************************************************/
-void Value::set(int _value, String reason, bool trigger) {
+void Value::set(int _value, String reason, bool mute, byte pin) {
   if (value != _value) {
     if (a <= b) value = constrain(_value, a, b); // limit
     else value = circulate(_value, a, b);        // modulate
 
     if (value != _value) return; // value didn't change
 
-    if (trigger) now(); // trigger the timer because value changed
-
-    if ((!isDebug(DEBUG_ON_EVENT) && isDebug(DEBUG_ON_CHANGE)) // don't duplicate message
+    if (!mute) {
+      now(true); // trigger the timer because value changed
+      if (isDebug(DEBUG_ON_CHANGE)                             // event causes message
       || (isDebug(DEBUG_ON_REASON) && reason.length() > 0)) {  // reason causes message
-      sendDebug(trigger, reason);
+        sendDebug(!mute, reason, pin);
+      }
     }
 
     // if sign doesn't change, keep falling or rising state and wait for update()
@@ -171,13 +171,13 @@ unsigned long Value::period() {
 /*****************************************************
   happened the last event outside this period
 *****************************************************/
-bool Value::outsidePeriod(int min) {
-  return period() >= min;
+bool Value::outsidePeriod(unsigned long min) {
+  return isFinite(period()) && period() >= min;
 }/*****************************************************
   happened the last event within this period
 *****************************************************/
-bool Value::insidePeroid(int max) {
-  return period() <= max;
+bool Value::insidePeroid(unsigned long max) {
+  return isFinite(period()) && period() <= max;
 }
 /*****************************************************
   time since last event as string
@@ -211,13 +211,18 @@ void Value::resetDebug() { debugSettings = B00000000; }
   is this type of debugging activated?
 *****************************************************/
 bool Value::isDebug(byte type) {
-  return  bitRead(debugSettings, DEBUG_ENABLE) && bitRead(debugSettings, type);
+  return bitRead(debugSettings, DEBUG_ENABLE) && bitRead(debugSettings, type);
 }
 /*****************************************************
   create a new debug message
 *****************************************************/
-void Value::sendDebug(bool timerChange, String reason) {
+void Value::sendDebug(bool timerChange, String reason, byte pin) {
+  if (!isDebug()) return;
   String m = "§";
+  if (isDebug(DEBUG_PIN)) { 
+    if (isFinite(pin)) m += String(pin) + "|";
+    else m += "v";
+  }
   if (isDebug(DEBUG_TIME)) m += String(millis()) + "|";
   if (isDebug(DEBUG_STATE)) {
     switch (state) {
@@ -249,7 +254,7 @@ void Value::sendDebug(bool timerChange, String reason) {
   create a timer
   @param _surviveTime: leave output active for a delay
 *****************************************************/
-  Timer::Timer(long _surviveTime, Timer *_requirement) : Value(MODULATION, false, true) {
+Timer::Timer(unsigned long _surviveTime, Timer *_requirement) : Value(MODULATION, false, true) {
   surviveTime = _surviveTime;
   requirement = _requirement;
 }
@@ -357,7 +362,7 @@ void Pin::set() {
   - wait for set() to execute changes
 *****************************************************/
 void Pin::temp(int _value) {
-  Value::set(_value);
+  Value::set(_value, "", false, getPin());
 }
 
 /*****************************************************
@@ -434,20 +439,20 @@ void Key::update() {
     switch (state) {
       default:
       case OFF: // so far no click was detected
-        if (period() >= preStroke) {
+        if (outsidePeriod(preStroke)) {
           state = STROKE; // detect the first click
           now(); // create an event and save click time
         }
         break;
       case ON:
       case STROKE:
-        if (period() >= postStroke) {
+        if (outsidePeriod(postStroke)) {
           state = FURTHER;  // detect a further click
           now(); // create an event and save click time
         } else state = ON;
         break;
       case FURTHER:
-        if (period() >= preStroke) {
+        if (outsidePeriod(postFurther)) {
           state = FURTHER;  // detect a further click
           now(); // create an event and save click time
         } else state = ON;
@@ -613,7 +618,7 @@ void IO::update() {
   m3Current.update();
   puiLight.update();
   puiInterrupt.update();
-  puiPoti.update();
+  poti.update();
   kick.update();
   cameraServo.update();
   spiClk.update();

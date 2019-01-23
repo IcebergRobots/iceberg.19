@@ -21,6 +21,10 @@ void debugln(String str="", bool space=true);
 void debug(long num, bool space=true);
 void debug(String str="", bool space=true);
 
+bool isFinite(unsigned long value);
+bool isFinite(unsigned int value);
+bool isFinite(byte value);
+
 int circulate(int value, int min, int max);
 int pinMode(byte pin);
 void reset();
@@ -66,7 +70,7 @@ void endSegment();
   4352mS    WDTO_4S
   8705mS    WDTO_8S
 */
-#define WATCHDOG        1           // Soll bei Absturz automatisch neu gestartet werden?
+#define WATCHDOG        0           // Soll bei Absturz automatisch neu gestartet werden?
 #define WATCHDOG_SETUP  WDTO_500MS  // Setupzeit, nach der Neugestartet wird
 #define WATCHDOG_LOOP   WDTO_120MS  // Schleifenzeit, nach der Neugestartet wird
 

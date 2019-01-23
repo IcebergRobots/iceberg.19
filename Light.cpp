@@ -10,7 +10,7 @@ Light::Light() {
 void Light::light() {
   beginSegment("l:s");
   setBoard(puiBoard, 255);
-  puiBoard.setBrightness(map(io.puiPoti.get(), 0, 1023, 0, 255));
+  puiBoard.setBrightness(map(io.poti.get(), 0, 1023, 0, 255));
   io.indHearbeat.set(map(abs(int(millis() % 500) - 250),0,250,-100,356));
   /*showState(puiBoard, 0, io.start.get());
   showState(puiBoard, 1, io.stop.get());
