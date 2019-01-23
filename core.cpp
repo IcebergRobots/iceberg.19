@@ -58,11 +58,11 @@ String format(long num, unsigned int minLength, unsigned int maxLength, bool sig
 }
 
 void beginSegment(String name) {
-  if(io.runtime.since() + 1 == 0 || DEBUG_SEGMENT) { // if in setup or DEBUG_SEGMENT
+  if(io.runtime.period() + 1 == 0 || DEBUG_SEGMENT) { // if in setup or DEBUG_SEGMENT
     debug(name + "{");
     io.segment.set();
   }
 }
 void endSegment() {
-  if(io.runtime.since() + 1 == 0 || DEBUG_SEGMENT) debug("}"+ io.segment.str(), false); // if in setup or DEBUG_SEGMENT
+  if(io.runtime.period() + 1 == 0 || DEBUG_SEGMENT) debug("}"+ io.segment.str(), false); // if in setup or DEBUG_SEGMENT
 }

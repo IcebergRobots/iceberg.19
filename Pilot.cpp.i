@@ -16,7 +16,9 @@ void Pilot::changeState() {
     // sehenBall &   keine Pfostendrehung   &  (Stürmer   oder  Singleplayer)
   }
 
-  switch (state) {
+io.state.set(BACK, "rearward>");
+
+  switch (io.state.get()) {
     // Passivspiel
     case BACK: // Nach hinten
       if (us.back() <= COURT_REARWARD_MAX) setState(1, "rearward<");
@@ -24,9 +26,9 @@ void Pilot::changeState() {
       break;
 
     case 1: // Torverteidigung
-      if (io.seeBall.off() && millis() - stateTimer > SIDEWARD_MAX_DURATION) {
+      if (io.seeBall.off() && io.state.period() >= SIDEWARD_MAX_DURATION) {
         if (us.back() > COURT_REARWARD_MAX) setState(0, "rearward>"); // fahre rückwärts
-        else if (isKeeper()) setState(2, "time>,keeper");     // wechsle in Drehmodus
+        else if (io.striker.on()) setState(2, "time>,keeper");     // wechsle in Drehmodus
         else setDirection(TOGGLE, "time>,rusher");  // wechsle Fahrrichtung
       } else if (millis() - stateTimer > SIDEWARD_MIN_DURATION) {
         if (us.back() > COURT_REARWARD_MAX) setState(0, "rearward>"); // fahre rückwärts

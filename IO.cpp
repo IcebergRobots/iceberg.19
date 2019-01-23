@@ -10,7 +10,7 @@
     - in case of modulation: lower limit
     - in case of limits: upper limit
 *****************************************************/
-Value::Value(byte processing, int min, int max) {
+Value::Value(byte processing, int min, int max, byte _debugSettings) {
   switch (processing) {
     default:
     case LIMITS:
@@ -23,6 +23,7 @@ Value::Value(byte processing, int min, int max) {
       setLimits(false, true);
       break;
   }
+  debugSettings = _debugSettings;
 }
 /*****************************************************
   configurate limits
@@ -59,6 +60,7 @@ void Value::update() {
   there is a current event, so save its time (now)
 *****************************************************/
 void Value::now() {
+  if (isDebug(DEBUG_ON_EVENT)) sendDebug(true);
   eventTimer = millis();
 }
 /*****************************************************
@@ -66,14 +68,19 @@ void Value::now() {
   @param _value: new value
   - modulate or limit the value
 *****************************************************/
-void Value::set(int _value, bool trigger) {
+void Value::set(int _value, String reason, bool trigger) {
   if (value != _value) {
     if (a <= b) value = constrain(_value, a, b); // limit
-    else value = circulate(_value, a, b);       // modulate
+    else value = circulate(_value, a, b);        // modulate
 
     if (value != _value) return; // value didn't change
 
     if (trigger) now(); // trigger the timer because value changed
+
+    if ((!isDebug(DEBUG_ON_EVENT) && isDebug(DEBUG_ON_CHANGE)) // don't duplicate message
+      || (isDebug(DEBUG_ON_REASON) && reason.length() > 0)) {  // reason causes message
+      sendDebug(trigger, reason);
+    }
 
     // if sign doesn't change, keep falling or rising state and wait for update()
     if (state == OFF || state == FALLING) if (on())  state = RISING;  // detect rising (off -> on) change
@@ -157,16 +164,85 @@ bool Value::ever() { return eventTimer != 0; }
 /*****************************************************
   time since last event
 *****************************************************/
-unsigned long Value::since() {
+unsigned long Value::period() {
   if (!ever()) return -1;
   else return millis() - eventTimer;
 }
-String Value::sinceStr(unsigned int minLength, unsigned int maxLength, bool sign) {
-  return format(since(), minLength, maxLength, sign); 
+/*****************************************************
+  happened the last event outside this period
+*****************************************************/
+bool Value::outsidePeriod(int min) {
+  return period() >= min;
+}/*****************************************************
+  happened the last event within this period
+*****************************************************/
+bool Value::insidePeroid(int max) {
+  return period() <= max;
+}
+/*****************************************************
+  time since last event as string
+*****************************************************/
+String Value::periodStr(unsigned int minLength, unsigned int maxLength, bool sign) {
+  return format(period(), minLength, maxLength, sign); 
 }
 
+/*****************************************************
+  configurate a special type of debugging
+  @param type: select an aspect
+  @param enable: show this aspect be displayed?
+*****************************************************/
+void Value::showDebug(byte type, bool enable) {
+  bitWrite(debugSettings, type, enable);
+}
+/*****************************************************
+  activate debugging
+*****************************************************/
+void Value::startDebug() { showDebug(DEBUG_ENABLE); }
+/*****************************************************
+  deactivate debugging
+*****************************************************/
+void Value::stopDebug() { showDebug(DEBUG_ENABLE, false); }
+/*****************************************************
+  turn all aspects of debugging off
+*****************************************************/
+void Value::resetDebug() { debugSettings = B00000000; }
 
-
+/*****************************************************
+  is this type of debugging activated?
+*****************************************************/
+bool Value::isDebug(byte type) {
+  return  bitRead(debugSettings, DEBUG_ENABLE) && bitRead(debugSettings, type);
+}
+/*****************************************************
+  create a new debug message
+*****************************************************/
+void Value::sendDebug(bool timerChange, String reason) {
+  String m = "§";
+  if (isDebug(DEBUG_TIME)) m += String(millis()) + "|";
+  if (isDebug(DEBUG_STATE)) {
+    switch (state) {
+      case OFF:
+        m += "o";
+        break;
+      case ON:
+        m += "i";
+        break;
+      case FALLING:
+        m += "f";
+        break;
+      case RISING:
+        m += "r";
+        break;
+      default:
+        m += "?";
+        break;
+    }
+  }
+  if (isDebug(DEBUG_VALUE)) m += str();
+  if (isDebug(DEBUG_REASON)) m += reason;
+  debug(m);
+  
+}
 
 
 /*****************************************************
@@ -190,7 +266,7 @@ void Timer::setSurviveTime(unsigned long _surviveTime) {
 *****************************************************/
 void Timer::update() {
   Value::update();
-  if(ever()) Value::set(since() <= surviveTime, false);
+  if(ever()) Value::set(period() <= surviveTime, "", false);
 }
 /*****************************************************
   trigger time
@@ -358,20 +434,20 @@ void Key::update() {
     switch (state) {
       default:
       case OFF: // so far no click was detected
-        if (since() >= preStroke) {
+        if (period() >= preStroke) {
           state = STROKE; // detect the first click
           now(); // create an event and save click time
         }
         break;
       case ON:
       case STROKE:
-        if (since() >= postStroke) {
+        if (period() >= postStroke) {
           state = FURTHER;  // detect a further click
           now(); // create an event and save click time
         } else state = ON;
         break;
       case FURTHER:
-        if (since() >= preStroke) {
+        if (period() >= preStroke) {
           state = FURTHER;  // detect a further click
           now(); // create an event and save click time
         } else state = ON;
@@ -436,7 +512,7 @@ Pui::Pui() {}
 *****************************************************/
 void Pui::init() {
   beginSegment("pui");
-  I2c.write(ADDRESS, A_PINMODE, 0x00); // set OUTPUT
+  //I2c.write(ADDRESS, A_PINMODE, 0x00); // set OUTPUT
   I2c.write(ADDRESS, B_PINMODE, 0xFF);  // set INPUT
   I2c.write(ADDRESS, B_VALUE, 0xFF);    // set INPUT_PULLUP
   endSegment();

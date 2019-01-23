@@ -4,42 +4,52 @@
 #include "core.h"
 
 // DATA TYPES
-#define INT8_T_MIN -128
-#define INT8_T_MAX 127
-#define UINT8_T_MIN 0
-#define UINT8_T_MAX 255
-#define INT16_T_MIN -32768
-#define INT16_T_MAX 32767
-#define UINT16_T_MIN 0
-#define UINT16_T_MAx 65535
-#define INT32_T_MIN -2147483648
-#define INT32_T_MAX 2147483647
-#define UINT32_T_MIN 0
-#define UINT32_T_MAX 4294967295
+#define INT8_T_MIN          -128
+#define INT8_T_MAX           127
+#define UINT8_T_MIN            0
+#define UINT8_T_MAX          255
+#define INT16_T_MIN       -32768
+#define INT16_T_MAX        32767
+#define UINT16_T_MIN           0
+#define UINT16_T_MAX       65535
+#define INT32_T_MIN  -2147483648
+#define INT32_T_MAX   2147483647
+#define UINT32_T_MIN           0
+#define UINT32_T_MAX  4294967295
 
 // Mode
-#define ANALOG 0
+#define ANALOG  0
 #define DIGITAL 1
-#define PWM 2
-#define PUI 3
+#define PWM     2
+#define PUI     3
 #define VIRTUAL 4
 
 // Processing
-#define LIMITS 0
+#define LIMITS     0
 #define MODULATION 1
-#define BOOLEAN 2
+#define BOOLEAN    2
 
 // Values
-#define LEFT false
+#define LEFT  false
 #define RIGHT true
 
 // States
-#define OFF 0
-#define ON 1
+#define OFF     0
+#define ON      1
 #define FALLING 2
-#define RISING 3
-#define STROKE 4
+#define RISING  3
+#define STROKE  4
 #define FURTHER 6
+
+// Debug debug
+#define DEBUG_ENABLE    0
+#define DEBUG_ON_CHANGE 1
+#define DEBUG_ON_REASON 2
+#define DEBUG_ON_EVENT  3
+#define DEBUG_TIME      4
+#define DEBUG_STATE     5
+#define DEBUG_VALUE     6
+#define DEBUG_REASON    7
 
 /*****************************************************
   class Value
@@ -56,7 +66,7 @@ class Value
 {
   public:
     // configutate
-    Value(byte processing=LIMITS, int min=INT16_T_MIN, int max=INT16_T_MAX);
+    Value(byte processing=LIMITS, int min=INT16_T_MIN, int max=INT16_T_MAX, byte debugSettings=B00000000);
     void setLimits(int min=INT16_T_MIN, int max=INT16_T_MAX); //huhu
     void setModulation(int min, int max);
 
@@ -65,7 +75,7 @@ class Value
 
     // interact
     void now();
-    void set(int _value, bool trigger=true);
+    void set(int _value, String reason="", bool trigger=true);
     void add(int _summand=1);
     void mul(float _factor);
 
@@ -87,10 +97,21 @@ class Value
 
     // events
     bool ever();
-    unsigned long since();
-    String sinceStr(unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
+    unsigned long period();
+    bool outsidePeriod(int min);
+    bool insidePeroid(int max);
+    String periodStr(unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
+
+    // debug
+    void showDebug(byte type, bool enable=true);
+    void startDebug();
+    void stopDebug();
+    void resetDebug();
 
   private:
+    bool isDebug(byte type);
+    void sendDebug(bool timerChange=false, String reason="");
+
     int value = 0;
     int a = 0;  // in case of modulation: upper limit
                 // in case of limits: lower limit
@@ -98,6 +119,7 @@ class Value
                 // in case of limits: upper limit
     unsigned long eventTimer = 0; // time of last event
     byte state = OFF; // OFF, ON, FALLING, RISING
+    byte debugSettings = B00000000; // NO_DEBUG, CHANGES, REASONS, CHANGES_AND_REASONS, FALLING_AND_RISING
 };
 
 
@@ -345,24 +367,24 @@ public:
   Timer battery         = Timer(                    );  // ist der Akku angeschlosse?
 
   // all global variables
-  Value aggressive     = Value(     BOOLEAN                 );
-  Value striker        = Value(     BOOLEAN                 );
-  Value state          = Value(      LIMITS,      0,     9  );
-  Value stateDirection = Value(     BOOLEAN                 );
+  Value aggressive     = Value(     BOOLEAN                             );
+  Value striker        = Value(     BOOLEAN                             );
+  Value state          = Value(      LIMITS,      0,     9,  B01000011  );
+  Value stateDirection = Value(     BOOLEAN                             );
 
-  Value driveAngle     = Value(  MODULATION,      0,   359  ); // Zielwinkel
-  Value drivePower     = Value(      LIMITS,      0,   255  ); // Geschwindigkeit
-  Value driveRotation  = Value(      LIMITS,   -255,   255  ); // Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
-  Value driveEnabled   = Value(     BOOLEAN                 ); // Aktivierung des Fahrgestells
+  Value driveAngle     = Value(  MODULATION,      0,   359              ); // Zielwinkel
+  Value drivePower     = Value(      LIMITS,      0,   255              ); // Geschwindigkeit
+  Value driveRotation  = Value(      LIMITS,   -255,   255              ); // Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
+  Value driveEnabled   = Value(     BOOLEAN                             ); // Aktivierung des Fahrgestells
 
-  Value ball           = Value(      LIMITS,   -160,   159  );  // Abweichung der Ball X-Koordinate
-  Value ballWidth      = Value(      LIMITS,      0         );  // Ballbreite
-  Value ballArea       = Value(      LIMITS,      0         );  // Ballgröße (Flächeninhalt)
-  Value goal           = Value(      LIMITS,   -160,   159  );  // Abweichung der Tor X-Koordinate
-  Value goalWidth      = Value(      LIMITS,      0         );  // Torbreite
-  Value goalArea       = Value(      LIMITS,      0         );  // Torgröße (Flächeninhalt)
+  Value ball           = Value(      LIMITS,   -160,   159              );  // Abweichung der Ball X-Koordinate
+  Value ballWidth      = Value(      LIMITS,      0                     );  // Ballbreite
+  Value ballArea       = Value(      LIMITS,      0                     );  // Ballgröße (Flächeninhalt)
+  Value goal           = Value(      LIMITS,   -160,   159              );  // Abweichung der Tor X-Koordinate
+  Value goalWidth      = Value(      LIMITS,      0                     );  // Torbreite
+  Value goalArea       = Value(      LIMITS,      0                     );  // Torgröße (Flächeninhalt)
   
-  Value hasDebugHead   = Value(     BOOLEAN                 );  // Debug-Zeilenanfang
+  Value hasDebugHead   = Value(     BOOLEAN                             );  // Debug-Zeilenanfang
 
   void update();
 
