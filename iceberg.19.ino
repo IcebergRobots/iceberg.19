@@ -64,7 +64,7 @@ void loop() {
 
   if (io.drivePower.outsidePeriod(400)) drive.brake(false);
   if (io.driveEnabled.falling()) drive.brake(false);
-  //if (io.driveEnabled.off() && io.driveEnabled.outsidePeriod(100)) drive.brake(false);
+  if (io.driveEnabled.off() && io.driveEnabled.outsidePeriod(100)) drive.brake(false);
 
   updateStates();
   //updateRating();
