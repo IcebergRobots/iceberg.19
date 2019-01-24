@@ -1,22 +1,13 @@
 #include "core.h"
 
+void (*printDebug)(String, bool);
 /*****************************************************
   sende Text zum PC
 *****************************************************/
-void debugln(long num, bool space) {   debugln(String(num)); }
-void debugln(String str, bool space) { debug(str + "\n");    }
-void debug(long num, bool space) {     debug(String(num), space);   }
-void debug(String str, bool space) {
-  if (DEBUG /* && io.turbo.off()*/) {
-    /*if (io.hasDebugHead.on() && space)*/ str = " " + str;
-    /*if (io.hasDebugHead.off()) {
-      io.hasDebugHead.set(true);
-      str = "\n" + format("t" + io.runtime.str(), 6) + " " + str;
-      io.runtime.set();
-    }*/
-    DEBUG_SERIAL.print(str);
-  }
-}
+void debugln(long num, bool space)   { debugln(String(num));      }
+void debugln(String str, bool space) { debug(str + "\n");         }
+void debug(long num, bool space)     { debug(String(num), space); }
+void debug(String str, bool space)   { printDebug(str, space);    }
 
 bool isFinite(unsigned long value) {
   return value + 1 != 0;

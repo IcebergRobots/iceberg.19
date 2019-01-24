@@ -7,6 +7,7 @@
 
 #include "Arduino.h"
 
+extern void (*printDebug)(String, bool);
 void debugln(long num, bool space=true);
 void debugln(String str="", bool space=true);
 void debug(long num, bool space=true);

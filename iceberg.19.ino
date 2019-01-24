@@ -2,6 +2,8 @@
  // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen
 
 void setup() {
+  printDebug = printDown;
+
   setupWatchdog();
   initUART();
   initDebug();
