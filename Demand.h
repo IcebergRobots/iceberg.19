@@ -7,16 +7,17 @@ class Demand
 {
   public:
     Demand();
+    void setLocked(unsigned long period);
+    void setCooldown(unsigned long period);
     void request();
     bool onDemand();
-    void setCooldown(int min , int max);
-    void setCooldown(int max);
+
+    Timer cooldown;
 
   private:
     bool demand = false;
-    unsigned long lastRun = 0;
-    unsigned long minDelay = 0;
-    unsigned long maxDelay = 0;
+    unsigned long lockedPeriod = 0;
+
 };
 
 #endif

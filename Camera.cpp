@@ -1,17 +1,17 @@
 #include "Camera.h"
 
 /*********************************************************************
-- Konstruktor
+- Constructor
 *********************************************************************/
-Camera::Camera() {
-    setCooldown(30, 100);
-}
+Camera::Camera() {}
 
 /*********************************************************************
 - initialisiert die SPI Kommunikation
 *********************************************************************/
 void Camera::init() {  
     beginSegment("c");
+    setLocked(30);
+    setCooldown(100);
     SPI.begin();
     Pixy::init();
     io.cameraResponse.set(SPI.transfer(0x00) == 255);

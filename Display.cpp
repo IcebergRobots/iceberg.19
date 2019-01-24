@@ -1,15 +1,15 @@
 #include "Display.h"
 
 /*********************************************************************
-- Konstruktor
+- Constructor
 *********************************************************************/
-Display::Display(int resetPin) : Adafruit_SH1106(resetPin) {
-  setCooldown(100, 1000);
-}
+Display::Display(int resetPin) : Adafruit_SH1106(resetPin) {}
 
 
 void Display::init() {
   beginSegment("d");
+  setLocked(100);
+  setCooldown(1000);
   begin(SH1106_SWITCHCAPVCC, 0x3C);  // initialisiere das Displays
   clearDisplay(); // leere den Bildschirm
   if (io.turbo.off()) { 

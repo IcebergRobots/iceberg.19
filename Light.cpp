@@ -1,14 +1,13 @@
 #include "Light.h"
 
 /*****************************************************
-  Konstruktor
+  Constructor
 *****************************************************/
-Light::Light() {
-  setCooldown(10);
-}
+Light::Light() {}
 
 void Light::light() {
   beginSegment("l:s");
+  setLocked(10);
   setBoard(puiBoard, 255);
   puiBoard.setBrightness(map(io.poti.get(), 0, 1023, 0, 255));
   io.indHearbeat.set(map(abs(int(millis() % 500) - 250),0,250,-100,356));

@@ -162,6 +162,10 @@ bool Value::change() { return falling() || rising(); }
 *****************************************************/
 bool Value::ever() { return eventTimer != 0; }
 /*****************************************************
+  was there ever an event?
+*****************************************************/
+bool Value::never() { return !ever(); }
+/*****************************************************
   time since last event
 *****************************************************/
 unsigned long Value::period() {
@@ -172,12 +176,12 @@ unsigned long Value::period() {
   happened the last event outside this period
 *****************************************************/
 bool Value::outsidePeriod(unsigned long min) {
-  return isFinite(period()) && period() >= min;
+  return never() || period() >= min;
 }/*****************************************************
   happened the last event within this period
 *****************************************************/
 bool Value::insidePeroid(unsigned long max) {
-  return isFinite(period()) && period() <= max;
+  return ever() && period() <= max;
 }
 /*****************************************************
   time since last event as string
@@ -271,7 +275,7 @@ void Timer::setSurviveTime(unsigned long _surviveTime) {
 *****************************************************/
 void Timer::update() {
   Value::update();
-  if(ever()) Value::set(period() <= surviveTime, "", false);
+  if(ever() && surviveTime > 0) Value::set(insidePeroid(surviveTime), "", false);
 }
 /*****************************************************
   trigger time
@@ -554,7 +558,7 @@ Pui pui = Pui();
 
 
 /*********************************************************************
-- Konstruktor
+- Constructor
 *********************************************************************/
 IO::IO() {}
 

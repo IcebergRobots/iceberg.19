@@ -26,7 +26,6 @@ void setup() {
 void loop() {
   prepareDebug();  // bereite debug nachrichten vor
   loopWatchdog();
-
   io.update();
 
   //readCompass();

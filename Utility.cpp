@@ -22,6 +22,7 @@ void loopWatchdog() {
 }
 
 void initDebug() {
+  io.hasDebugHead.set(true);
   String str = "";
   if (!DEBUG) str += "\nUSB DEBUG DEACTIVATED!";
   else {

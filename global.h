@@ -6,5 +6,6 @@
 #include "Light.h"
 #include "Display.h"
 #include "Chassis.h"
+#include "Pilot.h"
 
 #endif
