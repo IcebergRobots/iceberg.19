@@ -1,7 +1,8 @@
 #ifndef Utility_h
 #define Utility_h
 
-#include "core.h"
+#include "IO.h"
+#include <avr/wdt.h>
 
 void initUART();
 void initI2C();

@@ -1,7 +1,10 @@
 #ifndef PixyCam_h
 #define PixyCam_h
 
-#include "core.h"
+#include "IO.h"
+#include "Demand.h"
+#include <SPI.h>
+#include <Pixy.h>
 
 #define BUFFER_SIZE 128
 

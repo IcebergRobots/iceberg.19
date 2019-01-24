@@ -1,7 +1,7 @@
 #ifndef Demand_h
 #define Demand_h
 
-#include "core.h"
+#include "Timer.h"
 
 class Demand
 {

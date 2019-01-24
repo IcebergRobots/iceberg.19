@@ -7,13 +7,13 @@ void debugln(long num, bool space) {   debugln(String(num)); }
 void debugln(String str, bool space) { debug(str + "\n");    }
 void debug(long num, bool space) {     debug(String(num), space);   }
 void debug(String str, bool space) {
-  if (DEBUG && io.turbo.off()) {
-    if (io.hasDebugHead.on() && space) str = " " + str;
-    if (io.hasDebugHead.off()) {
+  if (DEBUG /* && io.turbo.off()*/) {
+    /*if (io.hasDebugHead.on() && space)*/ str = " " + str;
+    /*if (io.hasDebugHead.off()) {
       io.hasDebugHead.set(true);
       str = "\n" + format("t" + io.runtime.str(), 6) + " " + str;
       io.runtime.set();
-    }
+    }*/
     DEBUG_SERIAL.print(str);
   }
 }
@@ -67,12 +67,12 @@ String format(long num, unsigned int minLength, unsigned int maxLength, bool sig
   return format(str, minLength, maxLength);
 }
 
-void beginSegment(String name) {
-  if(!io.runtime.ever() || DEBUG_SEGMENT) { // if in setup or DEBUG_SEGMENT
+void beginSegment(String name, bool force) {
+  if(DEBUG_SEGMENT || force) { // if in setup or DEBUG_SEGMENT
     debug(name + "{");
-    io.segment.set();
+    //io.segment.set();
   }
 }
-void endSegment() {
-  if(!io.runtime.ever() || DEBUG_SEGMENT) debug("}"+ io.segment.str(), false); // if in setup or DEBUG_SEGMENT
+void endSegment(bool force) {
+  //if(DEBUG_SEGMENT || force) debug("}"+ io.segment.str(), false); // if in setup or DEBUG_SEGMENT
 }

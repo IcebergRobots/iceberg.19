@@ -1,5 +1,5 @@
-#include "core.h"   // Lade fundamentale Daten, die alle benötigen: Einstellungen, Pintabelle, Basiswerkzeuge, Bibliotheken
-#include "global.h" // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen
+#include "include.h"   // Lade fundamentale Daten, die alle benötigen: Einstellungen, Pintabelle, Basiswerkzeuge, Bibliotheken
+ // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen
 
 void setup() {
   setupWatchdog();
@@ -55,7 +55,9 @@ void loop() {
     io.driveEnabled.set(false);
   }
   if (io.shiftStart.click()) {
-    drive.set(0, io.poti.get());
+    drive.steer();
+    drive.accelerate(io.poti.get());
+    drive.face();
   }
   if (io.shiftStop.click()) {
     drive.brake(false);

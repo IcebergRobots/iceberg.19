@@ -6,15 +6,6 @@
 #endif
 
 #include "Arduino.h"
-#include <Adafruit_NeoPixel.h>
-#include <Adafruit_SH1106.h>
-#include <avr/wdt.h>
-#include <I2C.h>
-#include <SPI.h>
-#include <Pixy.h>
-
-#include "IO.h"
-#include "Demand.h"
 
 void debugln(long num, bool space=true);
 void debugln(String str="", bool space=true);
@@ -31,8 +22,8 @@ void reset();
 String format(String str, unsigned int minLength=0, unsigned int maxLength=-1);
 String format(long num, unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
 
-void beginSegment(String name="");
-void endSegment();
+void beginSegment(String name="", bool force=false);
+void endSegment(bool force=false);
 
 // UART
 #define DEBUG true
@@ -80,6 +71,20 @@ void endSegment();
 #define X_CENTER ((PIXY_MAX_X-PIXY_MIN_X)/2)  // PIXY: Die Mitte des Bildes der Pixy (in Pixeln)
 #define BALL_WIDTH_TRIGGER 40                 // Schwellwert eines großen Balles
 #define BALL_ANGLE_TRIGGER 40                 // Schwellenwert der Ballrichtung
+
+// DATA TYPES
+#define INT8_T_MIN          -128
+#define INT8_T_MAX           127
+#define UINT8_T_MIN            0
+#define UINT8_T_MAX          255
+#define INT16_T_MIN       -32768
+#define INT16_T_MAX        32767
+#define UINT16_T_MIN           0
+#define UINT16_T_MAX       65535
+#define INT32_T_MIN  -2147483648
+#define INT32_T_MAX   2147483647
+#define UINT32_T_MIN           0
+#define UINT32_T_MAX  4294967295
 
 // Zeitumwandlung
 #define MILS_PER_SEC  (1000UL)  // Millisekunden pro Sekunde

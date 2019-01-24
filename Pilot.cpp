@@ -5,7 +5,7 @@
   - configurate chassis
 *********************************************************************/
 Pilot::Pilot() : Chassis() {
-  setAxisAngle(_axisAngle);
+  setAxisAngle(70);
   m[0].setPins(&io.m0Current, &io.m0Dir1, &io.m0Dir2, &io.m0Speed);
   m[1].setPins(&io.m1Current, &io.m1Dir1, &io.m1Dir2, &io.m1Speed);
   m[2].setPins(&io.m2Current, &io.m2Dir1, &io.m2Dir2, &io.m2Speed);
@@ -56,8 +56,8 @@ void Pilot::steer(int angle) {
 void Pilot::accelerate(int speed) {
   io.drivePower.set(speed);
 }
-void Pilot::facing(int angle int speed) {
+void Pilot::face(int angle, int speed) {
   
 }
 
-Pilot pilot();
+Pilot drive;

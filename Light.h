@@ -1,7 +1,9 @@
 #ifndef Light_h
 #define Light_h
 
-#include "core.h"
+#include "IO.h"
+#include "Demand.h"
+#include <Adafruit_NeoPixel.h>
 
 class Light : public Demand
 {

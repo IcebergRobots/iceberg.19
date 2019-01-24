@@ -1,7 +1,7 @@
 #ifndef Chassis_h
 #define Chassis_h
 
-#include "core.h"
+#include "IO.h"
 
 class Motor
 {
@@ -37,8 +37,7 @@ class Chassis
 
   private:
     byte axisAngle = 0;
-    const int sinus[360];
+    static const int sinus[360];
 };
-extern class Chassis;
 
 #endif

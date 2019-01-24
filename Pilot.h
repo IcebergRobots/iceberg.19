@@ -2,7 +2,7 @@
 #define Pilot_h
 
 #include "IO.h"
-#include "core.h"
+#include "Chassis.h"
 
 #define BACK 0
 #define GOALKEEPER 1
@@ -18,18 +18,16 @@
 
 class Pilot : public Chassis
 {
+public:
+  Pilot();
 
-  public:
-    Pilot();
+  void update();
 
-    void update();
-    
-    void steer(int angle=0);
-    void accelerate(int speed=255);
-    void face(int angle=0, int speed=255);
+  void steer(int angle = 0);
+  void accelerate(int speed = 255);
+  void face(int angle = 0, int speed = 255);
 
-  private:
-  
+private:
 };
 extern Pilot drive;
 
