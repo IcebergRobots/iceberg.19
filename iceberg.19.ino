@@ -77,7 +77,7 @@ void loop() {
   //calibrateLine();
 
   if (light.onDemand()) light.light();
-  //pilot();
+  drive.execute();
   //bluetoth();
   if (d.onDemand()) d.update();
 

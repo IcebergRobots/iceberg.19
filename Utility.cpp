@@ -23,6 +23,8 @@ void loopWatchdog() {
 
 void initDebug() {
   debugFunction = printDebug;
+  beginSegmentFunction = printBeginSegment;
+  endSegmentFunction = printEndSegment;
   io.hasDebugHead.set(true);
   String str = "";
   if (!DEBUG) str += "\nUSB DEBUG DEACTIVATED!";
@@ -73,4 +75,14 @@ void printDebug(String str, bool space) {
     }
     DEBUG_SERIAL.print(str);
   }
+}
+
+void printBeginSegment(String name) {
+  if(io.runtime.never() || DEBUG_SEGMENT) { // if in setup or DEBUG_SEGMENT
+    debug(name + "{");
+    io.segment.set();
+  }
+}
+void printEndSegment() {
+  if(io.runtime.never() || DEBUG_SEGMENT) debug("}"+ io.segment.str(), false); // if in setup or DEBUG_SEGMENT
 }

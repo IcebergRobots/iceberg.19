@@ -19,5 +19,7 @@ void prepareDebug();
 void updateStates();
 
 void printDebug(String str, bool space);
+void printBeginSegment(String name);
+void printEndSegment();
 
 #endif

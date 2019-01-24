@@ -25,9 +25,19 @@ void Timer::update() {
 }
 /*****************************************************
   trigger time
-  - set timer to current time
+  - there is a current event, so save its time (now)
+  @param active: new value
 *****************************************************/
 void Timer::set(bool active) {
   if (active && (requirement == NULL || requirement->on())) now();
   update();
+}
+/*****************************************************
+  time since last event as string
+  @param minLength: minimun length of the string
+  @param maxLength: maximun length of the string
+  @param sign: add a plus sign
+*****************************************************/
+String Timer::str(unsigned int minLength, unsigned int maxLength, bool sign) {
+  return format(period(), minLength, maxLength, sign); 
 }

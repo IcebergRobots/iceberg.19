@@ -7,11 +7,14 @@
 
 #include "Arduino.h"
 
-extern void (*debugFunction)(String, bool);
 void debugln(long num, bool space=true);
 void debugln(String str="", bool space=true);
 void debug(long num, bool space=true);
 void debug(String str="", bool space=true);
+
+extern void (*debugFunction)(String, bool);
+extern void (*beginSegmentFunction)(String);
+extern void (*endSegmentFunction)();
 
 bool isFinite(unsigned long value);
 bool isFinite(unsigned int value);
@@ -23,8 +26,8 @@ void reset();
 String format(String str, unsigned int minLength=0, unsigned int maxLength=-1);
 String format(long num, unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
 
-void beginSegment(String name="", bool force=false);
-void endSegment(bool force=false);
+void beginSegment(String name="");
+void endSegment();
 
 // UART
 #define DEBUG true

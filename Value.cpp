@@ -139,6 +139,9 @@ bool Value::is(int comparison) { return value == comparison; }
 bool Value::no(int comparison) { return value != comparison; }
 /*****************************************************
   convert number to formatted string
+  @param minLength: minimun length of the string
+  @param maxLength: maximun length of the string
+  @param sign: add a plus sign
 *****************************************************/
 String Value::str(unsigned int minLength, unsigned int maxLength, bool sign) { 
   return format(value, minLength, maxLength, sign); 
@@ -169,7 +172,7 @@ bool Value::never() { return !ever(); }
   time since last event
 *****************************************************/
 unsigned long Value::period() {
-  if (!ever()) return -1;
+  if (never()) return -1;
   else return millis() - eventTimer;
 }
 /*****************************************************
@@ -185,6 +188,9 @@ bool Value::insidePeroid(unsigned long max) {
 }
 /*****************************************************
   time since last event as string
+  @param minLength: minimun length of the string
+  @param maxLength: maximun length of the string
+  @param sign: add a plus sign
 *****************************************************/
 String Value::periodStr(unsigned int minLength, unsigned int maxLength, bool sign) {
   return format(period(), minLength, maxLength, sign); 
