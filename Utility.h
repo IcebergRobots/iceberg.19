@@ -18,6 +18,6 @@ void prepareDebug();
 
 void updateStates();
 
-void printDown(String str, bool space);
+void printDebug(String str, bool space);
 
 #endif

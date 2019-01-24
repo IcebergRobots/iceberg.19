@@ -1,13 +1,13 @@
 #include "core.h"
 
-void (*printDebug)(String, bool);
+void (*debugFunction)(String, bool);
 /*****************************************************
   sende Text zum PC
 *****************************************************/
 void debugln(long num, bool space)   { debugln(String(num));      }
 void debugln(String str, bool space) { debug(str + "\n");         }
 void debug(long num, bool space)     { debug(String(num), space); }
-void debug(String str, bool space)   { printDebug(str, space);    }
+void debug(String str, bool space)   { debugFunction(str, space);    }
 
 bool isFinite(unsigned long value) {
   return value + 1 != 0;

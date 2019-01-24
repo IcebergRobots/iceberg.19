@@ -22,6 +22,7 @@ void loopWatchdog() {
 }
 
 void initDebug() {
+  debugFunction = printDebug;
   io.hasDebugHead.set(true);
   String str = "";
   if (!DEBUG) str += "\nUSB DEBUG DEACTIVATED!";
@@ -62,7 +63,7 @@ void updateStates() {
   //io.flat.set(!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7));
 }
 
-void printDown(String str, bool space) {
+void printDebug(String str, bool space) {
   if (DEBUG && io.turbo.off()) {
     if (io.hasDebugHead.on() && space) str = " " + str;
     if (io.hasDebugHead.off()) {
