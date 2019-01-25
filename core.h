@@ -1,33 +1,7 @@
 #ifndef core_h
 #define core_h
 
-#ifndef ARDUINO_AVR_MEGA2560
-#error "Wrong board selected! Choose Mega 2560"
-#endif
-
 #include "Arduino.h"
-
-void debugln(long num, bool space=true);
-void debugln(String str="", bool space=true);
-void debug(long num, bool space=true);
-void debug(String str="", bool space=true);
-
-extern void (*debugFunction)(String, bool);
-extern void (*beginSegmentFunction)(String);
-extern void (*endSegmentFunction)();
-
-bool isFinite(unsigned long value);
-bool isFinite(unsigned int value);
-bool isFinite(byte value);
-
-int circulate(int value, int min, int max);
-int pinMode(byte pin);
-void reset();
-String format(String str, unsigned int minLength=0, unsigned int maxLength=-1);
-String format(long num, unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
-
-void beginSegment(String name="");
-void endSegment();
 
 // UART
 #define DEBUG true
@@ -101,5 +75,30 @@ void endSegment();
 
 // DISPLAY
 #define SETUP_MESSAGE_RANGE 5 // [0 bis *] Anzahl von Schritten im Setup
+
+#ifndef ARDUINO_AVR_MEGA2560
+#error "Wrong board selected! Choose Mega 2560"
+#endif
+
+void debugln(long num, bool space=true);
+void debugln(String str="", bool space=true);
+void debug(long num, bool space=true);
+void debug(String str="", bool space=true);
+extern void (*debugFunction)(String, bool);
+
+bool isFinite(unsigned long value);
+bool isFinite(unsigned int value);
+bool isFinite(byte value);
+
+int circulate(int value, int min, int max);
+int pinMode(byte pin);
+void reset();
+String format(String str, unsigned int minLength=0, unsigned int maxLength=-1);
+String format(long num, unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
+
+void beginSegment(String name="");
+void endSegment();
+extern void (*beginSegmentFunction)(String);
+extern void (*endSegmentFunction)();
 
 #endif
