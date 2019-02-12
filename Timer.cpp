@@ -21,7 +21,7 @@ void Timer::setSurviveTime(unsigned long _surviveTime) {
 *****************************************************/
 void Timer::update() {
   Value::update();
-  if(ever() && surviveTime > 0) Value::set(insidePeroid(surviveTime), "", false);
+  if(surviveTime > 0) Value::set(insidePeroid(surviveTime), "", true);
 }
 /*****************************************************
   trigger time

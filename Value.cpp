@@ -179,12 +179,12 @@ unsigned long Value::period() {
   happened the last event outside this period
 *****************************************************/
 bool Value::outsidePeriod(unsigned long min) {
-  return never() || period() >= min;
+  return !insidePeroid(min);
 }/*****************************************************
   happened the last event within this period
 *****************************************************/
 bool Value::insidePeroid(unsigned long max) {
-  return ever() && period() <= max;
+  return max + 1 == 0 || (ever() && period() <= max);
 }
 /*****************************************************
   time since last event as string

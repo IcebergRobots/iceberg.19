@@ -12,11 +12,12 @@ class Demand
     void request();
     bool onDemand();
 
-    Timer cooldown;
+    Value runTime;
 
   private:
     bool demand = false;
-    unsigned long lockedPeriod = 0;
+    unsigned long lockedTime = 0;
+    unsigned long cooldownTime = 0;
 
 };
 
