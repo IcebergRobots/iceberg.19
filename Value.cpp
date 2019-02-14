@@ -11,7 +11,11 @@
     - in case of limits: upper limit
 *****************************************************/
 Value::Value(byte processing, int min, int max) {
-  objects.add(*this);
+  static int objectIndex;
+  objectIndex++;
+  Serial.begin(115200);
+  Serial.print(objectIndex);
+  Serial.print(" ");
   switch (processing) {
     default:
     case LIMITS:
