@@ -93,6 +93,8 @@ class Value
     bool isDebug(byte type=DEBUG_ENABLE);
     void sendDebug(bool timerChange=false, String reason="", byte pin=INF);
 
+    static LinkedList<Value> objects;
+    
     int value = 0;
     int a = 0;  // in case of modulation: upper limit
                 // in case of limits: lower limit

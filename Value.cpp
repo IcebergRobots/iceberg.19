@@ -11,6 +11,7 @@
     - in case of limits: upper limit
 *****************************************************/
 Value::Value(byte processing, int min, int max) {
+  objects.add(*this);
   switch (processing) {
     default:
     case LIMITS:
