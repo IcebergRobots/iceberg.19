@@ -11,11 +11,7 @@
     - in case of limits: upper limit
 *****************************************************/
 Value::Value(byte processing, int min, int max) {
-  static int objectIndex;
-  objectIndex++;
-  Serial.begin(115200);
-  Serial.print(objectIndex);
-  Serial.print(" ");
+  objectList(true);
   switch (processing) {
     default:
     case LIMITS:
@@ -262,4 +258,12 @@ void Value::sendDebug(bool timerChange, String reason, byte pin) {
   if (isDebug(DEBUG_REASON)) m += reason;
   debug(m);
   
+}
+/*****************************************************
+  update all objects of the class
+  @param initialisation: used in constructor only to add this object to the objects list
+*****************************************************/
+void Value::objectList(bool initialisation) {
+  static LinkedList<Value> objects;
+  if (initialisation) objects.add(this);
 }

@@ -92,6 +92,7 @@ class Value
   private:
     bool isDebug(byte type=DEBUG_ENABLE);
     void sendDebug(bool timerChange=false, String reason="", byte pin=INF);
+    void objectList(bool initialisation=false);
 
     int value = 0;
     int a = 0;  // in case of modulation: upper limit
