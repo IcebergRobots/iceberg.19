@@ -5,20 +5,19 @@
 #include "Demand.h"
 #include <Adafruit_NeoPixel.h>
 
-class Light : public Demand
+class Light : public Adafruit_NeoPixel, public Demand
 {
   public:
-    Light();
-    void light();
+    Light(int numPixels, Pin *pin);
+    setAllColor(unsigned long color);
+    setAllColor(byte red, byte green, byte blue);
+    setAllWheel(int offset);
+    setPixelState(byte pos, byte state, bool hideRed);
 
   private:
-    void showState(Adafruit_NeoPixel & board, byte pos, byte state, bool hideRed=false);
-    void wheelBoard(Adafruit_NeoPixel & board, int offset);
-    void setBoard(Adafruit_NeoPixel & board, uint32_t color);
-    uint32_t wheelToColor(Adafruit_NeoPixel & board, byte pos);
-    Adafruit_NeoPixel puiBoard = Adafruit_NeoPixel(12, io.puiLight.getPin(), NEO_GRB + NEO_KHZ800);
+    unsigned long wheelToColor(Adafruit_NeoPixel & board, byte pos);
 
 };
-extern Light light;
+extern Light puiBoard;
 
 #endif
