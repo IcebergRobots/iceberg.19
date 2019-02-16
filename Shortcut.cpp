@@ -24,7 +24,6 @@ Shortcut::Shortcut(Key **_keys, byte _keysLength, bool _muteKeys, unsigned long 
   scan all individual keys and process to detect clicks
 *****************************************************/
 void Shortcut::update() {
-  debug("s", false);
   set(true); // activate virtual key
   for(int i = 0; i < keysLength; i++) {
     if (keys[i]->off()) { // this key inactive

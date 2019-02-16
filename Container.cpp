@@ -31,7 +31,6 @@ void Container::operation(byte id, Container *myself) {
             break;
 
         case UPDATE:
-            debug((int)firstObject);
             if (firstObject != NULL) firstObject->updateNode();
             break;
 
