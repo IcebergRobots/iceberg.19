@@ -1,12 +1,12 @@
 #include "Camera.h"
 
 /*********************************************************************
-- Constructor
+  Constructor
 *********************************************************************/
 Camera::Camera() {}
 
 /*********************************************************************
-- initialisiert die SPI Kommunikation
+  initialisiert die SPI Kommunikation
 *********************************************************************/
 void Camera::init() {  
     beginSegment("c");

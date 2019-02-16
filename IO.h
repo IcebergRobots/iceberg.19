@@ -174,6 +174,11 @@ class IO {
     Value hasDebugHead   = Value(     BOOLEAN                 );  // Debug-Zeilenanfang
     Value battery        = Value(     BOOLEAN                 );  // ist der Akku angeschlosse?
 
+    Value heading        = Value(  MODULATION,   -179,   180  );
+    Value xOrientation   = Value(  MODULATION);
+    Value yOrientation   = Value(  MODULATION);
+    Value zOrientation   = Value(  MODULATION);
+
     void update();
 
   private:

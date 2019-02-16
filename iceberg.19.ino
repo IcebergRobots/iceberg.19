@@ -1,5 +1,4 @@
-#include "include.h"   // Lade fundamentale Daten, die alle benötigen: Einstellungen, Pintabelle, Basiswerkzeuge, Bibliotheken
- // Lade alle aufwendigeren Klassen und Werkzeuze, Initialisiere globale Variablen
+#include "include.h"
 
 void setup() {
   setupWatchdog();
@@ -10,6 +9,7 @@ void setup() {
   initI2C();
   pui.init();
   camera.init();
+  orientation.init();
   //createCrashlog();
   //restoreSession();
   setupDone();
@@ -20,6 +20,9 @@ void setup() {
     drive.m[i].speed->showDebug(DEBUG_PIN);
     drive.m[i].speed->startDebug();
   }
+  io.xOrientation.startDebug();
+  io.yOrientation.startDebug();
+  io.zOrientation.startDebug();
   /*****************************************************/
 }
 
@@ -28,7 +31,7 @@ void loop() {
   loopWatchdog();
   io.update();
 
-  //readCompass();
+  if (orientation.onDemand()) orientation.update();
   if (camera.onDemand()) camera.frame();
   //readUltrasonic();
   
@@ -60,7 +63,9 @@ void loop() {
     drive.face();
   }
   if (io.shiftStop.click()) {
-    drive.brake(false);
+    debug(io.xOrientation.str());
+    debug(io.yOrientation.str());
+    debug(io.zOrientation.str());
   }
 
   if (io.drivePower.outsidePeriod(400)) drive.brake(false);
