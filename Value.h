@@ -2,6 +2,7 @@
 #define Value_h
 
 #include "Pui.h"
+#include "Container.h"
 
 // States
 #define OFF     0
@@ -42,7 +43,7 @@
       set(-1) => 9                 set(-1) => 0           
 
 *****************************************************/
-class Value
+class Value : public Container
 {
   public:
     // configutate
