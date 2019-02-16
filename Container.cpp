@@ -12,22 +12,13 @@ void Container::updateAll() {
     container(UPDATE);
 }
 
+void Container::linkNode(Container *container) {
+    nextObject = container;
+}
+
 void Container::container(byte operation) {
-    /*static LinkedList<Container> objects;
+    static Container *previousObject;   
     
-    switch (operation)
-    {
-        case INITIALISATION:
-            objects.add(this);
-            break;
-
-        case UPDATE:
-            for(int i = 0; i < objects.size(); i++) {
-                objects.get(i)->update();
-            }
-            break;
-
-        default:
-            break;
-    }*/
+    previousObject->linkNode(this);
+    previousObject = this;
 }
