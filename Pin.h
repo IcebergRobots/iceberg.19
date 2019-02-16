@@ -2,6 +2,7 @@
 #define Pin_h
 
 #include "Value.h"
+#include "Container.h"
 
 // Mode
 #define ANALOG 0
@@ -10,7 +11,7 @@
 #define PUI 3
 #define VIRTUAL 4
 
-class Pin : public Value
+class Pin : public Value, public Container
 {
   public:
 	Pin(byte _pin, byte _mode, byte _type);

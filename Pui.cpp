@@ -9,11 +9,13 @@ Pui::Pui() {}
   initialise communication
 *****************************************************/
 void Pui::init() {
-  beginSegment("pui");
-  //I2c.write(ADDRESS, A_PINMODE, 0x00); // set OUTPUT
-  I2c.write(ADDRESS, B_PINMODE, 0xFF);  // set INPUT
-  I2c.write(ADDRESS, B_VALUE, 0xFF);    // set INPUT_PULLUP
-  endSegment();
+  if (PUI_ENABLED) {
+    beginSegment("pui");
+    //I2c.write(ADDRESS, A_PINMODE, 0x00); // set OUTPUT
+    I2c.write(ADDRESS, B_PINMODE, 0xFF);  // set INPUT
+    I2c.write(ADDRESS, B_VALUE, 0xFF);    // set INPUT_PULLUP
+    endSegment();
+  } else debug("-pui");
 }
 
 /*****************************************************
@@ -21,7 +23,7 @@ void Pui::init() {
   @param _value: output signal
 *****************************************************/
 void Pui::set(byte pin, bool value) {
-  if(pin < 8) {
+  if (PUI_ENABLED && pin < 8) {
     bitWrite(a, pin, value);
     I2c.write(ADDRESS, A_VALUE, a);
   }
@@ -39,8 +41,10 @@ bool Pui::get(byte pin) {
   read all pui pins
 *****************************************************/
 void Pui::update() {
-  I2c.read(ADDRESS, A_VALUE, 1);
-  b = I2c.receive();
+  if (PUI_ENABLED) {
+    I2c.read(ADDRESS, A_VALUE, 1);
+    b = I2c.receive();
+  }
 }
 
 Pui pui = Pui();

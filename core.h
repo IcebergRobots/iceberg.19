@@ -4,16 +4,22 @@
 #include "Arduino.h"
 #include "LinkedList.h"
 
+// MODULES
+#define DISPLAY_ENABLED     0
+#define PUI_ENABLED         0
+#define ORIENTATION_ENABLED 0
+#define CAMERA_ENABLED      1
+
 // UART
-#define DEBUG true
-#define DEBUG_SERIAL Serial
-#define DEBUG_BAUDRATE 115200
-#define BLUETOOTH true
-#define BLUETOOTH_SERIAL Serial1
-#define BLUETOOTH_BAUDRATE 115200
-#define BLACKBOX false
-#define BLACKBOX_SERIAL Serial2
-#define BLACKBOX_BAUDRATE 115200
+#define DEBUG_ENABLED       1
+#define DEBUG_SERIAL        Serial
+#define DEBUG_BAUDRATE      115200
+#define BLUETOOTH_ENABLED   1
+#define BLUETOOTH_SERIAL    Serial1
+#define BLUETOOTH_BAUDRATE  115200
+#define BLACKBOX_ENABLED    1
+#define BLACKBOX_SERIAL     Serial2
+#define BLACKBOX_BAUDRATE   115200
 
 // DEBUG
 #define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?

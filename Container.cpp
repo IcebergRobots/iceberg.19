@@ -40,5 +40,6 @@ void Container::operation(byte id, Container *myself) {
 
 void Container::updateNode() {
     update();
+    debug(getPin());
     if (nextObject != NULL) nextObject->updateNode();
 }

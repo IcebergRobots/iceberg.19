@@ -7,21 +7,23 @@ Display::Display(int resetPin) : Adafruit_SH1106(resetPin) {}
 
 
 void Display::init() {
-  beginSegment("d");
-  setLocked(100);
-  setCooldown(1000);
-  begin(SH1106_SWITCHCAPVCC, 0x3C);  // initialisiere das Displays
-  clearDisplay(); // leere den Bildschirm
-  if (io.turbo.off()) { 
-    drawBitmap(0, 0, LOGO, 114, 64, WHITE); // zeige das Logo
-    drawRect(0, 29, 128, 2, WHITE);
-  }
-  display();  //wendet Aenderungen an
-  endSegment();
+  if (DISPLAY_ENABLED) {
+    beginSegment("d");
+    setLocked(100);
+    setCooldown(1000);
+    begin(SH1106_SWITCHCAPVCC, 0x3C);  // initialisiere das Displays
+    clearDisplay(); // leere den Bildschirm
+    if (io.turbo.off()) { 
+      drawBitmap(0, 0, LOGO, 114, 64, WHITE); // zeige das Logo
+      drawRect(0, 29, 128, 2, WHITE);
+    }
+    display();  //wendet Aenderungen an
+    endSegment();
+  } else debug("-d");
 }
 
 void Display::setupMessage(byte pos, String title, String description) {
-  if (io.turbo.off()) {
+  if (DISPLAY_ENABLED && io.turbo.off()) {
     fillRect(47, 0, 81, 31, BLACK); // lösche das Textfeld
     drawRect(0, 29, map(pos, 0, SETUP_MESSAGE_RANGE, 0, 128), 2, WHITE);
     setTextColor(WHITE);
@@ -40,41 +42,43 @@ void Display::setupMessage(byte pos, String title, String description) {
 
 // Infos auf dem Bildschirm anzeigen
 void Display::update() {
-  if (set() == false) {
-    set();
+  if (DISPLAY_ENABLED) {
+    if (set() == false) {
+      set();
+    }
+
+    beginSegment("d:r");
+    clearDisplay();
+    setTextColor(WHITE);
+
+    if (level == 0) {
+      drawLine(map(page, 0, PAGE_RANGE, 3, 123), 11, map(page, -1, PAGE_RANGE - 1, 3, 123), 11, WHITE);
+    } else if (level == 1) {
+      drawLine(3, 11, map(subpage, 0, subpageRange[page], 3, 123), 11, WHITE);
+      drawLine(map(subpage, -1, subpageRange[page] - 1, 3, 123), 11, 123, 11, WHITE);
+    }
+
+    setTextSize(1);
+    setCursor(3, 3);
+    print(title.substring(0, 14) + String("               ").substring(0, max(1, 15 - title.length())) + runtime);
+
+    setTextSize(2);
+    setCursor(3, 14);
+    print(line0.substring(0, 10));
+
+    setCursor(3, 30);
+    print(line1.substring(0, 10));
+
+    setCursor(3, 46);
+    print(line2.substring(0, 10));
+
+    //invertDisplay(m.getMotEn());
+    endSegment();
+
+    beginSegment("d:e");
+    display();      // aktualisiere Display
+    endSegment();
   }
-
-  beginSegment("d:r");
-  clearDisplay();
-  setTextColor(WHITE);
-
-  if (level == 0) {
-    drawLine(map(page, 0, PAGE_RANGE, 3, 123), 11, map(page, -1, PAGE_RANGE - 1, 3, 123), 11, WHITE);
-  } else if (level == 1) {
-    drawLine(3, 11, map(subpage, 0, subpageRange[page], 3, 123), 11, WHITE);
-    drawLine(map(subpage, -1, subpageRange[page] - 1, 3, 123), 11, 123, 11, WHITE);
-  }
-
-  setTextSize(1);
-  setCursor(3, 3);
-  print(title.substring(0, 14) + String("               ").substring(0, max(1, 15 - title.length())) + runtime);
-
-  setTextSize(2);
-  setCursor(3, 14);
-  print(line0.substring(0, 10));
-
-  setCursor(3, 30);
-  print(line1.substring(0, 10));
-
-  setCursor(3, 46);
-  print(line2.substring(0, 10));
-
-  //invertDisplay(m.getMotEn());
-  endSegment();
-
-  beginSegment("d:e");
-  display();      // aktualisiere Display
-  endSegment();
 }
 
 void Display::select() {

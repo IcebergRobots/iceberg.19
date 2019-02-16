@@ -14,6 +14,7 @@ class Container
     static void updateAll();
 
     virtual void update() = 0;
+    virtual byte getPin() = 0;
 
   private:
     static void operation(byte id, Container *myself);

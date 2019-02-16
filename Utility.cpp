@@ -27,7 +27,7 @@ void initDebug() {
   endSegmentFunction = printEndSegment;
   io.hasDebugHead.set(true);
   String str = "";
-  if (!DEBUG) str += "\nUSB DEBUG DEACTIVATED!";
+  if (!DEBUG_ENABLED) str += "\nUSB DEBUG DEACTIVATED!";
   else {
     str += "\nICEBERG ROBOTS 2019\n";
     str += "Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher";
@@ -66,7 +66,7 @@ void updateStates() {
 }
 
 void printDebug(String str, bool space) {
-  if (DEBUG && io.turbo.off()) {
+  if (DEBUG_ENABLED && io.turbo.off()) {
     if (io.hasDebugHead.on() && space) str = " " + str;
     if (io.hasDebugHead.off()) {
       io.hasDebugHead.set(true);
