@@ -5,20 +5,37 @@
   add this object to the container
 *********************************************************************/
 Container::Container() {
-    container(INITIALISATION);
-}
-
-void Container::updateAll() {
-    container(UPDATE);
+    operation(INITIALISATION);
 }
 
 void Container::linkNode(Container *container) {
     nextObject = container;
 }
 
-void Container::container(byte operation) {
-    static Container *previousObject;   
+void Container::updateAll() {
+    operation(UPDATE);
+}
+
+void Container::operation(byte id) {
+    static Container *firstObject, *previousObject;   
     
-    previousObject->linkNode(this);
-    previousObject = this;
+    switch (id)
+    {
+        case INITIALISATION:
+            if (previousObject != NULL) previousObject->linkNode(this);
+            previousObject = this;
+            if (firstObject != NULL) firstObject = this;
+            break;
+
+        case UPDATE:
+            if (firstObject != NULL) firstObject->updateNode();
+            break;
+
+        default:
+            break;
+    }
+}
+
+void Container::updateNode() {
+    if (nextObject != NULL) nextObject->updateNode();
 }
