@@ -11,12 +11,12 @@ class Container
   public:
     Container();
     void linkNode(Container *container);
-    void updateAll();
+    static void updateAll();
 
     virtual void update() = 0;
 
   private:
-    void operation(byte id);
+    static void operation(byte id, Container *myself);
     void updateNode();
     Container *nextObject = NULL;
 };

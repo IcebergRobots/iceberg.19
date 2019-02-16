@@ -5,7 +5,7 @@
   add this object to the container
 *********************************************************************/
 Container::Container() {
-    operation(INITIALISATION);
+    operation(INITIALISATION, this);
 }
 
 void Container::linkNode(Container *container) {
@@ -13,18 +13,18 @@ void Container::linkNode(Container *container) {
 }
 
 void Container::updateAll() {
-    operation(UPDATE);
+    operation(UPDATE, NULL);
 }
 
-void Container::operation(byte id) {
+void Container::operation(byte id, Container *myself) {
     static Container *firstObject, *previousObject;   
     
     switch (id)
     {
         case INITIALISATION:
-            if (previousObject != NULL) previousObject->linkNode(this);
-            previousObject = this;
-            if (firstObject != NULL) firstObject = this;
+            if (previousObject != NULL) previousObject->linkNode(myself);
+            previousObject = myself;
+            if (firstObject != NULL) firstObject = myself;
             break;
 
         case UPDATE:
