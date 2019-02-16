@@ -22,9 +22,11 @@ void Container::operation(byte id, Container *myself) {
     switch (id)
     {
         case INITIALISATION:
-            if (previousObject != NULL) previousObject->linkNode(myself);
-            previousObject = myself;
-            if (firstObject != NULL) firstObject = myself;
+            if (myself != NULL) {
+                if (previousObject != NULL) previousObject->linkNode(myself);
+                previousObject = myself;
+                if (firstObject != NULL) firstObject = myself;
+            }
             break;
 
         case UPDATE:
