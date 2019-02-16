@@ -10,10 +10,10 @@ class Container
 {
   public:
     Container();
-    //virtual void update() = 0;
     void linkNode(Container *container);
     void updateAll();
-    
+
+    virtual void update() = 0;
 
   private:
     void operation(byte id);

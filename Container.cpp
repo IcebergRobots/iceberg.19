@@ -37,5 +37,6 @@ void Container::operation(byte id) {
 }
 
 void Container::updateNode() {
+    update();
     if (nextObject != NULL) nextObject->updateNode();
 }
