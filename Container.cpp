@@ -17,7 +17,8 @@ void Container::updateAll() {
 }
 
 void Container::operation(byte id, Container *myself) {
-    static Container *firstObject, *previousObject;   
+    static Container *firstObject = NULL; 
+    static Container *previousObject = NULL;   
     
     switch (id)
     {
@@ -25,11 +26,12 @@ void Container::operation(byte id, Container *myself) {
             if (myself != NULL) {
                 if (previousObject != NULL) previousObject->linkNode(myself);
                 previousObject = myself;
-                if (firstObject != NULL) firstObject = myself;
+                if (firstObject == NULL) firstObject = myself;
             }
             break;
 
         case UPDATE:
+            debug((int)firstObject);
             if (firstObject != NULL) firstObject->updateNode();
             break;
 
@@ -40,6 +42,5 @@ void Container::operation(byte id, Container *myself) {
 
 void Container::updateNode() {
     update();
-    debug(getPin());
     if (nextObject != NULL) nextObject->updateNode();
 }
