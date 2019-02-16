@@ -3,7 +3,7 @@
 /*****************************************************
   Constructor
 *****************************************************/
-Light::Light(int numPixels, Pin *pin) : Adafruit_NeoPixel(numPixels, pin->getPin(), NEO_GRB + NEO_KHZ800) {}
+Light::Light(int numPixels, Pin &pin) : Adafruit_NeoPixel(numPixels, pin.getPin(), NEO_GRB + NEO_KHZ800) {}
 
 
 /*****************************************************

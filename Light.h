@@ -8,7 +8,7 @@
 class Light : public Adafruit_NeoPixel, public Demand
 {
   public:
-    Light(int numPixels, Pin *pin);
+    Light(int numPixels, Pin &pin);
     void setAllColor(unsigned long color);
     void setAllColor(byte red, byte green, byte blue);
     void setAllWheel(int offset);

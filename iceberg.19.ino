@@ -26,25 +26,6 @@ void setup() {
   /*****************************************************/
 }
 
-void Light::light() {
-  beginSegment("l:s");
-  setLocked(10);
-  setBoard(puiBoard, 255);
-  puiBoard.setBrightness(map(io.poti.get(), 0, 1023, 0, 255));
-  io.indHearbeat.set(map(abs(int(millis() % 500) - 250),0,250,-100,356));
-  /*showState(puiBoard, 0, io.start.get());
-  showState(puiBoard, 1, io.stop.get());
-  showState(puiBoard, 2, io.record.get());
-  showState(puiBoard, 3, io.start.stroke());
-  showState(puiBoard, 4, io.stop.stroke());
-  showState(puiBoard, 5, io.record.stroke());*/
-  endSegment();
-
-  beginSegment("l:e");
-  puiBoard.show();
-  endSegment();
-}
-
 void loop() {
   prepareDebug();  // bereite debug nachrichten vor
   loopWatchdog();
@@ -100,6 +81,7 @@ void loop() {
   //calibrateLightBeam();
   //calibrateLine();
 
+  light();
   if (light.onDemand()) light.light();
   drive.execute();
   //bluetoth();

@@ -86,3 +86,21 @@ void printBeginSegment(String name) {
 void printEndSegment() {
   if(io.runtime.never() || DEBUG_SEGMENT) debug("}"+ io.segment.str(), false); // if in setup or DEBUG_SEGMENT
 }
+
+void light() {
+  beginSegment("l:s");
+  puiBoard.setAllColor(255, 255, 255);
+  puiBoard.setBrightness(map(io.poti.get(), 0, 1023, 0, 255));
+  io.indHearbeat.set(map(abs(int(millis() % 500) - 250),0,250,-100,356));
+  /*showState(puiBoard, 0, io.start.get());
+  showState(puiBoard, 1, io.stop.get());
+  showState(puiBoard, 2, io.record.get());
+  showState(puiBoard, 3, io.start.stroke());
+  showState(puiBoard, 4, io.stop.stroke());
+  showState(puiBoard, 5, io.record.stroke());*/
+  endSegment();
+
+  beginSegment("l:e");
+  puiBoard.show();
+  endSegment();
+}
