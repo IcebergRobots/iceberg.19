@@ -2,6 +2,7 @@
 #define core_h
 
 #include "Arduino.h"
+#include "LinkedList.h"
 
 // UART
 #define DEBUG true

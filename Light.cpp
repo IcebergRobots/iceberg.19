@@ -27,7 +27,7 @@ void Light::setAllWheel(int offset) {
   for (int i = 0; i < numPixels(); i++) {
     setPixelColor(i, wheelToColor(offset + i * 256 / numPixels()));
   }
-  board.show();
+  show();
 }
 
 /*****************************************************
@@ -87,4 +87,4 @@ unsigned long Light::wheelToColor(byte pos) {
   }
 }
 
-Light puiBoard = new Light(12,io.puiLight);
+Light puiBoard = new Light(12, io.puiLight);

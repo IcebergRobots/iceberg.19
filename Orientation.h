@@ -1,5 +1,5 @@
-#ifndef ORIENTATION_h
-#define ORIENTATION_h
+#ifndef Orientation_h
+#define Orientation_h
 
 #include "IO.h"
 #include "Demand.h"

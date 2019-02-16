@@ -9,13 +9,13 @@ class Light : public Adafruit_NeoPixel, public Demand
 {
   public:
     Light(int numPixels, Pin *pin);
-    setAllColor(unsigned long color);
-    setAllColor(byte red, byte green, byte blue);
-    setAllWheel(int offset);
-    setPixelState(byte pos, byte state, bool hideRed);
+    void setAllColor(unsigned long color);
+    void setAllColor(byte red, byte green, byte blue);
+    void setAllWheel(int offset);
+    void setPixelState(byte pos, byte state, bool hideRed);
 
   private:
-    unsigned long wheelToColor(Adafruit_NeoPixel & board, byte pos);
+    unsigned long wheelToColor(byte pos);
 
 };
 extern Light puiBoard;
