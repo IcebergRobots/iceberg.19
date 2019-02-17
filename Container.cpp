@@ -5,11 +5,11 @@
   add this object to the container
 *********************************************************************/
 Container::Container() {
-    getAll(this);
+    getObjects(this);
 }
 
-LinkedList<int> Container::getAll(Container *myself) {
+LinkedList<int> *Container::getObjects(Container *myself) {
     static LinkedList<int> objectAddresses;
-    if (myself == NULL) return objectAddresses;
+    if (myself == NULL) return &objectAddresses;
     else objectAddresses.add((int)myself);
 }

@@ -8,8 +8,8 @@ IO::IO() {}
 void IO::update() {
   if (DEBUG_LOOP) beginSegment("io");
 
-  for(int i = 0; i < Value::getAll().size(); i++) {
-    Value *v = Value::getAll().get(i);
+  for(int i = 0; i < objects<Value>(); i++) {
+    Value *v = objects<Value>(i);
     v->update();
   }
 

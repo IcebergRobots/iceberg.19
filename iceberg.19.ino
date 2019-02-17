@@ -23,6 +23,9 @@ void setup() {
   io.xOrientation.startDebug();
   io.yOrientation.startDebug();
   io.zOrientation.startDebug();
+
+  drive.brake();
+  drive.execute();
   /*****************************************************/
 }
 

@@ -2,6 +2,7 @@
 #define Motor_h
 
 #include "IO.h"
+#include "Container.h"
 
 class Motor : public Container
 {
