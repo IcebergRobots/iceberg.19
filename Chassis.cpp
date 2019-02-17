@@ -66,5 +66,5 @@ void Chassis::brake(bool active) {
   - nutze Berechnungen des Zwischenspeichers
 *****************************************************/
 void Chassis::execute() {
-  if (io.driveEnabled.on()) for (int i = 0; i < 4; i++) m[i].set();
+  if (io.driveEnabled.on()) Motor::setAll();
 }

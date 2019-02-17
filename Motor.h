@@ -3,7 +3,7 @@
 
 #include "IO.h"
 
-class Motor
+class Motor : public Container
 {
   public:
     Motor();
