@@ -1,8 +1,8 @@
 #ifndef ORIENTATION_h
 #define ORIENTATION_h
 
-#include "IO.h"
-#include "Demand.h"
+#include "../IO.h"
+#include "../Basic/Demand.h"
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>

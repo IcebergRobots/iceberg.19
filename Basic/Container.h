@@ -1,7 +1,7 @@
 #ifndef Container_h
 #define Container_h
 
-#include "core.h"
+#include "../core.h"
 
 #define INITIALISATION  0
 #define UPDATE          1

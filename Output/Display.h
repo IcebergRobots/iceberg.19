@@ -1,8 +1,8 @@
 #ifndef Display_h
 #define Display_h
 
-#include "IO.h"
-#include "Demand.h"
+#include "../IO.h"
+#include "../Basic/Demand.h"
 #include <Adafruit_SH1106.h>
 
 class Display: public Adafruit_SH1106, public Demand

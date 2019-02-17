@@ -1,8 +1,8 @@
 #ifndef PixyCam_h
 #define PixyCam_h
 
-#include "IO.h"
-#include "Demand.h"
+#include "../IO.h"
+#include "../Basic/Demand.h"
 #include <SPI.h>
 #include <Pixy.h>
 

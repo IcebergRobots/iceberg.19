@@ -1,7 +1,7 @@
 #ifndef Pui_h
 #define Pui_h
 
-#include "core.h"
+#include "../core.h"
 #include <I2C.h>
 
 class Pui 

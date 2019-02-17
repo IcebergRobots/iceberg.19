@@ -1,8 +1,8 @@
 #ifndef IO_h
 #define IO_h
 
-#include "Timer.h"
-#include "Shortcut.h"
+#include "Input/Timer.h"
+#include "Input/Shortcut.h"
 
 class IO {
   public:
