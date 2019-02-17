@@ -6,10 +6,10 @@
 *********************************************************************/
 Pilot::Pilot() : Chassis() {
   setAxisAngle(70);
-  m[0].setPins(&io.m0Current, &io.m0Dir1, &io.m0Dir2, &io.m0Speed);
-  m[1].setPins(&io.m1Current, &io.m1Dir1, &io.m1Dir2, &io.m1Speed);
-  m[2].setPins(&io.m2Current, &io.m2Dir1, &io.m2Dir2, &io.m2Speed);
-  m[3].setPins(&io.m3Current, &io.m3Dir1, &io.m3Dir2, &io.m3Speed);
+  frontLeft.setPins (&io.m0Current, &io.m0Dir1, &io.m0Dir2, &io.m0Speed);
+  frontRight.setPins(&io.m3Current, &io.m3Dir1, &io.m3Dir2, &io.m3Speed);
+  backLeft.setPins  (&io.m1Current, &io.m1Dir1, &io.m1Dir2, &io.m1Speed);
+  backRight.setPins (&io.m2Current, &io.m2Dir1, &io.m2Dir2, &io.m2Speed);
 }
 
 void Pilot::update() {

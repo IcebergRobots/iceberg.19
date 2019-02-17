@@ -43,10 +43,10 @@ void Chassis::drive(int angle, int power, int rotation) {
   int axis02 = io.drivePower.get() * (double)sinA02 / 10000; //berechne Motorstärken für Achse 1&3
   int axis13 = io.drivePower.get() * (double)sinA13 / 10000; //berechne Motorstärken für Achse 2&4
 
-  m[0].temp(-axis02 + io.driveRotation.get());
-  m[1].temp(-axis13 + io.driveRotation.get());
-  m[2].temp( axis02 + io.driveRotation.get());
-  m[3].temp( axis13 + io.driveRotation.get());
+  frontLeft.temp (-axis02 + io.driveRotation.get());
+  frontRight.temp( axis13 + io.driveRotation.get());
+  backLeft.temp  (-axis13 + io.driveRotation.get());
+  backRight.temp ( axis02 + io.driveRotation.get());
 }
 
 /*****************************************************

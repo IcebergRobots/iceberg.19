@@ -16,10 +16,12 @@ void setup() {
 
   /*****************************************************/
   io.turbo.setLimits(false, false); // set broken turbo key to off
-  for(int i = 0; i < 4; i++) {
-    drive.m[i].speed->showDebug(DEBUG_PIN);
-    drive.m[i].speed->startDebug();
+  for(int i = 0; i < Motor::getAll().size(); i++) {
+    Motor *m = Motor::getAll().get(i);
+    m->startDebug();
+    m->showDebug(DEBUG_PIN);
   }
+  
   io.xOrientation.startDebug();
   io.yOrientation.startDebug();
   io.zOrientation.startDebug();

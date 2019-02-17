@@ -6,7 +6,7 @@
 class Chassis
 {
   public:
-    Motor m[4];
+    Motor frontLeft, frontRight, backLeft, backRight;
 
     Chassis();
 
