@@ -1,7 +1,6 @@
 #ifndef Pilot_h
 #define Pilot_h
 
-#include "IO.h"
 #include "Chassis.h"
 
 #define BACK 0

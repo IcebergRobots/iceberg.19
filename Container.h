@@ -3,21 +3,25 @@
 
 #include "core.h"
 
-#define INITIALISATION  0
-#define UPDATE          1
+#define DO_INITIALISATION  0
+#define DO_UPDATE          1
+#define DO_SET             2
 
 class Container
 {
   public:
     Container();
-    void linkNode(Container *container);
     static void updateAll();
+    static void setAll();
+    static void operation(byte id, Container *myself=NULL);
 
-    virtual void update() = 0;
+    void nextNode(byte id);
+    void linkNode(Container *myself);
+
+    void update();
+    void set();
 
   private:
-    static void operation(byte id, Container *myself);
-    void updateNode();
     Container *nextObject = NULL;
 };
 

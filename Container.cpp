@@ -5,24 +5,24 @@
   add this object to the container
 *********************************************************************/
 Container::Container() {
-    operation(INITIALISATION, this);
-}
-
-void Container::linkNode(Container *container) {
-    nextObject = container;
+    operation(DO_INITIALISATION, this);
 }
 
 void Container::updateAll() {
-    operation(UPDATE, NULL);
+    operation(DO_UPDATE);
+}
+
+void Container::setAll() {
+    operation(DO_SET);
 }
 
 void Container::operation(byte id, Container *myself) {
-    static Container *firstObject = NULL; 
-    static Container *previousObject = NULL;   
+    static Container *firstObject    = NULL;
+    static Container *previousObject = NULL;
     
     switch (id)
     {
-        case INITIALISATION:
+        case DO_INITIALISATION:
             if (myself != NULL) {
                 if (previousObject != NULL) previousObject->linkNode(myself);
                 previousObject = myself;
@@ -30,8 +30,9 @@ void Container::operation(byte id, Container *myself) {
             }
             break;
 
-        case UPDATE:
-            if (firstObject != NULL) firstObject->updateNode();
+        case DO_UPDATE:
+        case DO_SET:
+            if (firstObject != NULL) firstObject->nextNode(id); 
             break;
 
         default:
@@ -39,7 +40,26 @@ void Container::operation(byte id, Container *myself) {
     }
 }
 
-void Container::updateNode() {
-    update();
-    if (nextObject != NULL) nextObject->updateNode();
+void Container::nextNode(byte id) {
+    switch (id)
+    {
+        case DO_UPDATE:
+            update();
+            break;
+    
+        case DO_SET:
+            set();
+            break;
+
+        default:
+            break;
+    }
+    if (nextObject != NULL) nextObject->nextNode(id);
 }
+
+void Container::linkNode(Container *myself) {
+    nextObject = myself;
+}
+
+void Container::update() {}
+void Container::set() {}
