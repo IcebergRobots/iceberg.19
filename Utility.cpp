@@ -14,11 +14,11 @@ void initI2C() {
 }
 
 void setupWatchdog() {
-  if(WATCHDOG) wdt_enable(WATCHDOG_SETUP);
+  if(WATCHDOG_SETUP != WDTO_OFF) wdt_enable(WATCHDOG_SETUP);
 }
 
 void loopWatchdog() {
-  if(WATCHDOG) wdt_enable(WATCHDOG_LOOP);
+  if(WATCHDOG_LOOP != WDTO_OFF) wdt_enable(WATCHDOG_LOOP);
 }
 
 void initDebug() {

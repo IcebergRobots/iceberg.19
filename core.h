@@ -8,10 +8,10 @@
 #define DISPLAY_ENABLED     0
 #define PUI_ENABLED         0
 #define ORIENTATION_ENABLED 0
-#define CAMERA_ENABLED      1
+#define CAMERA_ENABLED      0
+#define LIGHT_ENABLED       0
 
 // UART
-#define DEBUG_ENABLED       1
 #define DEBUG_SERIAL        Serial
 #define DEBUG_BAUDRATE      115200
 #define BLUETOOTH_ENABLED   1
@@ -22,8 +22,9 @@
 #define BLACKBOX_BAUDRATE   115200
 
 // DEBUG
-#define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_ENABLED       1
+#define DEBUG_SEGMENT       1       // sollen Methoden gezeigt werden?
+#define DEBUG_LOOP          1       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_SERIAL        Serial  // Serial der Usb-Schnittstelle
 #define START_MARKER        254     // Startzeichen einer Bluetooth-Nachricht
@@ -32,7 +33,7 @@
 // 
 #define BALL_CENTER_TOLERANCE 40 
 
-
+#define WDTO_OFF -1
 /* WATCHDOG
   gemessen  theoretisch
   17mS      WDTO_15MS
@@ -45,10 +46,11 @@
   2176mS    WDTO_2S
   4352mS    WDTO_4S
   8705mS    WDTO_8S
+  -1  mS    WDTO_OFF
 */
-#define WATCHDOG        0           // Soll bei Absturz automatisch neu gestartet werden?
-#define WATCHDOG_SETUP  WDTO_500MS  // Setupzeit, nach der Neugestartet wird
-#define WATCHDOG_LOOP   WDTO_120MS  // Schleifenzeit, nach der Neugestartet wird
+
+#define WATCHDOG_SETUP  WDTO_OFF // Setupzeit, nach der Neugestartet wird
+#define WATCHDOG_LOOP   WDTO_2S  // Schleifenzeit, nach der Neugestartet wird
 
 // PIYX
 #define SIGNATURE_BALL 1                      // Pixy-Signature des Balls

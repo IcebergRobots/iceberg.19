@@ -20,7 +20,7 @@ void Light::light() {
   endSegment();
 
   beginSegment("l:e");
-  puiBoard.show();
+  //puiBoard.show();
   endSegment();
 }
 

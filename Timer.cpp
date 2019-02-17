@@ -20,6 +20,7 @@ void Timer::setSurviveTime(unsigned long _surviveTime) {
   @param require: external condition to be active
 *****************************************************/
 void Timer::update() {
+  debug("t", false);
   Value::update();
   if(surviveTime > 0) Value::set(insidePeroid(surviveTime), "", true);
 }
