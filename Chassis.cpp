@@ -57,7 +57,10 @@ void Chassis::brake(bool active) {
   io.drivePower.set(0);
   io.driveRotation.set(0);
 
-  for (int i = 0; i < 4; i++) m[i].brake(active);
+  for(int i = 0; i < Motor::getAll().size(); i++) {
+      Motor *m = Motor::getAll().get(i);
+      m->brake(active);
+    }
 }
 
 /*****************************************************
@@ -66,5 +69,10 @@ void Chassis::brake(bool active) {
   - nutze Berechnungen des Zwischenspeichers
 *****************************************************/
 void Chassis::execute() {
-  if (io.driveEnabled.on()) Motor::setAll();
+  if (io.driveEnabled.on()) {
+    for(int i = 0; i < Motor::getAll().size(); i++) {
+      Motor *m = Motor::getAll().get(i);
+      m->set();
+    }
+  }
 }
