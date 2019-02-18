@@ -21,9 +21,11 @@ void setup() {
     drive.m[i].speed->showDebug(DEBUG_PIN);
     drive.m[i].speed->startDebug();
   }
+  /*
   io.xOrientation.startDebug();
   io.yOrientation.startDebug();
   io.zOrientation.startDebug();
+  */
 
   //drive.brake();
   //drive.execute();
@@ -35,15 +37,10 @@ void loop() {
   
   loopWatchdog();
   io.update();
-  
-  beginSegment();
 
   if (orientation.onDemand()) orientation.update();
   if (camera.onDemand()) camera.frame();
   //readUltrasonic();
-  
-  endSegment();
-  beginSegment();
 
   if (io.shiftStart.further()) {
     debug("ball:");
@@ -82,9 +79,6 @@ void loop() {
   if (io.driveEnabled.off() && io.driveEnabled.outsidePeriod(100)) drive.brake(false);
 */
 
-  endSegment();
-  beginSegment();
-
   updateStates();
 //updateRating();
   //updateKick();
@@ -93,8 +87,6 @@ void loop() {
   //calibrateGoal();
   //calibrateLightBeam();
   //calibrateLine();
-
-  endSegment();
 
   if (light.onDemand()) light.light();
   drive.execute();

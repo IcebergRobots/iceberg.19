@@ -53,12 +53,8 @@ void prepareDebug() {
   if (DEBUG_LOOP) debug();
 }
 
-bool measureBatteryVoltage() {
-  debug(io.batteryVoltmeter.get());
-  int voltage = io.batteryVoltmeter.get() * 0.1220703;
-  if (voltage < 40) voltage = 0;
-  io.battery.set(voltage);
-  return voltage;
+void measureBatteryVoltage() {
+  io.battery.set(io.batteryVoltmeter.is(255));
 }
 
 void updateStates() {
@@ -75,6 +71,10 @@ void updateStates() {
 
 void printDebug(String str, bool space) {
   if (DEBUG_ENABLED && io.turbo.off()) {
+    if (io.segment.is(SEGMENT_EMPTY)) {
+      io.segment.muteSet(SEGMENT_FILLED);
+      space = false;
+    }
     if (io.hasDebugHead.on() && space) str = " " + str;
     if (io.hasDebugHead.off()) {
       io.hasDebugHead.set(true);
@@ -86,11 +86,17 @@ void printDebug(String str, bool space) {
 }
 
 void printBeginSegment(String name) {
-  if(io.runtime.never() || DEBUG_SEGMENT) { // if in setup or DEBUG_SEGMENT
+  if (io.runtime.never() || DEBUG_SEGMENT) { // if in setup or DEBUG_SEGMENT
+    if (io.segment.on()) endSegment();
     debug(name + "{");
-    io.segment.set();
+    io.segment.set(SEGMENT_EMPTY); // start timer
   }
 }
 void printEndSegment() {
-  if(io.runtime.never() || DEBUG_SEGMENT) debug("}"+ io.segment.str(), false); // if in setup or DEBUG_SEGMENT
+  if (io.runtime.never() || DEBUG_SEGMENT) {
+    if (io.segment.on()) {
+      debug("}"+ io.segment.periodStr(), false); // if in setup or DEBUG_SEGMENT
+      io.segment.set(0);
+    }
+  }
 }

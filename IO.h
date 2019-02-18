@@ -145,7 +145,6 @@ class IO {
     Timer isHeadstart     = Timer(    350             );  // führen wir einen Schnellstart aus ?
     Timer isDodge         = Timer(    200             );  // weichen wir dem Gegner aus?
     Timer hasBall         = Timer(     50             );  // haben wir Ballbesitz?
-    Timer segment         = Timer(                    );  // Laufzeit eines Codeblockes
     Timer runtime         = Timer(                    );  // Laufzeit der Schleife 
     Timer seeBall         = Timer(    100,  &flat     );  // sehen wir den Ball?
     Timer seeGoal         = Timer(    500,  &flat     );  // sehen wir das Tor?
@@ -176,7 +175,8 @@ class IO {
     Value goalArea       = Value(      LIMITS,    0        );  // Torgröße (Flächeninhalt)
     
     Value hasDebugHead   = Value(     BOOLEAN              );  // Debug-Zeilenanfang
-    Value battery        = Value(      LIMITS,    0,  130  );  // ist der Akku angeschlosse?
+    Value segment        = Value(      LIMITS,    0,    2  );  // Laufzeit eines Codeblockes
+    Value battery        = Value(     BOOLEAN              );  // ist der Akku angeschlosse?
 
     Value heading        = Value(  MODULATION, -179,  180  );
     Value xOrientation   = Value(  MODULATION              );

@@ -5,7 +5,7 @@
 #include "LinkedList.h"
 
 // MODULES
-#define DISPLAY_ENABLED     0
+#define DISPLAY_ENABLED     1
 #define PUI_ENABLED         1
 #define ORIENTATION_ENABLED 1
 #define CAMERA_ENABLED      1
@@ -24,7 +24,7 @@
 // DEBUG
 #define DEBUG_ENABLED       1
 #define DEBUG_SEGMENT       1       // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP          1       // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_SERIAL        Serial  // Serial der Usb-Schnittstelle
 #define START_MARKER        254     // Startzeichen einer Bluetooth-Nachricht
