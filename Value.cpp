@@ -51,6 +51,7 @@ void Value::setModulation(int min, int max) {
   reset change state as the change happend durring the previous loop
 *****************************************************/
 void Value::update() {
+  debug("v", false);
   if      (state == FALLING) state = OFF;
   else if (state == RISING)  state = ON;
 }
@@ -257,4 +258,12 @@ void Value::sendDebug(bool timerChange, String reason, byte pin) {
   if (isDebug(DEBUG_REASON)) m += reason;
   debug(m);
   
+}
+
+void Value::setElementType(byte type) {
+  if (type > elementType) elementType = type;
+}
+
+byte Value::getElementType() {
+  return elementType;
 }

@@ -32,6 +32,13 @@
 #define RIGHT true
 #define INF -1 // infinity
 
+// Element type
+#define VALUE    0
+#define TIMER    1
+#define PIN      2
+#define KEY      3
+#define SHORTCUT 4
+
 /*****************************************************
   class Value
   1) supports modulation:      2) supports limits:                  
@@ -90,10 +97,14 @@ class Value : public Container
     void stopDebug();
     void resetDebug();
 
+    void setElementType(byte type);
+    byte getElementType();
+
   private:
     bool isDebug(byte type=DEBUG_ENABLE);
     void sendDebug(bool timerChange=false, String reason="", byte pin=INF);
 
+    byte elementType = VALUE;
     int value = 0;
     int a = 0;  // in case of modulation: upper limit
                 // in case of limits: lower limit
