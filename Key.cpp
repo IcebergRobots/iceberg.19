@@ -34,7 +34,6 @@ bool Key::click() { return stroke() || further(); }
   read the arduino pins and process it to detect clicks
 *****************************************************/
 void Key::update() {
-  debug("k", false);
   Pin::update();
 	if(off()) state = OFF; // Knopf ist losgelassen
 	else { // Knopf wird gedrückt
