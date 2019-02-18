@@ -20,7 +20,7 @@ void calculateStates();
 
 void prepareDebug();
 
-void measureBatteryVoltage();
+void initStates();
 void updateStates();
 
 void printDebug(String str, bool space);

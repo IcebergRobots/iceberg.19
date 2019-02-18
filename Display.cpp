@@ -3,12 +3,13 @@
 /*********************************************************************
 - Constructor
 *********************************************************************/
-Display::Display(int resetPin) : Adafruit_SH1106(resetPin) {}
+Display::Display(int resetPin) : Adafruit_SH1106(resetPin) {
+  setLocked(100);
+  setCooldown(1000);
+}
 
 
 void Display::init() {
-  setLocked(100);
-  setCooldown(1000);
   if (isEnabled()) {
     beginSegment("d");
     begin(SH1106_SWITCHCAPVCC, 0x3C);  // initialisiere das Displays
@@ -197,7 +198,7 @@ byte Display::getPage() {
 }
 
 bool Display::isEnabled() {
-  return DISPLAY_ENABLED;
+  return DISPLAY_ENABLED &&  io.battery.on();
 }
 
 Display d = Display(io.test1.getPin());

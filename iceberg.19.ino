@@ -5,7 +5,7 @@ void setup() {
   initUART();
   initDebug();
   initI2C();
-  measureBatteryVoltage();
+  initStates();
 
   light.init();
   pui.init(io.battery.on());
