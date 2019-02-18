@@ -3,14 +3,15 @@
 /*********************************************************************
   Constructor
 *********************************************************************/
-Camera::Camera() {}
+Camera::Camera() {
+    setLocked(30);
+    setCooldown(100);
+}
 
 /*********************************************************************
   initialisiert die SPI Kommunikation
 *********************************************************************/
 void Camera::init() { 
-    setLocked(30);
-    setCooldown(100);
     if (isEnabled()) {
         beginSegment("c");
         SPI.begin();

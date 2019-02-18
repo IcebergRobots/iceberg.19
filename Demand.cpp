@@ -16,13 +16,10 @@ void Demand::request() {
   is there the need to update the target?
 *********************************************************************/
 bool Demand::onDemand() {
-    if (isEnabled()
-      && ( runTime.outsidePeriod(cooldownTime) 
-        || ( demand 
-          && runTime.outsidePeriod(lockedTime)
-    ))) {
+    if (isEnabled() && locked.off()
+    && (locked.outsidePeriod(cooldownTime) || demand)) {
         demand = false;
-        runTime.now();
+        locked.set();
         return true;
     }
     return false;
@@ -33,7 +30,7 @@ bool Demand::onDemand() {
   @param period: period of time
 *********************************************************************/
 void Demand::setLocked(unsigned long period) {
-    lockedTime = period;
+    locked.setSurviveTime(period);
 }
 /*********************************************************************
   set period of time in which updates aren't necessary

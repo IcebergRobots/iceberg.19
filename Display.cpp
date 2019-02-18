@@ -197,7 +197,7 @@ byte Display::getPage() {
 }
 
 bool Display::isEnabled() {
-  return DISPLAY_ENABLED && io.battery.on();
+  return DISPLAY_ENABLED;
 }
 
 Display d = Display(io.test1.getPin());

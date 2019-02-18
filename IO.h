@@ -155,7 +155,7 @@ class IO {
     Timer ballCenter      = Timer(      0,  &seeBall  );  // ist der Ball mittig?
     Timer cameraResponse  = Timer(  20000             );  // ist die Kamera verbunden?
     Timer driveLocked     = Timer(    300             );  // dürfen neue Steuerwerte esetzt werden?
-    Timer setupLight      = Timer(    800             );
+    Timer setupLight      = Timer(    500             );
 
     // all global variables
     Value aggressive     = Value(     BOOLEAN              );

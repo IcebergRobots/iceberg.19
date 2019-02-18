@@ -1,7 +1,7 @@
 #ifndef Demand_h
 #define Demand_h
 
-#include "Value.h"
+#include "Timer.h"
 
 class Demand
 {
@@ -14,11 +14,10 @@ class Demand
 
     virtual bool isEnabled() = 0;
 
-    Value runTime;
+    Timer locked;
 
   private:
     bool demand = false;
-    unsigned long lockedTime = 0;
     unsigned long cooldownTime = 0;
 
 };

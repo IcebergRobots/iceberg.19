@@ -3,7 +3,7 @@
 
 #include "IO.h"
 #include "Demand.h"
-#include <Adafruit_NeoPixel.h>
+#include "LightBoard.h"
 
 class Light : public Demand
 {
@@ -14,13 +14,9 @@ class Light : public Demand
     
     bool isEnabled();
 
-  private:
-    void showState(Adafruit_NeoPixel & board, byte pos, byte state, bool hideRed=false);
-    void wheelBoard(Adafruit_NeoPixel & board, int offset);
-    void setBoard(Adafruit_NeoPixel & board, uint32_t color);
-    uint32_t wheelToColor(Adafruit_NeoPixel & board, byte pos);
-    Adafruit_NeoPixel puiBoard = Adafruit_NeoPixel(12, io.puiLight.getPin(), NEO_GRB + NEO_KHZ800);
+    LightBoard pui = LightBoard(12, io.puiLight, 10, 100);
 
+  private:
 };
 extern Light light;
 

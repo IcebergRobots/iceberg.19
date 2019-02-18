@@ -4,7 +4,7 @@
   create a timer
   @param _surviveTime: leave output active for a delay
 *****************************************************/
-Timer::Timer(unsigned long _surviveTime, Timer *_requirement) : Value(MODULATION, false, true) {
+Timer::Timer(unsigned long _surviveTime, Timer *_requirement) : Value(BOOLEAN) {
   setElementType(TIMER);
   surviveTime = _surviveTime;
   requirement = _requirement;
@@ -21,8 +21,8 @@ void Timer::setSurviveTime(unsigned long _surviveTime) {
   @param require: external condition to be active
 *****************************************************/
 void Timer::update() {
-  Value::update();
   if(surviveTime > 0) Value::muteSet(insidePeroid(surviveTime));
+  Value::update();
 }
 /*****************************************************
   trigger time

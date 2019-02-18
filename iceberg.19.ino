@@ -4,9 +4,10 @@ void setup() {
   setupWatchdog();
   initUART();
   initDebug();
+  initI2C();
   measureBatteryVoltage();
 
-  initI2C();
+  light.init();
   pui.init(io.battery.on());
   d.init();  // initialisiere Display mit Iceberg Schriftzug
   camera.init();
