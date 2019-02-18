@@ -6,8 +6,8 @@
 class InputElement : public Container
 {
 public:
-    InputElement());
-    virtual void update() = 0;
+    InputElement();
+    //void (*updateElement)(); 
 private:
 };
 

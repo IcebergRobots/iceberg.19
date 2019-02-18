@@ -8,13 +8,14 @@ IO::IO() {}
 void IO::update() {
   if (DEBUG_LOOP) beginSegment("io");
 
-  debug(objects<Value>());
+  debug(objects<InputElement>());
 
-  for(int i = 0; i < objects<Value>(); i++) {
-    debug(i, false);
-    Value *v = objects<Value>(i);
+  /*
+  for(int i = 0; i < objects<InputElement>(); i++) {
+    debug(".", false);
+    InputElement *v = objects<InputElement>(i);
     v->update();
-  }
+  }*/
   /*
   for(int i = 0; i < objects<Timer>(); i++) {
     Timer *t = objects<Timer>(i);
