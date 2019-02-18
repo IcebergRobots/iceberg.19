@@ -9,6 +9,7 @@ class Light : public Demand
 {
   public:
     Light();
+    void init();
     void light();
     
     bool isEnabled();

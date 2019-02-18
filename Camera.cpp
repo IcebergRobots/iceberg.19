@@ -9,10 +9,10 @@ Camera::Camera() {}
   initialisiert die SPI Kommunikation
 *********************************************************************/
 void Camera::init() { 
+    setLocked(30);
+    setCooldown(100);
     if (isEnabled()) {
         beginSegment("c");
-        setLocked(30);
-        setCooldown(100);
         SPI.begin();
         Pixy::init();
         io.cameraResponse.set(SPI.transfer(0x00) == 255);

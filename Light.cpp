@@ -5,9 +5,25 @@
 *****************************************************/
 Light::Light() {}
 
+void Light::init() {
+  setLocked(10);
+  setCooldown(100);
+  io.indHearbeat.set(255);
+  io.indFront.set(255);
+  io.indLeft.set(255);
+  io.indRight.set(255);
+  io.setupLight.set();
+}
+
 void Light::light() {
   beginSegment("l:s");
-  setLocked(10);
+
+  if (io.setupLight.off()) {
+    io.indFront.set(0);
+    io.indLeft.set(0);
+    io.indRight.set(0);
+  }
+  
   setBoard(puiBoard, 255);
   puiBoard.setBrightness(map(io.poti.get(), 0, 1023, 0, 255));
   io.indHearbeat.set(map(abs(int(millis() % 500) - 250),0,250,-100,356));
@@ -109,7 +125,7 @@ uint32_t Light::wheelToColor(Adafruit_NeoPixel & board, byte pos) {
 }
 
 bool Light::isEnabled() {
-  return false;
+  return true;
 }
 
 Light light;
