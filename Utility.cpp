@@ -38,7 +38,7 @@ void initDebug() {
 void setupDone() {
   String str = "=" + String(millis()) + "\n";
   for (int i = 0; i < 60; i++) str += "=";
-  debugln(str);
+  debug(str);
   io.runtime.set();
 }
 

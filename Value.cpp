@@ -51,7 +51,6 @@ void Value::setModulation(int min, int max) {
   reset change state as the change happend durring the previous loop
 *****************************************************/
 void Value::update() {
-  debug("v", false);
   if      (state == FALLING) state = OFF;
   else if (state == RISING)  state = ON;
 }

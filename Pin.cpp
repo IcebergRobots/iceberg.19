@@ -84,7 +84,6 @@ void Pin::temp(int _value) {
   - will ignore output pins
 *****************************************************/
 void Pin::update() {
-  debug("p", false);
   Value::update();
   if(mode != OUTPUT) {
     switch (type)

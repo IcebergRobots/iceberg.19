@@ -31,6 +31,8 @@ void setup() {
 
 void loop() {
   prepareDebug();  // bereite debug nachrichten vor
+  debug("l");
+  
   loopWatchdog();
   io.update();
 
@@ -39,13 +41,13 @@ void loop() {
   //readUltrasonic();
   
   
-  if (io.shiftStart.further())               {
+  if (io.shiftStart.further()) {
     debug("ball:");
     debug(io.ball.str(4, -1, true) + ",");
     debug(io.ballWidth.str(4) + ",");
     debug(io.ballArea.str(4));
   }
-  if (io.shiftStop.further())                { 
+  if (io.shiftStop.further()) { 
     debug("goal:");
     debug(io.goal.str(4, -1, true) + ",");
     debug(io.goalWidth.str(4) + ",");
@@ -71,12 +73,13 @@ void loop() {
     debug(io.zOrientation.str());
   }
 
+/*
   if (io.drivePower.outsidePeriod(400)) drive.brake(false);
   if (io.driveEnabled.falling()) drive.brake(false);
   if (io.driveEnabled.off() && io.driveEnabled.outsidePeriod(100)) drive.brake(false);
-
+*/
   updateStates();
-  //updateRating();
+/*//updateRating();
   //updateKick();
   //updateAnimation();
 
@@ -90,5 +93,7 @@ void loop() {
   if (d.onDemand()) d.update();
 
   //camera.frame();
+
+  */
 }
 

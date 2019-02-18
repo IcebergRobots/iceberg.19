@@ -50,7 +50,7 @@
 */
 
 #define WATCHDOG_SETUP  WDTO_OFF // Setupzeit, nach der Neugestartet wird
-#define WATCHDOG_LOOP   WDTO_2S  // Schleifenzeit, nach der Neugestartet wird
+#define WATCHDOG_LOOP   WDTO_OFF  // Schleifenzeit, nach der Neugestartet wird
 
 // PIYX
 #define SIGNATURE_BALL 1                      // Pixy-Signature des Balls

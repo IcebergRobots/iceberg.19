@@ -70,11 +70,10 @@ void Chassis::brake(bool active) {
 *****************************************************/
 void Chassis::execute() {
   if (io.driveEnabled.on()) {
-    /*
-    for(int i = 0; i < Motor::getObjects().size(); i++) {
-      Motor *m = Motor::getObjects().get(i);
+    for (int i = 0; i < objects<Motor>(); i++) {
+      Motor *m = objects<Motor>(i);
       m->set();
     }
-    */
+    
   }
 }
