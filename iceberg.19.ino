@@ -4,10 +4,11 @@ void setup() {
   setupWatchdog();
   initUART();
   initDebug();
+  measureBatteryVoltage();
 
-  d.init();  // initialisiere Display mit Iceberg Schriftzug
   initI2C();
-  pui.init();
+  pui.init(io.battery.on());
+  d.init();  // initialisiere Display mit Iceberg Schriftzug
   camera.init();
   orientation.init();
   //createCrashlog();
@@ -31,16 +32,19 @@ void setup() {
 
 void loop() {
   prepareDebug();  // bereite debug nachrichten vor
-  debug("l");
   
   loopWatchdog();
   io.update();
+  
+  beginSegment();
 
   if (orientation.onDemand()) orientation.update();
   if (camera.onDemand()) camera.frame();
   //readUltrasonic();
   
-  
+  endSegment();
+  beginSegment();
+
   if (io.shiftStart.further()) {
     debug("ball:");
     debug(io.ball.str(4, -1, true) + ",");
@@ -72,12 +76,15 @@ void loop() {
     debug(io.yOrientation.str());
     debug(io.zOrientation.str());
   }
-
 /*
   if (io.drivePower.outsidePeriod(400)) drive.brake(false);
   if (io.driveEnabled.falling()) drive.brake(false);
   if (io.driveEnabled.off() && io.driveEnabled.outsidePeriod(100)) drive.brake(false);
 */
+
+  endSegment();
+  beginSegment();
+
   updateStates();
 //updateRating();
   //updateKick();
@@ -86,6 +93,8 @@ void loop() {
   //calibrateGoal();
   //calibrateLightBeam();
   //calibrateLine();
+
+  endSegment();
 
   if (light.onDemand()) light.light();
   drive.execute();

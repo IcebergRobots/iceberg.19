@@ -245,32 +245,19 @@ void Value::sendDebug(String reason, byte pin) {
 }
 
 String Value::prepareDebug(byte pin) {
-  String m = "§";
-  if (isDebug(DEBUG_PIN)) { 
-    if (isFinite(pin)) m += String(pin) + "|";
-    else m += "v";
-  }
-  if (isDebug(DEBUG_TIME)) m += String(millis()) + "|";
-  if (isDebug(DEBUG_STATE)) {
-    switch (state) {
-      case OFF:
-        m += "o";
-        break;
-      case ON:
-        m += "i";
-        break;
-      case FALLING:
-        m += "f";
-        break;
-      case RISING:
-        m += "r";
-        break;
-      default:
-        m += "?";
-        break;
+  String m;
+  if (isDebug(DEBUG_FOR_PLOTTER)) {
+    m = str() + ",";
+  } else {
+    m = "§";
+    if (isDebug(DEBUG_PIN)) { 
+      if (isFinite(pin))  m += String(pin);
+      else                m += String((int)this);
+      m += "|";
     }
+    if (isDebug(DEBUG_TIME))  m += String(millis()) + "|";
+    if (isDebug(DEBUG_VALUE)) m += str();
   }
-  if (isDebug(DEBUG_VALUE)) m += str();
   return m;
 }
 

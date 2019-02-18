@@ -108,4 +108,8 @@ uint32_t Light::wheelToColor(Adafruit_NeoPixel & board, byte pos) {
   }
 }
 
+bool Light::isEnabled() {
+  return false;
+}
+
 Light light;

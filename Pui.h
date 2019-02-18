@@ -4,14 +4,16 @@
 #include "core.h"
 #include <I2C.h>
 
-class Pui 
+class Pui
 {
   public:
     Pui();
-    void init();
+    void init(bool battery);
     void set(byte pin, bool value);
     bool get(byte pin);
     void update();
+    bool isEnabled();
+
   private:
     static const byte ADDRESS = 0x20;
     static const byte A_PINMODE = 0x00;
@@ -20,6 +22,7 @@ class Pui
     static const byte B_VALUE = 0x13;
     byte a = 0;
     byte b = 0;
+    bool enabled = true;
 };
 extern Pui pui;
 

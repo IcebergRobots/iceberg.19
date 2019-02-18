@@ -11,7 +11,7 @@ class IO {
     // Analoge Sensoren
     Pin temperaturePcb      = Pin(  A13,  INPUT,         ANALOG   );  // misst Temperatur nahe den Motortreibern
     Pin brightnessPcb       = Pin(  A10,  INPUT_PULLUP,  ANALOG   );  // misst Helligkeit rechts auf der Platine
-    Pin batteryVoltage      = Pin(  A11,  INPUT,         ANALOG   );  // misst Akkuspannung
+    Pin batteryVoltmeter    = Pin(  A11,  INPUT,         ANALOG   );  // misst Akkuspannung
     Pin temperatureMd       = Pin(   A5,  INPUT,         ANALOG   );  // misst Temperatur nahe den Motortreibern
     Pin buzzer              = Pin(   34,  OUTPUT,        DIGITAL  );  // piept Ton, aktiver Buzzer
 
@@ -135,6 +135,10 @@ class IO {
     Key *_shiftStart       [2]  = {  &selectMenu,    &start         }; Shortcut  shiftStart       = Shortcut(  _shiftStart,       2,  MUTE_KEYS,     0,  600,  200  );  // 
     Key *_shiftStop        [2]  = {  &selectMenu,    &stop          }; Shortcut  shiftStop        = Shortcut(  _shiftStop,        2,  MUTE_KEYS,     0,  600,  200  );  // 
 
+    void update();
+
+
+
     // binary timers
     Timer flat            = Timer(    600             );  // liegen wir flach?
     Timer onLine          = Timer(    300             );  // berühren wir die Linie?
@@ -154,32 +158,30 @@ class IO {
     Timer driveLocked     = Timer(    300             );  // dürfen neue Steuerwerte esetzt werden?
 
     // all global variables
-    Value aggressive     = Value(     BOOLEAN                 );
-    Value striker        = Value(     BOOLEAN                 );
-    Value state          = Value(      LIMITS,      0,     9  );
-    Value stateDirection = Value(     BOOLEAN                 );
+    Value aggressive     = Value(     BOOLEAN              );
+    Value striker        = Value(     BOOLEAN              );
+    Value state          = Value(      LIMITS,    0,    9  );
+    Value stateDirection = Value(     BOOLEAN              );
 
-    Value driveAngle     = Value(  MODULATION,      0,   359  ); // Zielwinkel
-    Value drivePower     = Value(      LIMITS,      0,   255  ); // Geschwindigkeit
-    Value driveRotation  = Value(      LIMITS,   -255,   255  ); // Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
-    Value driveEnabled   = Value(     BOOLEAN                 ); // Aktivierung des Fahrgestells
+    Value driveAngle     = Value(  MODULATION,    0,  359  ); // Zielwinkel
+    Value drivePower     = Value(      LIMITS,    0,  255  ); // Geschwindigkeit
+    Value driveRotation  = Value(      LIMITS, -255,  255  ); // Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
+    Value driveEnabled   = Value(     BOOLEAN              ); // Aktivierung des Fahrgestells
 
-    Value ball           = Value(      LIMITS,   -160,   159  );  // Abweichung der Ball X-Koordinate
-    Value ballWidth      = Value(      LIMITS,      0         );  // Ballbreite
-    Value ballArea       = Value(      LIMITS,      0         );  // Ballgröße (Flächeninhalt)
-    Value goal           = Value(      LIMITS,   -160,   159  );  // Abweichung der Tor X-Koordinate
-    Value goalWidth      = Value(      LIMITS,      0         );  // Torbreite
-    Value goalArea       = Value(      LIMITS,      0         );  // Torgröße (Flächeninhalt)
+    Value ball           = Value(      LIMITS, -160,  159  );  // Abweichung der Ball X-Koordinate
+    Value ballWidth      = Value(      LIMITS,    0        );  // Ballbreite
+    Value ballArea       = Value(      LIMITS,    0        );  // Ballgröße (Flächeninhalt)
+    Value goal           = Value(      LIMITS, -160,  159  );  // Abweichung der Tor X-Koordinate
+    Value goalWidth      = Value(      LIMITS,    0        );  // Torbreite
+    Value goalArea       = Value(      LIMITS,    0        );  // Torgröße (Flächeninhalt)
     
-    Value hasDebugHead   = Value(     BOOLEAN                 );  // Debug-Zeilenanfang
-    Value battery        = Value(     BOOLEAN                 );  // ist der Akku angeschlosse?
+    Value hasDebugHead   = Value(     BOOLEAN              );  // Debug-Zeilenanfang
+    Value battery        = Value(      LIMITS,    0,  130  );  // ist der Akku angeschlosse?
 
-    Value heading        = Value(  MODULATION,   -179,   180  );
-    Value xOrientation   = Value(  MODULATION);
-    Value yOrientation   = Value(  MODULATION);
-    Value zOrientation   = Value(  MODULATION);
-
-    void update();
+    Value heading        = Value(  MODULATION, -179,  180  );
+    Value xOrientation   = Value(  MODULATION              );
+    Value yOrientation   = Value(  MODULATION              );
+    Value zOrientation   = Value(  MODULATION              );
 
   private:
 };

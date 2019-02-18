@@ -16,7 +16,11 @@ void Demand::request() {
   is there the need to update the target?
 *********************************************************************/
 bool Demand::onDemand() {
-    if (runTime.outsidePeriod(cooldownTime) || (demand && runTime.outsidePeriod(lockedTime))) {
+    if (isEnabled()
+      && ( runTime.outsidePeriod(cooldownTime) 
+        || ( demand 
+          && runTime.outsidePeriod(lockedTime)
+    ))) {
         demand = false;
         runTime.now();
         return true;
@@ -38,6 +42,3 @@ void Demand::setLocked(unsigned long period) {
 void Demand::setCooldown(unsigned long period) {
     cooldownTime = period;
 }
-
-
-

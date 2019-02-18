@@ -14,6 +14,8 @@ class Camera : private Pixy, public Demand
     Camera();
     void init();
     void frame();
+
+    bool isEnabled();
     
   private:
     byte blockCount = 0;    // Anzahl der gesehenen Blöcke

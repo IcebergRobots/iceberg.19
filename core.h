@@ -6,10 +6,10 @@
 
 // MODULES
 #define DISPLAY_ENABLED     0
-#define PUI_ENABLED         0
-#define ORIENTATION_ENABLED 0
-#define CAMERA_ENABLED      0
-#define LIGHT_ENABLED       0
+#define PUI_ENABLED         1
+#define ORIENTATION_ENABLED 1
+#define CAMERA_ENABLED      1
+#define LIGHT_ENABLED       1
 
 // UART
 #define DEBUG_SERIAL        Serial

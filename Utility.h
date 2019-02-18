@@ -16,6 +16,7 @@ void calculateStates();
 
 void prepareDebug();
 
+bool measureBatteryVoltage();
 void updateStates();
 
 void printDebug(String str, bool space);

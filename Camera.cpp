@@ -9,7 +9,7 @@ Camera::Camera() {}
   initialisiert die SPI Kommunikation
 *********************************************************************/
 void Camera::init() { 
-    if (CAMERA_ENABLED) {
+    if (isEnabled()) {
         beginSegment("c");
         setLocked(30);
         setCooldown(100);
@@ -21,7 +21,7 @@ void Camera::init() {
 }
 
 void Camera::frame() {
-    if (CAMERA_ENABLED) {
+    if (isEnabled()) {
         beginSegment("c:r");
         if (io.turbo.on()) setLED(0, 0, 0); // schalte die Front-LED aus
         int ballAreaMax = 0;  // Ballgröße, 0: blind, >0: Flächeninhalt
@@ -68,6 +68,10 @@ void Camera::frame() {
         }
         endSegment();
     }
+}
+
+bool Camera::isEnabled() {
+    return CAMERA_ENABLED;
 }
 
 Camera camera;

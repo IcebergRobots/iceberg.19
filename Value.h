@@ -18,14 +18,14 @@
 #define BOOLEAN    2
 
 // Debug debug
-#define DEBUG_ENABLE    0
-#define DEBUG_ON_CHANGE 1
-#define DEBUG_ON_REASON 2
-#define DEBUG_PIN       3
-#define DEBUG_TIME      4
-#define DEBUG_STATE     5
-#define DEBUG_VALUE     6
-#define DEBUG_REASON    7
+#define DEBUG_ENABLE      0
+#define DEBUG_ON_CHANGE   1
+#define DEBUG_ON_REASON   2
+#define DEBUG_FOR_PLOTTER 3
+#define DEBUG_PIN         4
+#define DEBUG_TIME        5
+#define DEBUG_VALUE       6
+#define DEBUG_REASON      7
 
 // Values
 #define LEFT  false

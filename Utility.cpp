@@ -53,6 +53,13 @@ void prepareDebug() {
   if (DEBUG_LOOP) debug();
 }
 
+bool measureBatteryVoltage() {
+  debug(io.batteryVoltmeter.get());
+  int voltage = io.batteryVoltmeter.get() * 0.1220703;
+  if (voltage < 40) voltage = 0;
+  io.battery.set(voltage);
+  return voltage;
+}
 
 void updateStates() {
   io.hasBall.set(io.ballTouch.get() > 30/*lightBarrierTriggerLevel*/);
@@ -60,6 +67,7 @@ void updateStates() {
   io.ballRight.set(io.ball.right(BALL_CENTER_TOLERANCE));
   io.ballCenter.set(io.ball.center(BALL_CENTER_TOLERANCE));
 
+  measureBatteryVoltage();
   // erkenne Hochheben
   //dof.accelGetOrientation(&accel_event, &orientation);
   //io.flat.set(!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7));

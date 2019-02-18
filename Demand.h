@@ -12,6 +12,8 @@ class Demand
     void request();
     bool onDemand();
 
+    virtual bool isEnabled() = 0;
+
     Value runTime;
 
   private:

@@ -10,6 +10,8 @@ class Light : public Demand
   public:
     Light();
     void light();
+    
+    bool isEnabled();
 
   private:
     void showState(Adafruit_NeoPixel & board, byte pos, byte state, bool hideRed=false);

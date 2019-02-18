@@ -14,6 +14,8 @@ class Orientation : private Adafruit_BNO055, public Demand
     Orientation();
     void init();
     void update();
+    
+    bool isEnabled();
 
   private:
     Adafruit_BNO055 bno = Adafruit_BNO055(55);

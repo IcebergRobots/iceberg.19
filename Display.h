@@ -25,6 +25,8 @@ class Display: public Adafruit_SH1106, public Demand
     void toggle();
     void resetValue();
 
+    bool isEnabled();
+
   private:
     bool set();
     void addLine();

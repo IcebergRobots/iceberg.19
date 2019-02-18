@@ -8,21 +8,27 @@ Orientation::Orientation() : Adafruit_BNO055(55) {
 }
 
 void Orientation::init() {
-  if (ORIENTATION_ENABLED) {
+  if (isEnabled()) {
     beginSegment("o");
     if (!begin()) debug("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
     endSegment();
-  } else debug("-o");
+  } else {
+    debug("-o");
+  }
 }
 
 void Orientation::update() {
-  if (ORIENTATION_ENABLED) {
+  if (isEnabled()) {
     sensors_event_t event;
     getEvent(&event);
     io.xOrientation.set(event.orientation.x);
     io.yOrientation.set(event.orientation.y);
     io.zOrientation.set(event.orientation.z);
   }
+}
+
+bool Orientation::isEnabled() {
+  return ORIENTATION_ENABLED;
 }
 
 Orientation orientation;

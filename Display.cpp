@@ -7,7 +7,7 @@ Display::Display(int resetPin) : Adafruit_SH1106(resetPin) {}
 
 
 void Display::init() {
-  if (DISPLAY_ENABLED) {
+  if (isEnabled()) {
     beginSegment("d");
     setLocked(100);
     setCooldown(1000);
@@ -19,11 +19,13 @@ void Display::init() {
     }
     display();  //wendet Aenderungen an
     endSegment();
-  } else debug("-d");
+  } else {
+    debug("-d");
+  }
 }
 
 void Display::setupMessage(byte pos, String title, String description) {
-  if (DISPLAY_ENABLED && io.turbo.off()) {
+  if (isEnabled() && io.turbo.off()) {
     fillRect(47, 0, 81, 31, BLACK); // lösche das Textfeld
     drawRect(0, 29, map(pos, 0, SETUP_MESSAGE_RANGE, 0, 128), 2, WHITE);
     setTextColor(WHITE);
@@ -42,7 +44,7 @@ void Display::setupMessage(byte pos, String title, String description) {
 
 // Infos auf dem Bildschirm anzeigen
 void Display::update() {
-  if (DISPLAY_ENABLED) {
+  if (isEnabled()) {
     if (set() == false) {
       set();
     }
@@ -192,6 +194,10 @@ String Display::intToStr(int number) {
 
 byte Display::getPage() {
   return page;
+}
+
+bool Display::isEnabled() {
+  return DISPLAY_ENABLED && io.battery.on();
 }
 
 Display d = Display(io.test1.getPin());

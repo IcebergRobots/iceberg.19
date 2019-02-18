@@ -27,7 +27,7 @@ void IO::update() {
 
   temperaturePcb.update();
   brightnessPcb.update();
-  batteryVoltage.update();
+  batteryVoltmeter.update();
   temperatureMd.update();
   buzzer.update();
 
