@@ -15,8 +15,10 @@ class Pin : public Value
   public:
 	Pin(byte _pin, byte _mode, byte _type);
 	void set(int _value);
+	void set(int _value, String reason);
 	void set();
 	void temp(int _value);
+	void temp(int _value, String reason);
 	void update();
 	byte getPin();
 

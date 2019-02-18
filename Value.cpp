@@ -59,7 +59,7 @@ void Value::update() {
   there is a current event, so save its time (now)
 *****************************************************/
 void Value::now(bool mute) {
-  if (!mute) sendDebug(true);
+  if (!mute) sendDebug();
   eventTimer = millis();
 }
 /*****************************************************
@@ -67,24 +67,29 @@ void Value::now(bool mute) {
   @param _value: new value
   - modulate or limit the value
 *****************************************************/
-void Value::set(int _value, String reason, bool mute, byte pin) {
+void Value::muteSet(int _value) {
   if (value != _value) {
     if (a <= b) value = constrain(_value, a, b); // limit
     else value = circulate(_value, a, b);        // modulate
 
     if (value != _value) return; // value didn't change
 
-    if (!mute) {
-      now(true); // trigger the timer because value changed
-      if (isDebug(DEBUG_ON_CHANGE)                             // event causes message
-      || (isDebug(DEBUG_ON_REASON) && reason.length() > 0)) {  // reason causes message
-        sendDebug(!mute, reason, pin);
-      }
-    }
-
     // if sign doesn't change, keep falling or rising state and wait for update()
     if (state == OFF || state == FALLING) if (on())  state = RISING;  // detect rising (off -> on) change
     else                                  if (off()) state = FALLING; // detect falling (on -> off) change
+  }
+}
+void Value::set(int _value, byte pin) {
+  muteSet(_value);
+  now(true); // trigger the timer because value changed
+  if (isDebug(DEBUG_ON_CHANGE)) sendDebug(pin);
+}
+void Value::set(int _value, String reason, byte pin) {
+  muteSet(_value);
+  now(true);
+  if (isDebug(DEBUG_ON_CHANGE)
+  || (isDebug(DEBUG_ON_REASON) && reason.length() > 0)) {
+    sendDebug(reason, pin);
   }
 }
 /*****************************************************
@@ -226,8 +231,20 @@ bool Value::isDebug(byte type) {
 /*****************************************************
   create a new debug message
 *****************************************************/
-void Value::sendDebug(bool timerChange, String reason, byte pin) {
-  if (!isDebug()) return;
+void Value::sendDebug(byte pin) {
+  if (isDebug()) {
+    debug(prepareDebug(pin));
+  }
+}
+void Value::sendDebug(String reason, byte pin) {
+  if (isDebug()) {
+    String m = prepareDebug(pin);
+    if (isDebug(DEBUG_REASON)) m += reason;
+    debug(m);
+  }
+}
+
+String Value::prepareDebug(byte pin) {
   String m = "§";
   if (isDebug(DEBUG_PIN)) { 
     if (isFinite(pin)) m += String(pin) + "|";
@@ -254,9 +271,7 @@ void Value::sendDebug(bool timerChange, String reason, byte pin) {
     }
   }
   if (isDebug(DEBUG_VALUE)) m += str();
-  if (isDebug(DEBUG_REASON)) m += reason;
-  debug(m);
-  
+  return m;
 }
 
 void Value::setElementType(byte type) {

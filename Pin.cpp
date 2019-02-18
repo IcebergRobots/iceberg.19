@@ -45,6 +45,10 @@ void Pin::set(int _value) {
   temp(_value);
   set();
 }
+void Pin::set(int _value, String reason) {
+  temp(_value, reason);
+  set();
+}
 
 /*****************************************************
   output the temporary saved signal on the arduino pin
@@ -76,7 +80,10 @@ void Pin::set() {
   - wait for set() to execute changes
 *****************************************************/
 void Pin::temp(int _value) {
-  Value::set(_value, "", false, getPin());
+  Value::set(_value, getPin());
+}
+void Pin::temp(int _value, String reason) {
+  Value::set(_value, reason, getPin());
 }
 
 /*****************************************************

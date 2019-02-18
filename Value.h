@@ -63,7 +63,9 @@ class Value : public Container
 
     // interact
     void now(bool mute=false);
-    void set(int _value, String reason="", bool mute=false, byte pin=INF);
+    void muteSet(int _value);
+    void set(int _value, byte pin=INF);
+    void set(int _value, String reason, byte pin=INF);
     void add(int _summand=1);
     void mul(float _factor);
 
@@ -102,7 +104,9 @@ class Value : public Container
 
   private:
     bool isDebug(byte type=DEBUG_ENABLE);
-    void sendDebug(bool timerChange=false, String reason="", byte pin=INF);
+    void sendDebug(byte pin=INF);
+    void sendDebug(String reason, byte pin=INF);
+    String prepareDebug(byte pin);
 
     byte elementType = VALUE;
     int value = 0;
