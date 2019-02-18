@@ -79,7 +79,7 @@ void loop() {
   if (io.driveEnabled.off() && io.driveEnabled.outsidePeriod(100)) drive.brake(false);
 */
   updateStates();
-/*//updateRating();
+//updateRating();
   //updateKick();
   //updateAnimation();
 
@@ -94,6 +94,6 @@ void loop() {
 
   //camera.frame();
 
-  */
+  
 }
 

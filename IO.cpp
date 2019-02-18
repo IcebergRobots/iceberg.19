@@ -25,6 +25,9 @@ void IO::update() {
     }
   }
 
+  endSegment();
+  beginSegment();
+
   temperaturePcb.update();
   brightnessPcb.update();
   batteryVoltage.update();
@@ -127,6 +130,9 @@ void IO::update() {
   // USB 
   usbTx.update();
   usbRx.update();
+
+  endSegment();
+  beginSegment();
 
   // PUI: keys and levers
   decreasePage.update();
