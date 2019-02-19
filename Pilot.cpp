@@ -12,12 +12,10 @@ Pilot::Pilot() {
   m[3].setPins(&io.m3Current, &io.m3Dir1, &io.m3Dir2, &io.m3Speed);
 }
 
-void Pilot::prepare() {
-  if (io.seeBall.rising()) io.state.set(BALL_TRACKING, "view");
-  if (io.seeBall.falling()) io.state.set(BACK, "blind");
-}
-
 void Pilot::update() {
+  if (io.seeBall.on()) io.state.set(BALL_TRACKING, "view");
+  else io.state.set(BACK, "blind");
+
   int direction = 0;
   int speed = 255;
   int rotation = 0;

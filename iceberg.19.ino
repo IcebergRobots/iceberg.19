@@ -88,7 +88,7 @@ void loop() {
   //calibrateGoal();
   //calibrateLightBeam();
   //calibrateLine();
-  drive.prepare();
+  //drive.prepare();
   drive.update();
   drive.execute();
   if (light.onDemand()) light.light();

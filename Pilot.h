@@ -20,7 +20,6 @@ class Pilot : public Chassis
 public:
   Pilot();
 
-  void prepare();
   void update();
 
   void steer(int angle = 0);
