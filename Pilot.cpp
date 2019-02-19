@@ -38,9 +38,9 @@ void Pilot::update() {
       else if (us.right() && us.right() < COURT_BORDER_MIN) direction = constrain(map(COURT_BORDER_MIN - us.right(), 0, 30, 180, 180 - ANGLE_PASSIVE_MAX), 180 - ANGLE_PASSIVE_MAX, 180);
       else*/ direction = 180;
 
-      rotation = 0 //ausrichten(0);
+      rotation = 0; //ausrichten(0);
       speed = max(speed - abs(rotation), 0);
-      m.drive(direction, speed, rotation);
+      drive(direction, speed, rotation);
       break;
     case GOALKEEPER:
 
@@ -59,8 +59,8 @@ void Pilot::update() {
       break;
 
     case BALL_TRACKING:
-      speed = map(constrain(ballWidth, 5, 35), 5, 35, SPEED_BALL_FAR, SPEED_BALL);
-      direction = map(ball, -X_CENTER, X_CENTER, (float)rotMulti, -(float)rotMulti);
+      speed = mapConstrain(io.ballWidth.get(), 5, 35, SPEED_BALL_FAR, SPEED_BALL);
+      direction = map(io.ball.get(), -X_CENTER, X_CENTER, (float)rotMulti, -(float)rotMulti);
       if (direction > 60) {
         // seitwärts bewegen, um Torsusrichtung aufrecht zu erhalten
         //driveState = "> follow";
@@ -73,10 +73,10 @@ void Pilot::update() {
         speed = SPEED_SIDEWAY;
       } else {
         //driveState = "^ follow";
-
+      }
         rotation = 0; //ausrichten(0);
         speed = max(speed - abs(rotation), 0);
-        m.drive(direction, speed, rotation);
+        drive(direction, speed, rotation);
       break;
     case GOAL_AIMING:
 

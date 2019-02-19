@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 #include "LinkedList.h"
+#include "Pixy.h"
 
 // MODULES
 #define DISPLAY_ENABLED     1
