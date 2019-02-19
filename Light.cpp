@@ -19,7 +19,7 @@ void Light::light() {
   io.indHearbeat.set(map(abs(int(millis() % 500) - 250),0,250,-100,356));
 
   if (io.setupLight.off()) {
-    io.indFront.set(0);
+    io.indFront.set(io.seeBall.get());
     io.indLeft.set(0);
     io.indRight.set(0);
   }

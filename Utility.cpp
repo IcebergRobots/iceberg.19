@@ -65,6 +65,7 @@ void updateStates() {
   io.ballCenter.set(io.ball.center(BALL_CENTER_TOLERANCE));
 
   io.battery.set(io.batteryVoltmeter.is(255));
+  io.flat.set(true);
   // erkenne Hochheben
   //dof.accelGetOrientation(&accel_event, &orientation);
   //io.flat.set(!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7));

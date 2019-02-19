@@ -22,6 +22,9 @@ void setup() {
     drive.m[i].speed->showDebug(DEBUG_PIN);
     drive.m[i].speed->startDebug();
   }
+  io.seeBall.startDebug();
+  io.ball.startDebug();
+  io.state.startDebug();
   /*
   io.xOrientation.startDebug();
   io.yOrientation.startDebug();
@@ -88,14 +91,11 @@ void loop() {
   //calibrateGoal();
   //calibrateLightBeam();
   //calibrateLine();
+  drive.update();
 
-  if (light.onDemand()) light.light();
   drive.execute();
+  if (light.onDemand()) light.light();
   //bluetoth();
   if (d.onDemand()) d.update();
-
-  //camera.frame();
-
-  
 }
 

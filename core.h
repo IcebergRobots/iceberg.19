@@ -23,19 +23,29 @@
 
 // DEBUG
 #define DEBUG_ENABLED       1
-#define DEBUG_SEGMENT       1       // sollen Methoden gezeigt werden?
+#define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
 #define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_SERIAL        Serial  // Serial der Usb-Schnittstelle
 #define START_MARKER        254     // Startzeichen einer Bluetooth-Nachricht
 #define END_MARKER          255     // Endzeichen einer Bluetooth-Nachricht
 
+// Feld
+#define COURT_REARWARD_MAX 35           // optimaler Abstand nach hinten
+#define COURT_REARWARD_MIN 25           // optimaler Abstand nach hinten
+#define COURT_WIDTH 150         // Summe der Abstände nach rechts und links
+#define COURT_BORDER_MIN 80     // Abstand nach rechts bzw. links am Torpfosten
+#define COURT_WIDTH_FREE 140
+#define COURT_POST_TO_BORDER 110 // Abstand nach rechts bzw. links am Torpfosten
+#define MAX_DISTANCE 200
+
 // 
 #define BALL_CENTER_TOLERANCE 40 
 
+
+// WATCHDOG
 #define WDTO_OFF -1
-/* WATCHDOG
-  gemessen  theoretisch
+/*gemessen  theoretisch
   17mS      WDTO_15MS
   34mS      WDTO_30MS
   68mS      WDTO_60MS
@@ -46,11 +56,9 @@
   2176mS    WDTO_2S
   4352mS    WDTO_4S
   8705mS    WDTO_8S
-  -1  mS    WDTO_OFF
-*/
-
+    -1mS    WDTO_OFF */
 #define WATCHDOG_SETUP  WDTO_OFF // Setupzeit, nach der Neugestartet wird
-#define WATCHDOG_LOOP   WDTO_2S  // Schleifenzeit, nach der Neugestartet wird
+#define WATCHDOG_LOOP   WDTO_250MS  // Schleifenzeit, nach der Neugestartet wird
 
 // PIYX
 #define SIGNATURE_BALL 1                      // Pixy-Signature des Balls
@@ -104,6 +112,8 @@ int pinMode(byte pin);
 void reset();
 String format(String str, unsigned int minLength=0, unsigned int maxLength=-1);
 String format(long num, unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
+bool blink(unsigned long period, float proportion);
+long mapConstrain(long x, long in_min, long in_max, long out_min, long out_max);
 
 void beginSegment(String name="");
 void endSegment();

@@ -4,7 +4,7 @@
   Constructor
   - configurate chassis
 *********************************************************************/
-Pilot::Pilot() : Chassis() {
+Pilot::Pilot() {
   setAxisAngle(70);
   m[0].setPins(&io.m0Current, &io.m0Dir1, &io.m0Dir2, &io.m0Speed);
   m[1].setPins(&io.m1Current, &io.m1Dir1, &io.m1Dir2, &io.m1Speed);
@@ -13,6 +13,9 @@ Pilot::Pilot() : Chassis() {
 }
 
 void Pilot::update() {
+  if (io.seeBall.rising()) io.state.set(BALL_TRACKING, "view");
+  if (io.seeBall.falling()) io.state.set(BACK, "blind");
+
   switch (io.state.get()) {
     default:
     case BACK:

@@ -184,6 +184,10 @@ class IO {
     Value yOrientation   = Value(  MODULATION              );
     Value zOrientation   = Value(  MODULATION              );
 
+    Value distanceFront  = Value(  MODULATION,    0,  MAX_DISTANCE);
+    Value distanceBack   = Value(  MODULATION,    0,  MAX_DISTANCE);
+    Value distanceRight  = Value(  MODULATION,    0,  MAX_DISTANCE);
+    Value distanceLeft   = Value(  MODULATION,    0,  MAX_DISTANCE);
   private:
 };
 extern IO io;
