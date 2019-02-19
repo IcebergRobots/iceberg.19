@@ -3,8 +3,8 @@
 /*****************************************************
   Constructor
 *****************************************************/
-LightBoard::LightBoard(int numPixels, Pin &pin, unsigned long lockedPeriod=0, unsigned long cooldownPeriod=0)
-: Adafruit_NeoPixel(numPixels, pin.getPin(), NEO_GRB + NEO_KHZ800) {
+LightBoard::LightBoard(int numPixels, int pin, unsigned long lockedPeriod=0, unsigned long cooldownPeriod=0)
+: Adafruit_NeoPixel(numPixels, pin, NEO_GRB + NEO_KHZ800) {
   setCooldown(cooldownPeriod);
   setLocked(lockedPeriod);
 }

@@ -24,6 +24,9 @@ void Light::light() {
     io.indRight.set(0);
   }
  
+  line.setAllColor(255, 255, 255);
+  line.setBrightness(80);
+  line.show();
   pui.setAllColor(255, 255, 255);
   pui.setBrightness(map(io.poti.get(), 0, 1023, 0, 255));
   if (pui.onDemand()) pui.show();

@@ -14,7 +14,8 @@ class Light : public Demand
     
     bool isEnabled();
 
-    LightBoard pui = LightBoard(12, io.puiLight, 10, 100);
+    LightBoard pui = LightBoard(12, 32, 10, 100);
+    LightBoard line = LightBoard(40, 46, 10, 100);
 
   private:
 };

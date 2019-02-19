@@ -28,7 +28,7 @@ void Orientation::update() {
 }
 
 bool Orientation::isEnabled() {
-  return ORIENTATION_ENABLED && io.battery.on();
+  return ORIENTATION_ENABLED && io.battery.on() && false;
 }
 
 Orientation orientation;
