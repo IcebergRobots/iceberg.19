@@ -13,13 +13,32 @@ Pilot::Pilot() {
 }
 
 void Pilot::update() {
-  if (io.seeBall.rising()) io.state.set(BALL_TRACKING, "view");
-  if (io.seeBall.falling()) io.state.set(BACK, "blind");
+  if (io.seeBall.on()) io.state.set(BALL_TRACKING, "view");
+  else io.state.set(BACK, "blind");
+
+  int direction = 0;
+  int speed = 255;
+  int rotation = 0;
+  int rotMulti = 40;
 
   switch (io.state.get()) {
     default:
     case BACK:
+      if (false /*us.back() && us.back() < 80*/) {
+        speed = SPEED_PENALTY;
+        //driveState = "v penalty";
+      } else {
+        speed = SPEED_BACKWARDS;
+        //driveState = "v backward";
+      }
+      // fahre rückwärts und lenke zur Mitte vor dem Tor
+      /*if (us.left() && us.left() < COURT_BORDER_MIN) direction = -constrain(map(COURT_BORDER_MIN - us.left(), 0, 30, 180, 180 - ANGLE_PASSIVE_MAX), 180 - ANGLE_PASSIVE_MAX, 180);
+      else if (us.right() && us.right() < COURT_BORDER_MIN) direction = constrain(map(COURT_BORDER_MIN - us.right(), 0, 30, 180, 180 - ANGLE_PASSIVE_MAX), 180 - ANGLE_PASSIVE_MAX, 180);
+      else*/ direction = 180;
 
+      rotation = 0; //ausrichten(0);
+      speed = max(speed - abs(rotation), 0);
+      drive(direction, speed, rotation);
       break;
     case GOALKEEPER:
 
@@ -38,7 +57,24 @@ void Pilot::update() {
       break;
 
     case BALL_TRACKING:
-
+      speed = mapConstrain(io.ballWidth.get(), 5, 35, SPEED_BALL_FAR, SPEED_BALL);
+      direction = map(io.ball.get(), -X_CENTER, X_CENTER, (float)rotMulti, -(float)rotMulti);
+      if (direction > 60) {
+        // seitwärts bewegen, um Torsusrichtung aufrecht zu erhalten
+        //driveState = "> follow";
+        direction = 100;
+        speed = SPEED_SIDEWAY;
+      } else if (direction < -60) {
+        // seitwärts bewegen, um Torsusrichtung aufrecht zu erhalten
+        //driveState = "< follow";
+        direction = -100;
+        speed = SPEED_SIDEWAY;
+      } else {
+        //driveState = "^ follow";
+      }
+        rotation = 0; //ausrichten(0);
+        speed = max(speed - abs(rotation), 0);
+        drive(direction, speed, rotation);
       break;
     case GOAL_AIMING:
 

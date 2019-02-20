@@ -54,6 +54,7 @@ void prepareDebug() {
 }
 
 void initStates() {
+  io.driveEnabled.set(true);
   io.batteryVoltmeter.update();
   io.battery.set(io.batteryVoltmeter.is(255));
 }
