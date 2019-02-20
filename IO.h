@@ -148,6 +148,7 @@ class IO {
     Timer runtime         = Timer(                    );  // Laufzeit der Schleife 
     Timer seeBall         = Timer(    100,  &flat     );  // sehen wir den Ball?
     Timer seeGoal         = Timer(    500,  &flat     );  // sehen wir das Tor?
+    Timer seeMate         = Timer(    100,  &flat     );  // sehen wir ein Positionslicht
     Timer closeBall       = Timer(    500,  &seeBall  );  // ist der Ball nahe?
     Timer drift           = Timer(    200             );  // müssen wir ein Driften verhindern?
     Timer ballLeft        = Timer(      0,  &seeBall  );  // ist der Ball links?
