@@ -1,5 +1,9 @@
 #include "Utility.h"
 
+void kick() {
+  if (io.kickActive.period() > 600) io.kickActive.set();
+}
+
 void initUART() {
   DEBUG_SERIAL.begin(DEBUG_BAUDRATE);
   BLUETOOTH_SERIAL.begin(BLUETOOTH_BAUDRATE);
@@ -56,7 +60,7 @@ void prepareDebug() {
 void initStates() {
   io.driveEnabled.set(true);
   io.batteryVoltmeter.update();
-  io.battery.set(io.batteryVoltmeter.is(255));
+  io.battery.set(io.batteryVoltmeter.get() >= 103);
 }
 
 void updateStates() {
@@ -65,7 +69,7 @@ void updateStates() {
   io.ballRight.set(io.ball.right(BALL_CENTER_TOLERANCE));
   io.ballCenter.set(io.ball.center(BALL_CENTER_TOLERANCE));
 
-  io.battery.set(io.batteryVoltmeter.is(255));
+  io.battery.set(io.batteryVoltmeter.get() >= 103);
   io.flat.set(true);
   // erkenne Hochheben
   //dof.accelGetOrientation(&accel_event, &orientation);

@@ -35,12 +35,11 @@ void Light::light() {
   pui.setPixelState(1, io.battery.on());
   pui.setPixelState(2, io.seeMate.on(), true);
   pui.setPixelState(3, io.seeGoal.on(), true); 
-  pui.setPixelState(4, io.seeBall.on(ontrue); 
+  pui.setPixelState(4, io.seeBall.on(), true); 
   pui.setPixelState(5, io.flat.on());
   if (io.turbo.off() || !DEBUG_ENABLED) pui.setPixelState(6, 1);
   else if (DEBUG_LOOP || DEBUG_SEGMENT) pui.setPixelState(6, 3);
   else                                  pui.setPixelState(6, 2);
-  pui.setPixelState(6, DEBUG_ENABLED); 
   pui.setPixelState(7, io.bottom.on()); 
   pui.setPixelState(8, io.kicker.on()); 
   pui.setPixelState(9, io.bluetooth.on()); 

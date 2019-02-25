@@ -23,9 +23,12 @@ Pin::Pin(byte _pin, byte _mode, byte _type) : Value() {
       pinMode(pin, mode);
       break;
 
+    case PUI:
+      digital = false;
+      break;
+
     case DIGITAL:
       pinMode(pin, mode);
-    case PUI:
     case VIRTUAL:
     default:
       digital = true;
@@ -61,15 +64,15 @@ void Pin::set() {
       case PWM:
         if(digital) digitalWrite(pin, get());
         else analogWrite(pin, get());
-      break;
+        break;
 
       case PUI:
-        pui.set(pin, get());
-      break;
+        pui.digitalWrite(pin, get());
+        break;
 
       case VIRTUAL:
       default:
-      break;
+        break;
     }
   }
 }
@@ -97,17 +100,23 @@ void Pin::update() {
     {
       case VIRTUAL:
         return;
+
       case ANALOG:
       case DIGITAL:
       case PWM:
-        if (digital) set(digitalRead(pin));
-        else set(analogRead(pin));
-      break;
+        if (digital) {
+          if(mode == INPUT_PULLUP) Value::set(!digitalRead(pin));
+          else                     Value::set(digitalRead(pin));
+        } else Value::set(analogRead(pin));
+        break;
+
       case PUI:
-        set(pui.get(pin));
-      break;
+        if (!digital) initPui();
+
+        if(mode == INPUT_PULLUP) Value::set(!pui.digitalRead(pin));
+        else                     Value::set(pui.digitalRead(pin));
+        break;
     }
-    if(mode == INPUT_PULLUP && type != VIRTUAL) set(!get());
   }
 }
 
@@ -117,3 +126,13 @@ void Pin::update() {
 byte Pin::getPin() {
 	return pin;
 }
+
+void Pin::initPui() {
+  if (mode == OUTPUT) pui.pinMode(pin, OUTPUT);
+  else                pui.pinMode(pin, INPUT);
+      
+  if (mode == INPUT_PULLUP) pui.pullUp(pin, HIGH);  // turn on a 100K pullup internally
+  digital = true;
+}
+
+Adafruit_MCP23017 pui;

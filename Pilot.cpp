@@ -13,6 +13,7 @@ Pilot::Pilot() {
 }
 
 void Pilot::update() {
+  if (DEBUG_LOOP) beginSegment("d");
   if (io.seeBall.on()) io.state.set(BALL_TRACKING, "view");
   else io.state.set(BACK, "blind");
 
@@ -36,7 +37,7 @@ void Pilot::update() {
       else if (us.right() && us.right() < COURT_BORDER_MIN) direction = constrain(map(COURT_BORDER_MIN - us.right(), 0, 30, 180, 180 - ANGLE_PASSIVE_MAX), 180 - ANGLE_PASSIVE_MAX, 180);
       else*/ direction = 180;
 
-      rotation = 0; //ausrichten(0);
+      rotation = face(0);
       speed = max(speed - abs(rotation), 0);
       drive(direction, speed, rotation);
       break;
@@ -72,7 +73,7 @@ void Pilot::update() {
       } else {
         //driveState = "^ follow";
       }
-        rotation = 0; //ausrichten(0);
+        rotation = face(0);
         speed = max(speed - abs(rotation), 0);
         drive(direction, speed, rotation);
       break;
@@ -86,6 +87,7 @@ void Pilot::update() {
 
       break;
   }
+  if (DEBUG_LOOP) endSegment();
 }
 
 
@@ -95,8 +97,15 @@ void Pilot::steer(int angle) {
 void Pilot::accelerate(int speed) {
   io.drivePower.set(speed);
 }
-void Pilot::face(int angle, int speed) {
-  
+int Pilot::face(int angle, int speed) {
+  io.driveOrientation.set(angle);
+  pidSetpoint = io.driveOrientation.get();
+  // Misst die Kompassabweichung vom Tor [-180 bis 179]
+  if (io.driveEnabled.on()) {
+    pidIn = (double) io.heading.get();
+    myPID.Compute();
+    return -pidOut; // [-255 bis 255]
+  }
 }
 
 Pilot drive;

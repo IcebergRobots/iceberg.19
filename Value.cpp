@@ -10,14 +10,14 @@
     - in case of modulation: lower limit
     - in case of limits: upper limit
 *****************************************************/
-Value::Value(byte processing, int min, int max) {
+Value::Value(byte processing, int _min, int _max) {
   switch (processing) {
     default:
     case LIMITS:
-      setLimits(min, max);
+      setLimits(_min, _max);
       break;
     case MODULATION:
-      setModulation(min, max);
+      setModulation(_min, _max);
       break;
     case BOOLEAN:
       setLimits(false, true);
@@ -30,10 +30,10 @@ Value::Value(byte processing, int min, int max) {
   @param max: upper limit
   - see header file for visualisation
 *****************************************************/
-void Value::setLimits(int min, int max) {
-  a = min(min, max);
-  b = max(min, max);
-  set(value);
+void Value::setLimits(int _min, int _max) {
+  a = min(_min, _max);
+  b = max(_min, _max);
+  value = constrain(value, a, b);
 }
 /*****************************************************
   configurate modulation
@@ -41,18 +41,19 @@ void Value::setLimits(int min, int max) {
   @param max: upper limit
   - see header file for visualisation
 *****************************************************/
-void Value::setModulation(int min, int max) {
-  a = max(min, max);
-  b = min(min, max);
-  set(value);
+void Value::setModulation(int _min, int _max) {
+  a = max(_min, _max);
+  b = min(_min, _max);
+  value = circulate(value, b, a);
 }
 
 /*****************************************************
   reset change state as the change happend durring the previous loop
 *****************************************************/
 void Value::update() {
-  if      (state == FALLING) state = OFF;
-  else if (state == RISING)  state = ON;
+  if      (getState() == FALLING) setState(OFF);
+  else if (getState() == RISING)  setState(ON);
+  state = getState();
 }
 
 /*****************************************************
@@ -67,29 +68,46 @@ void Value::now(bool mute) {
   @param _value: new value
   - modulate or limit the value
 *****************************************************/
-void Value::muteSet(int _value) {
+bool Value::muteSet(int _value) {
+  int lastValue = value;
   if (value != _value) {
     if (a <= b) value = constrain(_value, a, b); // limit
-    else value = circulate(_value, a, b);        // modulate
-
-    if (value != _value) return; // value didn't change
+    else value = circulate(_value, b, a);        // modulate
 
     // if sign doesn't change, keep falling or rising state and wait for update()
-    if (state == OFF || state == FALLING) if (on())  state = RISING;  // detect rising (off -> on) change
-    else                                  if (off()) state = FALLING; // detect falling (on -> off) change
+    if (value != lastValue) {
+      switch (getState()) {
+        case OFF:
+        case FALLING:
+          if (on())  setState(RISING);
+          break;
+
+        case ON:
+        case RISING:
+          if (off()) setState(FALLING);
+          break;
+
+        default:
+          break;
+      }
+      state = -getState();
+    }
   }
+  return value != lastValue;
 }
 void Value::set(int _value, byte pin) {
-  muteSet(_value);
-  now(true); // trigger the timer because value changed
-  if (isDebug(DEBUG_ON_CHANGE)) sendDebug(pin);
+  if (muteSet(_value)) {
+    now(true); // trigger the timer because value changed
+    if (isDebug(DEBUG_ON_CHANGE)) sendDebug(pin);
+  }
 }
 void Value::set(int _value, String reason, byte pin) {
-  muteSet(_value);
-  now(true);
-  if (isDebug(DEBUG_ON_CHANGE)
-  || (isDebug(DEBUG_ON_REASON) && reason.length() > 0)) {
-    sendDebug(reason, pin);
+  if (muteSet(_value)) {
+    now(true);
+    if (isDebug(DEBUG_ON_CHANGE)
+    || (isDebug(DEBUG_ON_REASON) && reason.length() > 0)) {
+      sendDebug(reason, pin);
+    }
   }
 }
 /*****************************************************
@@ -155,15 +173,15 @@ String Value::str(unsigned int minLength, unsigned int maxLength, bool sign) {
 /*****************************************************
   did the value fall?
 *****************************************************/
-bool Value::falling() { return state == FALLING; }
+bool Value::falling() { return getState() == FALLING; }
 /*****************************************************
   did the value fall?
 *****************************************************/
-bool Value::rising() { return state == RISING; }
+bool Value::rising() { return getState() == RISING; }
 /*****************************************************
   did the value fall?
 *****************************************************/
-bool Value::change() { return falling() || rising(); }
+bool Value::change() { return state < 0; }
 
 /*****************************************************
   was there ever an event?
@@ -267,4 +285,13 @@ void Value::setElementType(byte type) {
 
 byte Value::getElementType() {
   return elementType;
+}
+
+void Value::setState(byte s) {
+  if (state < 0) state = -s;
+  else state = s;
+}
+
+byte Value::getState() {
+  return abs(state);
 }

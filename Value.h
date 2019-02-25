@@ -1,16 +1,15 @@
 #ifndef Value_h
 #define Value_h
 
-#include "Pui.h"
+#include "core.h"
 #include "Container.h"
+#include "Adafruit_MCP23017.h"
 
 // States
 #define OFF     0
-#define ON      1
-#define FALLING 2
-#define RISING  3
-#define STROKE  4
-#define FURTHER 6
+#define ON      1 // on change: -1
+#define FALLING 2 // on change: -2
+#define RISING  3 // on change: -3
 
 // Processing
 #define LIMITS     0
@@ -54,16 +53,16 @@ class Value : public Container
 {
   public:
     // configutate
-    Value(byte processing=LIMITS, int min=INT16_T_MIN, int max=INT16_T_MAX);
-    void setLimits(int min=INT16_T_MIN, int max=INT16_T_MAX); //huhu
-    void setModulation(int min, int max);
+    Value(byte processing=LIMITS, int _min=INT16_T_MIN, int _max=INT16_T_MAX);
+    void setLimits(int _min=INT16_T_MIN, int _max=INT16_T_MAX); //huhu
+    void setModulation(int _min, int _max);
 
     // tick
     void update();
 
     // interact
     void now(bool mute=false);
-    void muteSet(int _value);
+    bool muteSet(int _value);
     void set(int _value, byte pin=INF);
     void set(int _value, String reason, byte pin=INF);
     void add(int _summand=1);
@@ -102,6 +101,9 @@ class Value : public Container
     void setElementType(byte type);
     byte getElementType();
 
+    void setState(byte s);
+    byte getState();
+
   private:
     bool isDebug(byte type=DEBUG_ENABLE);
     void sendDebug(byte pin=INF);
@@ -115,7 +117,7 @@ class Value : public Container
     int b = 0;  // in case of modulation: lower limit
                 // in case of limits: upper limit
     unsigned long eventTimer = 0; // time of last event
-    byte state = OFF; // OFF, ON, FALLING, RISING
+    char state = OFF; // OFF, ON, FALLING, RISING, OFF_CHANGE, ON_
     byte debugSettings = B11000010;
 };
 

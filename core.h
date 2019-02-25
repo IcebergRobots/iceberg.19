@@ -4,6 +4,7 @@
 #include "Arduino.h"
 #include "LinkedList.h"
 #include "Pixy.h"
+#include <I2C.h>
 
 // MODULES
 #define DISPLAY_ENABLED     1
@@ -11,6 +12,12 @@
 #define ORIENTATION_ENABLED 1
 #define CAMERA_ENABLED      1
 #define LIGHT_ENABLED       1
+
+// DEBUG
+#define DEBUG_ENABLED       1
+#define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
+#define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 
 // Fahren
 #define ROLE_COOLDOWN 1000      // [0 bis *]~1000 Zeitspanne, in dem kein Rollenwechsel stattfindet
@@ -50,11 +57,6 @@
 #define BLACKBOX_SERIAL     Serial2
 #define BLACKBOX_BAUDRATE   115200
 
-// DEBUG
-#define DEBUG_ENABLED       1
-#define DEBUG_SEGMENT       1       // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP          1       // soll jeder Schleifendurchlauf gezeigt werden?
-#define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_SERIAL        Serial  // Serial der Usb-Schnittstelle
 #define START_MARKER        254     // Startzeichen einer Bluetooth-Nachricht
 #define END_MARKER          255     // Endzeichen einer Bluetooth-Nachricht
@@ -70,6 +72,11 @@
 
 // 
 #define BALL_CENTER_TOLERANCE 40 
+
+// PID-Regler
+#define PID_FILTER_P .27  // [0 bis *]~.27 p:proportional
+#define PID_FILTER_I .02  // [0 bis *]~0   i:vorausschauend
+#define PID_FILTER_D .03  // [0 bis *]~.03 d:Schwung herausnehmen (nicht zu weit drehen)
 
 
 // WATCHDOG
