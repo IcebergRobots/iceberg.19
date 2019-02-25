@@ -64,8 +64,6 @@ void initStates() {
 }
 
 void updateStates() {
-  if (DEBUG_LOOP) beginSegment("state");
-
   io.hasBall.set(io.ballTouch.get() > 30/*lightBarrierTriggerLevel*/);
   io.ballLeft.set(io.ball.left(BALL_CENTER_TOLERANCE));
   io.ballRight.set(io.ball.right(BALL_CENTER_TOLERANCE));
@@ -76,8 +74,6 @@ void updateStates() {
   // erkenne Hochheben
   //dof.accelGetOrientation(&accel_event, &orientation);
   //io.flat.set(!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7));
-  
-  if (DEBUG_LOOP) endSegment();
 }
 
 void printDebug(String str, bool space) {
