@@ -41,6 +41,7 @@ void loop() {
   if (camera.onDemand()) camera.frame();
   //readUltrasonic();
 
+  if (DEBUG_LOOP) beginSegment("in");
   if (io.decreasePage.click())         {  /*d.changePage(-1);  */                                           }
   if (io.increasePage.click())         {  /*d.changePage(1);   */                                           }
   if (io.selectPage.click())           {  /*d.toggle();        */                                           }
@@ -61,14 +62,10 @@ void loop() {
   if (io.kickerStop.click())           {  debug("kickerStop");      io.kickPermanent.set(false);            }          
   if (io.shiftStart.click())           {  debug("shiftStart");                                              }          
   if (io.shiftStop.click())            {  debug("shiftStop");                                               }        
-/*
-  if (io.drivePower.outsidePeriod(400)) drive.brake(false);
-  if (io.driveEnabled.falling()) drive.brake(false);
-  if (io.driveEnabled.off() && io.driveEnabled.outsidePeriod(100)) drive.brake(false);
-*/
+  if (DEBUG_LOOP) endSegment();
 
   updateStates();
-//updateRating();
+  //updateRating();
   //updateKick();
   //updateAnimation();
 
@@ -76,8 +73,10 @@ void loop() {
   //calibrateLightBeam();
   //calibrateLine();
   //drive.prepare();
+  if (DEBUG_LOOP) beginSegment("drive");
   drive.update();
   drive.execute();
+  if (DEBUG_LOOP) endSegment();
   if (light.onDemand()) light.light();
   //bluetoth();
   if (d.onDemand()) d.update();
