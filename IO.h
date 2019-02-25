@@ -159,7 +159,7 @@ class IO {
     Timer ballCenter      = Timer(      0,  &seeBall  );  // ist der Ball mittig?
     Timer cameraResponse  = Timer(  20000             );  // ist die Kamera verbunden?
     Timer driveLocked     = Timer(    300             );  // dürfen neue Steuerwerte esetzt werden?
-    Timer setupLight      = Timer(    500             );
+    Timer setupLight      = Timer(    200             );
     Timer kickActive      = Timer(     50             );
 
     // all global variables
