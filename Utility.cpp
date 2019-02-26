@@ -61,6 +61,7 @@ void initStates() {
   io.driveEnabled.set(true);
   io.batteryVoltmeter.update();
   io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE);
+  io.pause.set(true);
 }
 
 void updateStates() {
