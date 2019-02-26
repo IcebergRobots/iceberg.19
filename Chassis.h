@@ -21,7 +21,6 @@ class Chassis
 
   private:
     byte axisAngle = 0;
-    static const int sinus[360];
 };
 
 #endif

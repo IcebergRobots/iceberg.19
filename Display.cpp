@@ -141,6 +141,8 @@ bool Display::set() {
     case 0:
       /*if (isTypeA) title = "IcebergRobotsA";
       else*/ title = "IcebergRobotsB";
+      addLine(io.xOrientation.str(4), io.yOrientation.str(4));
+      addLine("head:", io.heading.get());
   }
 
   endSegment();

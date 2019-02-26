@@ -50,7 +50,8 @@ void LightBoard::setPixelState(byte pos, byte state, bool hideRed) {
       // Information falsch (magenta)
       // hideRed=true Information nicht verfügbar (aus)
       // hideRed=true Information nicht relevant (aus)
-      setPixelColor(pos, (!hideRed) * 150, 0, (!hideRed) * 150);
+      //setPixelColor(pos, (!hideRed) * 150, 0, (!hideRed) * 150);
+      setPixelColor(pos, !hideRed * 255, 0, 0);
       break;
     case 1: 
       // Information wahr (grün)
@@ -59,12 +60,14 @@ void LightBoard::setPixelState(byte pos, byte state, bool hideRed) {
     case 2:
       // Wahrnung (blau)
       // Information ungewiss (blau)
-      setPixelColor(pos, 0, 180, 120);
+      //setPixelColor(pos, 0, 180, 120);
+      setPixelColor(pos, 0, 255, 255);
       break;
     case 3:
       // Kritische Warnung (magenta)
       // Information falsch (magenta)
-      setPixelColor(pos, 255, 0, 150);
+      //setPixelColor(pos, 255, 0, 150);
+      setPixelColor(pos, 255, 0, 0);
       break;
   }
 }

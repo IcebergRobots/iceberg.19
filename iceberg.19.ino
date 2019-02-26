@@ -8,7 +8,7 @@ void setup() {
   initStates();
 
   light.init();
-  pui.init(io.battery.on());
+  pui.begin();
   d.init();  // initialisiere Display mit Iceberg Schriftzug
   camera.init();
   orientation.init();
@@ -18,18 +18,10 @@ void setup() {
 
   /*****************************************************/
   io.turbo.setLimits(false, false); // set broken turbo key to off
-  for(int i = 0; i < 4; i++) {
+  /*for(int i = 0; i < 4; i++) {
     drive.m[i].speed->showDebug(DEBUG_PIN);
     drive.m[i].speed->startDebug();
-  }
-  io.seeBall.startDebug();
-  io.ball.startDebug();
-  io.state.startDebug();
-  /*
-  io.xOrientation.startDebug();
-  io.yOrientation.startDebug();
-  io.zOrientation.startDebug();
-  */
+  }*/
 
   //drive.brake();
   //drive.execute();
@@ -42,41 +34,33 @@ void loop() {
   loopWatchdog();
   io.update();
 
+  digitalWrite(io.buzzer.getPin(), false);
+  digitalWrite(io.speaker.getPin(), false);
+
   if (orientation.onDemand()) orientation.update();
   if (camera.onDemand()) camera.frame();
   //readUltrasonic();
 
-  if (io.shiftStart.further()) {
-    debug("ball:");
-    debug(io.ball.str(4, -1, true) + ",");
-    debug(io.ballWidth.str(4) + ",");
-    debug(io.ballArea.str(4));
-  }
-  if (io.shiftStop.further()) { 
-    debug("goal:");
-    debug(io.goal.str(4, -1, true) + ",");
-    debug(io.goalWidth.str(4) + ",");
-    debug(io.goalArea.str(4));
-  }
-
-  if (io.start.stroke()) {
-    debug("start");
-    io.driveEnabled.set(true);
-  }
-  if (io.stop.stroke()) {
-    debug("stop");
-    io.driveEnabled.set(false);
-  }
-  if (io.shiftStart.click()) {
-    drive.steer();
-    drive.accelerate(io.poti.get());
-    drive.face();
-  }
-  if (io.shiftStop.click()) {
-    debug(io.xOrientation.str());
-    debug(io.yOrientation.str());
-    debug(io.zOrientation.str());
-  }
+  if (io.decreasePage.click())         {  /*d.changePage(-1);  */                                           }
+  if (io.increasePage.click())         {  /*d.changePage(1);   */                                           }
+  if (io.selectPage.click())           {  /*d.toggle();        */                                           }
+  if (io.decreaseMenu.click())         {  /*d.scroll(-1);      */                                           }
+  if (io.increaseMenu.click())         {  /*d.scroll(1);       */                                           }
+  if (io.selectMenu.click())           {  debug("selectMenu");                                              }
+  if (io.testKick.click())             {  debug("testKick");                                                }
+  if (io.compassCalibration.click())   {  debug("compassCalibration");                                      }
+  if (io.animation.click())            {  debug("animation");                                               }
+  if (io.lineCalibration.click())      {  io.headingOffset.set(io.heading.get() + io.headingOffset.get());  }
+  if (io.ballTouchCalibration.click()) {  debug("ballTouchCalibration");                                    }
+  if (io.start.click())                {  io.driveEnabled.set(true);                                        }
+  if (io.stop.click())                 {  io.driveEnabled.set(false);                                       }
+  
+  if (io.record.click())               {  debug("record");                                                  }      
+  if (io.resetProperties.click())      {  debug("resetProperties");                                         }              
+  if (io.kickerStart.click())          {  debug("kickerStart");     io.kickPermanent.set(true);             }          
+  if (io.kickerStop.click())           {  debug("kickerStop");      io.kickPermanent.set(false);            }          
+  if (io.shiftStart.click())           {  debug("shiftStart");                                              }          
+  if (io.shiftStop.click())            {  debug("shiftStop");                                               }        
 /*
   if (io.drivePower.outsidePeriod(400)) drive.brake(false);
   if (io.driveEnabled.falling()) drive.brake(false);
@@ -92,8 +76,8 @@ void loop() {
   //calibrateGoal();
   //calibrateLightBeam();
   //calibrateLine();
+  //drive.prepare();
   drive.update();
-
   drive.execute();
   if (light.onDemand()) light.light();
   //bluetoth();

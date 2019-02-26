@@ -95,6 +95,9 @@ class IO {
     Pin bottom              = Pin(    4,  INPUT_PULLUP,  PUI      );  // bottom    (lever)
     Pin turbo               = Pin(    5,  INPUT_PULLUP,  PUI      );  // debug     (lever)
 
+    Pin indKeeper           = Pin(    6,  OUTPUT,        PUI      );  // kleine Led
+    Pin indStriker          = Pin(    7,  OUTPUT,        PUI      );  // große Led
+
 
     // Schuss-Elektronik
     Pin kick                = Pin(   12,  OUTPUT,        PWM      );  // Schuss auslösen, lässt Elektromagneten anziehen, Wenn MOSFET ausgewählt PWM-fähig
@@ -113,17 +116,17 @@ class IO {
     Pin usbRx               = Pin(    0,  OUTPUT,        DIGITAL  );  // Computer -> Mega, Computer Kommunikation   
 
     // PUI: keys and levers
-    Key decreasePage          = Key(   0,  VIRTUAL,  0,     500,   200   );  // vorherige Bildschirmseite
-    Key increasePage          = Key(   0,  PUI,      0,     500,   200   );  // nächste   Bildschirmseite
-    Key selectPage            = Key(   0,  PUI,      0,     5000         );  // Seite auswählen
+    Key decreasePage          = Key(   8,  PUI,      0,     500,   200   );  // vorherige Bildschirmseite
+    Key increasePage          = Key(  10,  PUI,      0,     500,   200   );  // nächste   Bildschirmseite
+    Key selectPage            = Key(   9,  PUI,      0,     5000         );  // Seite auswählen
     Key decreaseMenu          = Key(  26,  DIGITAL,  0                   );  // vorheriger Menüpunkt (misst Drehung des Rotary Encoders)
     Key increaseMenu          = Key(  28,  DIGITAL,  0                   );  // nächster   Menüpunkt (misst Drehung des Rotary Encoders)
     Key selectMenu            = Key(  30,  DIGITAL,  0,     1000         );  // Menüpunkt auswählen (Knopf des Rotary Encoders)
-    Key testKick              = Key(   0,  VIRTUAL,  0,     1000,  0     );  // Schuss austesten
-    Key compassCalibration    = Key(   0,  VIRTUAL,  0,     0,     0     );  // Torrichtung kalibrieren
-    Key animation             = Key(   0,  VIRTUAL,  0                   );  // Starte Leucht Animation
-    Key lineCalibration       = Key(   6,  PUI,      0,     500          );  // Linienhelligkeit kalibrieren
-    Key ballTouchCalibration  = Key(   7,  PUI,      0,     500          );  // Lichtschranke kalibrieren
+    Key testKick              = Key(  11,  PUI,      0,     1000,  0     );  // Schuss austesten
+    Key compassCalibration    = Key(  12,  PUI,      0,     0,     0     );  // Torrichtung kalibrieren
+    Key animation             = Key(  13,  PUI,      0                   );  // Starte Leucht Animation
+    Key lineCalibration       = Key(  14,  PUI,      0,     500          );  // Linienhelligkeit kalibrieren
+    Key ballTouchCalibration  = Key(  15,  PUI,      0,     500          );  // Lichtschranke kalibrieren
     Key start                 = Key(  22,  DIGITAL,  0                   );  // Losfahren
     Key stop                  = Key(  24,  DIGITAL,  0                   );  // Anhalten
 
@@ -148,6 +151,7 @@ class IO {
     Timer runtime         = Timer(                    );  // Laufzeit der Schleife 
     Timer seeBall         = Timer(    100,  &flat     );  // sehen wir den Ball?
     Timer seeGoal         = Timer(    500,  &flat     );  // sehen wir das Tor?
+    Timer seeMate         = Timer(    100,  &flat     );  // sehen wir ein Positionslicht
     Timer closeBall       = Timer(    500,  &seeBall  );  // ist der Ball nahe?
     Timer drift           = Timer(    200             );  // müssen wir ein Driften verhindern?
     Timer ballLeft        = Timer(      0,  &seeBall  );  // ist der Ball links?
@@ -155,7 +159,8 @@ class IO {
     Timer ballCenter      = Timer(      0,  &seeBall  );  // ist der Ball mittig?
     Timer cameraResponse  = Timer(  20000             );  // ist die Kamera verbunden?
     Timer driveLocked     = Timer(    300             );  // dürfen neue Steuerwerte esetzt werden?
-    Timer setupLight      = Timer(    500             );
+    Timer setupLight      = Timer(    200             );
+    Timer kickActive      = Timer(     50             );
 
     // all global variables
     Value aggressive     = Value(     BOOLEAN              );
@@ -164,6 +169,7 @@ class IO {
     Value stateDirection = Value(     BOOLEAN              );
 
     Value driveAngle     = Value(  MODULATION,    0,  359  ); // Zielwinkel
+    Value driveOrientation=Value(  MODULATION, -179,  180  ); // Ziel-Orientierungswinkel
     Value drivePower     = Value(      LIMITS,    0,  255  ); // Geschwindigkeit
     Value driveRotation  = Value(      LIMITS, -255,  255  ); // Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
     Value driveEnabled   = Value(     BOOLEAN              ); // Aktivierung des Fahrgestells
@@ -180,14 +186,17 @@ class IO {
     Value battery        = Value(     BOOLEAN              );  // ist der Akku angeschlosse?
 
     Value heading        = Value(  MODULATION, -179,  180  );
-    Value xOrientation   = Value(  MODULATION              );
-    Value yOrientation   = Value(  MODULATION              );
-    Value zOrientation   = Value(  MODULATION              );
+    Value headingOffset  = Value(  MODULATION, -179,  180  );
+    Value xOrientation   = Value(  MODULATION, -179,  180  );
+    Value yOrientation   = Value(  MODULATION, -179,  180  );
+    Value zOrientation   = Value(  MODULATION, -179,  180  );
 
     Value distanceFront  = Value(  MODULATION,    0,  MAX_DISTANCE);
     Value distanceBack   = Value(  MODULATION,    0,  MAX_DISTANCE);
     Value distanceRight  = Value(  MODULATION,    0,  MAX_DISTANCE);
     Value distanceLeft   = Value(  MODULATION,    0,  MAX_DISTANCE);
+
+    Value kickPermanent  = Value(     BOOLEAN              );
   private:
 };
 extern IO io;

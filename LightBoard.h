@@ -12,7 +12,7 @@ class LightBoard : public Adafruit_NeoPixel, public Demand
     void setAllColor(unsigned long color);
     void setAllColor(byte red, byte green, byte blue);
     void setAllWheel(int offset);
-    void setPixelState(byte pos, byte state, bool hideRed);
+    void setPixelState(byte pos, byte state, bool hideRed=false);
 
     bool isEnabled();
 

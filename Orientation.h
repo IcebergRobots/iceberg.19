@@ -4,11 +4,10 @@
 #include "IO.h"
 #include "Demand.h"
 #include <Wire.h>
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BNO055.h>
-#include <utility/imumaths.h>
+#include "BNO055_support.h"    //Contains the bridge code between the API and Arduino
+#include "Display.h"
 
-class Orientation : private Adafruit_BNO055, public Demand
+class Orientation : public Demand
 {
   public:
     Orientation();
@@ -18,7 +17,7 @@ class Orientation : private Adafruit_BNO055, public Demand
     bool isEnabled();
 
   private:
-    Adafruit_BNO055 bno = Adafruit_BNO055(55);
+    struct bno055_t bno;
 };
 extern Orientation orientation;
 

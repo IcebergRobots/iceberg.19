@@ -8,6 +8,8 @@
 #define SEGMENT_EMPTY  1
 #define SEGMENT_FILLED 2
 
+void kick();
+
 void initUART();
 void initI2C();
 void setupWatchdog();
