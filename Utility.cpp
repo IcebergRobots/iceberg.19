@@ -71,6 +71,7 @@ void updateStates() {
 
   io.battery.set(io.batteryVoltmeter.get() >= 103);
   io.flat.set(true);
+  io.driveEnabled.set(io.pause.off() && io.motor.on());
   // erkenne Hochheben
   //dof.accelGetOrientation(&accel_event, &orientation);
   //io.flat.set(!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7));

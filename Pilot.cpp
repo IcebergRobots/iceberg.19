@@ -13,7 +13,13 @@ Pilot::Pilot() {
 }
 
 void Pilot::update() {
-  if (DEBUG_LOOP) beginSegment("d");
+  if (DEBUG_LOOP) beginSegment("m");
+
+  if (io.driveEnabled.falling()) {
+    disable();
+  }
+  if (io.driveEnabled.rising())
+
   if (io.seeBall.on()) io.state.set(BALL_TRACKING, "view");
   else io.state.set(BACK, "blind");
 

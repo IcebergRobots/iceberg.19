@@ -16,8 +16,8 @@ class Chassis
     void drive(int angle, int power=255, int rotation=0);
     void brake(bool active=true);
 
-    void execute();
-
+    void execute(bool force=false);
+    void disable();
 
   private:
     byte axisAngle = 0;

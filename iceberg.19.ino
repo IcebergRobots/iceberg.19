@@ -52,8 +52,8 @@ void loop() {
   if (io.animation.click())            {  debug("animation");                                               }
   if (io.lineCalibration.click())      {  io.headingOffset.set(io.heading.get() + io.headingOffset.get());  }
   if (io.ballTouchCalibration.click()) {  debug("ballTouchCalibration");                                    }
-  if (io.start.click())                {  io.driveEnabled.set(true);                                        }
-  if (io.stop.click())                 {  io.driveEnabled.set(false);                                       }
+  if (io.start.click())                {  io.pause.set(false);                                        }
+  if (io.stop.click())                 {  io.pause.set(true);                                       }
   
   if (io.record.click())               {  debug("record");                                                  }      
   if (io.resetProperties.click())      {  debug("resetProperties");                                         }              
