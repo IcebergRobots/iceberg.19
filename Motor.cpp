@@ -31,6 +31,14 @@ int Motor::get() {
   return speed->get();
 }
 
+int Motor::getReal(){
+  return realSpeed;
+}
+
+void Motor::setReal(int speedInput){
+  realSpeed = (int)speedInput - 127;
+}
+
 void Motor::brake(bool active) {
   forward->temp(active);
   backward->temp(active);

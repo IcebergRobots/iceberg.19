@@ -15,9 +15,12 @@ class Motor : public Container
     int get();
     void brake(bool active);
     int amperage();
+    void setReal(byte speedInput);
+    int getReal();
     
     Pin *current, *forward, *backward, *speed;
   private:
+    int realSpeed = 0;
 };
 
 #endif

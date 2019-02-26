@@ -102,3 +102,19 @@ void printEndSegment() {
     }
   }
 }
+
+void refreshMotor() {
+  beginSegment("en");
+  Wire.requestFrom(8, 2);
+  if (Wire.available()) {
+    drive.m[0].setReal(Wire.read());
+    drive.m[1].setReal(Wire.read());
+  }
+
+  Wire.requestFrom(9, 2);
+  if (Wire.available()) {
+    drive.m[2].setReal(Wire.read());
+    drive.m[3].setReal(Wire.read());
+  } 
+  endSegment();
+}

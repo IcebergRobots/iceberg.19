@@ -84,6 +84,7 @@ void loop() {
 */
 
   updateStates();
+  refreshMotor();
 //updateRating();
   //updateKick();
   //updateAnimation();
