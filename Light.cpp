@@ -55,7 +55,9 @@ void Light::light() {
       pui.setPixelState(7, io.bottom.on()); 
       pui.setPixelState(8, io.kicker.on()); 
       pui.setPixelState(9, io.bluetooth.on()); 
-      pui.setPixelState(10, io.motor.on()); 
+      if (io.motor.off()) pui.setPixelState(10, 0);
+      else if (io.pause.on()) pui.setPixelState(10, 2);
+      else pui.setPixelState(10, 1);
       pui.setPixelState(11, io.headstart.on()); 
 
       pui.setBrightness(map(io.poti.get(), 0, 1023, 0, 100));
