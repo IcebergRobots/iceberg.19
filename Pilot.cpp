@@ -10,6 +10,9 @@ Pilot::Pilot() {
   m[1].setPins(&io.m1Current, &io.m1Dir1, &io.m1Dir2, &io.m1Speed);
   m[2].setPins(&io.m2Current, &io.m2Dir1, &io.m2Dir2, &io.m2Speed);
   m[3].setPins(&io.m3Current, &io.m3Dir1, &io.m3Dir2, &io.m3Speed);
+  myPID.SetTunings(PID_FILTER_P, PID_FILTER_I, PID_FILTER_D);
+  myPID.SetMode(AUTOMATIC);
+  myPID.SetOutputLimits(-255, 255);
 }
 
 void Pilot::update() {
@@ -45,7 +48,7 @@ void Pilot::update() {
 
       rotation = face(0);
       speed = max(speed - abs(rotation), 0);
-      drive(direction, speed, rotation);
+      drive(direction, 0 /* speed */, rotation);
       break;
     case GOALKEEPER:
 
@@ -93,6 +96,7 @@ void Pilot::update() {
 
       break;
   }
+  debug(io.drivePower.get());
   if (DEBUG_LOOP) endSegment();
 }
 
@@ -107,11 +111,12 @@ int Pilot::face(int angle, int speed) {
   io.driveOrientation.set(angle);
   pidSetpoint = io.driveOrientation.get();
   // Misst die Kompassabweichung vom Tor [-180 bis 179]
+  pidIn = (double) io.heading.get();
   if (io.driveEnabled.on()) {
-    pidIn = (double) io.heading.get();
     myPID.Compute();
     return -pidOut; // [-255 bis 255]
   }
+  else return 0;
 }
 
 Pilot drive;
