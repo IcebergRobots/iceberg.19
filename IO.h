@@ -168,11 +168,11 @@ class IO {
     Value state          = Value(      LIMITS,    0,    9  );
     Value stateDirection = Value(     BOOLEAN              );
 
-    Value driveAngle     = Value(  MODULATION,    0,  359  ); // Zielwinkel
-    Value driveOrientation=Value(  MODULATION, -179,  180  ); // Ziel-Orientierungswinkel
-    Value drivePower     = Value(      LIMITS,    0,  255  ); // Geschwindigkeit
-    Value driveRotation  = Value(      LIMITS, -255,  255  ); // Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
-    Value driveEnabled   = Value(     BOOLEAN              ); // Aktivierung des Fahrgestells
+    Value driveAngle     = Value(  MODULATION,    0,  359  );  // Zielwinkel
+    Value driveOrientation=Value(  MODULATION, -179,  180  );  // Ziel-Orientierungswinkel
+    Value drivePower     = Value(      LIMITS,    0,  255  );  // Geschwindigkeit
+    Value driveRotation  = Value(      LIMITS, -255,  255  );  // Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
+    Value driveEnabled   = Value(     BOOLEAN              );  // Aktivierung des Fahrgestells
 
     Value ball           = Value(      LIMITS, -160,  159  );  // Abweichung der Ball X-Koordinate
     Value ballWidth      = Value(      LIMITS,    0        );  // Ballbreite
@@ -184,6 +184,7 @@ class IO {
     Value hasDebugHead   = Value(     BOOLEAN              );  // Debug-Zeilenanfang
     Value segment        = Value(      LIMITS,    0,    2  );  // Laufzeit eines Codeblockes
     Value battery        = Value(     BOOLEAN              );  // ist der Akku angeschlosse?
+    Value pause          = Value(     BOOLEAN              );  // ist das Spiel pausiert?
 
     Value heading        = Value(  MODULATION, -179,  180  );
     Value headingOffset  = Value(  MODULATION, -179,  180  );

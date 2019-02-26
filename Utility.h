@@ -31,4 +31,6 @@ void printEndSegment();
 
 void refreshMotor();
 
+void initPui();
+
 #endif

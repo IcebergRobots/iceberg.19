@@ -47,6 +47,9 @@
 #define SPEED_DRIFT 80         // [0 bis 255]~140
 #define SPEED_LINE 70           // [0 bis 255]~90
 
+// BATTERY
+#define BATTERY_MIN_VOLTAGE 800
+
 // UART
 #define DEBUG_SERIAL        Serial
 #define DEBUG_BAUDRATE      115200

@@ -8,7 +8,7 @@ void setup() {
   initStates();
 
   light.init();
-  pui.begin();
+  initPui();
   d.init();  // initialisiere Display mit Iceberg Schriftzug
   camera.init();
   orientation.init();
@@ -48,12 +48,12 @@ void loop() {
   if (io.increaseMenu.click())         {  /*d.scroll(1);       */                                           }
   if (io.selectMenu.click())           {  debug("selectMenu");                                              }
   if (io.testKick.click())             {  debug("testKick");                                                }
-  if (io.compassCalibration.click())   {  debug("compassCalibration");                                      }
+  if (io.compassCalibration.click())   {  io.headingOffset.set(io.heading.get() + io.headingOffset.get());  }
   if (io.animation.click())            {  debug("animation");                                               }
-  if (io.lineCalibration.click())      {  io.headingOffset.set(io.heading.get() + io.headingOffset.get());  }
+  if (io.lineCalibration.click())      {                                                                    }
   if (io.ballTouchCalibration.click()) {  debug("ballTouchCalibration");                                    }
-  if (io.start.click())                {  io.driveEnabled.set(true);                                        }
-  if (io.stop.click())                 {  io.driveEnabled.set(false);                                       }
+  if (io.start.click())                {  io.pause.set(false);                                              }
+  if (io.stop.click())                 {  io.pause.set(true);                                               }
   
   if (io.record.click())               {  debug("record");                                                  }      
   if (io.resetProperties.click())      {  debug("resetProperties");                                         }              
@@ -81,6 +81,7 @@ void loop() {
   drive.execute();
   if (light.onDemand()) light.light();
   //bluetoth();
+
   if (d.onDemand()) d.update();
 }
 

@@ -60,7 +60,8 @@ void prepareDebug() {
 void initStates() {
   io.driveEnabled.set(true);
   io.batteryVoltmeter.update();
-  io.battery.set(io.batteryVoltmeter.get() >= 103);
+  io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE);
+  io.pause.set(true);
 }
 
 void updateStates() {
@@ -69,8 +70,9 @@ void updateStates() {
   io.ballRight.set(io.ball.right(BALL_CENTER_TOLERANCE));
   io.ballCenter.set(io.ball.center(BALL_CENTER_TOLERANCE));
 
-  io.battery.set(io.batteryVoltmeter.get() >= 103);
+  io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE);
   io.flat.set(true);
+  io.driveEnabled.set(io.pause.off() && io.motor.on());
   // erkenne Hochheben
   //dof.accelGetOrientation(&accel_event, &orientation);
   //io.flat.set(!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7));
@@ -122,4 +124,12 @@ void refreshMotor() {
     drive.m[3].setReal(Wire.read());
   } 
   endSegment();
+}
+
+void initPui() {
+  if (io.battery.on()) {
+    beginSegment("pui");
+    pui.begin();
+    endSegment();
+  } else debug("-pui");
 }
