@@ -8,7 +8,7 @@ void setup() {
   initStates();
 
   light.init();
-  pui.begin();
+  initPui();
   d.init();  // initialisiere Display mit Iceberg Schriftzug
   camera.init();
   orientation.init();
@@ -18,6 +18,7 @@ void setup() {
 
   /*****************************************************/
   io.turbo.setLimits(false, false); // set broken turbo key to off
+  io.batteryVoltmeter.startDebug();
   /*for(int i = 0; i < 4; i++) {
     drive.m[i].speed->showDebug(DEBUG_PIN);
     drive.m[i].speed->startDebug();

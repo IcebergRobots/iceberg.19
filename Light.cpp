@@ -10,6 +10,7 @@ Light::Light() {
 }
 
 void Light::init() {
+  beginSegment("l");
   io.indHearbeat.set(255);
   io.indFront.set(255);
   io.indLeft.set(255);
@@ -23,6 +24,7 @@ void Light::init() {
     line.show();
   }
   io.setupLight.set();
+  endSegment();
 }
 
 void Light::light() {

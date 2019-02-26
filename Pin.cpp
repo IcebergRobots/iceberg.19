@@ -16,27 +16,27 @@ Pin::Pin(byte _pin, byte _mode, byte _type) : Value() {
     case ANALOG:
       digital = false;
       pinMode(pin, mode);
+      setLimits(0, 1023);
       break;
 
     case PWM:
       digital = (mode != OUTPUT);
       pinMode(pin, mode);
+      setLimits(0, 255);
       break;
 
     case PUI:
       digital = false;
+      setLimits(0, 1);
       break;
 
     case DIGITAL:
       pinMode(pin, mode);
+      setLimits(0, 1);
     case VIRTUAL:
     default:
       digital = true;
       break;
-  }
-  if(type != VIRTUAL) {
-    if(digital) setLimits(0, 1);
-    else setLimits(0, 255);
   }
 }
 

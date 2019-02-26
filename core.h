@@ -15,8 +15,8 @@
 
 // DEBUG
 #define DEBUG_ENABLED       1
-#define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_SEGMENT       1       // sollen Methoden gezeigt werden?
+#define DEBUG_LOOP          1       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 
 // Fahren
@@ -46,6 +46,9 @@
 #define SPEED_AVOID_MATE 100   // [0 bis 255]~100 STATUS 9: Ausweichen
 #define SPEED_DRIFT 80         // [0 bis 255]~140
 #define SPEED_LINE 70           // [0 bis 255]~90
+
+// BATTERY
+#define BATTERY_MIN_VOLTAGE 800
 
 // UART
 #define DEBUG_SERIAL        Serial
