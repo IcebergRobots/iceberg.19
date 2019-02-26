@@ -78,8 +78,6 @@ void Chassis::execute(bool force) {
 }
 
 void Chassis::disable() {
-  for (int i = 0; i < objects<Motor>(); i++) {
-    Motor *m = objects<Motor>(i);
-    m->set(0);
-  }
+  drive(0, 0);
+  execute(true);
 }
