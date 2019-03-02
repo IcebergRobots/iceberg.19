@@ -15,10 +15,10 @@
 
 // DEBUG
 #define DEBUG_ENABLED       1
-#define DEBUG_SEGMENT       1       // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP          1       // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
+#define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
-#define DEBUG_I2C           1
+#define DEBUG_I2C           0
 
 // Fahren
 #define ROLE_COOLDOWN 1000      // [0 bis *]~1000 Zeitspanne, in dem kein Rollenwechsel stattfindet

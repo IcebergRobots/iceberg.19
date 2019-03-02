@@ -19,13 +19,8 @@ void setup() {
 
   /*****************************************************/
   io.turbo.setLimits(false, false); // set broken turbo key to off
-  /*for(int i = 0; i < 4; i++) {
-    drive.m[i].speed->showDebug(DEBUG_PIN);
-    drive.m[i].speed->startDebug();
-  }*/
-
-  //drive.brake();
-  //drive.execute();
+  io.state.startDebug();
+  io.drivePower.startDebug();
   /*****************************************************/
 }
 
