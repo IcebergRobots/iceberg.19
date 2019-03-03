@@ -78,6 +78,11 @@ void updateStates() {
   //io.flat.set(!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7));
 }
 
+void initEEPROM() {
+  if (EEPROM.read(0) == 0) io.headingOffset.set(EEPROM.read(1));
+  else io.headingOffset.set(-EEPROM.read(1));
+}
+
 void printDebug(String str, bool space) {
   if (DEBUG_ENABLED && io.turbo.off()) {
     if (io.segment.is(SEGMENT_EMPTY)) {

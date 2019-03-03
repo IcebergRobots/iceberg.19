@@ -5,6 +5,7 @@
 #include "LinkedList.h"
 #include "Pixy.h"
 #include <I2C.h>
+#include <EEPROM.h>
 
 // MODULES
 #define DISPLAY_ENABLED     0

@@ -15,15 +15,54 @@ Pilot::Pilot() {
   myPID.SetOutputLimits(-255, 255);
 }
 
+void Pilot::setState() {
+  if (io.seeBall.rising()) io.state.set(BALL_TRACKING, "view");
+  if (io.seeBall.falling()) io.state.set(BACK, "blind");
+
+  switch (io.state.get()) {
+    default:
+    case BACK:
+      
+      break;
+    case GOALKEEPER:
+
+      break;
+    case GOALPOST_GO:
+
+      break;
+    case GOALPOST_RETURN:
+
+      break;
+    case FREEING:
+
+      break;
+    case LOST:
+
+      break;
+
+    case BALL_TRACKING:
+
+      break;
+    case GOAL_AIMING:
+
+      break;
+    case ATTACK:
+
+      break;
+    case DODGE:
+
+      break;
+  }
+}
+
 void Pilot::update() {
   if (DEBUG_LOOP) beginSegment("m");
+
+  setState();
 
   if (io.driveEnabled.falling()) {
     disable();
   }
-
-  if (io.seeBall.on()) io.state.set(BALL_TRACKING, "view");
-  else io.state.set(BACK, "blind");
 
   int direction = 0;
   int speed = 255;

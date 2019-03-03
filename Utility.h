@@ -22,6 +22,7 @@ void calculateStates();
 
 void prepareDebug();
 
+void initEEPROM();
 void initStates();
 void updateStates();
 
