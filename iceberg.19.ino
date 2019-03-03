@@ -52,7 +52,7 @@ void loop() {
     EEPROM.write(1, abs(io.headingOffset.get())); // speichere Winkel
   }
   if (io.animation.click())            {  debug("animation");                                               }
-  if (io.lineCalibration.click())      {                                                                    }
+  if (io.lineCalibration.click())      {  Serial3.write(42);                                                  }
   if (io.ballTouchCalibration.click()) {  debug("ballTouchCalibration");                                    }
   if (io.start.click())                {  io.pause.set(false);                                              }
   if (io.stop.click())                 {  io.pause.set(true);                                               }
