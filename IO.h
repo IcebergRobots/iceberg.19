@@ -131,7 +131,7 @@ class IO {
     Key stop                  = Key(  24,  DIGITAL,  0                   );  // Anhalten
 
     // PUI: shortcuts
-    Key *_record           [2]  = {  &start,         &stop          }; Shortcut  record           = Shortcut(  _record,           2,  FIRE_KEYS,     0              );  // Spiel aufzeichnen (start + stop)
+    Key *_record           [2]  = {  &start ,         &stop          }; Shortcut  record           = Shortcut(  _record,           2,  FIRE_KEYS,     0              );  // Spiel aufzeichnen (start + stop)
     Key *_resetProperties  [2]  = {  &decreasePage,  &increasePage  }; Shortcut  resetProperties  = Shortcut(  _resetProperties,  2,  MUTE_KEYS,  2000              );  // Alle Konfigurationen und Kalibrierungen zurücksetzten
     Key *_kickerStart      [2]  = {  &testKick,      &start         }; Shortcut  kickerStart      = Shortcut(  _kickerStart,      2,  MUTE_KEYS,     0              );  // aktiviere einen dauerhaften Schuss
     Key *_kickerStop       [2]  = {  &testKick,      &stop          }; Shortcut  kickerStop       = Shortcut(  _kickerStop,       2,  MUTE_KEYS,     0              );  // deaktiviere einen dauerhaften Schuss
