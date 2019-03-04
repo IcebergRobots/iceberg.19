@@ -67,7 +67,9 @@ void Pin::set() {
         break;
 
       case PUI:
+        if (DEBUG_I2C) debug("[");
         pui.digitalWrite(pin, get());
+        if (DEBUG_I2C) debug("]", false);
         break;
 
       case VIRTUAL:
@@ -111,10 +113,11 @@ void Pin::update() {
         break;
 
       case PUI:
+        if (DEBUG_I2C) debug("[");
         if (!digital) initPui();
-
         if(mode == INPUT_PULLUP) Value::set(!pui.digitalRead(pin));
         else                     Value::set(pui.digitalRead(pin));
+        if (DEBUG_I2C) debug("]", false);
         break;
     }
   }

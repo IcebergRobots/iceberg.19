@@ -5,9 +5,10 @@
 #include "LinkedList.h"
 #include "Pixy.h"
 #include <I2C.h>
+#include <EEPROM.h>
 
 // MODULES
-#define DISPLAY_ENABLED     1
+#define DISPLAY_ENABLED     0
 #define PUI_ENABLED         1
 #define ORIENTATION_ENABLED 1
 #define CAMERA_ENABLED      1
@@ -18,6 +19,7 @@
 #define DEBUG_SEGMENT       1       // sollen Methoden gezeigt werden?
 #define DEBUG_LOOP          1       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
+#define DEBUG_I2C           0
 
 // Fahren
 #define ROLE_COOLDOWN 1000      // [0 bis *]~1000 Zeitspanne, in dem kein Rollenwechsel stattfindet

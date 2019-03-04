@@ -1,10 +1,12 @@
 #include "include.h"
 
 void setup() {
+  io.battery.setLimits(true, true);
   setupWatchdog();
   initUART();
   initDebug();
   initI2C();
+  initEEPROM();
   initStates();
   io.battery.setLimits(true, true);
 
@@ -19,13 +21,8 @@ void setup() {
 
   /*****************************************************/
   io.turbo.setLimits(false, false); // set broken turbo key to off
-  /*for(int i = 0; i < 4; i++) {
-    drive.m[i].speed->showDebug(DEBUG_PIN);
-    drive.m[i].speed->startDebug();
-  }*/
-
-  //drive.brake();
-  //drive.execute();
+  io.state.startDebug();
+  io.drivePower.startDebug();
   /*****************************************************/
 }
 
@@ -33,6 +30,7 @@ void loop() {
   prepareDebug();  // bereite debug nachrichten vor
   
   loopWatchdog();
+
   io.update();
 
   digitalWrite(io.buzzer.getPin(), false);
@@ -49,7 +47,11 @@ void loop() {
   if (io.increaseMenu.click())         {  /*d.scroll(1);       */                                           }
   if (io.selectMenu.click())           {  debug("selectMenu");                                              }
   if (io.testKick.click())             {  debug("testKick");                                                }
-  if (io.compassCalibration.click())   {  io.headingOffset.set(io.heading.get() + io.headingOffset.get());  }
+  if (io.compassCalibration.click())   {
+    io.headingOffset.set(io.zOrientation.get());
+    EEPROM.write(0, io.headingOffset.left());  // speichere Vorzeichen
+    EEPROM.write(1, abs(io.headingOffset.get())); // speichere Winkel
+  }
   if (io.animation.click())            {  debug("animation");                                               }
   if (io.lineCalibration.click())      {                                                                    }
   if (io.ballTouchCalibration.click()) {  debug("ballTouchCalibration");                                    }
@@ -74,7 +76,7 @@ void loop() {
 */
 
   updateStates();
-//updateRating();
+// updateRating();
   //updateKick();
   //updateAnimation();
 

@@ -15,16 +15,54 @@ Pilot::Pilot() {
   myPID.SetOutputLimits(-255, 255);
 }
 
+void Pilot::setState() {
+  if (io.seeBall.rising()) io.state.set(BALL_TRACKING, "view");
+  if (io.seeBall.falling()) io.state.set(BACK, "blind");
+
+  switch (io.state.get()) {
+    default:
+    case BACK:
+      
+      break;
+    case GOALKEEPER:
+
+      break;
+    case GOALPOST_GO:
+
+      break;
+    case GOALPOST_RETURN:
+
+      break;
+    case FREEING:
+
+      break;
+    case LOST:
+
+      break;
+
+    case BALL_TRACKING:
+
+      break;
+    case GOAL_AIMING:
+
+      break;
+    case ATTACK:
+
+      break;
+    case DODGE:
+
+      break;
+  }
+}
+
 void Pilot::update() {
   if (DEBUG_LOOP) beginSegment("m");
+
+  setState();
 
   if (io.driveEnabled.falling()) {
     disable();
   }
-  if (io.driveEnabled.rising())
-
-  if (io.seeBall.on()) io.state.set(BALL_TRACKING, "view");
-  else io.state.set(BACK, "blind");
 
   int direction = 0;
   int speed = 255;
@@ -48,7 +86,7 @@ void Pilot::update() {
 
       rotation = face(0);
       speed = max(speed - abs(rotation), 0);
-      drive(direction, 0 /* speed */, rotation);
+      drive(180, speed, rotation);
       break;
     case GOALKEEPER:
 
@@ -67,6 +105,12 @@ void Pilot::update() {
       break;
 
     case BALL_TRACKING:
+      if (io.seeBall.off()) rotMulti = ROTATION_SIDEWAY;
+      else if (io.ballWidth.get() > 100) rotMulti = ROTATION_TOUCH;
+      else if (io.ballWidth.get() > 40) rotMulti = ROTATION_10CM;
+      else if (io.ballWidth.get() > 20) rotMulti = ROTATION_18CM;
+      else rotMulti = ROTATION_AWAY;
+
       speed = mapConstrain(io.ballWidth.get(), 5, 35, SPEED_BALL_FAR, SPEED_BALL);
       direction = map(io.ball.get(), -X_CENTER, X_CENTER, (float)rotMulti, -(float)rotMulti);
       if (direction > 60) {
@@ -96,7 +140,6 @@ void Pilot::update() {
 
       break;
   }
-  debug(io.drivePower.get());
   if (DEBUG_LOOP) endSegment();
 }
 
