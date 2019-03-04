@@ -6,6 +6,7 @@ void setup() {
   initDebug();
   initI2C();
   initStates();
+  io.battery.setLimits(true, true);
 
   light.init();
   initPui();
@@ -39,7 +40,7 @@ void loop() {
 
   if (orientation.onDemand()) orientation.update();
   if (camera.onDemand()) camera.frame();
-  //readUltrasonic();
+  us.update();
 
   if (io.decreasePage.click())         {  /*d.changePage(-1);  */                                           }
   if (io.increasePage.click())         {  /*d.changePage(1);   */                                           }
@@ -59,7 +60,12 @@ void loop() {
   if (io.resetProperties.click())      {  debug("resetProperties");                                         }              
   if (io.kickerStart.click())          {  debug("kickerStart");     io.kickPermanent.set(true);             }          
   if (io.kickerStop.click())           {  debug("kickerStop");      io.kickPermanent.set(false);            }          
-  if (io.shiftStart.click())           {  debug("shiftStart");                                              }          
+  if (io.shiftStart.click())           {
+    debug(us.get(0));
+    debug(us.get(1));
+    debug(us.get(2));
+    debug(us.get(3));
+    debug(us.get(4));}          
   if (io.shiftStop.click())            {  debug("shiftStop");                                               }        
 /*
   if (io.drivePower.outsidePeriod(400)) drive.brake(false);

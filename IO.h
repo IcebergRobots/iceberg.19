@@ -161,6 +161,8 @@ class IO {
     Timer driveLocked     = Timer(    300             );  // dürfen neue Steuerwerte esetzt werden?
     Timer setupLight      = Timer(    200             );
     Timer kickActive      = Timer(     50             );
+    Timer ultraSonicBetween   = Timer( 25             );
+    Timer ultraSonicCycle = Timer(     65             );
 
     // all global variables
     Value aggressive     = Value(     BOOLEAN              );

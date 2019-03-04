@@ -11,5 +11,6 @@
 #include "Display.h"
 #include "Pilot.h"
 #include "Orientation.h"
+#include "UltraSonic.h"
 
 #endif
