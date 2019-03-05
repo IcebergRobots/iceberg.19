@@ -20,6 +20,7 @@ public:
 private:
     void fetch();
     bool isEnabled();
+    bool validate();
 
     int distance[5] = {0, 0, 0, 0, 0};
     byte addresses[5] = {I2C_US_FRONT_LEFT, I2C_US_LEFT, I2C_US_BACK, I2C_US_RIGHT, I2C_US_FRONT_RIGHT}; 
