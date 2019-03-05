@@ -18,29 +18,6 @@ void initI2C() {
   endSegment();
 }
 
-void initUltraSonic() {
-  Wire.beginTransmission(FRONT_LEFT_ULTRASONIC);
-  Wire.write(byte(0x02));
-  Wire.write(byte(70));
-  Wire.endTransmission();
-  Wire.beginTransmission(LEFT_ULTRASONIC);
-  Wire.write(byte(0x02));
-  Wire.write(byte(70));
-  Wire.endTransmission();
-  Wire.beginTransmission(BACK_ULTRASONIC);
-  Wire.write(byte(0x02));
-  Wire.write(byte(70));
-  Wire.endTransmission();
-  Wire.beginTransmission(RIGHT_ULTRASONIC);
-  Wire.write(byte(0x02));
-  Wire.write(byte(70));
-  Wire.endTransmission();
-  Wire.beginTransmission(FRONT_RIGHT_ULTRASONIC);
-  Wire.write(byte(0x02));
-  Wire.write(byte(70));
-  Wire.endTransmission();
-}
-
 void setupWatchdog() {
   if(WATCHDOG_SETUP != WDTO_OFF) wdt_enable(WATCHDOG_SETUP);
 }

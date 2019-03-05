@@ -16,8 +16,8 @@
 
 // DEBUG
 #define DEBUG_ENABLED       1
-#define DEBUG_SEGMENT       1       // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP          1       // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
+#define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_I2C           0
 
@@ -109,11 +109,11 @@
 #define BALL_ANGLE_TRIGGER 40                 // Schwellenwert der Ballrichtung
 
 //ULTRASONIC
-#define FRONT_LEFT_ULTRASONIC   112
-#define LEFT_ULTRASONIC         113
-#define BACK_ULTRASONIC         114
-#define RIGHT_ULTRASONIC        115
-#define FRONT_RIGHT_ULTRASONIC  116
+#define I2C_US_FRONT_LEFT 112
+#define I2C_US_LEFT 113
+#define I2C_US_BACK 114
+#define I2C_US_RIGHT 115
+#define I2C_US_FRONT_RIGHT 116
 
 // DATA TYPES
 #define INT8_T_MIN          -128

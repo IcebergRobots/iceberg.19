@@ -1,94 +1,51 @@
-#include "UltraSonic.h"
+#include "Ultrasonic.h"
 
-UltraSonic::UltraSonic(){
-
+Ultrasonic::Ultrasonic() {
+  setLocked(25);
+  setCooldown(65);
 }
 
-int UltraSonic::get(int usWanted){
-    return us[usWanted];
+int Ultrasonic::frontLeft()  {  return distance[0];  }
+int Ultrasonic::left()       {  return distance[1];  }
+int Ultrasonic::back()       {  return distance[2];  }
+int Ultrasonic::right()      {  return distance[3];  }
+int Ultrasonic::frontRight() {  return distance[4];  }
+int Ultrasonic::front()      {  return min(frontLeft(), frontRight());  }
+
+void Ultrasonic::init() {
+  for(int i = 0; i < 5; i++) {
+    Wire.beginTransmission(addresses[i]);
+    Wire.write(byte(0x02));
+    Wire.write(byte(70));
+    Wire.endTransmission();
+  }
 }
 
-void UltraSonic::update(){
-    if(ultraSonicCycle.off()){
-        Wire.beginTransmission(FRONT_LEFT_ULTRASONIC);
-        Wire.write(byte(0x00));
-        Wire.write(byte(0x51));
-        Wire.endTransmission();
-        
-        Wire.beginTransmission(LEFT_ULTRASONIC);
-        Wire.write(byte(0x00));
-        Wire.write(byte(0x51));
-        Wire.endTransmission();
-        
-        Wire.beginTransmission(BACK_ULTRASONIC);
-        Wire.write(byte(0x00));
-        Wire.write(byte(0x51));
-        Wire.endTransmission();
-        
-        Wire.beginTransmission(RIGHT_ULTRASONIC);
-        Wire.write(byte(0x00));
-        Wire.write(byte(0x51));
-        Wire.endTransmission();
-        
-        Wire.beginTransmission(FRONT_RIGHT_ULTRASONIC);
-        Wire.write(byte(0x00));
-        Wire.write(byte(0x51));
-        Wire.endTransmission();
-    } else if (ultraSonicBetween.off()) {
-        Wire.beginTransmission(FRONT_LEFT_ULTRASONIC);
-        Wire.write(byte(0x02));
-        Wire.endTransmission();
-        Wire.requestFrom(FRONT_LEFT_ULTRASONIC, 2);
+void Ultrasonic::update() {
+  fetch();
+  for(int i = 0; i < 5; i++) {
+    Wire.beginTransmission(addresses[i]);
+    Wire.write(byte(0x00));
+    Wire.write(byte(0x51));
+    Wire.endTransmission();
+  }
+}
 
-        if (2 <= Wire.available()) { 
-            us[0] = Wire.read();  
-            us[0] = reading << 8;    
-            us[0] |= Wire.read(); 
-        }
+void Ultrasonic::fetch() {
+  for(int i = 0; i < 5; i++) {
+    Wire.beginTransmission(addresses[i]);
+    Wire.write(byte(0x02));
+    Wire.endTransmission();
+    Wire.requestFrom(addresses[i], 2);
 
-        Wire.beginTransmission(LEFT_ULTRASONIC);
-        Wire.write(byte(0x02));
-        Wire.endTransmission();
-        Wire.requestFrom(LEFT_ULTRASONIC, 2);
-
-        if (2 <= Wire.available()) { 
-            us[1] = Wire.read();  
-            us[1] = reading << 8;    
-            us[1] |= Wire.read(); 
-        }
-
-        Wire.beginTransmission(BACK_ULTRASONIC);
-        Wire.write(byte(0x02));
-        Wire.endTransmission();
-        Wire.requestFrom(BACK_ULTRASONIC);
-
-        if (2 <= Wire.available()) { 
-            us[2] = Wire.read();  
-            us[2] = reading << 8;    
-            us[2] |= Wire.read(); 
-        }
-
-        Wire.beginTransmission(RIGHT_ULTRASONIC);
-        Wire.write(byte(0x02));
-        Wire.endTransmission();
-        Wire.requestFrom(RIGHT_ULTRASONIC, 2);
-
-        if (2 <= Wire.available()) { 
-            us[3] = Wire.read();  
-            us[3] = reading << 8;    
-            us[3] |= Wire.read(); 
-        }
-
-        Wire.beginTransmission(FRONT_RIGHT_ULTRASONIC);
-        Wire.write(byte(0x02));
-        Wire.endTransmission();
-        Wire.requestFrom(FRONT_RIGHT_ULTRASONIC, 2);
-
-        if (2 <= Wire.available()) { 
-            us[4] = Wire.read();  
-            us[4] = reading << 8;    
-            us[4] |= Wire.read(); 
-        }
+    if (2 <= Wire.available()) { 
+        distance[i] = Wire.read() << 8;    
+        distance[i] |= Wire.read(); 
     }
+  }
 }
-UltraSonic us;
+bool Ultrasonic::isEnabled() {
+  return true;
+}
+
+Ultrasonic us;

@@ -15,6 +15,7 @@ void setup() {
   d.init();  // initialisiere Display mit Iceberg Schriftzug
   camera.init();
   orientation.init();
+  us.init();
   //createCrashlog();
   //restoreSession();
   setupDone();
@@ -38,7 +39,7 @@ void loop() {
 
   if (orientation.onDemand()) orientation.update();
   if (camera.onDemand()) camera.frame();
-  us.update();
+  if (us.onDemand()) us.update();
 
   if (io.decreasePage.click())         {  /*d.changePage(-1);  */                                           }
   if (io.increasePage.click())         {  /*d.changePage(1);   */                                           }
@@ -63,11 +64,12 @@ void loop() {
   if (io.kickerStart.click())          {  debug("kickerStart");     io.kickPermanent.set(true);             }          
   if (io.kickerStop.click())           {  debug("kickerStop");      io.kickPermanent.set(false);            }          
   if (io.shiftStart.click())           {
-    debug(us.get(0));
-    debug(us.get(1));
-    debug(us.get(2));
-    debug(us.get(3));
-    debug(us.get(4));}          
+    debug(us.frontLeft());
+    debug(us.left());
+    debug(us.back());
+    debug(us.right());
+    debug(us.frontRight());
+  }          
   if (io.shiftStop.click())            {  debug("shiftStop");                                               }        
 /*
   if (io.drivePower.outsidePeriod(400)) drive.brake(false);

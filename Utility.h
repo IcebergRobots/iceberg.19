@@ -31,6 +31,5 @@ void printBeginSegment(String name);
 void printEndSegment();
 
 void initPui();
-void initUltraSonic();
 
 #endif
