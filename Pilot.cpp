@@ -16,16 +16,30 @@ Pilot::Pilot() {
 }
 
 void Pilot::setState() {
-  if (io.seeBall.rising()) io.state.set(BALL_TRACKING, "view");
-  if (io.seeBall.falling()) io.state.set(BACK, "blind");
+  if (io.seeBall.change() && io.seeBall.on()) io.state.set(BALL_TRACKING, "view");
+  if (io.seeBall.change() && io.seeBall.off()) io.state.set(BACK, "blind");
 
   switch (io.state.get()) {
     default:
     case BACK:
-      
+      if (us.back() <= COURT_REARWARD_MAX) io.state.set(GOALKEEPER, "dis_b<");
+      //else if (io.state.outsidePeriod(BACKWARD_MAX_DURATION)) io.state.set(FREEING, "time>");
       break;
     case GOALKEEPER:
-
+      if (io.seeBall.off() && io.state.outsidePeriod(SIDEWARD_MAX_DURATION)) {
+        if (us.back() > COURT_REARWARD_MAX) io.state.set(BACK, "dis_b>"); // fahre rückwärts
+      } else if (io.state.outsidePeriod(SIDEWARD_MIN_DURATION)) {
+        if (us.back() > COURT_REARWARD_MAX) io.state.set(BACK, "dis_b>"); // fahre rückwärts
+        else if (io.seeBall.on()) {
+          if (io.ball.left(BALL_ANGLE_TRIGGER)) {
+            io.stateDirection.set(LEFT, "ball<");
+            io.state.now();
+          } else if (io.ball.right(BALL_ANGLE_TRIGGER)) {
+            io.stateDirection.set(RIGHT, "ball>");
+            io.state.now();
+          }
+        }
+      }
       break;
     case GOALPOST_GO:
 
@@ -89,7 +103,20 @@ void Pilot::update() {
       drive(180, speed, rotation);
       break;
     case GOALKEEPER:
+      if (io.seeBall.off()) speed = map(abs(io.ball.get()), 0, BALL_ANGLE_TRIGGER, SPEED_KEEPER, 0.6 * SPEED_KEEPER);
+        else speed = SPEED_KEEPER;
+        if (io.stateDirection.left()) {
+          direction = ANGLE_SIDEWAY;
+          if (us.left() < COURT_BORDER_MIN) speed = SPEED_KEEPER * 0.7; // fahre langsamer am Spielfeldrand
+        } else {
+          direction = -ANGLE_SIDEWAY;
+          if (us.right() < COURT_BORDER_MIN) speed = SPEED_KEEPER * 0.7; // fahre langsamer am Spielfeldrand
+        }
+        if (us.back() < COURT_REARWARD_MIN) direction *= map(us.back(), 0, COURT_REARWARD_MIN, 8, 10) / 10.0; // fahre leicht schräg nach vorne
 
+        rotation = face(0);
+        speed = max(speed - abs(rotation), 0);
+        drive(direction, speed, rotation);
       break;
     case GOALPOST_GO:
 
