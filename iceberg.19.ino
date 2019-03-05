@@ -22,8 +22,12 @@ void setup() {
 
   /*****************************************************/
   io.turbo.setLimits(false, false); // set broken turbo key to off
-  io.state.startDebug();
-  io.drivePower.startDebug();
+  //io.state.startDebug();
+  //io.drivePower.startDebug();
+  io.kick.startDebug();
+  io.kick.showDebug(DEBUG_PIN);
+  io.kick.set(true);
+  digitalWrite(io.kick.getPin(), LOW);
   /*****************************************************/
 }
 
@@ -47,14 +51,14 @@ void loop() {
   if (io.decreaseMenu.click())         {  /*d.scroll(-1);      */                                           }
   if (io.increaseMenu.click())         {  /*d.scroll(1);       */                                           }
   if (io.selectMenu.click())           {  debug("selectMenu");                                              }
-  if (io.testKick.click())             {  debug("testKick");                                                }
+  if (io.testKick.click())             {  kick();                                                           }
   if (io.compassCalibration.click())   {
     io.headingOffset.set(io.zOrientation.get());
     EEPROM.write(0, io.headingOffset.left());  // speichere Vorzeichen
     EEPROM.write(1, abs(io.headingOffset.get())); // speichere Winkel
   }
   if (io.animation.click())            {  debug("animation");                                               }
-  if (io.lineCalibration.click())      {                                                                    }
+  if (io.lineCalibration.click())      {  BOTTOM_SERIAL.write(42);                                          }
   if (io.ballTouchCalibration.click()) {  debug("ballTouchCalibration");                                    }
   if (io.start.click())                {  io.pause.set(false);                                              }
   if (io.stop.click())                 {  io.pause.set(true);                                               }
