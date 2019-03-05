@@ -38,7 +38,7 @@ void Light::light() {
     if (line.onDemand()) {
       line.setAllColor(255, 255, 255);
 
-      line.setBrightness(map(io.poti.get(), 0, 1023, 0, 100));
+      line.setBrightness(255);
       line.show();
     }
 
@@ -60,7 +60,7 @@ void Light::light() {
       else pui.setPixelState(10, 1);
       pui.setPixelState(11, io.headstart.on()); 
 
-      pui.setBrightness(map(io.poti.get(), 0, 1023, 0, 100));
+      pui.setBrightness(map(io.poti.get(), 0, 1023, 0, 255));
       pui.show();
     }
   }
