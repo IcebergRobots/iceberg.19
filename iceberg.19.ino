@@ -68,11 +68,8 @@ void loop() {
   if (io.kickerStart.click())          {  debug("kickerStart");     io.kickPermanent.set(true);             }          
   if (io.kickerStop.click())           {  debug("kickerStop");      io.kickPermanent.set(false);            }          
   if (io.shiftStart.click())           {
-    debug(us.frontLeft());
     debug(us.left());
-    debug(us.back());
     debug(us.right());
-    debug(us.frontRight());
   }          
   if (io.shiftStop.click())            {  debug("shiftStop");                                               }        
 /*
