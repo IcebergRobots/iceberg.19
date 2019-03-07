@@ -37,6 +37,7 @@ void loop() {
   loopWatchdog();
 
   io.update();
+  reflexion.update();
 
   digitalWrite(io.buzzer.getPin(), false);
   digitalWrite(io.speaker.getPin(), false);
