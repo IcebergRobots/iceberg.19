@@ -28,17 +28,25 @@ void Light::init() {
 }
 
 void Light::light() {
-  io.indHearbeat.set(map(abs(int(millis() % 500) - 250),0,250,-100,356));
+  io.indHearbeat.set(map(abs(int(millis() % 500) - 250), 0, 250, -100, 356));
 
   if (io.setupLight.off()) {
     io.indFront.set(io.seeBall.get());
     io.indLeft.set(0);
     io.indRight.set(0);
- 
-    if (line.onDemand()) {
-      line.setAllColor(255, 255, 255);
 
-      line.setBrightness(map(io.poti.get(), 0, 1023, 0, 100));
+    if (line.onDemand()) {
+
+      for (int i = 0; i <= 39; i++) {
+        if (i >= 32)
+          line.setPixelColor(i, 255, 255, 255);
+        else
+          line.setPixelColor(i, 0, 0, 0);
+
+
+      }
+
+      line.setBrightness(255);
       line.show();
     }
 
@@ -46,21 +54,21 @@ void Light::light() {
       pui.setPixelState(0, 0, true);
       pui.setPixelState(1, io.battery.on());
       pui.setPixelState(2, io.seeMate.on(), true);
-      pui.setPixelState(3, io.seeGoal.on(), true); 
-      pui.setPixelState(4, io.seeBall.on(), true); 
+      pui.setPixelState(3, io.seeGoal.on(), true);
+      pui.setPixelState(4, io.seeBall.on(), true);
       pui.setPixelState(5, io.flat.on());
       if (io.turbo.off() || !DEBUG_ENABLED) pui.setPixelState(6, 1);
       else if (DEBUG_LOOP || DEBUG_SEGMENT) pui.setPixelState(6, 3);
       else                                  pui.setPixelState(6, 2);
-      pui.setPixelState(7, io.bottom.on()); 
-      pui.setPixelState(8, io.kicker.on()); 
-      pui.setPixelState(9, io.bluetooth.on()); 
+      pui.setPixelState(7, io.bottom.on());
+      pui.setPixelState(8, io.kicker.on());
+      pui.setPixelState(9, io.bluetooth.on());
       if (io.motor.off()) pui.setPixelState(10, 0);
       else if (io.pause.on()) pui.setPixelState(10, 2);
       else pui.setPixelState(10, 1);
-      pui.setPixelState(11, io.headstart.on()); 
+      pui.setPixelState(11, io.headstart.on());
 
-      pui.setBrightness(map(io.poti.get(), 0, 1023, 0, 100));
+      pui.setBrightness(map(io.poti.get(), 0, 1023, 0, 255));
       pui.show();
     }
   }
