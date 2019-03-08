@@ -61,8 +61,8 @@
 #define BLACKBOX_ENABLED    1
 #define BLACKBOX_SERIAL     Serial2
 #define BLACKBOX_BAUDRATE   115200
-#define BOTTOM_SERIAL     Serial3
-#define BOTTOM_BAUDRATE   9600
+#define BOTTOM_SERIAL       Serial3
+#define BOTTOM_BAUDRATE     115200
 
 #define DEBUG_SERIAL        Serial  // Serial der Usb-Schnittstelle
 #define START_MARKER        254     // Startzeichen einer Bluetooth-Nachricht
