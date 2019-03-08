@@ -63,7 +63,7 @@ void loop() {
   if (io.selectPage.click())           {  /*d.toggle();        */                                           }
   if (io.decreaseMenu.click())         {  /*d.scroll(-1);      */                                           }
   if (io.increaseMenu.click())         {  /*d.scroll(1);       */                                           }
-  if (io.selectMenu.click())           {  debug("selectMenu");                                              }
+  if (io.selectMenu.click())           {  /*debug("selectMenu");*/                                          }
   if (io.testKick.click())             {  kick();                                                           }
   if (io.compassCalibration.click())   {
     io.headingOffset.set(io.zOrientation.get());
@@ -82,10 +82,12 @@ void loop() {
   if (io.kickerStop.click())           {  debug("kickerStop");      io.kickPermanent.set(false);            }          
   if (io.shiftStart.click())           {
     debug(us.frontLeft());
-    debug(us.left());
-    debug(us.back());
-    debug(us.right());
     debug(us.frontRight());
+    debug(",");
+    debug(us.left());
+    debug(us.right());
+    debug(",");
+    debug(us.back());
   }          
   if (io.shiftStop.click())            {  debug("shiftStop");                                               }        
 /*

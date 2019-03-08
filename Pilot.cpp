@@ -108,7 +108,7 @@ void Pilot::update() {
           direction = -ANGLE_SIDEWAY;
           if (us.right() < COURT_BORDER_MIN) speed = SPEED_KEEPER * 0.7; // fahre langsamer am Spielfeldrand
         }
-        if (us.back() < COURT_REARWARD_MIN) direction *= map(us.back(), 0, COURT_REARWARD_MIN, 8, 10) / 10.0; // fahre leicht schräg nach vorne
+        if (us.back() < COURT_REARWARD_MIN) direction *= map(us.back(), 0, COURT_REARWARD_MIN, 9, 10) / 10.0; // fahre leicht schräg nach vorne
 
         rotation = face(0);
         speed = max(speed - abs(rotation), 0);
