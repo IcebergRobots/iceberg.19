@@ -33,10 +33,10 @@ void initDebug() {
   endSegmentFunction = printEndSegment;
   io.hasDebugHead.set(true);
   String str = "";
-  if (!DEBUG_ENABLED) str += "\nUSB DEBUG DEACTIVATED!";
+  if (!DEBUG_ENABLED) str += F("\nUSB DEBUG DEACTIVATED!");
   else {
-    str += "\nICEBERG ROBOTS 2019\n";
-    str += "Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher";
+    str += F("\nICEBERG ROBOTS 2019\n");
+    str += F("Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher");
   }
   DEBUG_SERIAL.println(str);
 }
@@ -86,35 +86,11 @@ void initEEPROM() {
 }
 
 void printDebug(String str, bool space) {
-  if (DEBUG_ENABLED && io.turbo.off()) {
-    if (io.segment.is(SEGMENT_EMPTY)) {
-      io.segment.muteSet(SEGMENT_FILLED);
-      space = false;
-    }
-    if (io.hasDebugHead.on() && space) str = " " + str;
-    if (io.hasDebugHead.off()) {
-      io.hasDebugHead.set(true);
-      str = "\n" + format("t" + io.runtime.str(), 6) + " " + str;
-      io.runtime.set();
-    }
-    DEBUG_SERIAL.print(str);
-  }
 }
 
 void printBeginSegment(String name) {
-  if (io.runtime.never() || DEBUG_SEGMENT) { // if in setup or DEBUG_SEGMENT
-    if (io.segment.on()) endSegment();
-    debug(name + "{");
-    io.segment.set(SEGMENT_EMPTY); // start timer
-  }
 }
 void printEndSegment() {
-  if (io.runtime.never() || DEBUG_SEGMENT) {
-    if (io.segment.on()) {
-      debug("}"+ io.segment.periodStr(), false); // if in setup or DEBUG_SEGMENT
-      io.segment.set(0);
-    }
-  }
 }
 
 void initPui() {
