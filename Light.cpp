@@ -10,7 +10,7 @@ Light::Light() {
 }
 
 void Light::init() {
-  beginSegment("l");
+  beginSegment(F("l"));
   io.indHearbeat.set(255);
   io.indFront.set(255);
   io.indLeft.set(255);

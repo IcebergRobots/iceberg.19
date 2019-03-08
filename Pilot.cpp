@@ -70,7 +70,7 @@ void Pilot::setState() {
 }
 
 void Pilot::update() {
-  if (DEBUG_LOOP) beginSegment("m");
+  if (DEBUG_LOOP) beginSegment(F("m"));
 
   setState();
 

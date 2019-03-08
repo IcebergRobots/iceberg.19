@@ -12,9 +12,9 @@ void initUART() {
 }
 
 void initI2C() {
-  beginSegment("i2c");
-  I2c.begin();
-  //I2c.scan();
+  beginSegment(F("i2c"));
+  // I2c.begin();
+  // I2c.scan();
   Wire.begin();
   endSegment();
 }
@@ -133,8 +133,8 @@ void printEndSegment() {
 
 void initPui() {
   if (io.battery.on()) {
-    beginSegment("pui");
+    beginSegment(F("pui"));
     pui.begin();
     endSegment();
-  } else debug("-pui");
+  } else debug(F("-pui"));
 }

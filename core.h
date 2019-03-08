@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include "LinkedList.h"
 #include "Pixy.h"
-#include <I2C.h>
+// #include <I2C.h>
 #include <EEPROM.h>
 
 // MODULES

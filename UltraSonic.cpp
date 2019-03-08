@@ -13,7 +13,7 @@ int Ultrasonic::frontRight() {  return distance[4];  }
 int Ultrasonic::front()      {  return min(frontLeft(), frontRight());  }
 
 void Ultrasonic::init() {
-  beginSegment("us");
+  beginSegment(F("us"));
   for(int i = 0; i < 5; i++) {
     Wire.beginTransmission(addresses[i]);
     Wire.write(byte(0x02));
@@ -24,7 +24,7 @@ void Ultrasonic::init() {
 }
 
 void Ultrasonic::update() {
-  beginSegment("us");
+  beginSegment(F("us"));
   fetch();
   for(int i = 0; i < 5; i++) {
     Wire.beginTransmission(addresses[i]);

@@ -33,22 +33,6 @@ void loop() {
   
   loopWatchdog();
 
-  if (DEBUG_INFO) {
-    /*bool change = false;
-    for(int i = 0; i < 4; i++) {
-      if (drive.m[i].speed->change()) {
-        change = true;
-        break;
-      }
-    }
-    if (change) {
-      for(int i = 0; i < 4; i++) {
-        debug(drive.m[i].get());
-      }
-    }*/
-    // if (io.driveAngle.change()) debug("a=" + io.driveAngle.str());
-  }
-
   io.update();
   reflexion.update();
 
@@ -64,7 +48,7 @@ void loop() {
   if (io.selectPage.click())           {  /*d.toggle();        */                                           }
   if (io.decreaseMenu.click())         {  /*d.scroll(-1);      */                                           }
   if (io.increaseMenu.click())         {  /*d.scroll(1);       */                                           }
-  if (io.selectMenu.click())           {  /*debug("selectMenu");*/                                          }
+  if (io.selectMenu.click())           {  /*debug(F("selectMenu"));*/                                          }
   if (io.testKick.click())             {  kick();                                                           }
   if (io.compassCalibration.click())   {
     io.headingOffset.set(io.zOrientation.get());
