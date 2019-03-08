@@ -25,6 +25,8 @@ public:
   void setState();
   void update();
 
+  bool atGatepost();
+
   void steer(int angle = 0);
   void accelerate(int speed = 255);
   int face(int angle = 0, int speed = 255);

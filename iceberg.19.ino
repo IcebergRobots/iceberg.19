@@ -22,7 +22,8 @@ void setup() {
 
   /*****************************************************/
   io.state.startDebug();
-  io.drivePower.startDebug();
+  //io.drivePower.startDebug();
+  io.stateDirection.startDebug();
   digitalWrite(io.kick.getPin(), LOW);
   /*****************************************************/
 }
@@ -33,6 +34,19 @@ void loop() {
   loopWatchdog();
 
   if (DEBUG_INFO) {
+    /*bool change = false;
+    for(int i = 0; i < 4; i++) {
+      if (drive.m[i].speed->change()) {
+        change = true;
+        break;
+      }
+    }
+    if (change) {
+      for(int i = 0; i < 4; i++) {
+        debug(drive.m[i].get());
+      }
+    }*/
+    // if (io.driveAngle.change()) debug("a=" + io.driveAngle.str());
   }
 
   io.update();
