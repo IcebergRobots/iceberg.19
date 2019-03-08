@@ -34,16 +34,16 @@ void initDebug() {
   io.hasDebugHead.set(true);
   DEBUG_SERIAL.println();
   DEBUG_SERIAL.println();
-  if (!DEBUG_ENABLED) DEBUG_SERIAL.println("USB DEBUG DEACTIVATED!");
+  if (!DEBUG_ENABLED) DEBUG_SERIAL.println(F("USB DEBUG DEACTIVATED!"));
   else {
-    DEBUG_SERIAL.println("ICEBERG ROBOTS 2019");
-    DEBUG_SERIAL.println("Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher");
+    DEBUG_SERIAL.println(F("ICEBERG ROBOTS 2019"));
+    DEBUG_SERIAL.println(F("Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher"));
   }
 }
 
 void setupDone() {
   debugln("=" + String(millis()));
-  for (int i = 0; i < 9; i++) debug("======", false);
+  for (int i = 0; i < 9; i++) debug(F("======"), false);
   io.runtime.set();
 }
 
@@ -96,18 +96,18 @@ void printDebug(String str, bool space) {
       io.hasDebugHead.set(true);
       DEBUG_SERIAL.println();
       DEBUG_SERIAL.print(format("t" + io.runtime.str(), 6));
-      DEBUG_SERIAL.print(" ");
+      DEBUG_SERIAL.print(F(" "));
       if (DEBUG_MOTOR) {
         DEBUG_SERIAL.print(format(io.driveEnabled.on() * io.drivePower.get(), 3, 3));
-        DEBUG_SERIAL.print("*");
+        DEBUG_SERIAL.print(F("*"));
         DEBUG_SERIAL.print(format(io.driveAngle.get(), 4, 4, true));
-        DEBUG_SERIAL.print(" ");
+        DEBUG_SERIAL.print(F(" "));
       }
       if (DEBUG_INFO) {
         DEBUG_SERIAL.print(format(us.left(), 3, 3));
-        DEBUG_SERIAL.print("<>"); 
+        DEBUG_SERIAL.print(F("<>"));
         DEBUG_SERIAL.print(format(us.right(), 3, 3));
-        DEBUG_SERIAL.print(" ");
+        DEBUG_SERIAL.print(F(" "));
       }
       io.runtime.set();
     }
@@ -116,8 +116,19 @@ void printDebug(String str, bool space) {
 }
 
 void printBeginSegment(String name) {
+  if (io.runtime.never() || DEBUG_SEGMENT) { // if in setup or DEBUG_SEGMENT
+    if (io.segment.on()) endSegment();
+    debug(name + "{");
+    io.segment.set(SEGMENT_EMPTY); // start timer
+  }
 }
 void printEndSegment() {
+  if (io.runtime.never() || DEBUG_SEGMENT) {
+    if (io.segment.on()) {
+      debug("}"+ io.segment.periodStr(), false); // if in setup or DEBUG_SEGMENT
+      io.segment.set(0);
+    }
+  }
 }
 
 void initPui() {
