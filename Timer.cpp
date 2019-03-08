@@ -21,8 +21,8 @@ void Timer::setSurviveTime(unsigned long _surviveTime) {
   @param require: external condition to be active
 *****************************************************/
 void Timer::update() {
-  if(surviveTime > 0) Value::muteSet(insidePeroid(surviveTime));
   Value::update();
+  Value::muteSet(surviveTime > 0 && insidePeroid(surviveTime));
 }
 /*****************************************************
   trigger time
