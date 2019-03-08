@@ -16,10 +16,15 @@ class Reflexion
     int getValue();
 
     private:
-    Timer cycle = Timer(55);
+    Timer light = Timer(15);
+    Timer dark = Timer(50);
+    bool isLightPhase = false;
     bool ball = false;
     int threshold = 0;
     bool cali = false;
+    
+    int withDark = 0;
+    int withLight = 0;
     int value = 0;
 
     void setThreshold();

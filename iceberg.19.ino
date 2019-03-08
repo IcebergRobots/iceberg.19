@@ -69,9 +69,7 @@ void loop() {
   if (io.resetProperties.click())      {  debug("resetProperties");                                         }              
   if (io.kickerStart.click())          {  debug("kickerStart");     io.kickPermanent.set(true);             }          
   if (io.kickerStop.click())           {  debug("kickerStop");      io.kickPermanent.set(false);            }          
-  if (io.shiftStart.click())           {  debug(reflexion.getValue());
-  debug(reflexion.hasBall());
-  }          
+  if (io.shiftStart.click())           {  debug(reflexion.hasBall());                                       }          
   if (io.shiftStop.click())            {  reflexion.calibrate();                                            }        
 /*
   if (io.drivePower.outsidePeriod(400)) drive.brake(false);
