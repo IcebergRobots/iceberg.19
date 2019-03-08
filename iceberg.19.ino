@@ -21,7 +21,6 @@ void setup() {
   setupDone();
 
   /*****************************************************/
-  io.turbo.setLimits(false, false); // set broken turbo key to off
   io.state.startDebug();
   io.drivePower.startDebug();
   digitalWrite(io.kick.getPin(), LOW);
@@ -32,6 +31,9 @@ void loop() {
   prepareDebug();  // bereite debug nachrichten vor
   
   loopWatchdog();
+
+  if (DEBUG_INFO) {
+  }
 
   io.update();
 
