@@ -37,7 +37,7 @@ void initDebug() {
   if (!DEBUG_ENABLED) DEBUG_SERIAL.println("USB DEBUG DEACTIVATED!");
   else {
     DEBUG_SERIAL.println("ICEBERG ROBOTS 2019");
-    DEBUG_SERIAL.println("Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher";
+    DEBUG_SERIAL.println("Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher");
   }
 }
 
