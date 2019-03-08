@@ -20,6 +20,7 @@
 #define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_I2C           0
+#define DEBUG_INFO          1
 
 // Fahren
 #define ROLE_COOLDOWN 1000      // [0 bis *]~1000 Zeitspanne, in dem kein Rollenwechsel stattfindet
@@ -48,9 +49,23 @@
 #define SPEED_AVOID_MATE 100   // [0 bis 255]~100 STATUS 9: Ausweichen
 #define SPEED_DRIFT 80         // [0 bis 255]~140
 #define SPEED_LINE 70           // [0 bis 255]~90
+// TIMES
+#define BACKWARD_MAX_DURATION 4000    // wann darf frühestens eingegriffen werden
+#define GOAL_STUCK_DURATION 500       // wie lange soll nach vorne gefahren werden?
+#define SIDEWARD_MAX_DURATION 1500    // max Zeit für Seitwärtsfahren
+#define SIDEWARD_MIN_DURATION 700     // min Zeit für Seitwärtsfahren
+#define TURN_MAX_DURATION 1500        // max Zeit für Drehmodus
+#define RETURN_MAX_DURATION 1500      // max Zeit für Drehmodus zurück
+#define LOST_DURATION 700      // max Zeit für Ausweichmanöver
+#define ROLE_LED_DURATION 350         // wie lange soll die Spielrolle angezeigt werden?
+#define LINE_DURATION 300             // wie lange steuern wir der Linie entgegen?
+#define HEADSTART_DURATION 350        // wie lange fahren wir volle Geschwindigkeit?
+#define AVOID_MATE_DURATION 200       // wie lange weichen wir aus
+#define DRIFT_DURATION 200            // wie lange steuern wir einem Drift entgegen?
+#define PIXY_RESPONSE_DURATION 20000  // wie lange soll die Pixy-Led grün nachleuchten?
 
 // BATTERY
-#define BATTERY_MIN_VOLTAGE 800
+#define BATTERY_MIN_VOLTAGE 110
 
 // UART
 #define DEBUG_SERIAL        Serial

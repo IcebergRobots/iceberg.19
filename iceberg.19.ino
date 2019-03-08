@@ -21,12 +21,9 @@ void setup() {
   setupDone();
 
   /*****************************************************/
-  io.turbo.setLimits(false, false); // set broken turbo key to off
-  //io.state.startDebug();
+  io.state.startDebug();
   //io.drivePower.startDebug();
-  io.kick.startDebug();
-  io.kick.showDebug(DEBUG_PIN);
-  io.kick.set(true);
+  io.stateDirection.startDebug();
   digitalWrite(io.kick.getPin(), LOW);
   /*****************************************************/
 }
@@ -35,6 +32,22 @@ void loop() {
   prepareDebug();  // bereite debug nachrichten vor
   
   loopWatchdog();
+
+  if (DEBUG_INFO) {
+    /*bool change = false;
+    for(int i = 0; i < 4; i++) {
+      if (drive.m[i].speed->change()) {
+        change = true;
+        break;
+      }
+    }
+    if (change) {
+      for(int i = 0; i < 4; i++) {
+        debug(drive.m[i].get());
+      }
+    }*/
+    // if (io.driveAngle.change()) debug("a=" + io.driveAngle.str());
+  }
 
   io.update();
 

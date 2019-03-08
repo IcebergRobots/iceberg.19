@@ -72,6 +72,7 @@ void updateStates() {
   io.ballRight.set(io.ball.right(BALL_CENTER_TOLERANCE));
   io.ballCenter.set(io.ball.center(BALL_CENTER_TOLERANCE));
 
+  io.batteryVoltage.set(io.batteryVoltmeter.get() * 0.1249);
   io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE);
   io.flat.set(true);
   io.driveEnabled.set(io.pause.off() && io.motor.on());
