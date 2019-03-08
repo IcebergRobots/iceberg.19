@@ -20,6 +20,7 @@
 #define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_I2C           0
+#define DEBUG_INFO          1
 
 // Fahren
 #define ROLE_COOLDOWN 1000      // [0 bis *]~1000 Zeitspanne, in dem kein Rollenwechsel stattfindet
@@ -64,7 +65,7 @@
 #define PIXY_RESPONSE_DURATION 20000  // wie lange soll die Pixy-Led grün nachleuchten?
 
 // BATTERY
-#define BATTERY_MIN_VOLTAGE 800
+#define BATTERY_MIN_VOLTAGE 110
 
 // UART
 #define DEBUG_SERIAL        Serial
