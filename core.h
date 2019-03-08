@@ -85,6 +85,9 @@
 #define PID_FILTER_I .02  // [0 bis *]~0   i:vorausschauend
 #define PID_FILTER_D .03  // [0 bis *]~.03 d:Schwung herausnehmen (nicht zu weit drehen)
 
+//EEPROM Adressen
+#define REFLEXION_THRESHOLD 2
+
 
 // WATCHDOG
 #define WDTO_OFF -1
