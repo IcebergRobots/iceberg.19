@@ -58,10 +58,10 @@ void LightBoard::setPixelState(byte pos, byte state, bool hideRed) {
       setPixelColor(pos, 0, 255, 0);
       break;
     case 2:
-      // Wahrnung (gelb)
-      // Information ungewiss (gelb)
+      // Wahrnung (blau)
+      // Information ungewiss (bslau)
       //setPixelColor(pos, 0, 180, 120);
-      setPixelColor(pos, 0, 255, 255);
+      setPixelColor(pos, 0, 180, 120);
       break;
     case 3:
       // Kritische Warnung (rot)
