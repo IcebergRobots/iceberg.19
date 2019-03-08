@@ -295,3 +295,7 @@ void Value::setState(byte s) {
 byte Value::getState() {
   return abs(state);
 }
+
+void Value::abort(){
+  if (ever()) eventTimer = 1;
+}
