@@ -47,7 +47,7 @@ void LightBoard::setAllWheel(int offset) {
 void LightBoard::setPixelState(byte pos, byte state, bool hideRed) {
   switch (state) {
     default:  //case: 0
-      // Information falsch (magenta)
+      // Information falsch (rot)
       // hideRed=true Information nicht verfügbar (aus)
       // hideRed=true Information nicht relevant (aus)
       //setPixelColor(pos, (!hideRed) * 150, 0, (!hideRed) * 150);
@@ -58,14 +58,14 @@ void LightBoard::setPixelState(byte pos, byte state, bool hideRed) {
       setPixelColor(pos, 0, 255, 0);
       break;
     case 2:
-      // Wahrnung (blau)
-      // Information ungewiss (blau)
+      // Wahrnung (gelb)
+      // Information ungewiss (gelb)
       //setPixelColor(pos, 0, 180, 120);
       setPixelColor(pos, 0, 255, 255);
       break;
     case 3:
-      // Kritische Warnung (magenta)
-      // Information falsch (magenta)
+      // Kritische Warnung (rot)
+      // Information falsch (rot)
       //setPixelColor(pos, 255, 0, 150);
       setPixelColor(pos, 255, 0, 0);
       break;

@@ -55,6 +55,9 @@ void Light::light() {
       pui.setPixelState(1, io.battery.on());
       pui.setPixelState(2, io.seeMate.on(), true);
       pui.setPixelState(3, io.seeGoal.on(), true);
+      if (reflexion.hasBall())              pui.setPixelState(3, 1);
+      else if (io.sseeGoal.on())            pui.setPixelState(3, 2);
+      else                                  pui.setPixelState(3, 0, false);
       pui.setPixelState(4, io.seeBall.on(), true);
       pui.setPixelState(5, io.flat.on());
       if (io.turbo.off() || !DEBUG_ENABLED) pui.setPixelState(6, 1);
