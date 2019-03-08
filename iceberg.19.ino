@@ -6,6 +6,7 @@ void setup() {
   initUART();
   initDebug();
   initI2C();
+  initInterrupt();
   initEEPROM();
   initStates();
   io.battery.setLimits(true, true);
@@ -35,6 +36,7 @@ void loop() {
   prepareDebug();  // bereite debug nachrichten vor
   
   loopWatchdog();
+  updateLine();
 
   io.update();
 
@@ -91,7 +93,10 @@ void loop() {
   //calibrateLine();
   //drive.prepare();
   drive.update();
-  drive.execute();
+  updateLine();
+  if(!io.lineDetected.get()){
+    drive.execute();
+  }
   if (light.onDemand()) light.light();
   //bluetoth();
 

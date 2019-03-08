@@ -1,5 +1,40 @@
 #include "Utility.h"
 
+void lineInterrupt(){
+  drive.brake(false);
+  drive.execute();
+  io.lineDetected.set();
+}
+
+void updateLine(){
+  if(io.lineDetected.get()){
+    if(BOTTOM_SERIAL.available() >= 3){
+      while(BOTTOM_SERIAL.available()>3){
+        BOTTOM_SERIAL.read();
+      }
+
+      BOTTOM_SERIAL.read(); //power wird nicht ausgewertet
+      int tempAngle = 0;
+      tempAngle = BOTTOM_SERIAL.read();
+      tempAngle |= BOTTOM_SERIAL.read() << 8;
+
+      io.lineAngle.set(tempAngle);
+
+      io.lineDetected.abort();
+      io.lineAvoid.set();
+    }
+  }
+
+  if(!io.lineDetected.get() && io.lineAvoid.get() && io.lineInterrupt.get()){
+    io.lineAvoid.set();
+  }
+
+  if(io.lineAvoid.get()){
+    drive.steer(io.lineAngle.get());
+    drive.accelerate(255);
+  }
+}
+
 void kick() {
   if (io.kickActive.period() > 600) io.kickActive.set();
 }
@@ -17,6 +52,10 @@ void initI2C() {
   //I2c.scan();
   Wire.begin();
   endSegment();
+}
+
+void initInterrupt(){
+  attachInterrupt(digitalPinToInterrupt(io.lineInterrupt.getPin()), lineInterrupt, RISING);
 }
 
 void setupWatchdog() {

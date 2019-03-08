@@ -2,6 +2,7 @@
 #define Utility_h
 
 #include "IO.h"
+#include "Pilot.h"
 #include <avr/wdt.h>
 
 #define SEGMENT_OFF    0
@@ -12,6 +13,7 @@ void kick();
 
 void initUART();
 void initI2C();
+void initInterrupt();
 void setupWatchdog();
 void loopWatchdog();
 void initDebug();
@@ -31,5 +33,7 @@ void printBeginSegment(String name);
 void printEndSegment();
 
 void initPui();
+
+void updateLine();
 
 #endif

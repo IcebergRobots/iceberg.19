@@ -161,6 +161,8 @@ class IO {
     Timer driveLocked     = Timer(    300             );  // dürfen neue Steuerwerte esetzt werden?
     Timer setupLight      = Timer(    200             );
     Timer kickActive      = Timer(     50             );
+    Timer lineDetected    = Timer(    200             );
+    Timer lineAvoid       = Timer(    150             );
 
     // all global variables
     Value aggressive     = Value(     BOOLEAN              );
@@ -198,6 +200,8 @@ class IO {
     Value distanceLeft   = Value(  MODULATION,    0,  MAX_DISTANCE);
 
     Value kickPermanent  = Value(     BOOLEAN              );
+
+    Value lineAngle      = Value(  MODULATION,    0, 360);
   private:
 };
 extern IO io;
