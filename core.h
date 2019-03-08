@@ -20,6 +20,7 @@
 #define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_I2C           0
+#define DEBUG_MOTOR         1       
 #define DEBUG_INFO          1
 
 // Fahren
@@ -38,7 +39,7 @@
 #define ROTATION_TOUCH 40       // [0 bis *]~20
 #define SPEED_BACKWARDS 60      // [0 bis 255]~70  STATUS 0: Nach hinten
 #define SPEED_PENALTY 40        // [0 bis 255]~50  STATUS 0: Nach hinten
-#define SPEED_KEEPER 80        // [0 bis 255]~60  STATUS 1: Torverteidigung
+#define SPEED_KEEPER 60        // [0 bis 255]~60  STATUS 1: Torverteidigung
 #define SPEED_FREE 70           // [0 bis 255]~70 STATUS 4: Befreiung
 #define SPEED_LOST 60          // [0 bis 255]~100 STATUS 5: Seitlich verloren
 #define SPEED_SIDEWAY 60       // [0 bis 255]~100  STATUS 6: Ballverfolgung
@@ -78,7 +79,6 @@
 #define BLACKBOX_BAUDRATE   115200
 #define BOTTOM_SERIAL       Serial3
 #define BOTTOM_BAUDRATE     115200
-
 #define DEBUG_SERIAL        Serial  // Serial der Usb-Schnittstelle
 #define START_MARKER        254     // Startzeichen einer Bluetooth-Nachricht
 #define END_MARKER          255     // Endzeichen einer Bluetooth-Nachricht
@@ -87,7 +87,7 @@
 #define COURT_REARWARD_MAX 35           // optimaler Abstand nach hinten
 #define COURT_REARWARD_MIN 25           // optimaler Abstand nach hinten
 #define COURT_WIDTH 150         // Summe der Abstände nach rechts und links
-#define COURT_BORDER_MIN 80     // Abstand nach rechts bzw. links am Torpfosten
+#define COURT_BORDER_MIN 40     // Abstand nach rechts bzw. links am Torpfosten
 #define COURT_WIDTH_FREE 140
 #define COURT_POST_TO_BORDER 110 // Abstand nach rechts bzw. links am Torpfosten
 #define MAX_DISTANCE 200

@@ -34,7 +34,11 @@ void Pilot::setState() {
           else if (io.ball.right(BALL_ANGLE_TRIGGER)) io.stateDirection.set(RIGHT, "ball>");
         }
         if (us.back() > COURT_REARWARD_MAX) io.state.set(BACK, "dis_b>"); // fahre rückwärts
-        if (atGatepost()) io.stateDirection.set(io.stateDirection.off(), "g");
+        if (atGatepost()) {
+          io.stateDirection.set(io.stateDirection.off(), "g");
+          debug(us.left());
+          debug(us.right());
+        }
       }
       break;
     case GOALPOST_GO:
@@ -108,7 +112,7 @@ void Pilot::update() {
           direction = -ANGLE_SIDEWAY;
           if (us.right() < COURT_BORDER_MIN) speed = SPEED_KEEPER * 0.7; // fahre langsamer am Spielfeldrand
         }
-        if (us.back() < COURT_REARWARD_MIN) direction *= map(us.back(), 0, COURT_REARWARD_MIN, 9, 10) / 10.0; // fahre leicht schräg nach vorne
+        if (us.back() < COURT_REARWARD_MIN) direction *= map(us.back(), 0, COURT_REARWARD_MIN, 8, 10) / 10.0; // fahre leicht schräg nach vorne
 
         rotation = face(0);
         speed = max(speed - abs(rotation), 0);

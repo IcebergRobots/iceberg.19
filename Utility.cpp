@@ -32,19 +32,18 @@ void initDebug() {
   beginSegmentFunction = printBeginSegment;
   endSegmentFunction = printEndSegment;
   io.hasDebugHead.set(true);
-  String str = "";
-  if (!DEBUG_ENABLED) str += "\nUSB DEBUG DEACTIVATED!";
+  DEBUG_SERIAL.println();
+  DEBUG_SERIAL.println();
+  if (!DEBUG_ENABLED) DEBUG_SERIAL.println("USB DEBUG DEACTIVATED!");
   else {
-    str += "\nICEBERG ROBOTS 2019\n";
-    str += "Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher";
+    DEBUG_SERIAL.println("ICEBERG ROBOTS 2019");
+    DEBUG_SERIAL.println("Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher";
   }
-  DEBUG_SERIAL.println(str);
 }
 
 void setupDone() {
-  String str = "=" + String(millis()) + "\n";
-  for (int i = 0; i < 60; i++) str += "=";
-  debug(str);
+  debugln("=" + String(millis()));
+  for (int i = 0; i < 9; i++) debug("======", false);
   io.runtime.set();
 }
 
@@ -95,7 +94,21 @@ void printDebug(String str, bool space) {
     if (io.hasDebugHead.on() && space) str = " " + str;
     if (io.hasDebugHead.off()) {
       io.hasDebugHead.set(true);
-      str = "\n" + format("t" + io.runtime.str(), 6) + " " + str;
+      DEBUG_SERIAL.println();
+      DEBUG_SERIAL.print(format("t" + io.runtime.str(), 6));
+      DEBUG_SERIAL.print(" ");
+      if (DEBUG_MOTOR) {
+        DEBUG_SERIAL.print(format(io.driveEnabled.on() * io.drivePower.get(), 3, 3));
+        DEBUG_SERIAL.print("*");
+        DEBUG_SERIAL.print(format(io.driveAngle.get(), 4, 4, true));
+        DEBUG_SERIAL.print(" ");
+      }
+      if (DEBUG_INFO) {
+        DEBUG_SERIAL.print(format(us.left(), 3, 3));
+        DEBUG_SERIAL.print("<>"); 
+        DEBUG_SERIAL.print(format(us.right(), 3, 3));
+        DEBUG_SERIAL.print(" ");
+      }
       io.runtime.set();
     }
     DEBUG_SERIAL.print(str);
