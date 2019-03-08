@@ -61,8 +61,8 @@
 #define BLACKBOX_ENABLED    1
 #define BLACKBOX_SERIAL     Serial2
 #define BLACKBOX_BAUDRATE   115200
-#define BOTTOM_SERIAL     Serial3
-#define BOTTOM_BAUDRATE   9600
+#define BOTTOM_SERIAL       Serial3
+#define BOTTOM_BAUDRATE     115200
 
 #define DEBUG_SERIAL        Serial  // Serial der Usb-Schnittstelle
 #define START_MARKER        254     // Startzeichen einer Bluetooth-Nachricht
@@ -84,6 +84,9 @@
 #define PID_FILTER_P .27  // [0 bis *]~.27 p:proportional
 #define PID_FILTER_I .02  // [0 bis *]~0   i:vorausschauend
 #define PID_FILTER_D .03  // [0 bis *]~.03 d:Schwung herausnehmen (nicht zu weit drehen)
+
+//EEPROM Adressen
+#define REFLEXION_THRESHOLD 2
 
 
 // WATCHDOG

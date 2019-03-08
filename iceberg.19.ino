@@ -16,6 +16,7 @@ void setup() {
   camera.init();
   orientation.init();
   us.init();
+  reflexion.init();
   //createCrashlog();
   //restoreSession();
   setupDone();
@@ -37,6 +38,7 @@ void loop() {
   loopWatchdog();
 
   io.update();
+  reflexion.update();
 
   digitalWrite(io.buzzer.getPin(), false);
   digitalWrite(io.speaker.getPin(), false);
