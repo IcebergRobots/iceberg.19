@@ -38,7 +38,6 @@ void Orientation::update() {
         debug(io.yOrientation.str(4) + ",");
         debug(io.zOrientation.str(4));
       }
-      d.request();
     }
     endSegment();
   }

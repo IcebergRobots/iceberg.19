@@ -116,19 +116,8 @@ void printDebug(String str, bool space) {
 }
 
 void printBeginSegment(String name) {
-  if (io.runtime.never() || DEBUG_SEGMENT) { // if in setup or DEBUG_SEGMENT
-    if (io.segment.on()) endSegment();
-    debug(name + "{");
-    io.segment.set(SEGMENT_EMPTY); // start timer
-  }
 }
 void printEndSegment() {
-  if (io.runtime.never() || DEBUG_SEGMENT) {
-    if (io.segment.on()) {
-      debug("}"+ io.segment.periodStr(), false); // if in setup or DEBUG_SEGMENT
-      io.segment.set(0);
-    }
-  }
 }
 
 void initPui() {
