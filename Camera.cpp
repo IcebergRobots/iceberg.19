@@ -13,17 +13,17 @@ Camera::Camera() {
 *********************************************************************/
 void Camera::init() { 
     if (isEnabled()) {
-        beginSegment("c");
+        beginSegment(F("c"));
         SPI.begin();
         Pixy::init();
         io.cameraResponse.set(SPI.transfer(0x00) == 255);
         endSegment();
-    } else debug("-c");
+    } else debug(F("-c"));
 }
 
 void Camera::frame() {
     if (isEnabled()) {
-        beginSegment("c:r");
+        beginSegment(F("c:r"));
         if (io.turbo.on()) setLED(0, 0, 0); // schalte die Front-LED aus
         int ballAreaMax = 0;  // Ballgröße, 0: blind, >0: Flächeninhalt
         int goalAreaMax = 0;  // Torgröße,  0: blind, >0: Flächeninhalt

@@ -12,19 +12,21 @@ void initUART() {
 }
 
 void initI2C() {
-  beginSegment("i2c");
-  I2c.begin();
-  //I2c.scan();
+  beginSegment(F("i2c"));
+  // I2c.begin();
+  // I2c.scan();
   Wire.begin();
   endSegment();
 }
 
 void setupWatchdog() {
   if(WATCHDOG_SETUP != WDTO_OFF) wdt_enable(WATCHDOG_SETUP);
+  else wdt_disable();
 }
 
 void loopWatchdog() {
   if(WATCHDOG_LOOP != WDTO_OFF) wdt_enable(WATCHDOG_LOOP);
+  else wdt_disable();
 }
 
 void initDebug() {
@@ -32,19 +34,18 @@ void initDebug() {
   beginSegmentFunction = printBeginSegment;
   endSegmentFunction = printEndSegment;
   io.hasDebugHead.set(true);
-  String str = "";
-  if (!DEBUG_ENABLED) str += "\nUSB DEBUG DEACTIVATED!";
+  DEBUG_SERIAL.println();
+  DEBUG_SERIAL.println();
+  if (!DEBUG_ENABLED) DEBUG_SERIAL.println(F("USB DEBUG DEACTIVATED!"));
   else {
-    str += "\nICEBERG ROBOTS 2019\n";
-    str += "Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher";
+    DEBUG_SERIAL.println(F("ICEBERG ROBOTS 2019"));
+    DEBUG_SERIAL.println(F("Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher"));
   }
-  DEBUG_SERIAL.println(str);
 }
 
 void setupDone() {
-  String str = "=" + String(millis()) + "\n";
-  for (int i = 0; i < 60; i++) str += "=";
-  debug(str);
+  debugln("=" + String(millis()));
+  for (int i = 0; i < 9; i++) debug(F("======"), false);
   io.runtime.set();
 }
 
@@ -72,6 +73,7 @@ void updateStates() {
   io.ballRight.set(io.ball.right(BALL_CENTER_TOLERANCE));
   io.ballCenter.set(io.ball.center(BALL_CENTER_TOLERANCE));
 
+  io.batteryVoltage.set(io.batteryVoltmeter.get() * 0.1249);
   io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE);
   io.flat.set(true);
   io.driveEnabled.set(io.pause.off() && io.motor.on());
@@ -94,7 +96,21 @@ void printDebug(String str, bool space) {
     if (io.hasDebugHead.on() && space) str = " " + str;
     if (io.hasDebugHead.off()) {
       io.hasDebugHead.set(true);
-      str = "\n" + format("t" + io.runtime.str(), 6) + " " + str;
+      DEBUG_SERIAL.println();
+      DEBUG_SERIAL.print(format("t" + io.runtime.str(), 6));
+      DEBUG_SERIAL.print(F(" "));
+      if (DEBUG_MOTOR) {
+        DEBUG_SERIAL.print(format(io.driveEnabled.on() * io.drivePower.get(), 3, 3));
+        DEBUG_SERIAL.print(F("*"));
+        DEBUG_SERIAL.print(format(io.driveAngle.get(), 4, 4, true));
+        DEBUG_SERIAL.print(F(" "));
+      }
+      if (DEBUG_INFO) {
+        DEBUG_SERIAL.print(format(us.left(), 3, 3));
+        DEBUG_SERIAL.print(F("<>"));
+        DEBUG_SERIAL.print(format(us.right(), 3, 3));
+        DEBUG_SERIAL.print(F(" "));
+      }
       io.runtime.set();
     }
     DEBUG_SERIAL.print(str);
@@ -119,8 +135,8 @@ void printEndSegment() {
 
 void initPui() {
   if (io.battery.on()) {
-    beginSegment("pui");
+    beginSegment(F("pui"));
     pui.begin();
     endSegment();
-  } else debug("-pui");
+  } else debug(F("-pui"));
 }

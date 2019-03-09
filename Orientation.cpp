@@ -9,24 +9,24 @@ Orientation::Orientation(){
 
 void Orientation::init() {
   if (isEnabled()) {
-    beginSegment("o");
+    beginSegment(F("o"));
     BNO_Init(&bno);
-    if (DEBUG_I2C) debug("[");
+    if (DEBUG_I2C) debug(F("["));
     bno055_set_operation_mode(OPERATION_MODE_NDOF);
-    if (DEBUG_I2C) debug("]", false);
+    if (DEBUG_I2C) debug(F("]"), false);
     endSegment();
   } else {
-    debug("-o");
+    debug(F("-o"));
   }
 }
 
 void Orientation::update() {
   if (isEnabled()) {
-    beginSegment("o");
+    beginSegment(F("o"));
     struct bno055_euler myEulerData;
-    if (DEBUG_I2C) debug("[");
+    if (DEBUG_I2C) debug(F("["));
     bno055_read_euler_hrp(&myEulerData);
-    if (DEBUG_I2C) debug("]", false);
+    if (DEBUG_I2C) debug(F("]"), false);
     io.xOrientation.set(float(myEulerData.p) / 16.00);
     io.yOrientation.set(float(myEulerData.r) / 16.00);
     io.zOrientation.set(float(myEulerData.h) / 16.00);
@@ -38,7 +38,6 @@ void Orientation::update() {
         debug(io.yOrientation.str(4) + ",");
         debug(io.zOrientation.str(4));
       }
-      d.request();
     }
     endSegment();
   }
