@@ -71,7 +71,8 @@ void loop() {
   if (io.kickerStop.click())           {  debug("kickerStop");      io.kickPermanent.set(false);            }          
   if (io.shiftStart.click())           {
     debug(us.left());
-    debug(us.right());
+    debug(us.left2());
+    debug(us.left3());
   }          
   if (io.shiftStop.click())            {  debug("shiftStop");                                               }        
 /*

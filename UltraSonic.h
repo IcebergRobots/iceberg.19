@@ -19,6 +19,9 @@ public:
     int left2();
     int right2();
 
+    int left3();
+    int right3();
+
     int front();
 
     int getx();
@@ -34,6 +37,7 @@ private:
 
     int distance[5] = {0, 0, 0, 0, 0};
     int echo2[2] = {0, 0};
+    int echo3[2] = {0, 0};
     byte addresses[5] = {I2C_US_FRONT_LEFT, I2C_US_LEFT, I2C_US_BACK, I2C_US_RIGHT, I2C_US_FRONT_RIGHT}; 
 };
 
