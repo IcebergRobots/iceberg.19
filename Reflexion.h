@@ -19,7 +19,6 @@ class Reflexion
     Timer light = Timer(15);
     Timer dark = Timer(50);
     bool isLightPhase = false;
-    bool ball = false;
     int threshold = 0;
     bool cali = false;
     
