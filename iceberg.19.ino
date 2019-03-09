@@ -48,8 +48,8 @@ void loop() {
   if (io.selectPage.click())           {  /*d.toggle();        */                                           }
   if (io.decreaseMenu.click())         {  /*d.scroll(-1);      */                                           }
   if (io.increaseMenu.click())         {  /*d.scroll(1);       */                                           }
-  if (io.selectMenu.click())           {  /*debug(F("selectMenu"));*/                                          }
-  if (io.testKick.click())             {  kick();                                                           }
+  if (io.selectMenu.click())           {  debug(F("selectMenu"));                                          }
+  if (io.testKick.click())             {  kick();                                                     }
   if (io.compassCalibration.click())   {
     io.headingOffset.set(io.zOrientation.get());
     EEPROM.write(0, io.headingOffset.left());  // speichere Vorzeichen
@@ -75,7 +75,7 @@ void loop() {
 
   updateStates();
 // updateRating();
-  //updateKick();
+  updateKick();
   //updateAnimation();
 
   //calibrateGoal();
