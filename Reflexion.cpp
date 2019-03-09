@@ -2,16 +2,15 @@
 
 Reflexion::Reflexion() {}
 
-bool Reflexion::hasBall()   {       return ball;        }
-int Reflexion::getValue()   {       return value;       }
+int Reflexion::getValue()   {
+    return value;
+}
 
 void Reflexion::update() {
     io.ballLight.set(light.on());
-    ball = false;
 
     if (isLightPhase && light.off()) {
         isLightPhase = false;
-        //ball = false;
         withLight = io.ballTouch.get();
         dark.set();
     } else if (!isLightPhase && dark.off()) {
@@ -20,7 +19,7 @@ void Reflexion::update() {
         light.set();
     }
     value = withDark - withLight;
-    if (value > threshold) ball = true;
+    if (value > threshold) io.hasBall.set();
     if (cali) setThreshold();
 
 }
