@@ -21,7 +21,7 @@ class IO {
     Pin indLeft             = Pin(    6,  OUTPUT,        PWM      );  // ungenutzte LED hinten links
     Pin indRight            = Pin(   38,  OUTPUT,        DIGITAL  );  // ungenutzte LED hinten rechts
     Pin indRgb              = Pin(   36,  OUTPUT,        DIGITAL  );  // stellt RGB-LEDs vorne auf Main-PCB ein, kann über Logic Analyser mitgelesen werden
-    Pin indHearbeat         = Pin(    7,  OUTPUT,        PWM      );  // Blinken zweier LEDs
+    Pin indHeartbeat         = Pin(    7,  OUTPUT,        PWM      );  // Blinken zweier LEDs
 
     // Bluetooth
     Pin bluetoothTx         = Pin(   16,  INPUT,         DIGITAL  );  // HC-05 <- Mega, Funkverbindung mit Partner
@@ -124,7 +124,7 @@ class IO {
     Key selectMenu            = Key(  30,  DIGITAL,  0,     1000         );  // Menüpunkt auswählen (Knopf des Rotary Encoders)
     Key testKick              = Key(  11,  PUI,      0,     0,  0     );  // Schuss austesten 
     Key compassCalibration    = Key(  12,  PUI,      0,     0,     0     );  // Torrichtung kalibrieren
-    Key animation             = Key(  13,  PUI,      0                   );  // Starte Leucht Animation
+    Key animation             = Key(  13,  PUI,      0,     0,     0     );  // Starte Leucht Animation
     Key lineCalibration       = Key(  14,  PUI,      0,     500          );  // Linienhelligkeit kalibrieren
     Key ballTouchCalibration  = Key(  15,  PUI,      0,     500          );  // Lichtschranke kalibrieren
     Key start                 = Key(  22,  DIGITAL,  0                   );  // Losfahren
@@ -199,6 +199,9 @@ class IO {
     Value distanceLeft   = Value(  MODULATION,    0,  MAX_DISTANCE);
 
     Value kickPermanent  = Value(     BOOLEAN              );
+
+    Value animationState = Value();
+    Value animationEnabled = Value( BOOLEAN );
   private:
 };
 extern IO io;

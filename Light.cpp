@@ -11,7 +11,7 @@ Light::Light() {
 
 void Light::init() {
   beginSegment(F("l"));
-  io.indHearbeat.set(255);
+  io.indHeartbeat.set(255);
   io.indFront.set(255);
   io.indLeft.set(255);
   io.indRight.set(255);
@@ -28,7 +28,7 @@ void Light::init() {
 }
 
 void Light::light() {
-  io.indHearbeat.set(map(abs(int(millis() % 500) - 250), 0, 250, -100, 356));
+  io.indHeartbeat.set(map(abs(int(millis() % 500) - 250), 0, 250, -100, 356));
 
   if (io.setupLight.off()) {
     io.indFront.set(io.seeBall.get());
@@ -36,18 +36,34 @@ void Light::light() {
     io.indRight.set(0);
 
     if (line.onDemand()) {
-
-      for (int i = 0; i <= 39; i++) {
-        if (i >= 32)
-          line.setPixelColor(i, 255, 255, 255);
-        else
-          line.setPixelColor(i, 0, 0, 0);
-
-
+      
+      // toggle variable
+      if(io.animation.click()){
+        io.animationEnabled.set( ! io.animationEnabled.get() ); 
       }
 
-      line.setBrightness(255);
-      line.show();
+      // NO animation part
+      if(! io.animationEnabled.get()){
+        for (int i = 0; i <= 39; i++) {
+          if (i >= 32)
+            line.setPixelColor(i, 255, 255, 255);
+          else
+            line.setPixelColor(i, 0, 0, 0);
+        }
+
+        line.setBrightness(255);
+        line.show();
+      }
+      // animation part
+      else{
+        int werte = io.animationState.get();
+
+        for(int beta=0; beta<40; beta++){
+          line.setPixelColor(beta, line.wheelToColor( (millis() % 255 + 255/20) % 255 ));
+        }
+        line.setBrightness(255);
+        line.show();
+      }
     }
 
     if (pui.onDemand()) {
@@ -69,6 +85,8 @@ void Light::light() {
       else if (io.pause.on()) pui.setPixelState(10, 2);
       else pui.setPixelState(10, 1);
       pui.setPixelState(11, io.headstart.on());
+      
+      pui.setPixelColor(0, pui.wheelToColor((byte) millis() % 255 ));
 
       pui.setBrightness(map(io.poti.get(), 0, 1023, 0, 255));
       pui.show();
