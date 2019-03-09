@@ -68,10 +68,15 @@ void initStates() {
 }
 
 void updateStates() {
-  io.hasBall.set(io.ballTouch.get() > 30/*lightBarrierTriggerLevel*/);
-  io.ballLeft.set(io.ball.left(BALL_CENTER_TOLERANCE));
-  io.ballRight.set(io.ball.right(BALL_CENTER_TOLERANCE));
-  io.ballCenter.set(io.ball.center(BALL_CENTER_TOLERANCE));
+  if (io.hasBall.on() && io.seeBall.off()) { // wenn wir den Ball besitzen, erzeuge einen Kamerablock falls nicht vorhanden
+    io.seeBall.set();
+    io.ball.set(0); // Ball liegt gerade vor uns
+  }
+
+  // erkenne die Lage des Balls
+  io.seeBallLeft.set(io.ball.left(BALL_CENTER_TOLERANCE));
+  io.seeBallRight.set(io.ball.right(BALL_CENTER_TOLERANCE));
+  io.seeBallCenter.set(io.ball.center(BALL_CENTER_TOLERANCE));
 
   io.batteryVoltage.set(io.batteryVoltmeter.get() * 0.1249);
   io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE);

@@ -26,19 +26,13 @@ void Pilot::setState() {
       //else if (io.state.outsidePeriod(BACKWARD_MAX_DURATION)) io.state.set(FREEING, "time>");
       break;
     case GOALKEEPER:
-      if (io.seeBall.off() && io.stateDirection.outsidePeriod(SIDEWARD_MAX_DURATION)) {
-        io.stateDirection.set(io.stateDirection.off(), "t>");
-      } else if (io.seeBall.on() || io.stateDirection.outsidePeriod(SIDEWARD_MIN_DURATION)) {
-        if (io.seeBall.on()) {
-          if      (io.ball.left(BALL_ANGLE_TRIGGER))  io.stateDirection.set(LEFT, "ball<");
-          else if (io.ball.right(BALL_ANGLE_TRIGGER)) io.stateDirection.set(RIGHT, "ball>");
-        }
+      if (io.seeBall.off() && io.stateDirection.outsidePeriod(SIDEWARD_MAX_DURATION)) io.stateDirection.set(io.stateDirection.off(), "t>");
+      else if (io.seeBall.on() || io.stateDirection.outsidePeriod(SIDEWARD_MIN_DURATION)) {
+        if      (io.seeBallLeft.on())  io.stateDirection.set(LEFT, "ball<");
+        else if (io.seeBallRight.on()) io.stateDirection.set(RIGHT, "ball>");
+
         if (us.back() > COURT_REARWARD_MAX) io.state.set(BACK, "dis_b>"); // fahre rückwärts
-        if (atGatepost()) {
-          io.stateDirection.set(io.stateDirection.off(), "g");
-          debug(us.left());
-          debug(us.right());
-        }
+        if (atGatepost()) io.stateDirection.set(io.stateDirection.off(), "g");
       }
       break;
     case GOALPOST_GO:
@@ -103,7 +97,7 @@ void Pilot::update() {
       drive(180, speed, rotation);
       break;
     case GOALKEEPER:
-      if (io.seeBall.off()) speed = map(abs(io.ball.get()), 0, BALL_ANGLE_TRIGGER, SPEED_KEEPER, 0.6 * SPEED_KEEPER);
+      if (io.seeBall.off()) speed = map(abs(io.ball.get()), 0, BALL_CENTER_TOLERANCE, SPEED_KEEPER, 0.6 * SPEED_KEEPER);
         else speed = SPEED_KEEPER;
         if (io.stateDirection.left()) {
           direction = ANGLE_SIDEWAY;

@@ -65,7 +65,7 @@ void loop() {
   if (io.resetProperties.click())      {  debug(F("resetProperties"));                                         }              
   if (io.kickerStart.click())          {  debug(F("kickerStart"));     io.kickPermanent.set(true);             }          
   if (io.kickerStop.click())           {  debug(F("kickerStop"));      io.kickPermanent.set(false);            }          
-  if (io.shiftStart.click())           {  debug(reflexion.hasBall());                                       }          
+  if (io.shiftStart.click())           {                                                                       }          
   if (io.shiftStop.click())            {  reflexion.calibrate();                                            }        
 /*
   if (io.drivePower.outsidePeriod(400)) drive.brake(false);
