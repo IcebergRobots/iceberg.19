@@ -16,16 +16,24 @@ Pilot::Pilot() {
 }
 
 void Pilot::setState() {
-  if (io.seeBall.rising()) io.state.set(BALL_TRACKING, "view");
-  if (io.seeBall.falling()) io.state.set(BACK, "blind");
+  if (io.seeBall.change() && io.seeBall.on()) io.state.set(BALL_TRACKING, "view");
+  if (io.seeBall.change() && io.seeBall.off()) io.state.set(BACK, "blind");
 
   switch (io.state.get()) {
     default:
     case BACK:
-      
+      if (us.back() <= COURT_REARWARD_MAX) io.state.set(GOALKEEPER, "dis_b<");
+      //else if (io.state.outsidePeriod(BACKWARD_MAX_DURATION)) io.state.set(FREEING, "time>");
       break;
     case GOALKEEPER:
+      if (io.seeBall.off() && io.stateDirection.outsidePeriod(SIDEWARD_MAX_DURATION)) io.stateDirection.set(io.stateDirection.off(), "t>");
+      else if (io.seeBall.on() || io.stateDirection.outsidePeriod(SIDEWARD_MIN_DURATION)) {
+        if      (io.seeBallLeft.on())  io.stateDirection.set(LEFT, "ball<");
+        else if (io.seeBallRight.on()) io.stateDirection.set(RIGHT, "ball>");
 
+        if (us.back() > COURT_REARWARD_MAX) io.state.set(BACK, "dis_b>"); // fahre rückwärts
+        if (atGatepost()) io.stateDirection.set(io.stateDirection.off(), "g");
+      }
       break;
     case GOALPOST_GO:
 
@@ -56,7 +64,7 @@ void Pilot::setState() {
 }
 
 void Pilot::update() {
-  if (DEBUG_LOOP) beginSegment("m");
+  if (DEBUG_LOOP) beginSegment(F("m"));
 
   setState();
 
@@ -89,7 +97,20 @@ void Pilot::update() {
       drive(180, speed, rotation);
       break;
     case GOALKEEPER:
+      if (io.seeBall.off()) speed = map(abs(io.ball.get()), 0, BALL_CENTER_TOLERANCE, SPEED_KEEPER, 0.6 * SPEED_KEEPER);
+        else speed = SPEED_KEEPER;
+        if (io.stateDirection.left()) {
+          direction = ANGLE_SIDEWAY;
+          if (us.left() < COURT_BORDER_MIN) speed = SPEED_KEEPER * 0.7; // fahre langsamer am Spielfeldrand
+        } else {
+          direction = -ANGLE_SIDEWAY;
+          if (us.right() < COURT_BORDER_MIN) speed = SPEED_KEEPER * 0.7; // fahre langsamer am Spielfeldrand
+        }
+        if (us.back() < COURT_REARWARD_MIN) direction *= map(us.back(), 0, COURT_REARWARD_MIN, 8, 10) / 10.0; // fahre leicht schräg nach vorne
 
+        rotation = face(0);
+        speed = max(speed - abs(rotation), 0);
+        drive(direction, speed, rotation);
       break;
     case GOALPOST_GO:
 
@@ -160,6 +181,12 @@ int Pilot::face(int angle, int speed) {
     return -pidOut; // [-255 bis 255]
   }
   else return 0;
+}
+
+bool Pilot::atGatepost() {
+  // benutze Abstand in Bewegungsrichtung
+  if (io.stateDirection.left()) return us.left() < COURT_BORDER_MIN;
+  else                          return us.right() < COURT_BORDER_MIN;
 }
 
 Pilot drive;

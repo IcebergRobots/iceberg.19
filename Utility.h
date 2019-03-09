@@ -2,7 +2,7 @@
 #define Utility_h
 
 #include "IO.h"
-#include "Pilot.h"
+#include "Ultrasonic.h"
 #include <avr/wdt.h>
 
 #define SEGMENT_OFF    0

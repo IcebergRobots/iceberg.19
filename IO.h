@@ -147,16 +147,16 @@ class IO {
     Timer onLine          = Timer(    300             );  // berühren wir die Linie?
     Timer isHeadstart     = Timer(    350             );  // führen wir einen Schnellstart aus ?
     Timer isDodge         = Timer(    200             );  // weichen wir dem Gegner aus?
-    Timer hasBall         = Timer(     50             );  // haben wir Ballbesitz?
+    Timer hasBall         = Timer(     80             );  // haben wir Ballbesitz?
     Timer runtime         = Timer(                    );  // Laufzeit der Schleife 
     Timer seeBall         = Timer(    100,  &flat     );  // sehen wir den Ball?
     Timer seeGoal         = Timer(    500,  &flat     );  // sehen wir das Tor?
     Timer seeMate         = Timer(    100,  &flat     );  // sehen wir ein Positionslicht
     Timer closeBall       = Timer(    500,  &seeBall  );  // ist der Ball nahe?
     Timer drift           = Timer(    200             );  // müssen wir ein Driften verhindern?
-    Timer ballLeft        = Timer(      0,  &seeBall  );  // ist der Ball links?
-    Timer ballRight       = Timer(      0,  &seeBall  );  // ist der Ball rechts?
-    Timer ballCenter      = Timer(      0,  &seeBall  );  // ist der Ball mittig?
+    Timer seeBallLeft     = Timer(      0,  &seeBall  );  // ist der Ball links?
+    Timer seeBallRight    = Timer(      0,  &seeBall  );  // ist der Ball rechts?
+    Timer seeBallCenter   = Timer(      0,  &seeBall  );  // ist der Ball mittig?
     Timer cameraResponse  = Timer(  20000             );  // ist die Kamera verbunden?
     Timer driveLocked     = Timer(    300             );  // dürfen neue Steuerwerte esetzt werden?
     Timer setupLight      = Timer(    200             );
@@ -186,6 +186,7 @@ class IO {
     Value hasDebugHead   = Value(     BOOLEAN              );  // Debug-Zeilenanfang
     Value segment        = Value(      LIMITS,    0,    2  );  // Laufzeit eines Codeblockes
     Value battery        = Value(     BOOLEAN              );  // ist der Akku angeschlosse?
+    Value batteryVoltage = Value(      LIMITS,     0,  999 );
     Value pause          = Value(     BOOLEAN              );  // ist das Spiel pausiert?
 
     Value heading        = Value(  MODULATION, -179,  180  );

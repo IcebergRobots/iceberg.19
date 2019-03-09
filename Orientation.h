@@ -5,7 +5,6 @@
 #include "Demand.h"
 #include <Wire.h>
 #include "BNO055_support.h"    //Contains the bridge code between the API and Arduino
-#include "Display.h"
 
 class Orientation : public Demand
 {
