@@ -3,6 +3,7 @@
 
 #include "Chassis.h"
 #include <PID_v1.h>
+#include "Ultrasonic.h"
 
 #define BACK 0
 #define GOALKEEPER 1
@@ -23,6 +24,8 @@ public:
 
   void setState();
   void update();
+
+  bool atGatepost();
 
   void steer(int angle = 0);
   void accelerate(int speed = 255);
