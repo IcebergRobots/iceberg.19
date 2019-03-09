@@ -14,10 +14,7 @@ LightBoard::LightBoard(int numPixels, int pin, unsigned long lockedPeriod=0, uns
   Set all leds of the board
 *****************************************************/
 void LightBoard::setAllColor(unsigned long color) {
-  for (int i = 0; i < numPixels(); i++) {
-    setPixelColor(i, color);
-  }
-  show();
+  for (int i = 0; i < numPixels(); i++) setPixelColor(i, color);
 }
 void LightBoard::setAllColor(byte red, byte green, byte blue) {
   setAllColor(Color(red, green, blue));
@@ -28,10 +25,7 @@ void LightBoard::setAllColor(byte red, byte green, byte blue) {
   @param offset: rotation of the color wheel
 *****************************************************/
 void LightBoard::setAllWheel(int offset) {
-  for (int i = 0; i < numPixels(); i++) {
-    setPixelColor(i, wheelToColor(offset + i * 256 / numPixels()));
-  }
-  show();
+  for (int i = 0; i < numPixels(); i++) setPixelColor(i, wheelToColor(offset + i * 256 / numPixels()));
 }
 
 /*****************************************************
