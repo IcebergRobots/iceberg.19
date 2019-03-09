@@ -298,4 +298,5 @@ byte Value::getState() {
 
 void Value::abort(){
   if (ever()) eventTimer = 1;
+  muteSet(0);
 }

@@ -86,9 +86,6 @@ void loop() {
   //drive.prepare();
   drive.update();
   updateLine();
-  if(!io.lineDetected.get()){
-    drive.execute();
-  }
   if (light.onDemand()) light.light();
   //bluetoth();
 

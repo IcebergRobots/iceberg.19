@@ -6,8 +6,9 @@ void lineInterrupt(){
   io.lineDetected.set();
 }
 
-void updateLine(){
-  if(io.lineDetected.get()){
+void updateLine() {
+  if (DEBUG_LOOP) beginSegment("line");
+  if( io.lineDetected.on()) {
     if(BOTTOM_SERIAL.available() >= 3){
       while(BOTTOM_SERIAL.available()>3){
         BOTTOM_SERIAL.read();
@@ -25,14 +26,14 @@ void updateLine(){
     }
   }
 
-  if(!io.lineDetected.get() && io.lineAvoid.get() && io.lineInterrupt.get()){
+  if(io.lineDetected.off() && io.lineAvoid.on() && io.lineInterrupt.on()) {
     io.lineAvoid.set();
   }
 
-  if(io.lineAvoid.get()){
-    drive.steer(io.lineAngle.get());
-    drive.accelerate(255);
+  if(io.lineAvoid.get()) {
+    drive.drive(io.lineAngle.get() + 180, 255, face(0));
   }
+  if (DEBUG_LOOP) endSegment();
 }
 
 void kick() {

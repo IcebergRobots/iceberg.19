@@ -3,6 +3,7 @@
 
 #include "IO.h"
 #include "Ultrasonic.h"
+#include "Pilot.h"
 #include <avr/wdt.h>
 
 #define SEGMENT_OFF    0
@@ -18,6 +19,8 @@ void setupWatchdog();
 void loopWatchdog();
 void initDebug();
 void setupDone();
+
+void lineInterrupt();
 
 void startSound();
 void calculateStates();

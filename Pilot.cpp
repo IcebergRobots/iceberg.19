@@ -172,6 +172,7 @@ void Pilot::accelerate(int speed) {
   io.drivePower.set(speed);
 }
 int Pilot::face(int angle, int speed) {
+  //angle = circulate(angle, -179,  180);
   io.driveOrientation.set(angle);
   pidSetpoint = io.driveOrientation.get();
   // Misst die Kompassabweichung vom Tor [-180 bis 179]
