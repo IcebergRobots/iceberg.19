@@ -39,6 +39,9 @@ void loop() {
   digitalWrite(io.buzzer.getPin(), false);
   digitalWrite(io.speaker.getPin(), false);
 
+  if(io.hasBall.on())
+    kick();
+
   if (orientation.onDemand()) orientation.update();
   if (camera.onDemand()) camera.frame();
   if (us.onDemand()) us.update();
@@ -57,7 +60,7 @@ void loop() {
   }
   if (io.animation.click())            {  debug(F("animation"));                                               }
   if (io.lineCalibration.click())      {  BOTTOM_SERIAL.write(42);                                          }
-  if (io.ballTouchCalibration.click()) {  reflexion.calibrate();                                            }
+  if (io.ballTouchCalibration.click()) {  debug(F("ballTouchCalibration"));                                    }
   if (io.start.click())                {  io.pause.set(false);                                              }
   if (io.stop.click())                 {  io.pause.set(true);                                               }
   
@@ -65,7 +68,7 @@ void loop() {
   if (io.resetProperties.click())      {  debug(F("resetProperties"));                                         }              
   if (io.kickerStart.click())          {  debug(F("kickerStart"));     io.kickPermanent.set(true);             }          
   if (io.kickerStop.click())           {  debug(F("kickerStop"));      io.kickPermanent.set(false);            }          
-  if (io.shiftStart.click())           {                                                                       }          
+  if (io.shiftStart.click())           {                                         }          
   if (io.shiftStop.click())            {  reflexion.calibrate();                                            }        
 /*
   if (io.drivePower.outsidePeriod(400)) drive.brake(false);
