@@ -39,6 +39,8 @@ void loop() {
   digitalWrite(io.buzzer.getPin(), false);
   digitalWrite(io.speaker.getPin(), false);
 
+  digitalWrite(6, io.hasBall.on());
+
   if (orientation.onDemand()) orientation.update();
   if (camera.onDemand()) camera.frame();
   if (us.onDemand()) us.update();
