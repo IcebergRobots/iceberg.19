@@ -1,7 +1,6 @@
 #include "Utility.h"
 
 void kick() {
-  debug(F("kick!"));
   if (io.kickActive.period() > 600) io.kickActive.set();
 }
 
