@@ -92,9 +92,6 @@
 #define COURT_POST_TO_BORDER 110 // Abstand nach rechts bzw. links am Torpfosten
 #define MAX_DISTANCE 200
 
-// 
-#define BALL_CENTER_TOLERANCE 40 
-
 // PID-Regler
 #define PID_FILTER_P .27  // [0 bis *]~.27 p:proportional
 #define PID_FILTER_I .02  // [0 bis *]~0   i:vorausschauend
@@ -126,7 +123,7 @@
 #define SIGNATURE_GOAL 2                      // Pixy-Signature des Tors
 #define X_CENTER ((PIXY_MAX_X-PIXY_MIN_X)/2)  // PIXY: Die Mitte des Bildes der Pixy (in Pixeln)
 #define BALL_WIDTH_TRIGGER 40                 // Schwellwert eines großen Balles
-#define BALL_ANGLE_TRIGGER 40                 // Schwellenwert der Ballrichtung
+#define BALL_CENTER_TOLERANCE 40              // Toleranzwinkel für mittlere Bälle
 
 //ULTRASONIC
 #define I2C_US_FRONT_LEFT 112
