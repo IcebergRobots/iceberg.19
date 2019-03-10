@@ -87,8 +87,9 @@ void loop() {
   //calibrateLightBeam();
   //calibrateLine();
   //drive.prepare();
-  drive.update();
-  updateLine();
+  if (io.lineDetected.on() || io.lineAvoid.on()) updateLine();
+  else drive.update();
+  drive.execute();
   if (light.onDemand()) light.light();
   //bluetoth();
 

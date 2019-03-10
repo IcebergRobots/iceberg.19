@@ -31,7 +31,7 @@ void updateLine() {
   }
 
   if(io.lineAvoid.get()) {
-    drive.drive(io.lineAngle.get() + 180, 255, face(0));
+    drive.drive(io.lineAngle.get() + 180, SPEED_LINE);
   }
   if (DEBUG_LOOP) endSegment();
 }
