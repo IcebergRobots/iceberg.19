@@ -34,7 +34,7 @@ void Reflexion::calibrate() {
 }
 
 void Reflexion::setThreshold() {
-    threshold = value + 10;
+    threshold = value + 100;
     EEPROM.write(REFLEXION_THRESHOLD, (byte)threshold / 4);
     cali = false;
 }
