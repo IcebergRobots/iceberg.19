@@ -16,7 +16,7 @@ class LightBoard : public Adafruit_NeoPixel, public Demand
 
     bool isEnabled();
 
-  private:
+  // private:
     unsigned long wheelToColor(byte pos);
 };
 

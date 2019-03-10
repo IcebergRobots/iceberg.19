@@ -37,7 +37,7 @@ void IO::update() {
   indLeft.update();
   indRight.update();
   indRgb.update();
-  indHearbeat.update();
+  indHeartbeat.update();
 
   // Bluetooth
   bluetoothTx.update();
