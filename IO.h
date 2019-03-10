@@ -122,7 +122,7 @@ class IO {
     Key decreaseMenu          = Key(  26,  DIGITAL,  0                   );  // vorheriger Menüpunkt (misst Drehung des Rotary Encoders)
     Key increaseMenu          = Key(  28,  DIGITAL,  0                   );  // nächster   Menüpunkt (misst Drehung des Rotary Encoders)
     Key selectMenu            = Key(  30,  DIGITAL,  0,     1000         );  // Menüpunkt auswählen (Knopf des Rotary Encoders)
-    Key testKick              = Key(  11,  PUI,      0,     1000,  0     );  // Schuss austesten
+    Key testKick              = Key(  11,  PUI,      0,     0,  0     );  // Schuss austesten 
     Key compassCalibration    = Key(  12,  PUI,      0,     0,     0     );  // Torrichtung kalibrieren
     Key animation             = Key(  13,  PUI,      0                   );  // Starte Leucht Animation
     Key lineCalibration       = Key(  14,  PUI,      0,     500          );  // Linienhelligkeit kalibrieren
@@ -133,8 +133,8 @@ class IO {
     // PUI: shortcuts
     Key *_record           [2]  = {  &start ,         &stop          }; Shortcut  record           = Shortcut(  _record,           2,  FIRE_KEYS,     0              );  // Spiel aufzeichnen (start + stop)
     Key *_resetProperties  [2]  = {  &decreasePage,  &increasePage  }; Shortcut  resetProperties  = Shortcut(  _resetProperties,  2,  MUTE_KEYS,  2000              );  // Alle Konfigurationen und Kalibrierungen zurücksetzten
-    Key *_kickerStart      [2]  = {  &testKick,      &start         }; Shortcut  kickerStart      = Shortcut(  _kickerStart,      2,  MUTE_KEYS,     0              );  // aktiviere einen dauerhaften Schuss
-    Key *_kickerStop       [2]  = {  &testKick,      &stop          }; Shortcut  kickerStop       = Shortcut(  _kickerStop,       2,  MUTE_KEYS,     0              );  // deaktiviere einen dauerhaften Schuss
+    Key *_kickerStart      [2]  = {  &increasePage,      &start         }; Shortcut  kickerStart      = Shortcut(  _kickerStart,      2,  MUTE_KEYS,     0              );  // aktiviere einen dauerhaften Schuss
+    Key *_kickerStop       [2]  = {  &increasePage,      &stop          }; Shortcut  kickerStop       = Shortcut(  _kickerStop,       2,  MUTE_KEYS,     0              );  // deaktiviere einen dauerhaften Schuss
     Key *_shiftStart       [2]  = {  &selectMenu,    &start         }; Shortcut  shiftStart       = Shortcut(  _shiftStart,       2,  MUTE_KEYS,     0,  600,  200  );  // 
     Key *_shiftStop        [2]  = {  &selectMenu,    &stop          }; Shortcut  shiftStop        = Shortcut(  _shiftStop,        2,  MUTE_KEYS,     0,  600,  200  );  // 
 

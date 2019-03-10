@@ -35,6 +35,8 @@ void printDebug(String str, bool space);
 void printBeginSegment(String name);
 void printEndSegment();
 
+void updateKick();
+
 void initPui();
 
 void updateLine();

@@ -37,6 +37,7 @@ void updateLine() {
 }
 
 void kick() {
+  debug(F("kick!"));
   if (io.kickActive.period() > 600) io.kickActive.set();
 }
 
@@ -184,4 +185,11 @@ void initPui() {
     pui.begin();
     endSegment();
   } else debug(F("-pui"));
+}
+
+void updateKick(){
+  if(io.kickActive.get())
+    debug("KickActive");
+  digitalWrite(io.kick.getPin(), io.kickActive.get());
+  digitalWrite(io.buzzer.getPin(), io.kickActive.get());
 }
