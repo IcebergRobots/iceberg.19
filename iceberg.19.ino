@@ -1,6 +1,7 @@
 #include "include.h"
 
-void setup() {
+void setup()
+{
   io.battery.setLimits(true, true);
   setupWatchdog();
   initUART();
@@ -33,7 +34,6 @@ void loop() {
   prepareDebug();  // bereite debug nachrichten vor
   
   loopWatchdog();
-  updateLine();
 
   io.update();
   reflexion.update();

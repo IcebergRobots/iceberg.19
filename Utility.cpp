@@ -1,13 +1,17 @@
 #include "Utility.h"
 
-void lineInterrupt(){
+void lineInterrupt() {
   drive.brake(false);
-  drive.execute();
-  io.lineDetected.set();
+  //io.lineDetected.set();
 }
 
 void updateLine() {
   if (DEBUG_LOOP) beginSegment("line");
+  debug(io.lineDetected.period());
+  debug(io.lineAvoid.period());
+  debug(io.lineDetected.on());
+  debug(io.lineAvoid.on());
+
   if( io.lineDetected.on()) {
     if(BOTTOM_SERIAL.available() >= 3){
       while(BOTTOM_SERIAL.available()>3){
