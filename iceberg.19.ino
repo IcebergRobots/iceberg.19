@@ -36,6 +36,10 @@ void loop() {
   io.update();
   reflexion.update();
 
+  if(bluetooth.update()){
+    //new message available by bluetooth.getMessage();
+  }
+
   digitalWrite(io.buzzer.getPin(), false);
   digitalWrite(io.speaker.getPin(), false);
 

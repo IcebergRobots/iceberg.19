@@ -8,7 +8,11 @@ checkbyte = Summe aller char-Werte von message % 255 + 1
 
 */
 
-bool Bluetooth::extractMessage(String input, String * output){
+Bluetooth::Bluetooth(HardwareSerial *_serial){
+    bluetoothSerial = _serial;
+}
+
+bool Bluetooth::extractMessage(String input, String *output){
     *output = "";
     int i = 0;
     byte checksum = 0;
@@ -19,7 +23,7 @@ bool Bluetooth::extractMessage(String input, String * output){
     }
 
     //check if '[' is followed by '<'
-    i++
+    i++;
     if(input[i] != '<'){
         return false;
     }
@@ -39,17 +43,17 @@ bool Bluetooth::extractMessage(String input, String * output){
     }
 
     //check if '[' is followed by '<'
-    i++
+    i++;
     if(input[i] != '<'){
         return false;
     }
 
     //read checksum
-    i++
+    i++;
     checksum = (byte) input[i];
 
     //check if checksum is followed by '>'
-    i++
+    i++;
     if(input[i] != '>'){
         return false;
     }
@@ -57,7 +61,7 @@ bool Bluetooth::extractMessage(String input, String * output){
     //check if checksum is correct
     int tempChecksum = 0;
     for(int i = 0; i<(*output).length(); i++){
-        tempChecksum += (byte) output[i];
+        tempChecksum += (byte)(char) (*output)[i];
     }
     tempChecksum %= 255;
     tempChecksum += 1;
@@ -69,7 +73,7 @@ bool Bluetooth::extractMessage(String input, String * output){
     return true;
 }
 
-void send(String input){
+void Bluetooth::send(String input){
     int checksum = 0;
     for(int i = 0; i<input.length(); i++){
         checksum += input[i];
@@ -77,19 +81,19 @@ void send(String input){
     checksum %= 255;
     checksum += 1;
 
-    BOTTOM_SERIAL.print("[<");
-    BOTTOM_SERIAL.print(input);
-    BOTTOM_SERIAL.print("><");
-    BOTTOM_SERIAL.write((byte)checksum);
-    BOTTOM_SERIAL.print(">]");
+    bluetoothSerial->print("[<");
+    bluetoothSerial->print(input);
+    bluetoothSerial->print("><");
+    bluetoothSerial->write((byte)checksum);
+    bluetoothSerial->print(">]");
 }
 
-bool Bluetooth::update(String input, String * output){
+bool Bluetooth::update(){
     bool newMessageAvailable = false;
 
-    while(BLUETOOTH_SERIAL.available()){        //prüfe auf neue Bytes
+    while(bluetoothSerial->available()){        //prüfe auf neue Bytes
         char tempBuffer;                        
-        tempBufer = BLUETOOTH_SERIAL.read()     //liest neue Nachricht aus und speichert sie
+        tempBuffer = bluetoothSerial->read();     //liest neue Nachricht aus und speichert sie
 
         if(tempBuffer == '['){
             capture = true;
@@ -113,3 +117,5 @@ bool Bluetooth::update(String input, String * output){
 String Bluetooth::getMessage(){
     return lastMessage;
 }
+
+Bluetooth bluetooth(&BLUETOOTH_SERIAL);

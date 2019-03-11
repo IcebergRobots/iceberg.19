@@ -10,6 +10,7 @@
 #include "Light.h"
 #include "Pilot.h"
 #include "Orientation.h"
+#include "Bluetooth.h"
 
 #include "Ultrasonic.h"
 #include "Reflexion.h"
