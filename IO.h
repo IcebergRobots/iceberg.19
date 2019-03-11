@@ -161,6 +161,8 @@ class IO {
     Timer driveLocked     = Timer(    300             );  // dürfen neue Steuerwerte esetzt werden?
     Timer setupLight      = Timer(    200             );
     Timer kickActive      = Timer(     50             );
+    Timer heartPartner    = Timer(    500             );  // wurde Heartbeat des Gegners empfangen?
+    Timer sendHeartBeat   = Timer(    250             );  // wurde Heartbeat des Gegners empfangen?
 
     // all global variables
     Value aggressive     = Value(     BOOLEAN              );
@@ -200,8 +202,11 @@ class IO {
 
     Value kickPermanent  = Value(     BOOLEAN              );
 
-    Value animationState = Value();
-    Value animationEnabled = Value( BOOLEAN );
+    Value animationState = Value(                          );
+    Value animationEnabled = Value(   BOOLEAN              );
+
+    Value partnerRating  = Value(      LIMITS,    0,  255  );
+    Value striker        = Value(     BOOLEAN              );
   private:
 };
 extern IO io;
