@@ -144,7 +144,6 @@ class IO {
 
     // binary timers
     Timer flat            = Timer(    600             );  // liegen wir flach?
-    Timer onLine          = Timer(    300             );  // berühren wir die Linie?
     Timer isHeadstart     = Timer(    350             );  // führen wir einen Schnellstart aus ?
     Timer isDodge         = Timer(    200             );  // weichen wir dem Gegner aus?
     Timer hasBall         = Timer(     80             );  // haben wir Ballbesitz?
@@ -165,6 +164,7 @@ class IO {
     Timer lineAvoid       = Timer(    150             );
 
     // all global variables
+    Value onLine         = Value(     BOOLEAN              );
     Value aggressive     = Value(     BOOLEAN              );
     Value striker        = Value(     BOOLEAN              );
     Value state          = Value(      LIMITS,    0,    9  );

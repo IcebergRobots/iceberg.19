@@ -4,6 +4,7 @@
 #include "IO.h"
 #include "Ultrasonic.h"
 #include "Pilot.h"
+#include "Line.h"
 #include <avr/wdt.h>
 
 #define SEGMENT_OFF    0
@@ -20,7 +21,7 @@ void loopWatchdog();
 void initDebug();
 void setupDone();
 
-void lineInterrupt();
+void requestLineFetch();
 
 void startSound();
 void calculateStates();
@@ -39,6 +40,5 @@ void updateKick();
 
 void initPui();
 
-void updateLine();
 
 #endif

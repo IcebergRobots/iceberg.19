@@ -13,5 +13,6 @@
 
 #include "Ultrasonic.h"
 #include "Reflexion.h"
+#include "Line.h"
 
 #endif

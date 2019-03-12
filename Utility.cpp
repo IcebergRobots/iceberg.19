@@ -1,45 +1,5 @@
 #include "Utility.h"
 
-void lineInterrupt() {
-  drive.brake(false);
-  //io.lineDetected.set();
-}
-
-void updateLine() {
-  if (DEBUG_LOOP) beginSegment("line");
-  debug(io.lineDetected.period());
-  debug(io.lineAvoid.period());
-  debug(io.lineDetected.on());
-  debug(io.lineAvoid.on());
-
-  if( io.lineDetected.on()) {
-    if(BOTTOM_SERIAL.available() >= 3){
-      while(BOTTOM_SERIAL.available()>3){
-        BOTTOM_SERIAL.read();
-      }
-
-      BOTTOM_SERIAL.read(); //power wird nicht ausgewertet
-      int tempAngle = 0;
-      tempAngle = BOTTOM_SERIAL.read();
-      tempAngle |= BOTTOM_SERIAL.read() << 8;
-
-      io.lineAngle.set(tempAngle);
-
-      io.lineDetected.abort();
-      io.lineAvoid.set();
-    }
-  }
-
-  if(io.lineDetected.off() && io.lineAvoid.on() && io.lineInterrupt.on()) {
-    io.lineAvoid.set();
-  }
-
-  if(io.lineAvoid.get()) {
-    drive.drive(io.lineAngle.get() + 180, SPEED_LINE);
-  }
-  if (DEBUG_LOOP) endSegment();
-}
-
 void kick() {
   debug(F("kick!"));
   if (io.kickActive.period() > 600) io.kickActive.set();
@@ -61,7 +21,11 @@ void initI2C() {
 }
 
 void initInterrupt(){
-  attachInterrupt(digitalPinToInterrupt(io.lineInterrupt.getPin()), lineInterrupt, RISING);
+  attachInterrupt(digitalPinToInterrupt(io.lineInterrupt.getPin()), requestLineFetch, RISING);
+}
+
+void requestLineFetch() {
+  isLineFetchRequest = true;
 }
 
 void setupWatchdog() {
@@ -122,6 +86,8 @@ void updateStates() {
   io.seeBallLeft.set(io.ball.left(BALL_CENTER_TOLERANCE));
   io.seeBallRight.set(io.ball.right(BALL_CENTER_TOLERANCE));
   io.seeBallCenter.set(io.ball.center(BALL_CENTER_TOLERANCE));
+
+  io.onLine.set(io.lineAvoid.on() || io.lineDetected.on());
 
   io.batteryVoltage.set(io.batteryVoltmeter.get() * 0.1249);
   io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE);

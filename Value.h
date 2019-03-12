@@ -103,7 +103,7 @@ class Value : public Container
     byte getElementType();
 
     void setState(byte s);
-    byte getState();
+    char getState();
 
   private:
     bool isDebug(byte type=DEBUG_ENABLE);
