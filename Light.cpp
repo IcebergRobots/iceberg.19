@@ -57,15 +57,10 @@ void Light::light() {
 
     if (line.onDemand()) {
       
-      // toggle variable
-      if(io.animation.click()){
-        io.animationEnabled.set( ! io.animationEnabled.get() ); 
-
-        if(io.animationEnabled.get()){
-          line.setCooldown(10);
-        }else{
-          line.setCooldown(100);
-        }
+      if(io.animationEnabled.get()){
+        line.setCooldown(10);
+      }else{
+        line.setCooldown(100);
       }
 
       // NO animation part

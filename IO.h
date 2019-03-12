@@ -116,13 +116,13 @@ class IO {
     Pin usbRx               = Pin(    0,  OUTPUT,        DIGITAL  );  // Computer -> Mega, Computer Kommunikation   
 
     // PUI: keys and levers
-    Key decreasePage          = Key(   8,  PUI,      0,     500,   200   );  // vorherige Bildschirmseite
-    Key increasePage          = Key(  10,  PUI,      0,     500,   200   );  // nächste   Bildschirmseite
-    Key selectPage            = Key(   9,  PUI,      0,     5000         );  // Seite auswählen
+    Key decreasePage          = Key(   11,  PUI,      0,     500,   200   );  // vorherige Bildschirmseite
+    Key increasePage          = Key(   9,  PUI,      0,     500,   200   );  // nächste   Bildschirmseite
+    Key selectPage            = Key(   10,  PUI,      0,     5000         );  // Seite auswählen
     Key decreaseMenu          = Key(  26,  DIGITAL,  0                   );  // vorheriger Menüpunkt (misst Drehung des Rotary Encoders)
     Key increaseMenu          = Key(  28,  DIGITAL,  0                   );  // nächster   Menüpunkt (misst Drehung des Rotary Encoders)
     Key selectMenu            = Key(  30,  DIGITAL,  0,     1000         );  // Menüpunkt auswählen (Knopf des Rotary Encoders)
-    Key testKick              = Key(  11,  PUI,      0,     0,  0        );  // Schuss austesten 
+    Key testKick              = Key(   8,  PUI,      0,     0,  0        );  // Schuss austesten 
     Key compassCalibration    = Key(  12,  PUI,      0,     0,     0     );  // Torrichtung kalibrieren
     Key animation             = Key(  13,  PUI,      0                   );  // Starte Leucht Animation
     Key lineCalibration       = Key(  14,  PUI,      0,     500          );  // Linienhelligkeit kalibrieren

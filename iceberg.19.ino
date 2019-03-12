@@ -58,7 +58,7 @@ void loop() {
     EEPROM.write(0, io.headingOffset.left());  // speichere Vorzeichen
     EEPROM.write(1, abs(io.headingOffset.get())); // speichere Winkel
   }
-  if (io.animation.click())            {  debug(F("animation"));                                               }
+  if (io.animation.click())            {  io.animationEnabled.set( ! io.animationEnabled.get() );              }
   if (io.lineCalibration.click())      {  BOTTOM_SERIAL.write(42);                                             }
   if (io.ballTouchCalibration.click()) {  reflexion.calibrate();                                               }
   if (io.start.click())                {  io.pause.set(false);                                                 }
