@@ -206,7 +206,6 @@ class IO {
     Value animationEnabled = Value(   BOOLEAN              );
 
     Value partnerRating  = Value(      LIMITS,    0,  255  );
-    Value striker        = Value(     BOOLEAN              );
   private:
 };
 extern IO io;
