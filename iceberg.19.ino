@@ -61,8 +61,8 @@ void loop() {
   if (io.animation.click())            {  debug(F("animation"));                                               }
   if (io.lineCalibration.click())      {  BOTTOM_SERIAL.write(42);                                             }
   if (io.ballTouchCalibration.click()) {  reflexion.calibrate();                                               }
-  if (io.start.click())                {  io.pause.set(false);                                                 }
-  if (io.stop.click())                 {  io.pause.set(true);                                                  }
+  if (io.start.click())                {  io.pause.set(false);       bluetooth.send("SRT");                    }
+  if (io.stop.click())                 {  io.pause.set(true);        bluetooth.send("STP");                    }
   
   if (io.record.click())               {  debug(F("record"));                                                  }      
   if (io.resetProperties.click())      {  debug(F("resetProperties"));                                         }              
