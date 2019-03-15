@@ -8,7 +8,7 @@ void Line::update()
 		beginSegment(F("line"));
 	if (isLineFetchRequest)
 	{
-    isLineFetchRequest = false;
+		isLineFetchRequest = false;
 		debug("line");
 		drive.drive(0, 0);
 		io.lineDetected.set();
@@ -22,9 +22,12 @@ void Line::update()
 
 void Line::fetch()
 {
-  debug("fetch");
+	debug("fetch");
+	if (BOTTOM_SERIAL.available())
+		debug("available");
 	if (BOTTOM_SERIAL.available() >= 3)
 	{
+		debug("success");
 		while (BOTTOM_SERIAL.available() > 3)
 			BOTTOM_SERIAL.read();
 
@@ -34,6 +37,7 @@ void Line::fetch()
 		tempAngle |= BOTTOM_SERIAL.read() << 8;
 
 		io.lineAngle.set(tempAngle);
+		debug(circulate(io.lineAngle.get(), -179, 180));
 
 		io.lineDetected.abort();
 		io.lineAvoid.set();

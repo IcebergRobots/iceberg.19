@@ -95,7 +95,8 @@ void Light::light() {
     if (pui.onDemand()) {
       //NO Animation
       if(! io.animationEnabled.get()){
-        pui.setPixelState(0, 0, true);
+        //pui.setPixelState(0, 0, true);
+        pui.setPixelState(0, digitalRead(io.lineInterrupt.getPin()));
         pui.setPixelState(1, io.battery.on());
         pui.setPixelState(2, io.seeMate.on(), true);
         pui.setPixelState(3, io.seeGoal.on(), true);
@@ -114,7 +115,7 @@ void Light::light() {
         else pui.setPixelState(10, 1);
         pui.setPixelState(11, io.headstart.on());
         
-        pui.setPixelColor(0, pui.wheelToColor((byte) millis() % 255 ));
+        //pui.setPixelColor(0, pui.wheelToColor((byte) millis() % 255 ));
 
         pui.setBrightness(map(io.poti.get(), 0, 1023, 0, 255));
         pui.show();

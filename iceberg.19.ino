@@ -24,6 +24,7 @@ void setup()
   digitalWrite(io.kick.getPin(), LOW);
 
   /*****************************************************/
+  io.lineInterrupt.startDebug();
   // io.state.startDebug();
   // io.drivePower.startDebug();
   // io.stateDirection.startDebug();
