@@ -91,11 +91,6 @@ void loop()
     debug(format(us.right3(), 3, 3));
   }          
   if (io.shiftStop.click())            {  debug(F("shiftShop"));                                               }        
-/*
-  if (io.drivePower.outsidePeriod(400)) drive.brake(false);
-  if (io.driveEnabled.falling()) drive.brake(false);
-  if (io.driveEnabled.off() && io.driveEnabled.outsidePeriod(100)) drive.brake(false);
-*/
 
   if (io.record.click())
     debug(F("record"));

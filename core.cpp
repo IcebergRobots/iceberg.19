@@ -69,6 +69,19 @@ int circulate(int value, int min, int max)
   return value;
 }
 
+int pinMode(byte pin)
+{
+  byte bit = digitalPinToBitMask(pin);
+  byte port = digitalPinToPort(pin);
+  volatile byte *reg = portModeRegister(port);
+  if (*reg & bit)
+    return (OUTPUT);
+
+  volatile byte *out = portOutputRegister(port);
+  return ((*out & bit) ? INPUT_PULLUP : INPUT);
+}
+
+
 /*****************************************************
   starte den Arduino neu
   - setze den Befehlszähler auf 0

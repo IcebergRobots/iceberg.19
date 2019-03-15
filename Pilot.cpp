@@ -33,14 +33,14 @@ void Pilot::setState()
   switch (io.state.get()) // durchlaufe die Zustandsmaschine
   {
   default:
-  case BACK:  // fahre nach hinten
+  case BACK:                             // fahre nach hinten
     if (us.back() <= COURT_REARWARD_MAX) // sind wir schon im Strafraum?
       io.state.set(GOALKEEPER, "enter penalty area");
     //else if (io.state.outsidePeriod(BACKWARD_MAX_DURATION)) io.state.set(FREEING, "time>");
     break;
   case GOALKEEPER:
-    if (io.seeBall.off() && io.stateDirection.outsidePeriod(SIDEWARD_MAX_DURATION)) // fahren wir schon zu lange blind in eine Richtung?
-      io.stateDirection.set(io.stateDirection.off(), "turn:timeout"); // ändere die Richtung wegen Zeitüberschreitung
+    if (io.seeBall.off() && io.stateDirection.outsidePeriod(SIDEWARD_MAX_DURATION))     // fahren wir schon zu lange blind in eine Richtung?
+      io.stateDirection.set(io.stateDirection.off(), "turn:timeout");                   // ändere die Richtung wegen Zeitüberschreitung
     else if (io.seeBall.on() || io.stateDirection.outsidePeriod(SIDEWARD_MIN_DURATION)) // verhindere zu häufige Richtungswechsel außer bei Ballsicht
     {
       // positioniere dich vor den Ball
@@ -49,9 +49,9 @@ void Pilot::setState()
       else if (io.seeBallRight.on())
         io.stateDirection.set(RIGHT, "turn:ball right");
 
-      if (us.back() > COURT_REARWARD_MAX) // haben wir den Strafraum verlassen
+      if (us.back() > COURT_REARWARD_MAX)         // haben wir den Strafraum verlassen
         io.state.set(BACK, "leave penalty area"); // fahre wieder nach hinten
-      else if (atGatepost())  // sind wir ausreichend 
+      else if (atGatepost())                      // sind wir ausreichend
         io.stateDirection.set(io.stateDirection.off(), "turn:at gatepost");
     }
     break;

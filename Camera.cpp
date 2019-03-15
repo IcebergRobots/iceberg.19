@@ -5,7 +5,7 @@
 *********************************************************************/
 Camera::Camera()
 {
-  setLocked(30);  // begrenze die Abfragehäufigkeit, um die Framerate der Kamera nicht zu überschreiten
+  setLocked(30);    // begrenze die Abfragehäufigkeit, um die Framerate der Kamera nicht zu überschreiten
   setCooldown(100); // die Kamera muss nicht so häufig aktualisiert werden
 }
 
@@ -45,13 +45,13 @@ void Camera::frame()
     // Sendet "cs error" über USB bei Fehler in Prüfsumme eines empfangenen Objekts
 
     for (byte i = 0; i < blockCount; i++)
-    { // geht alle erkannten Bloecke durch
-      int height = blocks[i].height;  // Blockhöhe
-      int width = blocks[i].width;  // Blockbreite
-      int x = blocks[i].x - X_CENTER; // Horizontaler Blockrichtung
+    {                                      // geht alle erkannten Bloecke durch
+      int height = blocks[i].height;       // Blockhöhe
+      int width = blocks[i].width;         // Blockbreite
+      int x = blocks[i].x - X_CENTER;      // Horizontaler Blockrichtung
       int signature = blocks[i].signature; // Blocktyp
-      int angle = blocks[i].angle;  // Drehwinkel von Colorcodes
-      int area = height * width;  // Blockgröße
+      int angle = blocks[i].angle;         // Drehwinkel von Colorcodes
+      int area = height * width;           // Blockgröße
       switch (signature)
       { // Was sehe ich?
       case SIGNATURE_BALL:
@@ -59,10 +59,10 @@ void Camera::frame()
         if (area > ballAreaMax) // Der neue Block ist relevanter und überschreibt
         {
           ballAreaMax = area;
-          io.ball.set(x);          // merke Ballwinkel
-          io.ballWidth.set(width); // merke Ballbreite
-          io.ballArea.set(area);   // merke Ballgröße
-          io.seeBall.set();        // merke Sichtungszeit des Balls
+          io.ball.set(x);                               // merke Ballwinkel
+          io.ballWidth.set(width);                      // merke Ballbreite
+          io.ballArea.set(area);                        // merke Ballgröße
+          io.seeBall.set();                             // merke Sichtungszeit des Balls
           io.closeBall.set(width > BALL_WIDTH_TRIGGER); // merke ggf. Sichtungszeit eines nahen Balls
         }
         break;

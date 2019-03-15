@@ -58,6 +58,7 @@ void Chassis::drive(int angle, int power, int rotation) {
 *****************************************************/
 void Chassis::brake() {
   drive(0, 0, 0);
+  execute(true);
 }
 
 /*****************************************************
