@@ -22,17 +22,17 @@ void Pilot::setState() {
   switch (io.state.get()) {
     default:
     case BACK:
-      if (us.back() <= COURT_REARWARD_MAX) io.state.set(GOALKEEPER, "dis_b<");
+      if (us.back() <= COURT_REARWARD_MAX) io.state.set(GOALKEEPER, "enter penalty area");
       //else if (io.state.outsidePeriod(BACKWARD_MAX_DURATION)) io.state.set(FREEING, "time>");
       break;
     case GOALKEEPER:
-      if (io.seeBall.off() && io.stateDirection.outsidePeriod(SIDEWARD_MAX_DURATION)) io.stateDirection.set(io.stateDirection.off(), "t>");
+      if (io.seeBall.off() && io.stateDirection.outsidePeriod(SIDEWARD_MAX_DURATION)) io.stateDirection.set(io.stateDirection.off(), "turn:timeout");
       else if (io.seeBall.on() || io.stateDirection.outsidePeriod(SIDEWARD_MIN_DURATION)) {
-        if      (io.seeBallLeft.on())  io.stateDirection.set(LEFT, "ball<");
-        else if (io.seeBallRight.on()) io.stateDirection.set(RIGHT, "ball>");
+        if      (io.seeBallLeft.on())  io.stateDirection.set(LEFT, "turn:ball left");
+        else if (io.seeBallRight.on()) io.stateDirection.set(RIGHT, "turn:ball right");
 
-        if (us.back() > COURT_REARWARD_MAX) io.state.set(BACK, "dis_b>"); // fahre rückwärts
-        if (atGatepost()) io.stateDirection.set(io.stateDirection.off(), "g");
+        if (us.back() > COURT_REARWARD_MAX) io.state.set(BACK, "leave penalty area"); // fahre rückwärts
+        else if (atGatepost()) io.stateDirection.set(io.stateDirection.off(), "turn:at gatepost");
       }
       break;
     case GOALPOST_GO:
@@ -180,8 +180,8 @@ int Pilot::face(int angle, int speed) {
 
 bool Pilot::atGatepost() {
   // benutze Abstand in Bewegungsrichtung
-  if (io.stateDirection.left()) return us.left() < COURT_BORDER_MIN;
-  else                          return us.right() < COURT_BORDER_MIN;
+  if (io.stateDirection.left()) return io.farSidelineLeft.on();
+  else                          return io.farSidelineRight.on();
 }
 
 Pilot drive;
