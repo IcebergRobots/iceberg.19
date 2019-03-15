@@ -21,10 +21,9 @@ void setup() {
   setupDone();
 
   /*****************************************************/
-  // io.state.startDebug();
+  io.state.startDebug();
   // io.drivePower.startDebug();
-  // io.stateDirection.startDebug();
-  // digitalWrite(io.kick.getPin(), LOW);
+  io.stateDirection.startDebug();
   /*****************************************************/
 }
 
@@ -51,7 +50,7 @@ void loop() {
   if (io.selectPage.click())           {  /*d.toggle();        */                                           }
   if (io.decreaseMenu.click())         {  /*d.scroll(-1);      */                                           }
   if (io.increaseMenu.click())         {  /*d.scroll(1);       */                                           }
-  if (io.selectMenu.click())           {  debug(F("selectMenu"));                                           }
+  if (io.selectMenu.click())           {  /*debug(F("selectMenu")); */                                      }
   if (io.testKick.click())             {  kick();                                                           }
   if (io.compassCalibration.click())   {
     io.headingOffset.set(io.zOrientation.get());
@@ -68,7 +67,15 @@ void loop() {
   if (io.resetProperties.click())      {  debug(F("resetProperties"));                                         }              
   if (io.kickerStart.click())          {  debug(F("kickerStart"));     io.kickPermanent.set(true);             }          
   if (io.kickerStop.click())           {  debug(F("kickerStop"));      io.kickPermanent.set(false);            }          
-  if (io.shiftStart.click())           {  debug(F("shiftStart"));                                              }          
+  if (io.shiftStart.click())           {  
+    debug(format(us.left(), 3, 3));
+    debug(format(us.left2(), 3, 3));
+    debug(format(us.left3(), 3, 3));
+    debug(F("<>"));
+    debug(format(us.right(), 3, 3));
+    debug(format(us.right2(), 3, 3));
+    debug(format(us.right3(), 3, 3));
+  }          
   if (io.shiftStop.click())            {  debug(F("shiftShop"));                                               }        
 /*
   if (io.drivePower.outsidePeriod(400)) drive.brake(false);

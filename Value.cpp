@@ -257,7 +257,7 @@ void Value::sendDebug(byte pin) {
 void Value::sendDebug(String reason, byte pin) {
   if (isDebug()) {
     String m = prepareDebug(pin);
-    if (isDebug(DEBUG_REASON)) m += reason;
+    if (isDebug(DEBUG_REASON)) m += ":" + reason;
     debug(m);
   }
 }

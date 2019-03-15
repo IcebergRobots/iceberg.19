@@ -94,7 +94,8 @@ void Light::light() {
 
     if (pui.onDemand()) {
       //NO Animation
-      if(! io.animationEnabled.get()){
+      
+      if (!io.animationEnabled.get()){
         pui.setPixelState(0, 0, true);
         pui.setPixelState(1, io.battery.on());
         pui.setPixelState(2, io.seeMate.on(), true);

@@ -135,8 +135,8 @@ class IO {
     Key *_resetProperties  [2]  = {  &decreasePage,  &increasePage  }; Shortcut  resetProperties  = Shortcut(  _resetProperties,  2,  MUTE_KEYS,  2000              );  // Alle Konfigurationen und Kalibrierungen zurücksetzten
     Key *_kickerStart      [2]  = {  &increasePage,      &start         }; Shortcut  kickerStart      = Shortcut(  _kickerStart,      2,  MUTE_KEYS,     0              );  // aktiviere einen dauerhaften Schuss
     Key *_kickerStop       [2]  = {  &increasePage,      &stop          }; Shortcut  kickerStop       = Shortcut(  _kickerStop,       2,  MUTE_KEYS,     0              );  // deaktiviere einen dauerhaften Schuss
-    Key *_shiftStart       [2]  = {  &selectMenu,    &start         }; Shortcut  shiftStart       = Shortcut(  _shiftStart,       2,  MUTE_KEYS,     0,  600,  200  );  // 
-    Key *_shiftStop        [2]  = {  &selectMenu,    &stop          }; Shortcut  shiftStop        = Shortcut(  _shiftStop,        2,  MUTE_KEYS,     0,  600,  200  );  // 
+    Key *_shiftStart       [2]  = {  &selectMenu,    &start         }; Shortcut  shiftStart       = Shortcut(  _shiftStart,       2,  MUTE_KEYS,     0,  200,  50  );  // 
+    Key *_shiftStop        [2]  = {  &selectMenu,    &stop          }; Shortcut  shiftStop        = Shortcut(  _shiftStop,        2,  MUTE_KEYS,     0,  600,  50  );  // 
 
     void update();
 
@@ -163,6 +163,8 @@ class IO {
     Timer kickActive      = Timer(     50             );
     Timer sendHeartBeat   = Timer(    250             );  // wurde Heartbeat des Gegners empfangen?
     Timer bluetoothSend   = Timer(    100             );  // sollen Bluetooth-Updates gesendet werden? 
+    Timer farSidelineRight= Timer(    100             );  // befinden wir uns am rechten seitlichen Rand des Spielfeldes
+    Timer farSidelineLeft = Timer(    100             );  // befinden wir uns am linken seitlichen Rand des Spielfeldes
 
     // all global variables
     Value aggressive     = Value(     BOOLEAN              );

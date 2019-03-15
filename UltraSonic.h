@@ -2,6 +2,7 @@
 #define Ultrasonic_h
 
 #include "Demand.h"
+#include "IO.h"
 
 class Ultrasonic : public Demand {
 public:

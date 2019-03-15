@@ -111,10 +111,7 @@ void printDebug(String str, bool space) {
         DEBUG_SERIAL.print(F(" "));
       }
       if (DEBUG_INFO) {
-        DEBUG_SERIAL.print(format(us.left(), 3, 3));
-        DEBUG_SERIAL.print(F("<>"));
-        DEBUG_SERIAL.print(format(us.right(), 3, 3));
-        DEBUG_SERIAL.print(F(" "));
+        
       }
       io.runtime.set();
     }
