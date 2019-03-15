@@ -46,10 +46,5 @@ void Line::extendAvoid()
 		io.lineAvoid.set();
 }
 
-void Line::execute()
-{
-	drive.drive(io.lineAngle.get() + 180, SPEED_LINE);
-}
-
 bool isLineFetchRequest = 0;
 Line line;

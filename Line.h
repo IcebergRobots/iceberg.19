@@ -9,7 +9,6 @@ class Line
 public:
     Line();
     void update();
-    void execute();
  private:
     void extendAvoid();
     void fetch();
