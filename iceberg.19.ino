@@ -21,12 +21,12 @@ void setup()
   // createCrashlog();
   // restoreSession();
   setupDone();
+  digitalWrite(io.kick.getPin(), LOW);
 
   /*****************************************************/
   // io.state.startDebug();
   // io.drivePower.startDebug();
   // io.stateDirection.startDebug();
-  // digitalWrite(io.kick.getPin(), LOW);
   /*****************************************************/
 }
 

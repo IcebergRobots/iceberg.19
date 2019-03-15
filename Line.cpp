@@ -10,7 +10,7 @@ void Line::update()
 	{
     isLineFetchRequest = false;
 		debug("line");
-		drive.brake();
+		drive.drive(0, 0);
 		io.lineDetected.set();
 	}
 	if (io.lineDetected.on())
