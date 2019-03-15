@@ -17,10 +17,10 @@
 // DEBUG
 #define DEBUG_ENABLED       1
 #define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP          1       // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     0       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_I2C           0
-#define DEBUG_MOTOR         1    
+#define DEBUG_MOTOR         0    
 #define DEBUG_INFO          0
 
 // Fahren

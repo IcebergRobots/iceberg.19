@@ -36,5 +36,6 @@ void updateKick();
 
 void initPui();
 
+void scan();
 
 #endif

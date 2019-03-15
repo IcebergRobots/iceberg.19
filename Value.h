@@ -105,7 +105,7 @@ class Value : public Container
     void setState(byte s);
     char getState();
 
-  private:
+  // private:
     bool isDebug(byte type=DEBUG_ENABLE);
     void sendDebug(byte pin=INF);
     void sendDebug(String reason, byte pin=INF);

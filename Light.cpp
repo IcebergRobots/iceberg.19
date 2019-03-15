@@ -15,7 +15,7 @@ void Light::init() {
   io.indHeartbeat.set(255);
   io.indFront.set(255);
   io.indLeft.set(255);
-  io.indRight.set(255);
+  // io.indRight.set(255);
   if (pui.onDemand()) {
     pui.setAllColor(255, 255, 255);
     pui.show();
@@ -34,7 +34,7 @@ void Light::light() {
   if (io.setupLight.off()) {
     io.indFront.set(io.seeBall.get());
     io.indLeft.set(0);
-    io.indRight.set(0);
+    // io.indRight.set(0);
 
     if (inside.onDemand()){
       //animatio

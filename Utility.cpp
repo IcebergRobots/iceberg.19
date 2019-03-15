@@ -179,3 +179,20 @@ void updateKick(){
   digitalWrite(io.kick.getPin(), io.kickActive.get());
   digitalWrite(io.buzzer.getPin(), io.kickActive.get());
 }
+
+void scan() {
+  debug(io.indRight.str() + "=");
+  debug(io.indRight.value, false);
+
+  debug(String(int(io.indRight.getState())) + "=");
+  debug(io.indRight.state, false);
+
+  if (io.indRight.falling())
+    debug("f");
+  if (io.indRight.rising())
+    debug("r");
+  if (io.indRight.change())
+    debug("c");
+  debugln();
+  delay(800);
+}
