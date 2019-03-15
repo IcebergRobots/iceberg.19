@@ -24,7 +24,6 @@ void setupDone();
 void requestLineFetch();
 
 void startSound();
-void calculateStates();
 
 void prepareDebug();
 

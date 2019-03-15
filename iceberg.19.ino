@@ -1,8 +1,6 @@
 #include "include.h"
 
-void setup()
-{
-  io.battery.setLimits(true, true);
+void setup() {
   setupWatchdog();
   initUART();
   initDebug();
@@ -10,7 +8,7 @@ void setup()
   initInterrupt();
   initEEPROM();
   initStates();
-  io.battery.setLimits(true, true);
+  io.battery.setLimits(true, true); // UGLY: zwinge den Akkuzustand auf verbunden
 
   light.init();
   initPui();
