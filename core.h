@@ -17,7 +17,7 @@
 // DEBUG
 #define DEBUG_ENABLED       1
 #define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_LOOP          1       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     0       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_I2C           0
 #define DEBUG_MOTOR         1    
@@ -53,7 +53,7 @@
 // TIMES
 #define BACKWARD_MAX_DURATION 4000    // wann darf frühestens eingegriffen werden
 #define GOAL_STUCK_DURATION 500       // wie lange soll nach vorne gefahren werden?
-#define SIDEWARD_MAX_DURATION 5000    // max Zeit für Seitwärtsfahren
+#define SIDEWARD_MAX_DURATION 2000    // max Zeit für Seitwärtsfahren
 #define SIDEWARD_MIN_DURATION 1000     // min Zeit für Seitwärtsfahren
 #define TURN_MAX_DURATION 1500        // max Zeit für Drehmodus
 #define RETURN_MAX_DURATION 1500      // max Zeit für Drehmodus zurück
@@ -87,7 +87,7 @@
 #define COURT_REARWARD_MAX 35           // optimaler Abstand nach hinten
 #define COURT_REARWARD_MIN 25           // optimaler Abstand nach hinten
 #define COURT_WIDTH 150         // Summe der Abstände nach rechts und links
-#define COURT_BORDER_MIN 20     // Abstand nach rechts bzw. links am Torpfosten
+#define COURT_BORDER_MIN 50     // Abstand nach rechts bzw. links am Torpfosten
 #define COURT_WIDTH_FREE 140
 #define COURT_POST_TO_BORDER 110 // Abstand nach rechts bzw. links am Torpfosten
 #define MAX_DISTANCE 200
