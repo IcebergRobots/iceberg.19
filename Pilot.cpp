@@ -68,9 +68,8 @@ void Pilot::update() {
 
   setState();
 
-  if (io.driveEnabled.falling()) {
-    disable();
-  }
+  if (io.driveEnabled.falling())
+    brake();
 
   int direction = 0;
   int speed = 255;

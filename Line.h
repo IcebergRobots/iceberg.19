@@ -10,11 +10,8 @@ public:
     Line();
     void update();
  private:
-    void extendAvoid();
-    void fetch();
 };
 
-extern bool isLineFetchRequest;
 extern Line line;
 
 #endif

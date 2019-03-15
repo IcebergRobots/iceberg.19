@@ -5,7 +5,6 @@ void setup() {
   initUART();
   initDebug();
   initI2C();
-  initInterrupt();
   initEEPROM();
   initStates();
   io.battery.setLimits(true, true); // UGLY: zwinge den Akkuzustand auf verbunden

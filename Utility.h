@@ -15,13 +15,10 @@ void kick();
 
 void initUART();
 void initI2C();
-void initInterrupt();
 void setupWatchdog();
 void loopWatchdog();
 void initDebug();
 void setupDone();
-
-void requestLineFetch();
 
 void startSound();
 

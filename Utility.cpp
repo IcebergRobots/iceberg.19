@@ -26,14 +26,6 @@ void initI2C() {
   endSegment();
 }
 
-void initInterrupt(){
-  attachInterrupt(digitalPinToInterrupt(io.lineInterrupt.getPin()), requestLineFetch, RISING);
-}
-
-void requestLineFetch() {
-  isLineFetchRequest = true;
-}
-
 /*****************************************************
   (de)aktiviere den Einfrier-Timeout der Setup
 *****************************************************/
