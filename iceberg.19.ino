@@ -1,14 +1,13 @@
 #include "include.h"
 
 void setup() {
-  io.battery.setLimits(true, true);
   setupWatchdog();
   initUART();
   initDebug();
   initI2C();
   initEEPROM();
   initStates();
-  io.battery.setLimits(true, true);
+  io.battery.setLimits(true, true); // UGLY: zwinge den Akkuzustand auf verbunden
 
   light.init();
   initPui();

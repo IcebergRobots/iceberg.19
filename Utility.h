@@ -19,7 +19,6 @@ void initDebug();
 void setupDone();
 
 void startSound();
-void calculateStates();
 
 void prepareDebug();
 
