@@ -3,6 +3,8 @@
 
 #include "IO.h"
 #include "Ultrasonic.h"
+#include "Pilot.h"
+#include "Line.h"
 #include <avr/wdt.h>
 
 #define SEGMENT_OFF    0
@@ -13,10 +15,13 @@ void kick();
 
 void initUART();
 void initI2C();
+void initInterrupt();
 void setupWatchdog();
 void loopWatchdog();
 void initDebug();
 void setupDone();
+
+void requestLineFetch();
 
 void startSound();
 void calculateStates();
@@ -34,5 +39,6 @@ void printEndSegment();
 void updateKick();
 
 void initPui();
+
 
 #endif

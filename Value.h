@@ -62,6 +62,7 @@ class Value : public Container
 
     // interact
     void now(bool mute=false);
+    void abort();
     bool muteSet(int _value);
     void set(int _value, byte pin=INF);
     void set(int _value, String reason, byte pin=INF);
@@ -102,7 +103,7 @@ class Value : public Container
     byte getElementType();
 
     void setState(byte s);
-    byte getState();
+    char getState();
 
   private:
     bool isDebug(byte type=DEBUG_ENABLE);

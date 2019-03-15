@@ -144,7 +144,6 @@ class IO {
 
     // binary timers
     Timer flat            = Timer(    600             );  // liegen wir flach?
-    Timer onLine          = Timer(    300             );  // berühren wir die Linie?
     Timer isHeadstart     = Timer(    350             );  // führen wir einen Schnellstart aus ?
     Timer isDodge         = Timer(    200             );  // weichen wir dem Gegner aus?
     Timer hasBall         = Timer(     80             );  // haben wir Ballbesitz?
@@ -161,10 +160,13 @@ class IO {
     Timer driveLocked     = Timer(    300             );  // dürfen neue Steuerwerte esetzt werden?
     Timer setupLight      = Timer(    200             );
     Timer kickActive      = Timer(     50             );
+    Timer lineDetected    = Timer(    200             );
+    Timer lineAvoid       = Timer(    150             );
     Timer sendHeartBeat   = Timer(    250             );  // wurde Heartbeat des Gegners empfangen?
     Timer bluetoothSend   = Timer(    100             );  // sollen Bluetooth-Updates gesendet werden? 
 
     // all global variables
+    Value onLine         = Value(     BOOLEAN              );
     Value aggressive     = Value(     BOOLEAN              );
     Value striker        = Value(     BOOLEAN              );
     Value state          = Value(      LIMITS,    0,    9  );
@@ -201,6 +203,8 @@ class IO {
     Value distanceLeft   = Value(  MODULATION,    0,  MAX_DISTANCE);
 
     Value kickPermanent  = Value(     BOOLEAN              );
+
+    Value lineAngle      = Value(  MODULATION,    0, 360);
 
     Value animationState = Value(                          );
     Value animationEnabled = Value(   BOOLEAN              );

@@ -19,6 +19,14 @@ void initI2C() {
   endSegment();
 }
 
+void initInterrupt(){
+  attachInterrupt(digitalPinToInterrupt(io.lineInterrupt.getPin()), requestLineFetch, RISING);
+}
+
+void requestLineFetch() {
+  isLineFetchRequest = true;
+}
+
 void setupWatchdog() {
   if(WATCHDOG_SETUP != WDTO_OFF) wdt_enable(WATCHDOG_SETUP);
   else wdt_disable();
@@ -77,6 +85,8 @@ void updateStates() {
   io.seeBallLeft.set(io.ball.left(BALL_CENTER_TOLERANCE));
   io.seeBallRight.set(io.ball.right(BALL_CENTER_TOLERANCE));
   io.seeBallCenter.set(io.ball.center(BALL_CENTER_TOLERANCE));
+
+  io.onLine.set(io.lineAvoid.on() || io.lineDetected.on());
 
   io.batteryVoltage.set(io.batteryVoltmeter.get() * 0.1249);
   io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE);

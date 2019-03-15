@@ -30,12 +30,15 @@ void Chassis::drive() {
   @param (optional) rotation [-255 bis 255]: Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
 *****************************************************/
 void Chassis::drive(int angle, int power, int rotation) {
-  io.driveAngle.set(angle);
-  if (power < 0)  io.driveAngle.add(180);       //bei 180° Drehung verwenden
-  io.drivePower.set(abs(power));
-  io.driveRotation.set(rotation);
+  io.driveAngle.set(angle); // übernehme den Zielwinkel
+  if (power < 0)  io.driveAngle.add(180); // ist die Geschwindigkeit negativ, drehe um 180°
+  io.driveRotation.set(rotation); // übernehme die Eigenrotation
+  io.drivePower.set(abs(power) - abs(io.driveRotation.get())); // reduziere die Geschwindigkeit, damit noch die Rotation durchgeführt werden kann
   
-  io.drivePower.add(min(0, 255 - io.drivePower.get() - abs(io.driveRotation.get()))); // Wenn die Gesamtgeschwindigkeit zu groß ist, wird die Geschwindigkeit ausreichend reduziert
+  // io.drivePower.add(min(0, 255 - io.drivePower.get() - abs(io.driveRotation.get())));
+  // // Wenn die Gesamtgeschwindigkeit aus power und rotation zu groß (> 255) ist, 
+  // // wird die Geschwindigkeit ausreichend reduziert, 
+  // // indem die Differenz zu 255 subtrahiert wird
 
   int sinA02 = sinus[circulate((axisAngle / 2) - io.driveAngle.get(), 0, 359)]; //berechne Zwischenwert für Achse der Motoren 1 und 3 
   int sinA13 = sinus[circulate((axisAngle / 2) + io.driveAngle.get(), 0, 359)]; //berechne Zwischenwert für Achse der Motoren 2 und 4
@@ -43,6 +46,7 @@ void Chassis::drive(int angle, int power, int rotation) {
   int axis02 = io.drivePower.get() * (double)sinA02 / 10000; //berechne Motorstärken für Achse 1&3
   int axis13 = io.drivePower.get() * (double)sinA13 / 10000; //berechne Motorstärken für Achse 2&4
 
+  // setzte temporäre Motorwerte
   m[0].temp(-axis02 + io.driveRotation.get());
   m[1].temp(-axis13 + io.driveRotation.get());
   m[2].temp( axis02 + io.driveRotation.get());

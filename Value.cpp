@@ -292,6 +292,11 @@ void Value::setState(byte s) {
   else state = s;
 }
 
-byte Value::getState() {
+char Value::getState() {
   return abs(state);
+}
+
+void Value::abort(){
+  if (ever()) eventTimer = 1;
+  muteSet(0);
 }
