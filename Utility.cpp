@@ -86,15 +86,15 @@ void updateStates() {
   io.seeBallRight.set(io.ball.right(BALL_CENTER_TOLERANCE));
   io.seeBallCenter.set(io.ball.center(BALL_CENTER_TOLERANCE));
 
-  io.onLine.set(io.lineAvoid.on() || io.lineDetected.on());
+  // io.onLine.set(io.lineAvoid.on() || io.lineDetected.on());
 
   io.batteryVoltage.set(io.batteryVoltmeter.get() * 0.1249);
   io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE);
   io.flat.set(true);
   io.driveEnabled.set(io.pause.off() && io.motor.on());
   // erkenne Hochheben
-  //dof.accelGetOrientation(&accel_event, &orientation);
-  //io.flat.set(!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7));
+  // dof.accelGetOrientation(&accel_event, &orientation);
+  // io.flat.set(!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7));
 }
 
 void initEEPROM() {
@@ -117,7 +117,7 @@ void printDebug(String str, bool space) {
       if (DEBUG_MOTOR) {
         DEBUG_SERIAL.print(format(io.driveEnabled.on() * io.drivePower.get(), 3, 3));
         DEBUG_SERIAL.print(F("*"));
-        DEBUG_SERIAL.print(format(io.driveAngle.get(), 4, 4, true));
+        DEBUG_SERIAL.print(format(circulate(io.driveAngle.get(), -179, 180), 4, 4, true));
         DEBUG_SERIAL.print(F(" "));
       }
       if (DEBUG_INFO) {

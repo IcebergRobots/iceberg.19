@@ -95,7 +95,7 @@ void Light::light() {
     if (pui.onDemand()) {
       //NO Animation
       if(! io.animationEnabled.get()){
-        //pui.setPixelState(0, 0, true);
+        pui.setPixelColor(0, pui.wheelToColor((byte) millis() % 255 ));
         pui.setPixelState(0, digitalRead(io.lineInterrupt.getPin()));
         pui.setPixelState(1, io.battery.on());
         pui.setPixelState(2, io.seeMate.on(), true);
@@ -107,7 +107,7 @@ void Light::light() {
         if (io.turbo.off() || !DEBUG_ENABLED) pui.setPixelState(6, 1);
         else if (DEBUG_LOOP || DEBUG_SEGMENT) pui.setPixelState(6, 3);
         else                                  pui.setPixelState(6, 2);
-        pui.setPixelState(7, io.bottom.on());
+        pui.setPixelState(7, io.onLine.on());
         pui.setPixelState(8, io.kicker.on());
         pui.setPixelState(9, io.bluetooth.on());
         if (io.motor.off()) pui.setPixelState(10, 0);
@@ -115,7 +115,6 @@ void Light::light() {
         else pui.setPixelState(10, 1);
         pui.setPixelState(11, io.headstart.on());
         
-        //pui.setPixelColor(0, pui.wheelToColor((byte) millis() % 255 ));
 
         pui.setBrightness(map(io.poti.get(), 0, 1023, 0, 255));
         pui.show();

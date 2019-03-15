@@ -164,9 +164,9 @@ class IO {
     Timer lineAvoid       = Timer(    150             );
     Timer sendHeartBeat   = Timer(    250             );  // wurde Heartbeat des Gegners empfangen?
     Timer bluetoothSend   = Timer(    100             );  // sollen Bluetooth-Updates gesendet werden? 
+    Timer onLine          = Timer(    300             );
 
     // all global variables
-    Value onLine         = Value(     BOOLEAN              );
     Value aggressive     = Value(     BOOLEAN              );
     Value striker        = Value(     BOOLEAN              );
     Value state          = Value(      LIMITS,    0,    9  );
@@ -204,7 +204,7 @@ class IO {
 
     Value kickPermanent  = Value(     BOOLEAN              );
 
-    Value lineAngle      = Value(  MODULATION,    0, 360);
+    Value lineAngle      = Value(  MODULATION,  -179, 180  );
 
     Value animationState = Value(                          );
     Value animationEnabled = Value(   BOOLEAN              );

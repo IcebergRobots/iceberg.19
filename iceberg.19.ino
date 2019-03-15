@@ -124,7 +124,7 @@ void loop()
   //drive.prepare();
   if (io.onLine.off())
     drive.update();
-  else if (io.lineAvoid.on())
+  else
     drive.drive(io.lineAngle.get() + 180, SPEED_LINE);
   drive.execute();
   if (light.onDemand())
