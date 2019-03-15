@@ -72,10 +72,10 @@
 #define DEBUG_SERIAL        Serial
 #define DEBUG_BAUDRATE      115200
 #define BLUETOOTH_ENABLED   1
-#define BLUETOOTH_SERIAL    Serial1
+#define BLUETOOTH_SERIAL    Serial2
 #define BLUETOOTH_BAUDRATE  115200
 #define BLACKBOX_ENABLED    1
-#define BLACKBOX_SERIAL     Serial2
+#define BLACKBOX_SERIAL     Serial1
 #define BLACKBOX_BAUDRATE   115200
 #define BOTTOM_SERIAL       Serial3
 #define BOTTOM_BAUDRATE     115200
@@ -93,9 +93,9 @@
 #define MAX_DISTANCE 200
 
 // PID-Regler
-#define PID_FILTER_P .27  // [0 bis *]~.27 p:proportional
-#define PID_FILTER_I .02  // [0 bis *]~0   i:vorausschauend
-#define PID_FILTER_D .03  // [0 bis *]~.03 d:Schwung herausnehmen (nicht zu weit drehen)
+#define PID_FILTER_P .20  // [0 bis *]~.27 p:proportional
+#define PID_FILTER_I .0  // [0 bis *]~0   i:vorausschauend
+#define PID_FILTER_D .12  // [0 bis *]~.03 d:Schwung herausnehmen (nicht zu weit drehen)
 
 //EEPROM Adressen
 #define REFLEXION_THRESHOLD 2

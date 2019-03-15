@@ -34,8 +34,8 @@ void IO::update() {
   // Ausgabe
   indFront.update();
   speaker.update();
-  indLeft.update();
-  indRight.update();
+  //indLeft.update();
+  //indRight.update();
   indRgb.update();
   indHeartbeat.update();
 

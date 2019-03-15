@@ -1,5 +1,7 @@
 #include "include.h"
 
+bool remoteControled = true;
+
 void setup() {
   io.battery.setLimits(true, true);
   setupWatchdog();
@@ -48,7 +50,7 @@ void loop() {
 
   if (io.decreasePage.click())         {  /*d.changePage(-1);  */                                           }
   if (io.increasePage.click())         {  /*d.changePage(1);   */                                           }
-  if (io.selectPage.click())           {  /*d.toggle();        */                                           }
+  if (io.selectPage.click())           {  remoteControled = !remoteControled;                 }
   if (io.decreaseMenu.click())         {  /*d.scroll(-1);      */                                           }
   if (io.increaseMenu.click())         {  /*d.scroll(1);       */                                           }
   if (io.selectMenu.click())           {  debug(F("selectMenu"));                                           }
@@ -85,10 +87,17 @@ void loop() {
   //calibrateLightBeam();
   //calibrateLine();
   //drive.prepare();
-  drive.update();
-  drive.execute();
+  digitalWrite(io.indLeft.getPin(), remoteControled*255);
+  digitalWrite(io.indRight.getPin(), remoteControled*255);
+
+  if(remoteControled){
+    checkRemote();
+  }else{
+    //drive.update();
+    //drive.execute();
+  }
   if (light.onDemand()) light.light();
   //bluetoth();
-
+  
 }
 

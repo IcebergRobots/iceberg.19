@@ -1,5 +1,51 @@
 #include "Utility.h"
 
+void checkRemote(){
+  if(io.lastRemoteSignal.off()){
+    drive.drive(0,0);
+    drive.execute();
+  }
+  while(BLUETOOTH_SERIAL.available()>=20){
+    BLUETOOTH_SERIAL.read();
+  }
+
+  if(BLUETOOTH_SERIAL.available()>=5){
+    if(BLUETOOTH_SERIAL.read() != 255){
+      checkRemote();
+      return;
+    }
+
+    byte checksum     = BLUETOOTH_SERIAL.read();
+    int  angle        = BLUETOOTH_SERIAL.read();
+    int power        = BLUETOOTH_SERIAL.read();
+    byte activateKick = BLUETOOTH_SERIAL.read();
+
+    
+
+    if(checksum != (angle+power+activateKick)%254+1) 
+      return;
+
+    angle = 360 - (angle * 2);
+    power = map(power < 40 ? 0 : power, 40,255, 0, 100);
+    if(power < 0)
+      power = 0;
+    activateKick = activateKick == 1;
+
+  
+
+    Serial.println(String(angle)+ " - " + String(power) +" - "+ String(activateKick) + " - ");
+
+    if(activateKick){
+      kick();
+    }
+
+    int rot = drive.face(0);
+    drive.drive(angle, power, rot);
+    drive.execute();
+    io.lastRemoteSignal.set();
+  }
+}
+
 void kick() {
   if (io.kickActive.period() > 600) io.kickActive.set();
 }

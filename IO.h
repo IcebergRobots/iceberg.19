@@ -118,7 +118,7 @@ class IO {
     // PUI: keys and levers
     Key decreasePage          = Key(   11,  PUI,      0,     500,   200   );  // vorherige Bildschirmseite
     Key increasePage          = Key(   9,  PUI,      0,     500,   200   );  // nächste   Bildschirmseite
-    Key selectPage            = Key(   10,  PUI,      0,     5000         );  // Seite auswählen
+    Key selectPage            = Key(   10,  PUI,      0        );  // Seite auswählen
     Key decreaseMenu          = Key(  26,  DIGITAL,  0                   );  // vorheriger Menüpunkt (misst Drehung des Rotary Encoders)
     Key increaseMenu          = Key(  28,  DIGITAL,  0                   );  // nächster   Menüpunkt (misst Drehung des Rotary Encoders)
     Key selectMenu            = Key(  30,  DIGITAL,  0,     1000         );  // Menüpunkt auswählen (Knopf des Rotary Encoders)
@@ -163,6 +163,7 @@ class IO {
     Timer kickActive      = Timer(     50             );
     Timer sendHeartBeat   = Timer(    250             );  // wurde Heartbeat des Gegners empfangen?
     Timer bluetoothSend   = Timer(    100             );  // sollen Bluetooth-Updates gesendet werden? 
+    Timer lastRemoteSignal= Timer(    300             );
 
     // all global variables
     Value aggressive     = Value(     BOOLEAN              );
@@ -206,6 +207,8 @@ class IO {
     Value animationEnabled = Value(   BOOLEAN              );
 
     Value partnerRating  = Value(      LIMITS,    0,  255  );
+
+    Value remoteControled = Value(BOOLEAN                  );
   private:
 };
 extern IO io;
