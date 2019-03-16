@@ -143,6 +143,26 @@ void Value::add(int _summand) { set(value + _summand); }
   @param _factor: factor
 *****************************************************/
 void Value::mul(float _factor) { set(value * _factor); }
+/*****************************************************
+  toggle between off and on
+*****************************************************/
+void Value::toggle() {
+  if (on()) setLow();
+  else setHigh();
+}
+/*****************************************************
+  set to the maximum value
+*****************************************************/
+void Value::setHigh() {
+  set(max(a, b));
+}
+/*****************************************************
+  set to the minimun value
+*****************************************************/
+void Value::setLow() {
+  set(0);
+}
+
 
 /*****************************************************
   return value
@@ -214,16 +234,23 @@ bool Value::ever() { return eventTimer != 0; }
 /*****************************************************
   was there ever an event?
 *****************************************************/
-bool Value::never() { return !ever(); }
+bool Value::never() { return eventTimer == 0; }
+/*****************************************************
+  ist der Zeitstempel gültig?
+  - gibt der Timer den Zeitpunkt des letzten Events an?
+*****************************************************/
+bool Value::timerValid() {
+  return eventTimer > 1;
+}
 /*****************************************************
   time since last event
 *****************************************************/
 unsigned long Value::period()
 {
-  if (never())
-    return -1;
-  else
+  if (timerValid())
     return millis() - eventTimer;
+  else
+    return -1;
 }
 /*****************************************************
   happened the last event outside this period
@@ -236,7 +263,7 @@ bool Value::outsidePeriod(unsigned long min)
 *****************************************************/
 bool Value::insidePeroid(unsigned long max)
 {
-  return max + 1 == 0 || (ever() && period() <= max);
+  return ever() && period() <= max;
 }
 /*****************************************************
   time since last event as string

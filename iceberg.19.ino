@@ -117,20 +117,20 @@ void loop()
     io.indRight.startDebug();
 
     scan();
-    debug("set 1:");
-    io.indRight.set(1);
+    debug("set:");
+    io.indRight.set();
     scan();
 
-    debug("set 1:");
-    io.indRight.set(1);
+    debug("add 1:");
+    io.indRight.add(1);
     scan();
 
     debug("update:");
     io.indRight.update();
     scan();
 
-    debug("set 2:");
-    io.indRight.set(2);
+    debug("mul 2:");
+    io.indRight.mul(2);
     scan();
 
     debug("set 1:");
@@ -153,8 +153,20 @@ void loop()
     io.indRight.set(3);
     scan();
 
+    debug("abort:");
+    io.indRight.abort();
+    scan();
+
+    debug("set low:");
+    io.indRight.setLow();
+    scan();
+
     debug("update:");
     io.indRight.update();
+    scan();
+
+    debug("set 3:");
+    io.indRight.set(3);
     scan();
   }
 
