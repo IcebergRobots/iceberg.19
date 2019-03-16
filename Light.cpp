@@ -165,7 +165,7 @@ void Light::light()
           pui.setPixelState(10);
 
         if (io.headstart.off())
-          pui.setPixelState(11, STATE);
+          pui.setPixelState(11, STATE_ERROR);
         else
           pui.setPixelState(11, STATE_ACTIVE);
 

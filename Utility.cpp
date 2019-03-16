@@ -42,7 +42,7 @@ void checkRemote(){
     int rot = drive.face(0);
     drive.drive(angle, power, rot);
     drive.execute();
-    io.lastRemoteSignal.set();
+    io.lastRemoteSignal.now();
   }
 }
 void kick()
