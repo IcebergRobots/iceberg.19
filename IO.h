@@ -167,6 +167,7 @@ class IO {
     Timer farSidelineRight= Timer(    100             );  // befinden wir uns am rechten seitlichen Rand des Spielfeldes
     Timer farSidelineLeft = Timer(    100             );  // befinden wir uns am linken seitlichen Rand des Spielfeldes
     Timer onLine          = Timer(    300             );
+    Timer abc             = Timer(    100             );
 
     // all global variables
     Value aggressive     = Value(     BOOLEAN              );

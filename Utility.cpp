@@ -220,30 +220,21 @@ void updateKick()
   digitalWrite(io.buzzer.getPin(), io.kickActive.get());
 }
 
-void scan()
-{
-  debug(io.indRight.str() + "=");
-  debug(io.indRight.value, false);
+void scan() {
+  debug(io.abc.get() + "=");
+  debug(io.abc.value, false);
 
-  debug(String(int(io.indRight.getState())) + "=");
-  debug(io.indRight.state, false);
+  debug(io.abc.period() + "=");
+  debug(io.abc.eventTimer, false);
 
-  debug(io.indRight.periodStr() + "=");
-  debug(io.indRight.eventTimer, false);
+  debug(String(int(io.abc.getState())) + "=");
+  debug(io.abc.state, false);
 
-  if (io.indRight.insidePeroid(600))
-    debug("i");
-  if (io.indRight.outsidePeriod(600))
-    debug("o");
-
-  if (io.indRight.never())
-    debug("n");
-
-  if (io.indRight.falling())
+  if (io.abc.falling())
     debug("f");
-  if (io.indRight.rising())
+  if (io.abc.rising())
     debug("r");
-  if (io.indRight.change())
+  if (io.abc.change())
     debug("c");
   debugln();
   delay(800);
