@@ -85,6 +85,15 @@ void loop()
   }
   if (io.shiftStop.click())
   {
+    io.abc.startDebug();
+    scan();
+
+    debug("set 1");
+    io.abc.set(1);
+    scan();
+
+    debug("set 2");
+    io.abc.set(2);
   }
 
   updateStates();

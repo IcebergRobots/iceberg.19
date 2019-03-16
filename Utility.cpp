@@ -181,17 +181,20 @@ void updateKick(){
 }
 
 void scan() {
-  debug(io.indRight.str() + "=");
-  debug(io.indRight.value, false);
+  debug(io.abc.get() + "=");
+  debug(io.abc.value, false);
 
-  debug(String(int(io.indRight.getState())) + "=");
-  debug(io.indRight.state, false);
+  debug(io.abc.period() + "=");
+  debug(io.abc.eventTimer, false);
 
-  if (io.indRight.falling())
+  debug(String(int(io.abc.getState())) + "=");
+  debug(io.abc.state, false);
+
+  if (io.abc.falling())
     debug("f");
-  if (io.indRight.rising())
+  if (io.abc.rising())
     debug("r");
-  if (io.indRight.change())
+  if (io.abc.change())
     debug("c");
   debugln();
   delay(800);
