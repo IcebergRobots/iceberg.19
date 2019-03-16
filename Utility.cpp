@@ -26,14 +26,14 @@ void checkRemote(){
       return;
 
     angle = 360 - (angle * 2);
-    power = map(power < 40 ? 0 : power, 40,255, 0, 100);
+    int x = map(io.poti.get(), 0, 1023, 0, 255);
+    power = map(power < 100 ? 0 : power, 100, 255, 0, x);
     if(power < 0)
       power = 0;
     activateKick = activateKick == 1;
 
   
 
-    Serial.println(String(angle)+ " - " + String(power) +" - "+ String(activateKick) + " - ");
 
     if(activateKick){
       kick();
