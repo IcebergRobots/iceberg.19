@@ -85,6 +85,9 @@ void loop()
   }
   if (io.shiftStop.click())
   {
+    for(int i = 0; i <= 3; i++) {
+      debug(drive.m[i].getReal);
+    }
   }
 
   updateStates();
