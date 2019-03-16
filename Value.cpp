@@ -10,18 +10,20 @@
     - in case of modulation: lower limit
     - in case of limits: upper limit
 *****************************************************/
-Value::Value(byte processing, int _min, int _max) {
-  switch (processing) {
-    default:
-    case LIMITS:
-      setLimits(_min, _max);
-      break;
-    case MODULATION:
-      setModulation(_min, _max);
-      break;
-    case BOOLEAN:
-      setLimits(false, true);
-      break;
+Value::Value(byte processing, int _min, int _max)
+{
+  switch (processing)
+  {
+  default:
+  case LIMITS:
+    setLimits(_min, _max);
+    break;
+  case MODULATION:
+    setModulation(_min, _max);
+    break;
+  case BOOLEAN:
+    setLimits(false, true);
+    break;
   }
 }
 /*****************************************************
@@ -30,7 +32,8 @@ Value::Value(byte processing, int _min, int _max) {
   @param max: upper limit
   - see header file for visualisation
 *****************************************************/
-void Value::setLimits(int _min, int _max) {
+void Value::setLimits(int _min, int _max)
+{
   a = min(_min, _max);
   b = max(_min, _max);
   value = constrain(value, a, b);
@@ -41,7 +44,8 @@ void Value::setLimits(int _min, int _max) {
   @param max: upper limit
   - see header file for visualisation
 *****************************************************/
-void Value::setModulation(int _min, int _max) {
+void Value::setModulation(int _min, int _max)
+{
   a = max(_min, _max);
   b = min(_min, _max);
   value = circulate(value, b, a);
@@ -50,17 +54,20 @@ void Value::setModulation(int _min, int _max) {
 /*****************************************************
   reset change state as the change happend durring the previous loop
 *****************************************************/
-void Value::update() {
-  if      (getState() == FALLING) setState(OFF);
-  else if (getState() == RISING)  setState(ON);
+void Value::update()
+{
+  if (getState() == FALLING)
+    setState(OFF);
+  else if (getState() == RISING)
+    setState(ON);
   state = getState();
 }
 
 /*****************************************************
   there is a current event, so save its time (now)
 *****************************************************/
-void Value::now(bool mute) {
-  if (!mute) sendDebug();
+void Value::now()
+{
   eventTimer = millis();
 }
 /*****************************************************
@@ -68,46 +75,58 @@ void Value::now(bool mute) {
   @param _value: new value
   - modulate or limit the value
 *****************************************************/
-bool Value::muteSet(int _value) {
-  int lastValue = value;
-  if (value != _value) {
-    if (a <= b) value = constrain(_value, a, b); // limit
-    else value = circulate(_value, b, a);        // modulate
+bool Value::setWithoutEvent(int _value)
+{
+  if (value != _value)
+  {
+    int lastValue = value;
+    if (a <= b)
+      value = constrain(_value, a, b); // limit
+    else
+      value = circulate(_value, b, a); // modulate
 
     // if sign doesn't change, keep falling or rising state and wait for update()
-    if (value != lastValue) {
-      switch (getState()) {
-        case OFF:
-        case FALLING:
-          if (on())  setState(RISING);
-          break;
+    if (value != lastValue)
+    {
+      switch (getState())
+      {
+      case OFF:
+      case FALLING:
+        if (on())
+          setState(RISING);
+        break;
 
-        case ON:
-        case RISING:
-          if (off()) setState(FALLING);
-          break;
+      case ON:
+      case RISING:
+        if (off())
+          setState(FALLING);
+        break;
 
-        default:
-          break;
+      default:
+        break;
       }
       state = -getState();
+      return true;  // value did change
     }
   }
-  return value != lastValue;
+  return false; // value did not change
 }
-void Value::set(int _value, byte pin) {
-  if (muteSet(_value)) {
-    now(true); // trigger the timer because value changed
-    if (isDebug(DEBUG_ON_CHANGE)) sendDebug(pin);
+void Value::set(int _value, byte pin)
+{
+  if (setWithoutEvent(_value))
+  {
+    now(); // trigger the timer because value changed
+    if (isDebug(DEBUG_ON_CHANGE))
+      sendDebug(pin);
   }
 }
-void Value::set(int _value, String reason, byte pin) {
-  if (muteSet(_value)) {
-    now(true);
-    if (isDebug(DEBUG_ON_CHANGE)
-    || (isDebug(DEBUG_ON_REASON) && reason.length() > 0)) {
+void Value::set(int _value, String reason, byte pin)
+{
+  if (setWithoutEvent(_value))
+  {
+    now();
+    if (isDebug(DEBUG_ON_CHANGE) || (isDebug(DEBUG_ON_REASON) && reason.length() > 0))
       sendDebug(reason, pin);
-    }
   }
 }
 /*****************************************************
@@ -120,6 +139,26 @@ void Value::add(int _summand) { set(value + _summand); }
   @param _factor: factor
 *****************************************************/
 void Value::mul(float _factor) { set(value * _factor); }
+/*****************************************************
+  toggle between off and on
+*****************************************************/
+void Value::toggle() {
+  if (on()) setLow();
+  else setHigh();
+}
+/*****************************************************
+  set to the maximum value
+*****************************************************/
+void Value::setHigh() {
+  set(max(a, b));
+}
+/*****************************************************
+  set to the minimun value
+*****************************************************/
+void Value::setLow() {
+  set(0);
+}
+
 
 /*****************************************************
   return value
@@ -128,11 +167,11 @@ int Value::get() { return value; }
 /*****************************************************
   is the value positive?
 *****************************************************/
-bool Value::on() { return value > 0; }
+bool Value::on() { return value != 0; }
 /*****************************************************
   is value negative or zero?
 *****************************************************/
-bool Value::off() { return value <= 0; }
+bool Value::off() { return value == 0; }
 /*****************************************************
   points the angle right?
   @param tolerance: tolerance angle for center direction
@@ -166,8 +205,9 @@ bool Value::no(int comparison) { return value != comparison; }
   @param maxLength: maximun length of the string
   @param sign: add a plus sign
 *****************************************************/
-String Value::str(unsigned int minLength, unsigned int maxLength, bool sign) { 
-  return format(value, minLength, maxLength, sign); 
+String Value::str(unsigned int minLength, unsigned int maxLength, bool sign)
+{
+  return format(value, minLength, maxLength, sign);
 }
 
 /*****************************************************
@@ -190,33 +230,36 @@ bool Value::ever() { return eventTimer != 0; }
 /*****************************************************
   was there ever an event?
 *****************************************************/
-bool Value::never() { return !ever(); }
+bool Value::never() { return eventTimer == 0; }
+/*****************************************************
+  ist der Zeitstempel gültig?
+  - gibt der Timer den Zeitpunkt des letzten Events an?
+*****************************************************/
+bool Value::timerValid() {
+  return eventTimer > 1;
+}
 /*****************************************************
   time since last event
 *****************************************************/
-unsigned long Value::period() {
-  if (never()) return -1;
-  else return millis() - eventTimer;
+unsigned long Value::period()
+{
+  if (timerValid())
+    return millis() - eventTimer;
+  else
+    return -1;
 }
 /*****************************************************
   happened the last event outside this period
 *****************************************************/
-bool Value::outsidePeriod(unsigned long min) {
+bool Value::outsidePeriod(unsigned long min)
+{
   return !insidePeroid(min);
-}/*****************************************************
+} /*****************************************************
   happened the last event within this period
 *****************************************************/
-bool Value::insidePeroid(unsigned long max) {
-  return max + 1 == 0 || (ever() && period() <= max);
-}
-/*****************************************************
-  time since last event as string
-  @param minLength: minimun length of the string
-  @param maxLength: maximun length of the string
-  @param sign: add a plus sign
-*****************************************************/
-String Value::periodStr(unsigned int minLength, unsigned int maxLength, bool sign) {
-  return format(period(), minLength, maxLength, sign); 
+bool Value::insidePeroid(unsigned long max)
+{
+  return ever() && period() <= max;
 }
 
 /*****************************************************
@@ -224,7 +267,8 @@ String Value::periodStr(unsigned int minLength, unsigned int maxLength, bool sig
   @param type: select an aspect
   @param enable: show this aspect be displayed?
 *****************************************************/
-void Value::showDebug(byte type, bool enable) {
+void Value::showDebug(byte type, bool enable)
+{
   bitWrite(debugSettings, type, enable);
 }
 /*****************************************************
@@ -243,55 +287,86 @@ void Value::resetDebug() { debugSettings = B00000000; }
 /*****************************************************
   is this type of debugging activated?
 *****************************************************/
-bool Value::isDebug(byte type) {
+bool Value::isDebug(byte type)
+{
   return bitRead(debugSettings, DEBUG_ENABLE) && bitRead(debugSettings, type);
 }
 /*****************************************************
   create a new debug message
 *****************************************************/
-void Value::sendDebug(byte pin) {
-  if (isDebug()) {
+void Value::sendDebug(byte pin)
+{
+  if (isDebug())
+  {
     debug(prepareDebug(pin));
   }
 }
-void Value::sendDebug(String reason, byte pin) {
-  if (isDebug()) {
+void Value::sendDebug(String reason, byte pin)
+{
+  if (isDebug())
+  {
     String m = prepareDebug(pin);
-    if (isDebug(DEBUG_REASON)) m += reason;
+    if (isDebug(DEBUG_REASON))
+      m += ":" + reason;
     debug(m);
   }
 }
 
-String Value::prepareDebug(byte pin) {
+String Value::prepareDebug(byte pin)
+{
   String m;
-  if (isDebug(DEBUG_FOR_PLOTTER)) {
+  if (isDebug(DEBUG_FOR_PLOTTER))
+  {
     m = str() + ",";
-  } else {
+  }
+  else
+  {
     m = "§";
-    if (isDebug(DEBUG_PIN)) { 
-      if (isFinite(pin))  m += String(pin);
-      else                m += String((int)this);
+    if (isDebug(DEBUG_PIN))
+    {
+      if (isFinite(pin))
+        m += String(pin);
+      else
+        m += String((int)this);
       m += "|";
     }
-    if (isDebug(DEBUG_TIME))  m += String(millis()) + "|";
-    if (isDebug(DEBUG_VALUE)) m += str();
+    if (isDebug(DEBUG_TIME))
+      m += String(millis()) + "|";
+    if (isDebug(DEBUG_VALUE))
+      m += str();
   }
   return m;
 }
 
-void Value::setElementType(byte type) {
-  if (type > elementType) elementType = type;
+void Value::setElementType(byte type)
+{
+  if (type > elementType)
+    elementType = type;
 }
 
-byte Value::getElementType() {
+byte Value::getElementType()
+{
   return elementType;
 }
 
-void Value::setState(byte s) {
-  if (state < 0) state = -s;
-  else state = s;
+void Value::setState(byte s)
+{
+  if (state < 0)
+    state = -s;
+  else
+    state = s;
 }
 
-byte Value::getState() {
+char Value::getState()
+{
   return abs(state);
+}
+
+/*****************************************************
+  reset the event timer
+*****************************************************/
+void Value::abort()
+{
+  if (ever())
+    eventTimer = 1;
 }

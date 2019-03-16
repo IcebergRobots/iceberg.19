@@ -4,6 +4,7 @@
 #include "IO.h"
 #include "Ultrasonic.h"
 #include "Pilot.h"
+#include "Line.h"
 #include <avr/wdt.h>
 
 #define SEGMENT_OFF    0
@@ -20,7 +21,6 @@ void initDebug();
 void setupDone();
 
 void startSound();
-void calculateStates();
 
 void prepareDebug();
 

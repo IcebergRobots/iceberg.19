@@ -135,8 +135,8 @@ class IO {
     Key *_resetProperties  [2]  = {  &decreasePage,  &increasePage  }; Shortcut  resetProperties  = Shortcut(  _resetProperties,  2,  MUTE_KEYS,  2000              );  // Alle Konfigurationen und Kalibrierungen zurücksetzten
     Key *_kickerStart      [2]  = {  &increasePage,      &start         }; Shortcut  kickerStart      = Shortcut(  _kickerStart,      2,  MUTE_KEYS,     0              );  // aktiviere einen dauerhaften Schuss
     Key *_kickerStop       [2]  = {  &increasePage,      &stop          }; Shortcut  kickerStop       = Shortcut(  _kickerStop,       2,  MUTE_KEYS,     0              );  // deaktiviere einen dauerhaften Schuss
-    Key *_shiftStart       [2]  = {  &selectMenu,    &start         }; Shortcut  shiftStart       = Shortcut(  _shiftStart,       2,  MUTE_KEYS,     0,  600,  200  );  // 
-    Key *_shiftStop        [2]  = {  &selectMenu,    &stop          }; Shortcut  shiftStop        = Shortcut(  _shiftStop,        2,  MUTE_KEYS,     0,  600,  200  );  // 
+    Key *_shiftStart       [2]  = {  &selectMenu,    &start         }; Shortcut  shiftStart       = Shortcut(  _shiftStart,       2,  MUTE_KEYS,     0,  200,  50  );  // 
+    Key *_shiftStop        [2]  = {  &selectMenu,    &stop          }; Shortcut  shiftStop        = Shortcut(  _shiftStop,        2,  MUTE_KEYS,     0,  600,  50  );  // 
 
     void update();
 
@@ -144,7 +144,6 @@ class IO {
 
     // binary timers
     Timer flat            = Timer(    600             );  // liegen wir flach?
-    Timer onLine          = Timer(    300             );  // berühren wir die Linie?
     Timer isHeadstart     = Timer(    350             );  // führen wir einen Schnellstart aus ?
     Timer isDodge         = Timer(    200             );  // weichen wir dem Gegner aus?
     Timer hasBall         = Timer(     80             );  // haben wir Ballbesitz?
@@ -161,8 +160,14 @@ class IO {
     Timer driveLocked     = Timer(    300             );  // dürfen neue Steuerwerte esetzt werden?
     Timer setupLight      = Timer(    200             );
     Timer kickActive      = Timer(     50             );
+    Timer lineDetected    = Timer(    200             );
+    Timer lineAvoid       = Timer(    150             );
     Timer sendHeartBeat   = Timer(    250             );  // wurde Heartbeat des Gegners empfangen?
     Timer bluetoothSend   = Timer(    100             );  // sollen Bluetooth-Updates gesendet werden? 
+    Timer farSidelineRight= Timer(    100             );  // befinden wir uns am rechten seitlichen Rand des Spielfeldes
+    Timer farSidelineLeft = Timer(    100             );  // befinden wir uns am linken seitlichen Rand des Spielfeldes
+    Timer onLine          = Timer(    300             );
+    Timer abc             = Timer(    100             );
     Timer lastRemoteSignal= Timer(    300             );
 
     // all global variables
@@ -202,6 +207,8 @@ class IO {
     Value distanceLeft   = Value(  MODULATION,    0,  MAX_DISTANCE);
 
     Value kickPermanent  = Value(     BOOLEAN              );
+
+    Value lineAngle      = Value(  MODULATION,  -179, 180  );
 
     Value animationState = Value(                          );
     Value animationEnabled = Value(   BOOLEAN              );

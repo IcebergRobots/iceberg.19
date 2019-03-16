@@ -39,6 +39,8 @@ void Ultrasonic::update() {
     Wire.write(byte(0x51));
     Wire.endTransmission();
   }
+  if (right() >= COURT_BORDER_MIN) io.farSidelineRight.now();
+  if (left() >= COURT_BORDER_MIN) io.farSidelineLeft.now();
   endSegment();
 }
 
