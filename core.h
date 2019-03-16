@@ -12,7 +12,10 @@
 #define PUI_ENABLED         1
 #define ORIENTATION_ENABLED 1
 #define CAMERA_ENABLED      1
+#define REFLEXION_ENABLED   1
 #define LIGHT_ENABLED       1
+#define LINE_ENABLED        1
+#define KICKER_ENABLED      1
 
 // DEBUG
 #define DEBUG_ENABLED       1

@@ -12,8 +12,9 @@ class Reflexion
     void init();
     void calibrate();
     
-    bool hasBall();
     int getValue();
+
+    bool isEnabled();
 
     private:
     Timer light = Timer(15);

@@ -5,6 +5,7 @@
 #include "Reflexion.h"
 #include "Demand.h"
 #include "LightBoard.h"
+#include "Camera.h"
 
 class Light : public Demand
 {

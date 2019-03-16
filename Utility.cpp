@@ -2,7 +2,7 @@
 
 void kick()
 {
-  if (io.kickActive.outsidePeriod(600))
+  if (KICKER_ENABLED && io.kicker.on() && io.kickActive.outsidePeriod(600))
     io.kickActive.now();
 }
 
@@ -215,8 +215,6 @@ void initPui()
 
 void updateKick()
 {
-  if (io.kickActive.get())
-    debug("KickActive");
-  digitalWrite(io.kick.getPin(), io.kickActive.get());
-  digitalWrite(io.buzzer.getPin(), io.kickActive.get());
+  digitalWrite(io.kick.getPin(), io.kickActive.on());
+  digitalWrite(io.buzzer.getPin(), io.kickActive.on());
 }

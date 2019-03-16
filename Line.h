@@ -9,6 +9,7 @@ class Line
 public:
     Line();
     void update();
+    bool isEnabled();
  private:
 };
 
