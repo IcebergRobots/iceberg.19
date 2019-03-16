@@ -130,9 +130,9 @@ void Light::light()
           pui.setPixelState(5);
 
         if (io.turbo.off() || !DEBUG_ENABLED)
-          pui.setPixelState(6);
-        else if (DEBUG_LOOP || DEBUG_SEGMENT)
           pui.setPixelState(6, STATE_WARNING);
+        else if (DEBUG_LOOP || DEBUG_SEGMENT)
+          pui.setPixelState(6, STATE_OK);
         else
           pui.setPixelState(6, STATE_ACTIVE);
 
@@ -152,8 +152,8 @@ void Light::light()
         else
           pui.setPixelState(8);
 
-        if (io.bluetooth.off())
-          pui.setPixelColor(9, STATE_ERROR);
+        if (!BLUETOOTH_ENABLED || io.bluetooth.off())
+          pui.setPixelState(9, STATE_ERROR);
         else
           pui.setPixelState(9);
 
@@ -162,12 +162,12 @@ void Light::light()
         else if (io.pause.on())
           pui.setPixelState(10, STATE_WARNING);
         else
-          pui.setPixelState(10);
+          pui.setPixelState(10, STATE_ACTIVE);
 
         if (io.headstart.off())
-          pui.setPixelState(11, STATE);
+          pui.setPixelState(11, STATE_ERROR);
         else
-          pui.setPixelState(11, STATE_ACTIVE);
+          pui.setPixelState(11);
 
         pui.setBrightness(map(io.poti.get(), 0, 1023, 0, 255));
         pui.show();
