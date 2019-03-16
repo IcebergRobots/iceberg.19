@@ -4,24 +4,31 @@
 #include "Arduino.h"
 #include "LinkedList.h"
 #include "Pixy.h"
-#include <I2C.h>
+// #include <I2C.h>
+#include <EEPROM.h>
 
 // MODULES
-#define DISPLAY_ENABLED     1
+#define DISPLAY_ENABLED     0
 #define PUI_ENABLED         1
 #define ORIENTATION_ENABLED 1
 #define CAMERA_ENABLED      1
+#define REFLEXION_ENABLED   1
 #define LIGHT_ENABLED       1
+#define LINE_ENABLED        1
+#define KICKER_ENABLED      1
 
 // DEBUG
 #define DEBUG_ENABLED       1
 #define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
 #define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
-#define DEBUG_BLUETOOTH     1       // sollen bluetooth nachrichten gezeigt werden?
+#define DEBUG_BLUETOOTH     0       // sollen bluetooth nachrichten gezeigt werden?
+#define DEBUG_I2C           0
+#define DEBUG_MOTOR         0    
+#define DEBUG_INFO          0
 
 // Fahren
 #define ROLE_COOLDOWN 1000      // [0 bis *]~1000 Zeitspanne, in dem kein Rollenwechsel stattfindet
-#define ANGLE_SIDEWAY 100       // [0 bis 180]~100
+#define ANGLE_SIDEWAY 90       // [0 bis 180]~100
 #define ANGLE_GOAL 80           // [0 bis 180]~80 Winkel für Tordrehung
 #define ANGLE_GOAL_MAX 45       // [0 bis 180]~45 maximaler Orientierungswinkel zum Tor
 #define ANGLE_PASSIVE_MAX 35    // [0 bis 180]~45 maximaler Orientierungswinkel beim Zurückfahren
@@ -35,7 +42,7 @@
 #define ROTATION_TOUCH 40       // [0 bis *]~20
 #define SPEED_BACKWARDS 60      // [0 bis 255]~70  STATUS 0: Nach hinten
 #define SPEED_PENALTY 40        // [0 bis 255]~50  STATUS 0: Nach hinten
-#define SPEED_KEEPER 65         // [0 bis 255]~60  STATUS 1: Torverteidigung
+#define SPEED_KEEPER 60        // [0 bis 255]~60  STATUS 1: Torverteidigung
 #define SPEED_FREE 70           // [0 bis 255]~70 STATUS 4: Befreiung
 #define SPEED_LOST 60          // [0 bis 255]~100 STATUS 5: Seitlich verloren
 #define SPEED_SIDEWAY 60       // [0 bis 255]~100  STATUS 6: Ballverfolgung
@@ -46,9 +53,23 @@
 #define SPEED_AVOID_MATE 100   // [0 bis 255]~100 STATUS 9: Ausweichen
 #define SPEED_DRIFT 80         // [0 bis 255]~140
 #define SPEED_LINE 70           // [0 bis 255]~90
+// TIMES
+#define BACKWARD_MAX_DURATION 4000    // wann darf frühestens eingegriffen werden
+#define GOAL_STUCK_DURATION 500       // wie lange soll nach vorne gefahren werden?
+#define SIDEWARD_MAX_DURATION 2000    // max Zeit für Seitwärtsfahren
+#define SIDEWARD_MIN_DURATION 1000     // min Zeit für Seitwärtsfahren
+#define TURN_MAX_DURATION 1500        // max Zeit für Drehmodus
+#define RETURN_MAX_DURATION 1500      // max Zeit für Drehmodus zurück
+#define LOST_DURATION 700      // max Zeit für Ausweichmanöver
+#define ROLE_LED_DURATION 350         // wie lange soll die Spielrolle angezeigt werden?
+#define LINE_DURATION 300             // wie lange steuern wir der Linie entgegen?
+#define HEADSTART_DURATION 350        // wie lange fahren wir volle Geschwindigkeit?
+#define AVOID_MATE_DURATION 200       // wie lange weichen wir aus
+#define DRIFT_DURATION 200            // wie lange steuern wir einem Drift entgegen?
+#define PIXY_RESPONSE_DURATION 20000  // wie lange soll die Pixy-Led grün nachleuchten?
 
 // BATTERY
-#define BATTERY_MIN_VOLTAGE 800
+#define BATTERY_MIN_VOLTAGE 110
 
 // UART
 #define DEBUG_SERIAL        Serial
@@ -59,7 +80,8 @@
 #define BLACKBOX_ENABLED    1
 #define BLACKBOX_SERIAL     Serial2
 #define BLACKBOX_BAUDRATE   115200
-
+#define BOTTOM_SERIAL       Serial3
+#define BOTTOM_BAUDRATE     115200
 #define DEBUG_SERIAL        Serial  // Serial der Usb-Schnittstelle
 #define START_MARKER        254     // Startzeichen einer Bluetooth-Nachricht
 #define END_MARKER          255     // Endzeichen einer Bluetooth-Nachricht
@@ -68,18 +90,18 @@
 #define COURT_REARWARD_MAX 35           // optimaler Abstand nach hinten
 #define COURT_REARWARD_MIN 25           // optimaler Abstand nach hinten
 #define COURT_WIDTH 150         // Summe der Abstände nach rechts und links
-#define COURT_BORDER_MIN 80     // Abstand nach rechts bzw. links am Torpfosten
+#define COURT_BORDER_MIN 50     // Abstand nach rechts bzw. links am Torpfosten
 #define COURT_WIDTH_FREE 140
 #define COURT_POST_TO_BORDER 110 // Abstand nach rechts bzw. links am Torpfosten
 #define MAX_DISTANCE 200
-
-// 
-#define BALL_CENTER_TOLERANCE 40 
 
 // PID-Regler
 #define PID_FILTER_P .27  // [0 bis *]~.27 p:proportional
 #define PID_FILTER_I .02  // [0 bis *]~0   i:vorausschauend
 #define PID_FILTER_D .03  // [0 bis *]~.03 d:Schwung herausnehmen (nicht zu weit drehen)
+
+//EEPROM Adressen
+#define REFLEXION_THRESHOLD 2
 
 
 // WATCHDOG
@@ -104,7 +126,14 @@
 #define SIGNATURE_GOAL 2                      // Pixy-Signature des Tors
 #define X_CENTER ((PIXY_MAX_X-PIXY_MIN_X)/2)  // PIXY: Die Mitte des Bildes der Pixy (in Pixeln)
 #define BALL_WIDTH_TRIGGER 40                 // Schwellwert eines großen Balles
-#define BALL_ANGLE_TRIGGER 40                 // Schwellenwert der Ballrichtung
+#define BALL_CENTER_TOLERANCE 40              // Toleranzwinkel für mittlere Bälle
+
+//ULTRASONIC
+#define I2C_US_FRONT_LEFT 112
+#define I2C_US_LEFT 113
+#define I2C_US_BACK 114
+#define I2C_US_RIGHT 115
+#define I2C_US_FRONT_RIGHT 116
 
 // DATA TYPES
 #define INT8_T_MIN          -128

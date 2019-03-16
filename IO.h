@@ -21,7 +21,7 @@ class IO {
     Pin indLeft             = Pin(    6,  OUTPUT,        PWM      );  // ungenutzte LED hinten links
     Pin indRight            = Pin(   38,  OUTPUT,        DIGITAL  );  // ungenutzte LED hinten rechts
     Pin indRgb              = Pin(   36,  OUTPUT,        DIGITAL  );  // stellt RGB-LEDs vorne auf Main-PCB ein, kann über Logic Analyser mitgelesen werden
-    Pin indHearbeat         = Pin(    7,  OUTPUT,        PWM      );  // Blinken zweier LEDs
+    Pin indHeartbeat        = Pin(    7,  OUTPUT,        PWM      );  // Blinken zweier LEDs
 
     // Bluetooth
     Pin bluetoothTx         = Pin(   16,  INPUT,         DIGITAL  );  // HC-05 <- Mega, Funkverbindung mit Partner
@@ -116,13 +116,13 @@ class IO {
     Pin usbRx               = Pin(    0,  OUTPUT,        DIGITAL  );  // Computer -> Mega, Computer Kommunikation   
 
     // PUI: keys and levers
-    Key decreasePage          = Key(   8,  PUI,      0,     500,   200   );  // vorherige Bildschirmseite
-    Key increasePage          = Key(  10,  PUI,      0,     500,   200   );  // nächste   Bildschirmseite
-    Key selectPage            = Key(   9,  PUI,      0,     5000         );  // Seite auswählen
+    Key decreasePage          = Key(   11,  PUI,      0,     500,   200   );  // vorherige Bildschirmseite
+    Key increasePage          = Key(   9,  PUI,      0,     500,   200   );  // nächste   Bildschirmseite
+    Key selectPage            = Key(   10,  PUI,      0,     5000         );  // Seite auswählen
     Key decreaseMenu          = Key(  26,  DIGITAL,  0                   );  // vorheriger Menüpunkt (misst Drehung des Rotary Encoders)
     Key increaseMenu          = Key(  28,  DIGITAL,  0                   );  // nächster   Menüpunkt (misst Drehung des Rotary Encoders)
     Key selectMenu            = Key(  30,  DIGITAL,  0,     1000         );  // Menüpunkt auswählen (Knopf des Rotary Encoders)
-    Key testKick              = Key(  11,  PUI,      0,     1000,  0     );  // Schuss austesten
+    Key testKick              = Key(   8,  PUI,      0,     0,  0        );  // Schuss austesten 
     Key compassCalibration    = Key(  12,  PUI,      0,     0,     0     );  // Torrichtung kalibrieren
     Key animation             = Key(  13,  PUI,      0                   );  // Starte Leucht Animation
     Key lineCalibration       = Key(  14,  PUI,      0,     500          );  // Linienhelligkeit kalibrieren
@@ -131,12 +131,12 @@ class IO {
     Key stop                  = Key(  24,  DIGITAL,  0                   );  // Anhalten
 
     // PUI: shortcuts
-    Key *_record           [2]  = {  &start,         &stop          }; Shortcut  record           = Shortcut(  _record,           2,  FIRE_KEYS,     0              );  // Spiel aufzeichnen (start + stop)
+    Key *_record           [2]  = {  &start ,         &stop          }; Shortcut  record           = Shortcut(  _record,           2,  FIRE_KEYS,     0              );  // Spiel aufzeichnen (start + stop)
     Key *_resetProperties  [2]  = {  &decreasePage,  &increasePage  }; Shortcut  resetProperties  = Shortcut(  _resetProperties,  2,  MUTE_KEYS,  2000              );  // Alle Konfigurationen und Kalibrierungen zurücksetzten
-    Key *_kickerStart      [2]  = {  &testKick,      &start         }; Shortcut  kickerStart      = Shortcut(  _kickerStart,      2,  MUTE_KEYS,     0              );  // aktiviere einen dauerhaften Schuss
-    Key *_kickerStop       [2]  = {  &testKick,      &stop          }; Shortcut  kickerStop       = Shortcut(  _kickerStop,       2,  MUTE_KEYS,     0              );  // deaktiviere einen dauerhaften Schuss
-    Key *_shiftStart       [2]  = {  &selectMenu,    &start         }; Shortcut  shiftStart       = Shortcut(  _shiftStart,       2,  MUTE_KEYS,     0,  600,  200  );  // 
-    Key *_shiftStop        [2]  = {  &selectMenu,    &stop          }; Shortcut  shiftStop        = Shortcut(  _shiftStop,        2,  MUTE_KEYS,     0,  600,  200  );  // 
+    Key *_kickerStart      [2]  = {  &increasePage,      &start         }; Shortcut  kickerStart      = Shortcut(  _kickerStart,      2,  MUTE_KEYS,     0              );  // aktiviere einen dauerhaften Schuss
+    Key *_kickerStop       [2]  = {  &increasePage,      &stop          }; Shortcut  kickerStop       = Shortcut(  _kickerStop,       2,  MUTE_KEYS,     0              );  // deaktiviere einen dauerhaften Schuss
+    Key *_shiftStart       [2]  = {  &selectMenu,    &start         }; Shortcut  shiftStart       = Shortcut(  _shiftStart,       2,  MUTE_KEYS,     0,  200,  50  );  // 
+    Key *_shiftStop        [2]  = {  &selectMenu,    &stop          }; Shortcut  shiftStop        = Shortcut(  _shiftStop,        2,  MUTE_KEYS,     0,  600,  50  );  // 
 
     void update();
 
@@ -144,23 +144,30 @@ class IO {
 
     // binary timers
     Timer flat            = Timer(    600             );  // liegen wir flach?
-    Timer onLine          = Timer(    300             );  // berühren wir die Linie?
     Timer isHeadstart     = Timer(    350             );  // führen wir einen Schnellstart aus ?
     Timer isDodge         = Timer(    200             );  // weichen wir dem Gegner aus?
-    Timer hasBall         = Timer(     50             );  // haben wir Ballbesitz?
+    Timer hasBall         = Timer(     80             );  // haben wir Ballbesitz?
     Timer runtime         = Timer(                    );  // Laufzeit der Schleife 
     Timer seeBall         = Timer(    100,  &flat     );  // sehen wir den Ball?
     Timer seeGoal         = Timer(    500,  &flat     );  // sehen wir das Tor?
     Timer seeMate         = Timer(    100,  &flat     );  // sehen wir ein Positionslicht
     Timer closeBall       = Timer(    500,  &seeBall  );  // ist der Ball nahe?
     Timer drift           = Timer(    200             );  // müssen wir ein Driften verhindern?
-    Timer ballLeft        = Timer(      0,  &seeBall  );  // ist der Ball links?
-    Timer ballRight       = Timer(      0,  &seeBall  );  // ist der Ball rechts?
-    Timer ballCenter      = Timer(      0,  &seeBall  );  // ist der Ball mittig?
+    Timer seeBallLeft     = Timer(      0,  &seeBall  );  // ist der Ball links?
+    Timer seeBallRight    = Timer(      0,  &seeBall  );  // ist der Ball rechts?
+    Timer seeBallCenter   = Timer(      0,  &seeBall  );  // ist der Ball mittig?
     Timer cameraResponse  = Timer(  20000             );  // ist die Kamera verbunden?
     Timer driveLocked     = Timer(    300             );  // dürfen neue Steuerwerte esetzt werden?
     Timer setupLight      = Timer(    200             );
     Timer kickActive      = Timer(     50             );
+    Timer lineDetected    = Timer(    200             );
+    Timer lineAvoid       = Timer(    150             );
+    Timer sendHeartBeat   = Timer(    250             );  // wurde Heartbeat des Gegners empfangen?
+    Timer bluetoothSend   = Timer(    100             );  // sollen Bluetooth-Updates gesendet werden? 
+    Timer farSidelineRight= Timer(    100             );  // befinden wir uns am rechten seitlichen Rand des Spielfeldes
+    Timer farSidelineLeft = Timer(    100             );  // befinden wir uns am linken seitlichen Rand des Spielfeldes
+    Timer onLine          = Timer(    300             );
+    Timer abc             = Timer(    100             );
 
     // all global variables
     Value aggressive     = Value(     BOOLEAN              );
@@ -184,6 +191,7 @@ class IO {
     Value hasDebugHead   = Value(     BOOLEAN              );  // Debug-Zeilenanfang
     Value segment        = Value(      LIMITS,    0,    2  );  // Laufzeit eines Codeblockes
     Value battery        = Value(     BOOLEAN              );  // ist der Akku angeschlosse?
+    Value batteryVoltage = Value(      LIMITS,     0,  999 );
     Value pause          = Value(     BOOLEAN              );  // ist das Spiel pausiert?
 
     Value heading        = Value(  MODULATION, -179,  180  );
@@ -198,6 +206,13 @@ class IO {
     Value distanceLeft   = Value(  MODULATION,    0,  MAX_DISTANCE);
 
     Value kickPermanent  = Value(     BOOLEAN              );
+
+    Value lineAngle      = Value(  MODULATION,  -179, 180  );
+
+    Value animationState = Value(                          );
+    Value animationEnabled = Value(   BOOLEAN              );
+
+    Value partnerRating  = Value(      LIMITS,    0,  255  );
   private:
 };
 extern IO io;

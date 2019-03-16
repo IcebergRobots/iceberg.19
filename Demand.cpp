@@ -19,7 +19,7 @@ bool Demand::onDemand() {
     if (isEnabled() && locked.off()
     && (locked.outsidePeriod(cooldownTime) || demand)) {
         demand = false;
-        locked.set();
+        locked.now();
         return true;
     }
     return false;

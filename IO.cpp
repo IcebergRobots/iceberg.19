@@ -6,7 +6,7 @@
 IO::IO() {}
 
 void IO::update() {
-  if (DEBUG_LOOP) beginSegment("io");
+  if (DEBUG_LOOP) beginSegment(F("io"));
 
   for(int i = 0; i < objects<Value>(); i++) {
     Value *v = objects<Value>(i);
@@ -37,7 +37,7 @@ void IO::update() {
   indLeft.update();
   indRight.update();
   indRgb.update();
-  indHearbeat.update();
+  indHeartbeat.update();
 
   // Bluetooth
   bluetoothTx.update();

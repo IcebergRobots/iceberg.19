@@ -61,12 +61,16 @@ class Value : public Container
     void update();
 
     // interact
-    void now(bool mute=false);
-    bool muteSet(int _value);
+    void now();
+    void abort();
+    bool setWithoutEvent(int _value);
     void set(int _value, byte pin=INF);
     void set(int _value, String reason, byte pin=INF);
     void add(int _summand=1);
     void mul(float _factor);
+    void toggle();
+    void setLow();
+    void setHigh();
 
     // read
 		int get();
@@ -90,7 +94,6 @@ class Value : public Container
     unsigned long period();
     bool outsidePeriod(unsigned long min);
     bool insidePeroid(unsigned long max);
-    String periodStr(unsigned int minLength=0, unsigned int maxLength=INF, bool sign=false);
 
     // debug
     void showDebug(byte type, bool enable=true);
@@ -101,13 +104,14 @@ class Value : public Container
     void setElementType(byte type);
     byte getElementType();
 
-    void setState(byte s);
-    byte getState();
-
-  private:
     bool isDebug(byte type=DEBUG_ENABLE);
     void sendDebug(byte pin=INF);
     void sendDebug(String reason, byte pin=INF);
+
+  private:
+    void setState(byte s);
+    char getState();
+    bool timerValid();
     String prepareDebug(byte pin);
 
     byte elementType = VALUE;
@@ -116,7 +120,7 @@ class Value : public Container
                 // in case of limits: lower limit
     int b = 0;  // in case of modulation: lower limit
                 // in case of limits: upper limit
-    unsigned long eventTimer = 0; // time of last event
+    unsigned long eventTimer = 0; // 0: no event jet, 1: event canceled, >1: time of last event
     char state = OFF; // OFF, ON, FALLING, RISING, OFF_CHANGE, ON_
     byte debugSettings = B11000010;
 };

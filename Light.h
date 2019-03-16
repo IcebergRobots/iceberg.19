@@ -2,8 +2,10 @@
 #define Light_h
 
 #include "IO.h"
+#include "Reflexion.h"
 #include "Demand.h"
 #include "LightBoard.h"
+#include "Camera.h"
 
 class Light : public Demand
 {
@@ -14,8 +16,9 @@ class Light : public Demand
     
     bool isEnabled();
 
-    LightBoard pui = LightBoard(12, 32, 10, 100);
-    LightBoard line = LightBoard(40, 46, 10, 100);
+    LightBoard pui      = LightBoard(12, 32, 10, 100);
+    LightBoard line     = LightBoard(40, 46, 10, 100);
+    LightBoard inside   = LightBoard(8, 36, 10, 100);
 
   private:
 };
