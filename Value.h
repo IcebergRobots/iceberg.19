@@ -61,9 +61,9 @@ class Value : public Container
     void update();
 
     // interact
-    void now(bool mute=false);
+    void now();
     void abort();
-    bool muteSet(int _value);
+    bool setWithoutEvent(int _value);
     void set(int _value, byte pin=INF);
     void set(int _value, String reason, byte pin=INF);
     void add(int _summand=1);
@@ -95,7 +95,6 @@ class Value : public Container
     unsigned long period();
     bool outsidePeriod(unsigned long min);
     bool insidePeroid(unsigned long max);
-    String periodStr(unsigned int minLength=0, unsigned int maxLength=INF, bool sign=false);
 
     // debug
     void showDebug(byte type, bool enable=true);
@@ -106,10 +105,10 @@ class Value : public Container
     void setElementType(byte type);
     byte getElementType();
 
+  // private:
     void setState(byte s);
     char getState();
 
-  // private:
     bool isDebug(byte type=DEBUG_ENABLE);
     void sendDebug(byte pin=INF);
     void sendDebug(String reason, byte pin=INF);

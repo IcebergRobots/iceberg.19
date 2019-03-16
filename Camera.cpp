@@ -19,7 +19,8 @@ void Camera::init()
     beginSegment(F("c"));
     SPI.begin(); // initialisiere den SPI Bus
     Pixy::init();
-    io.cameraResponse.set(SPI.transfer(0x00) == 255); // erkennen, ob die Kamera angeschlossen ist
+    if (SPI.transfer(0x00) == 255)
+      io.cameraResponse.now(); // erkennen, ob die Kamera angeschlossen ist
     endSegment();
   }
   else
@@ -59,11 +60,12 @@ void Camera::frame()
         if (area > ballAreaMax) // Der neue Block ist relevanter und überschreibt
         {
           ballAreaMax = area;
-          io.ball.set(x);                               // merke Ballwinkel
-          io.ballWidth.set(width);                      // merke Ballbreite
-          io.ballArea.set(area);                        // merke Ballgröße
-          io.seeBall.set();                             // merke Sichtungszeit des Balls
-          io.closeBall.set(width > BALL_WIDTH_TRIGGER); // merke ggf. Sichtungszeit eines nahen Balls
+          io.ball.set(x);          // merke Ballwinkel
+          io.ballWidth.set(width); // merke Ballbreite
+          io.ballArea.set(area);   // merke Ballgröße
+          io.seeBall.now();        // merke Sichtungszeit des Balls
+          if (width > BALL_WIDTH_TRIGGER)
+            io.closeBall.now(); // merke ggf. Sichtungszeit eines nahen Balls
         }
         break;
       case SIGNATURE_GOAL:
@@ -74,7 +76,7 @@ void Camera::frame()
           io.goal.set(x);          // merke Torwinkel
           io.goalWidth.set(width); // merke Torbreite
           io.goalArea.set(area);   // merke Torgröße
-          io.seeGoal.set();        // merke Sichtungszeit des Tors
+          io.seeGoal.now();        // merke Sichtungszeit des Tors
         }
         break;
       }

@@ -12,20 +12,20 @@ void Reflexion::update() {
     if (isLightPhase && light.off()) {
         isLightPhase = false;
         withLight = io.ballTouch.get();
-        dark.set();
+        dark.now();
     } else if (!isLightPhase && dark.off()) {
         isLightPhase = true;
         withDark = io.ballTouch.get();
-        light.set();
+        light.now();
     }
     value = withDark - withLight;
-    if (value > threshold) io.hasBall.set();
+    if (value > threshold) io.hasBall.now();
     if (cali) setThreshold();
 
 }
 
 void Reflexion::init() {
-    light.set();
+    light.now();
     threshold = (int)EEPROM.read(REFLEXION_THRESHOLD) * 4;
 }
 

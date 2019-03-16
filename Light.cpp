@@ -24,7 +24,7 @@ void Light::init() {
     line.setAllColor(255, 255, 255);
     line.show();
   }
-  io.setupLight.set();
+  io.setupLight.now();
   endSegment();
 }
 

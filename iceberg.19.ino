@@ -88,12 +88,25 @@ void loop()
     io.abc.startDebug();
     scan();
 
-    debug("set 1");
-    io.abc.set(1);
+    debug("now");
+    io.abc.now();
     scan();
 
-    debug("set 2");
-    io.abc.set(2);
+    debug("now");
+    io.abc.now(2);
+    scan();
+
+    debug("update");
+    io.abc.update();
+    scan();
+
+    debug("abort");
+    io.abc.abort();
+    scan();
+
+    debug("update");
+    io.abc.update();
+    scan();
   }
 
   updateStates();

@@ -9,7 +9,7 @@ void Line::update()
 	if (BOTTOM_SERIAL.available()) {
 		int angle = map(BOTTOM_SERIAL.read(), 0, 255, 0, 359);
 		io.lineAngle.set(angle);
-		io.onLine.set();
+		io.onLine.now();
 		debug(io.lineAngle.get());
 	}
 	if (DEBUG_LOOP)

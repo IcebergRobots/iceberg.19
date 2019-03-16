@@ -2,8 +2,8 @@
 
 void kick()
 {
-  if (io.kickActive.period() > 600)
-    io.kickActive.set();
+  if (io.kickActive.outsidePeriod(600))
+    io.kickActive.now();
 }
 
 /*****************************************************
@@ -84,7 +84,7 @@ void setupDone()
   debugln("=" + String(millis()));
   for (int i = 0; i < 9; i++)
     debug(F("======"), false);
-  io.runtime.set();
+  io.runtime.now();
 }
 
 /*****************************************************
@@ -117,20 +117,21 @@ void updateStates()
 {
   if (io.hasBall.on() && io.seeBall.off())
   { // wenn wir den Ball besitzen, erzeuge einen Kamerablock falls nicht vorhanden
-    io.seeBall.set();
+    io.seeBall.now();
     io.ball.set(0); // Ball liegt gerade vor uns
   }
 
   // erkenne die Lage des Balls
-  io.seeBallLeft.set(io.ball.left(BALL_CENTER_TOLERANCE));
-  io.seeBallRight.set(io.ball.right(BALL_CENTER_TOLERANCE));
-  io.seeBallCenter.set(io.ball.center(BALL_CENTER_TOLERANCE));
-
-  // io.onLine.set(io.lineAvoid.on() || io.lineDetected.on());
+  if (io.ball.left(BALL_CENTER_TOLERANCE))
+    io.seeBallLeft.now();
+  if (io.ball.right(BALL_CENTER_TOLERANCE))
+    io.seeBallRight.now();
+  if (io.ball.center(BALL_CENTER_TOLERANCE))
+    io.seeBallCenter.now();
 
   io.batteryVoltage.set(io.batteryVoltmeter.get() * 0.1249);
   io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE);
-  io.flat.set(true);
+  io.flat.now();
   io.driveEnabled.set(io.pause.off() && io.motor.on());
   // erkenne Hochheben
   // dof.accelGetOrientation(&accel_event, &orientation);
@@ -151,7 +152,7 @@ void printDebug(String str, bool space)
   {
     if (io.segment.is(SEGMENT_EMPTY))
     {
-      io.segment.muteSet(SEGMENT_FILLED);
+      io.segment.setWithoutEvent(SEGMENT_FILLED);
       space = false;
     }
     if (io.hasDebugHead.on() && space)
@@ -172,7 +173,7 @@ void printDebug(String str, bool space)
       if (DEBUG_INFO)
       {
       }
-      io.runtime.set();
+      io.runtime.now();
     }
     DEBUG_SERIAL.print(str);
   }
@@ -194,7 +195,7 @@ void printEndSegment()
   {
     if (io.segment.on())
     {
-      debug("}" + io.segment.periodStr(), false); // if in setup or DEBUG_SEGMENT
+      debug("}" + io.segment.str(), false); // if in setup or DEBUG_SEGMENT
       io.segment.set(0);
     }
   }
@@ -220,11 +221,12 @@ void updateKick()
   digitalWrite(io.buzzer.getPin(), io.kickActive.get());
 }
 
-void scan() {
-  debug(io.abc.get() + "=");
+void scan()
+{
+  debug(String(io.abc.get()) + "=");
   debug(io.abc.value, false);
 
-  debug(io.abc.period() + "=");
+  debug(io.abc.str() + "=");
   debug(io.abc.eventTimer, false);
 
   debug(String(int(io.abc.getState())) + "=");

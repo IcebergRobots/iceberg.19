@@ -66,10 +66,8 @@ void Value::update()
 /*****************************************************
   there is a current event, so save its time (now)
 *****************************************************/
-void Value::now(bool mute)
+void Value::now()
 {
-  if (!mute)
-    sendDebug();
   eventTimer = millis();
 }
 /*****************************************************
@@ -77,7 +75,7 @@ void Value::now(bool mute)
   @param _value: new value
   - modulate or limit the value
 *****************************************************/
-bool Value::muteSet(int _value)
+bool Value::setWithoutEvent(int _value)
 {
   if (value != _value)
   {
@@ -115,22 +113,20 @@ bool Value::muteSet(int _value)
 }
 void Value::set(int _value, byte pin)
 {
-  if (muteSet(_value))
+  if (setWithoutEvent(_value))
   {
-    now(true); // trigger the timer because value changed
+    now(); // trigger the timer because value changed
     if (isDebug(DEBUG_ON_CHANGE))
       sendDebug(pin);
   }
 }
 void Value::set(int _value, String reason, byte pin)
 {
-  if (muteSet(_value))
+  if (setWithoutEvent(_value))
   {
-    now(true);
+    now();
     if (isDebug(DEBUG_ON_CHANGE) || (isDebug(DEBUG_ON_REASON) && reason.length() > 0))
-    {
       sendDebug(reason, pin);
-    }
   }
 }
 /*****************************************************
@@ -265,16 +261,6 @@ bool Value::insidePeroid(unsigned long max)
 {
   return ever() && period() <= max;
 }
-/*****************************************************
-  time since last event as string
-  @param minLength: minimun length of the string
-  @param maxLength: maximun length of the string
-  @param sign: add a plus sign
-*****************************************************/
-String Value::periodStr(unsigned int minLength, unsigned int maxLength, bool sign)
-{
-  return format(period(), minLength, maxLength, sign);
-}
 
 /*****************************************************
   configurate a special type of debugging
@@ -376,9 +362,11 @@ char Value::getState()
   return abs(state);
 }
 
+/*****************************************************
+  reset the event timer
+*****************************************************/
 void Value::abort()
 {
   if (ever())
     eventTimer = 1;
-  muteSet(0);
 }
