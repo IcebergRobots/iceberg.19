@@ -85,28 +85,6 @@ void loop()
   }
   if (io.shiftStop.click())
   {
-    io.abc.startDebug();
-    scan();
-
-    debug("now");
-    io.abc.now();
-    scan();
-
-    debug("now");
-    io.abc.now(2);
-    scan();
-
-    debug("update");
-    io.abc.update();
-    scan();
-
-    debug("abort");
-    io.abc.abort();
-    scan();
-
-    debug("update");
-    io.abc.update();
-    scan();
   }
 
   updateStates();

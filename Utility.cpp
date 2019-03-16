@@ -220,24 +220,3 @@ void updateKick()
   digitalWrite(io.kick.getPin(), io.kickActive.get());
   digitalWrite(io.buzzer.getPin(), io.kickActive.get());
 }
-
-void scan()
-{
-  debug(String(io.abc.get()) + "=");
-  debug(io.abc.value, false);
-
-  debug(io.abc.str() + "=");
-  debug(io.abc.eventTimer, false);
-
-  debug(String(int(io.abc.getState())) + "=");
-  debug(io.abc.state, false);
-
-  if (io.abc.falling())
-    debug("f");
-  if (io.abc.rising())
-    debug("r");
-  if (io.abc.change())
-    debug("c");
-  debugln();
-  delay(800);
-}

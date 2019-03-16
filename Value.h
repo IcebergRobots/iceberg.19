@@ -89,7 +89,6 @@ class Value : public Container
     bool change();
 
     // events
-    bool timerValid();
     bool ever();
     bool never();
     unsigned long period();
@@ -105,13 +104,14 @@ class Value : public Container
     void setElementType(byte type);
     byte getElementType();
 
-  // private:
-    void setState(byte s);
-    char getState();
-
     bool isDebug(byte type=DEBUG_ENABLE);
     void sendDebug(byte pin=INF);
     void sendDebug(String reason, byte pin=INF);
+
+  private:
+    void setState(byte s);
+    char getState();
+    bool timerValid();
     String prepareDebug(byte pin);
 
     byte elementType = VALUE;
