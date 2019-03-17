@@ -19,9 +19,9 @@
 | kidhub        | junior code     |
 | lithu         | swag code       |
 | shithub       | crappy code     |
-| shithub       | battle bot      |
+| hithub        | battle bot      |
 | spithub       | lama code       |
 | fithub        | sport code      |
-| sithub        | lacy code       |
+| sithub        | lazy code       |
 | riphub        | deprecated code |    
 
