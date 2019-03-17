@@ -10,7 +10,8 @@
 [![youtube](https://cdn2.iconfinder.com/data/icons/black-white-social-media/32/youtube_online_social_media_tube-128.png)](https://www.youtube.com/channel/UCmyW6OYBXdUCqKvd90pjqyw)
 [![instagram](https://cdn2.iconfinder.com/data/icons/black-white-social-media/32/instagram_online_social_media_photo-128.png)](https://www.instagram.com/icebergrobots/)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/WiLj1smCp2Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<a href="https://youtu.be/WiLj1smCp2Y" target="_blank">
+<img src="https://i.ytimg.com/vi/WiLj1smCp2Y/maxresdefault.jpg" alt="RoboCup European Championship Italy 2018 - Iceberg Robots (Roboter Fußball)" border="10" /></a>
 
 iceberg2019
 
