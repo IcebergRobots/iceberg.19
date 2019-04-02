@@ -46,7 +46,7 @@ private:
   double trackingPIDin = 0; // Ballwinkel als Eingabe []
   double trackingPIDout = 0;
   double trackingPIDtarget = 0;
-  PID trackingPID = PID(&trackingPIDin, &trackingPIDout, &trackingPIDtarget, 0, 0, 0, DIRECT);
+  PID trackingPID = PID(&trackingPIDin, &trackingPIDout, &trackingPIDtarget, .5, 0, 0, DIRECT);
 };
 extern Pilot drive;
 
