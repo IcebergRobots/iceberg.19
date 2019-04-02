@@ -33,7 +33,8 @@ void setup()
   digitalWrite(io.kick.getPin(), LOW);
 
   /*****************************************************/
-  io.state.startDebug();
+  // io.state.startDebug();
+  // io.ballWidth.startDebug();
   // io.drivePower.startDebug();
   // io.stateDirection.startDebug();
   /*****************************************************/

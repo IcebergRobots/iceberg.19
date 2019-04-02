@@ -14,9 +14,11 @@ Pilot::Pilot()
   m[3].setPins(&io.m3Current, &io.m3Dir1, &io.m3Dir2, &io.m3Speed);
 
   // konfiguriere PID-Regler
-  myPID.SetTunings(PID_FILTER_P, PID_FILTER_I, PID_FILTER_D);
-  myPID.SetMode(AUTOMATIC);
-  myPID.SetOutputLimits(-255, 255);
+  headingPID.SetMode(AUTOMATIC);
+  headingPID.SetOutputLimits(-255, 255);
+
+  trackingPID.SetMode(AUTOMATIC);
+  trackingPID.SetOutputLimits(-179, 180);
 }
 
 /*****************************************************
@@ -98,6 +100,9 @@ void Pilot::update()
   int rotation = 0;
   int rotMulti = 40;
 
+  headingPIDin = io.heading.get();
+  trackingPIDin = io.ball.get();
+
   switch (io.state.get())
   {
   default:
@@ -156,19 +161,10 @@ void Pilot::update()
     break;
 
   case BALL_TRACKING:
-    if (io.seeBall.off())
-      rotMulti = ROTATION_SIDEWAY;
-    else if (io.ballWidth.get() > 100)
-      rotMulti = ROTATION_TOUCH;
-    else if (io.ballWidth.get() > 40)
-      rotMulti = ROTATION_10CM;
-    else if (io.ballWidth.get() > 20)
-      rotMulti = ROTATION_18CM;
-    else
-      rotMulti = ROTATION_AWAY;
+    direction = trackBall();
 
     speed = mapConstrain(io.ballWidth.get(), 5, 35, SPEED_BALL_FAR, SPEED_BALL);
-    direction = map(io.ball.get(), -X_CENTER, X_CENTER, (float)rotMulti, -(float)rotMulti);
+    //direction = map(io.ball.get(), -X_CENTER, X_CENTER, (float)rotMulti, -(float)rotMulti);
     if (direction > 60)
     {
       // seitwärts bewegen, um Torsusrichtung aufrecht zu erhalten
@@ -199,32 +195,30 @@ void Pilot::update()
 
     break;
   }
-  if (DEBUG_LOOP)
-    endSegment();
 }
 
-void Pilot::steer(int angle)
-{
-  io.driveAngle.set(angle);
-}
-void Pilot::accelerate(int speed)
-{
-  io.drivePower.set(speed);
-}
-int Pilot::face(int angle, int speed)
+int Pilot::face(int angle)
 {
   //angle = circulate(angle, -179,  180);
   io.driveOrientation.set(angle);
-  pidSetpoint = io.driveOrientation.get();
+  headingPIDtarget = io.driveOrientation.get();
   // Misst die Kompassabweichung vom Tor [-180 bis 179]
-  pidIn = (double)io.heading.get();
+  headingPIDin = (double)io.heading.get();
   if (io.driveEnabled.on())
   {
-    myPID.Compute();
-    return -pidOut; // [-255 bis 255]
+    headingPID.Compute();
+    return -headingPIDout; // [-255 bis 255]
   }
   else
     return 0;
+}
+
+int Pilot::trackBall()
+{
+  trackingPIDin = io.ball.get();
+  trackingPIDtarget = 0;
+  trackingPID.Compute();
+  return trackingPIDout;
 }
 
 bool Pilot::atGatepost()

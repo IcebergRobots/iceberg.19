@@ -96,9 +96,9 @@
 #define MAX_DISTANCE 200
 
 // PID-Regler
-#define PID_FILTER_P .27  // [0 bis *]~.27 p:proportional
-#define PID_FILTER_I .02  // [0 bis *]~0   i:vorausschauend
-#define PID_FILTER_D .03  // [0 bis *]~.03 d:Schwung herausnehmen (nicht zu weit drehen)
+#define HEADING_PID_P .27  // [0 bis *]~.27 p:proportional
+#define HEADING_PID_I .02  // [0 bis *]~0   i:vorausschauend
+#define HEADING_PID_D .03  // [0 bis *]~.03 d:Schwung herausnehmen (nicht zu weit drehen)
 
 //EEPROM Adressen
 #define REFLEXION_THRESHOLD 2
