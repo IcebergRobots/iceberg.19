@@ -19,8 +19,8 @@
 
 // DEBUG
 #define DEBUG_ENABLED       1
-#define DEBUG_SEGMENT       1       // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP          1       // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
+#define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH     0       // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_I2C           0
 #define DEBUG_MOTOR         0    
@@ -95,10 +95,15 @@
 #define COURT_POST_TO_BORDER 110 // Abstand nach rechts bzw. links am Torpfosten
 #define MAX_DISTANCE 200
 
-// PID-Regler
+// PID-Regler Kompassausrichtung
 #define HEADING_PID_P .27  // [0 bis *]~.27 p:proportional
 #define HEADING_PID_I .02  // [0 bis *]~0   i:vorausschauend
 #define HEADING_PID_D .03  // [0 bis *]~.03 d:Schwung herausnehmen (nicht zu weit drehen)
+
+// PID-Regler Ball
+#define TRACKING_PID_P .7  // [0 bis *]~.27 p:proportional
+#define TRACKING_PID_I .0  // [0 bis *]~0   i:vorausschauend
+#define TRACKING_PID_D .0  // [0 bis *]~.03 d:Schwung herausnehmen
 
 //EEPROM Adressen
 #define REFLEXION_THRESHOLD 2

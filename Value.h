@@ -120,7 +120,7 @@ class Value : public Container
                 // in case of limits: lower limit
     int b = 0;  // in case of modulation: lower limit
                 // in case of limits: upper limit
-    unsigned long eventTimer = 0; // 0: no event jet, 1: event canceled, >1: time of last event
+    unsigned int eventTimer = 0; // 0: no event jet, 1: event canceled, >1: time of last event
     char state = OFF; // OFF, ON, FALLING, RISING, OFF_CHANGE, ON_
     byte debugSettings = B11000010;
 };

@@ -169,20 +169,20 @@ void Pilot::update()
     if (direction > 60)
     {
       // seitwärts bewegen, um Torsusrichtung aufrecht zu erhalten
-      //driveState = "> follow";
+      // driveState = "> follow";
       direction = 100;
       speed = SPEED_SIDEWAY;
     }
     else if (direction < -60)
     {
       // seitwärts bewegen, um Torsusrichtung aufrecht zu erhalten
-      //driveState = "< follow";
+      // driveState = "< follow";
       direction = -100;
       speed = SPEED_SIDEWAY;
     }
     else
     {
-      //driveState = "^ follow";
+      // driveState = "^ follow";
     }
     drive(direction, speed, face(0));
     break;
@@ -216,7 +216,6 @@ int Pilot::face(int angle)
 
 int Pilot::trackBall()
 {
-  trackingPIDin = io.ball.get();
   trackingPIDtarget = 0;
   trackingPID.Compute();
   return trackingPIDout;
