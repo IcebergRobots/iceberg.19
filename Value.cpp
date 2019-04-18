@@ -116,8 +116,6 @@ void Value::set(int _value, byte pin)
   if (setWithoutEvent(_value))
   {
     now(); // trigger the timer because value changed
-    if (isDebug(DEBUG_ON_CHANGE))
-      sendDebug(pin);
   }
 }
 void Value::set(int _value, String reason, byte pin)
@@ -125,8 +123,6 @@ void Value::set(int _value, String reason, byte pin)
   if (setWithoutEvent(_value))
   {
     now();
-    if (isDebug(DEBUG_ON_CHANGE) || (isDebug(DEBUG_ON_REASON) && reason.length() > 0))
-      sendDebug(reason, pin);
   }
 }
 /*****************************************************
@@ -262,81 +258,7 @@ bool Value::insidePeroid(unsigned long max)
   return ever() && period() <= max;
 }
 
-/*****************************************************
-  configurate a special type of debugging
-  @param type: select an aspect
-  @param enable: show this aspect be displayed?
-*****************************************************/
-void Value::showDebug(byte type, bool enable)
-{
-  bitWrite(debugSettings, type, enable);
-}
-/*****************************************************
-  activate debugging
-*****************************************************/
-void Value::startDebug() { showDebug(DEBUG_ENABLE); }
-/*****************************************************
-  deactivate debugging
-*****************************************************/
-void Value::stopDebug() { showDebug(DEBUG_ENABLE, false); }
-/*****************************************************
-  turn all aspects of debugging off
-*****************************************************/
-void Value::resetDebug() { debugSettings = B00000000; }
 
-/*****************************************************
-  is this type of debugging activated?
-*****************************************************/
-bool Value::isDebug(byte type)
-{
-  return bitRead(debugSettings, DEBUG_ENABLE) && bitRead(debugSettings, type);
-}
-/*****************************************************
-  create a new debug message
-*****************************************************/
-void Value::sendDebug(byte pin)
-{
-  if (isDebug())
-  {
-    debug(prepareDebug(pin));
-  }
-}
-void Value::sendDebug(String reason, byte pin)
-{
-  if (isDebug())
-  {
-    String m = prepareDebug(pin);
-    if (isDebug(DEBUG_REASON))
-      m += ":" + reason;
-    debug(m);
-  }
-}
-
-String Value::prepareDebug(byte pin)
-{
-  String m;
-  if (isDebug(DEBUG_FOR_PLOTTER))
-  {
-    m = str() + ",";
-  }
-  else
-  {
-    m = "§";
-    if (isDebug(DEBUG_PIN))
-    {
-      if (isFinite(pin))
-        m += String(pin);
-      else
-        m += String((int)this);
-      m += "|";
-    }
-    if (isDebug(DEBUG_TIME))
-      m += String(millis()) + "|";
-    if (isDebug(DEBUG_VALUE))
-      m += str();
-  }
-  return m;
-}
 
 void Value::setElementType(byte type)
 {

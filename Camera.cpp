@@ -23,8 +23,6 @@ void Camera::init()
       io.cameraResponse.now(); // erkennen, ob die Kamera angeschlossen ist
     endSegment();
   }
-  else
-    debug(F("-c"));
 }
 
 void Camera::frame()

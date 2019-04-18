@@ -87,9 +87,6 @@ void Pilot::setState()
 
 void Pilot::update()
 {
-  if (DEBUG_LOOP)
-    beginSegment(F("m"));
-
   setState();
 
   if (io.driveEnabled.falling())
@@ -162,7 +159,6 @@ void Pilot::update()
 
   case BALL_TRACKING:
     direction = trackBall();
-    debug(direction);
 
     speed = mapConstrain(io.ballWidth.get(), 5, 35, SPEED_BALL_FAR, SPEED_BALL);
     //direction = map(io.ball.get(), -X_CENTER, X_CENTER, (float)rotMulti, -(float)rotMulti);

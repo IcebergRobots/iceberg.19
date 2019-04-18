@@ -11,8 +11,6 @@ void Reflexion::update()
 {
     if (isEnabled())
     {
-        if (DEBUG_LOOP)
-            beginSegment("ref");
         io.ballLight.set(light.on());
 
         if (isLightPhase && light.off())
@@ -32,8 +30,6 @@ void Reflexion::update()
             io.hasBall.now();
         if (cali)
             setThreshold();
-        if (DEBUG_LOOP)
-            endSegment();
     }
 }
 

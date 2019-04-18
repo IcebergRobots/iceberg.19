@@ -42,7 +42,6 @@ void Timer::now()
   {
     Value::now();
     refresh();
-    sendDebug();
   }
 }
 void Timer::now(String reason)
@@ -51,7 +50,6 @@ void Timer::now(String reason)
   {
     Value::now();
     refresh();
-    sendDebug(reason);
   }
 }
 /*****************************************************

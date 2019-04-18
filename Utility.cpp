@@ -12,9 +12,7 @@ void kick()
 *****************************************************/
 void initUART()
 {
-  DEBUG_SERIAL.begin(DEBUG_BAUDRATE);
   BLUETOOTH_SERIAL.begin(BLUETOOTH_BAUDRATE);
-  BLACKBOX_SERIAL.begin(BLACKBOX_BAUDRATE);
   BOTTOM_SERIAL.begin(BOTTOM_BAUDRATE);
 }
 
@@ -52,50 +50,9 @@ void loopWatchdog()
     wdt_disable();
 }
 
-/*****************************************************
-  initialisiere den USB-Debug zum PC
-  - sende einen Infotext als Anfang der USB-Kommunikation
-*****************************************************/
-void initDebug()
-{
-  // einige Methoden benutzen das io-Objekt und müssen daher nachträglich mittels Methodenpointer initialisiert werden
-  debugFunction = printDebug;               // setzte den Methodenpointer zum Debuggen
-  beginSegmentFunction = printBeginSegment; // setze den Methodenpointer zum Starten eines Codesegmentes
-  endSegmentFunction = printEndSegment;     // setzte den Methodenpointer zum Beenden eines Codesegmentes
-
-  io.hasDebugHead.set(true); // verhindere, dass der Zeitstempel an den Anfang des Infotextes gedruckt wird
-  DEBUG_SERIAL.println();
-  DEBUG_SERIAL.println(); // lasse eine Zeile frei, damit der Reset besser erkennbar ist
-  if (!DEBUG_ENABLED)
-    DEBUG_SERIAL.println(F("USB DEBUG DEACTIVATED!"));
-  else
-  {
-    DEBUG_SERIAL.println(F("ICEBERG ROBOTS 2019"));
-    DEBUG_SERIAL.println(F("Anton Pusch, Finn Harms, Ibo Becker, Oona Kintscher"));
-  }
-}
-
-/*****************************************************
-  initialisiere den USB-Debug zum PC
-  - sende einen Infotext als Anfang der USB-Kommunikation
-*****************************************************/
 void setupDone()
 {
-  debugln("=" + String(millis()));
-  for (int i = 0; i < 9; i++)
-    debug(F("======"), false);
   io.runtime.now();
-}
-
-/*****************************************************
-  bereite den Zeitstempel für das Debugging vor
-  - wenn DEBUG_LOOP gesetzt, drucke den Zeitstempel
-*****************************************************/
-void prepareDebug()
-{
-  io.hasDebugHead.set(false); // aktiviere den Zeitstempel
-  if (DEBUG_LOOP)
-    debug(); // drucke den Zeitstempel
 }
 
 /*****************************************************
@@ -146,56 +103,21 @@ void initEEPROM()
     io.headingOffset.set(-EEPROM.read(1));
 }
 
-void printDebug(String str, bool space)
-{
-  if (DEBUG_ENABLED && io.turbo.off())
-  {
-    if (io.segment.is(SEGMENT_EMPTY))
-    {
-      io.segment.setWithoutEvent(SEGMENT_FILLED);
-      space = false;
-    }
-    if (io.hasDebugHead.on() && space)
-      str = " " + str;
-    if (io.hasDebugHead.off())
-    {
-      io.hasDebugHead.set(true);
-      DEBUG_SERIAL.println();
-      DEBUG_SERIAL.print(format("t" + io.runtime.str(), 6));
-      DEBUG_SERIAL.print(F(" "));
-      if (DEBUG_MOTOR)
-      {
-        DEBUG_SERIAL.print(format(io.driveEnabled.on() * io.drivePower.get(), 3, 3));
-        DEBUG_SERIAL.print(F("*"));
-        DEBUG_SERIAL.print(format(circulate(io.driveAngle.get(), -179, 180), 4, 4, true));
-        DEBUG_SERIAL.print(F(" "));
-      }
-      if (DEBUG_INFO)
-      {
-      }
-      io.runtime.now();
-    }
-    DEBUG_SERIAL.print(str);
-  }
-}
-
 void printBeginSegment(String name)
 {
-  if (io.runtime.never() || DEBUG_SEGMENT)
-  { // if in setup or DEBUG_SEGMENT
+  if (io.runtime.never())
+  { 
     if (io.segment.on())
       endSegment();
-    debug(name + "{");
     io.segment.set(SEGMENT_EMPTY); // start timer
   }
 }
 void printEndSegment()
 {
-  if (io.runtime.never() || DEBUG_SEGMENT)
+  if (io.runtime.never())
   {
     if (io.segment.on())
     {
-      debug("}" + io.segment.str(), false); // if in setup or DEBUG_SEGMENT
       io.segment.set(0);
     }
   }
@@ -209,8 +131,6 @@ void initPui()
     pui.begin();
     endSegment();
   }
-  else
-    debug(F("-pui"));
 }
 
 void updateKick()

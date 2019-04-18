@@ -6,8 +6,6 @@
 IO::IO() {}
 
 void IO::update() {
-  if (DEBUG_LOOP) beginSegment(F("io"));
-
   for(int i = 0; i < objects<Value>(); i++) {
     Value *v = objects<Value>(i);
     switch (v->getElementType()) {
@@ -150,8 +148,6 @@ void IO::update() {
   kickerStop.update();
   shiftStart.update();
   shiftStop.update();
-
-  if (DEBUG_LOOP) endSegment();
 }
 
 IO io;

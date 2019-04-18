@@ -1,41 +1,6 @@
 #include "core.h"
 
 /*****************************************************
-  sende eine Zahl mit Zeilenumbruch per USB an den PC
-  @param num: Darzustellende Zahl
-  @param space: Soll ein Leerzeichen an den Anfang der Nachricht angefügt werden?
-*****************************************************/
-void debugln(long num, bool space) { debugln(String(num)); }
-
-/*****************************************************
-  sende einen Text mit Zeilenumbruch per USB an den PC
-  @param str: Darzustellender Text
-  @param space: Soll ein Leerzeichen an den Anfang der Nachricht angefügt werden?
-*****************************************************/
-void debugln(String str, bool space) { debug(str + "\n"); }
-
-/*****************************************************
-  sende eine Zahl per USB an den PC
-  @param num: Darzustellende Zahl
-  @param space: Soll ein Leerzeichen an den Anfang der Nachricht angefügt werden?
-*****************************************************/
-void debug(long num, bool space) { debug(String(num), space); }
-
-/*****************************************************
-  sende einen Text per USB an den PC
-  @param str: Darzustellender Text
-  @param space: Soll ein Leerzeichen an den Anfang der Nachricht angefügt werden?
-*****************************************************/
-void debug(String str, bool space) { debugFunction(str, space); }
-
-/*****************************************************
-  Pointer zur richtigen Darstellungsmethode des Debuggings
-  - Methode benutzt io Objekt, welches hier noch nicht verfügbar ist
-  - dient zum nachträglichen Einfügen des Codes
-*****************************************************/
-void (*debugFunction)(String, bool);
-
-/*****************************************************
   ist der Wert endlich also nicht unendlich?
   @param value: Zahlenwert
 *****************************************************/

@@ -17,15 +17,6 @@
 #define LINE_ENABLED        1
 #define KICKER_ENABLED      1
 
-// DEBUG
-#define DEBUG_ENABLED       1
-#define DEBUG_SEGMENT       0       // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP          0       // soll jeder Schleifendurchlauf gezeigt werden?
-#define DEBUG_BLUETOOTH     0       // sollen bluetooth nachrichten gezeigt werden?
-#define DEBUG_I2C           0
-#define DEBUG_MOTOR         0    
-#define DEBUG_INFO          0
-
 // Fahren
 #define ROLE_COOLDOWN 1000      // [0 bis *]~1000 Zeitspanne, in dem kein Rollenwechsel stattfindet
 #define ANGLE_SIDEWAY 90       // [0 bis 180]~100
@@ -82,7 +73,6 @@
 #define BLACKBOX_BAUDRATE   115200
 #define BOTTOM_SERIAL       Serial3
 #define BOTTOM_BAUDRATE     115200
-#define DEBUG_SERIAL        Serial  // Serial der Usb-Schnittstelle
 #define START_MARKER        254     // Startzeichen einer Bluetooth-Nachricht
 #define END_MARKER          255     // Endzeichen einer Bluetooth-Nachricht
 
@@ -169,12 +159,6 @@
 #ifndef ARDUINO_AVR_MEGA2560
 #error "Wrong board selected! Choose Mega 2560"
 #endif
-
-void debugln(long num, bool space=true);
-void debugln(String str="", bool space=true);
-void debug(long num, bool space=true);
-void debug(String str="", bool space=true);
-extern void (*debugFunction)(String, bool);
 
 bool isFinite(unsigned long value);
 bool isFinite(unsigned int value);

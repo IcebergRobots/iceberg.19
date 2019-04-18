@@ -187,8 +187,7 @@ class IO {
     Value goal           = Value(      LIMITS, -160,  159  );  // Abweichung der Tor X-Koordinate
     Value goalWidth      = Value(      LIMITS,    0        );  // Torbreite
     Value goalArea       = Value(      LIMITS,    0        );  // Torgröße (Flächeninhalt)
-    
-    Value hasDebugHead   = Value(     BOOLEAN              );  // Debug-Zeilenanfang
+  
     Value segment        = Value(      LIMITS,    0,    2  );  // Laufzeit eines Codeblockes
     Value battery        = Value(     BOOLEAN              );  // ist der Akku angeschlosse?
     Value batteryVoltage = Value(      LIMITS,     0,  999 );

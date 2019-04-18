@@ -10,12 +10,12 @@ Wir ham die Icebergs ... so gern!
 ***********************************************/
 
 #include "include.h"
+#include "HardwareSerial.h"
 
 void setup()
 {
   setupWatchdog();
   initUART();
-  initDebug();
   initI2C();
   initEEPROM();
   initStates();
@@ -27,24 +27,13 @@ void setup()
   orientation.init();
   us.init();
   reflexion.init();
-  // createCrashlog();
-  // restoreSession();
+  
   setupDone();
   digitalWrite(io.kick.getPin(), LOW);
-
-  /*****************************************************/
-  io.state.startDebug();
-  // io.state.startDebug();
-  // io.ballWidth.startDebug();
-  // io.drivePower.startDebug();
-  // io.stateDirection.startDebug();
-  /*****************************************************/
 }
 
 void loop()
 {
-  prepareDebug(); // bereite debug nachrichten vor
-
   loopWatchdog();
 
   io.update();
@@ -65,8 +54,7 @@ void loop()
   if (us.onDemand())
     us.update();
 
-  if (io.selectMenu.click())
-    debug(F("selectMenu"));
+  if (io.selectMenu.click()){}
   if (io.testKick.click())
     kick();
   if (io.compassCalibration.click())
@@ -87,18 +75,9 @@ void loop()
     io.pause.set(true);
 
   if (io.shiftStart.click())
-  {
-    debug(format(us.left(), 3, 3));
-    debug(format(us.left2(), 3, 3));
-    debug(format(us.left3(), 3, 3));
-    debug(F("<>"));
-    debug(format(us.right(), 3, 3));
-    debug(format(us.right2(), 3, 3));
-    debug(format(us.right3(), 3, 3));
-  }
+  {}
   if (io.shiftStop.click())
-  {
-  }
+  {}
 
   updateStates();
   // updateRating();

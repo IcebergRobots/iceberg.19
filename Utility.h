@@ -17,18 +17,15 @@ void initUART();
 void initI2C();
 void setupWatchdog();
 void loopWatchdog();
-void initDebug();
 void setupDone();
 
 void startSound();
 
-void prepareDebug();
 
 void initEEPROM();
 void initStates();
 void updateStates();
 
-void printDebug(String str, bool space);
 void printBeginSegment(String name);
 void printEndSegment();
 

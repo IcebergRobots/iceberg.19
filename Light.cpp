@@ -129,13 +129,6 @@ void Light::light()
         else
           pui.setPixelState(5);
 
-        if (io.turbo.off() || !DEBUG_ENABLED)
-          pui.setPixelState(6, STATE_WARNING);
-        else if (DEBUG_LOOP || DEBUG_SEGMENT)
-          pui.setPixelState(6, STATE_OK);
-        else
-          pui.setPixelState(6, STATE_ACTIVE);
-
         if (!line.isEnabled() || io.bottom.off())
           pui.setPixelState(7, STATE_ERROR);
         else if (io.onLine.on())

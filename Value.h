@@ -16,16 +16,6 @@
 #define MODULATION 1
 #define BOOLEAN    2
 
-// Debug debug
-#define DEBUG_ENABLE      0
-#define DEBUG_ON_CHANGE   1
-#define DEBUG_ON_REASON   2
-#define DEBUG_FOR_PLOTTER 3
-#define DEBUG_PIN         4
-#define DEBUG_TIME        5
-#define DEBUG_VALUE       6
-#define DEBUG_REASON      7
-
 // Values
 #define LEFT  false
 #define RIGHT true
@@ -95,25 +85,13 @@ class Value : public Container
     bool outsidePeriod(unsigned long min);
     bool insidePeroid(unsigned long max);
 
-    // debug
-    void showDebug(byte type, bool enable=true);
-    void startDebug();
-    void stopDebug();
-    void resetDebug();
-
     void setElementType(byte type);
     byte getElementType();
-
-    bool isDebug(byte type=DEBUG_ENABLE);
-    void sendDebug(byte pin=INF);
-    void sendDebug(String reason, byte pin=INF);
 
   private:
     void setState(byte s);
     char getState();
     bool timerValid();
-    String prepareDebug(byte pin);
-
     byte elementType = VALUE;
     int value = 0;
     int a = 0;  // in case of modulation: upper limit
@@ -122,7 +100,6 @@ class Value : public Container
                 // in case of limits: upper limit
     unsigned int eventTimer = 0; // 0: no event jet, 1: event canceled, >1: time of last event
     char state = OFF; // OFF, ON, FALLING, RISING, OFF_CHANGE, ON_
-    byte debugSettings = B11000010;
 };
 
 #endif
