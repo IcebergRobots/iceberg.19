@@ -28,33 +28,32 @@ Pilot::Pilot()
 void Pilot::setState()
 {
   if (io.seeBall.change() && io.seeBall.on()) // finden wir den Ball gerade wieder?
-    io.state.set(BALL_TRACKING, "view");
+    io.state.set(BALL_TRACKING);
   if (io.seeBall.change() && io.seeBall.off()) // verlieren wir den Ball gerade?
-    io.state.set(BACK, "blind");
+    io.state.set(BACK);
 
   switch (io.state.get()) // durchlaufe die Zustandsmaschine
   {
   default:
   case BACK:                             // fahre nach hinten
     if (us.back() <= COURT_REARWARD_MAX) // sind wir schon im Strafraum?
-      io.state.set(GOALKEEPER, "enter penalty area");
-    //else if (io.state.outsidePeriod(BACKWARD_MAX_DURATION)) io.state.set(FREEING, "time>");
+      io.state.set(GOALKEEPER);
     break;
   case GOALKEEPER:
     if (io.seeBall.off() && io.stateDirection.outsidePeriod(SIDEWARD_MAX_DURATION))     // fahren wir schon zu lange blind in eine Richtung?
-      io.stateDirection.set(io.stateDirection.off(), "turn:timeout");                   // ändere die Richtung wegen Zeitüberschreitung
+      io.stateDirection.set(io.stateDirection.off());                   // ändere die Richtung wegen Zeitüberschreitung
     else if (io.seeBall.on() || io.stateDirection.outsidePeriod(SIDEWARD_MIN_DURATION)) // verhindere zu häufige Richtungswechsel außer bei Ballsicht
     {
       // positioniere dich vor den Ball
       if (io.seeBallLeft.on())
-        io.stateDirection.set(LEFT, "turn:ball left");
+        io.stateDirection.set(LEFT);
       else if (io.seeBallRight.on())
-        io.stateDirection.set(RIGHT, "turn:ball right");
+        io.stateDirection.set(RIGHT);
 
       if (us.back() > COURT_REARWARD_MAX)         // haben wir den Strafraum verlassen
-        io.state.set(BACK, "leave penalty area"); // fahre wieder nach hinten
+        io.state.set(BACK); // fahre wieder nach hinten
       else if (atGatepost())                      // sind wir ausreichend
-        io.stateDirection.set(io.stateDirection.off(), "turn:at gatepost");
+        io.stateDirection.set(io.stateDirection.off());
     }
     break;
   case GOALPOST_GO:

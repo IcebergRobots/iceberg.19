@@ -44,28 +44,11 @@ void Timer::now()
     refresh();
   }
 }
-void Timer::now(String reason)
-{
-  if (requirement == NULL || requirement->on())
-  {
-    Value::now();
-    refresh();
-  }
-}
+
 /*****************************************************
   turn the timer off
 *****************************************************/
 void Timer::abort() {
   Value::abort();
   refresh();
-}
-/*****************************************************
-  time since last event as string
-  @param minLength: minimun length of the string
-  @param maxLength: maximun length of the string
-  @param sign: add a plus sign
-*****************************************************/
-String Timer::str(unsigned int minLength, unsigned int maxLength, bool sign)
-{
-  return format(period(), minLength, maxLength, sign);
 }

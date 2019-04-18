@@ -118,13 +118,7 @@ void Value::set(int _value, byte pin)
     now(); // trigger the timer because value changed
   }
 }
-void Value::set(int _value, String reason, byte pin)
-{
-  if (setWithoutEvent(_value))
-  {
-    now();
-  }
-}
+
 /*****************************************************
   change the value
   @param _summand: summand
@@ -195,16 +189,6 @@ bool Value::is(int comparison) { return value == comparison; }
   @param comparison: value to compare
 *****************************************************/
 bool Value::no(int comparison) { return value != comparison; }
-/*****************************************************
-  convert number to formatted string
-  @param minLength: minimun length of the string
-  @param maxLength: maximun length of the string
-  @param sign: add a plus sign
-*****************************************************/
-String Value::str(unsigned int minLength, unsigned int maxLength, bool sign)
-{
-  return format(value, minLength, maxLength, sign);
-}
 
 /*****************************************************
   did the value fall?

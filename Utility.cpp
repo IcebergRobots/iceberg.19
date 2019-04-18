@@ -61,7 +61,7 @@ void setupDone()
 void initStates()
 {
   io.driveEnabled.set(true); // aktiviere das Fahrgestell
-  io.pause.set(true);        // verhindere, dass die Roboter sofort losfahren
+  io.pause=true;        // verhindere, dass die Roboter sofort losfahren
 
   io.batteryVoltmeter.update();                                     // miss die Akkuspannung
   io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE); // bestimme, welche Klassen initialisieren sollen
@@ -89,7 +89,7 @@ void updateStates()
   io.batteryVoltage.set(io.batteryVoltmeter.get() * 0.1249);
   io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE);
   io.flat.now();
-  io.driveEnabled.set(io.pause.off() && io.motor.on());
+  io.driveEnabled.set(!io.pause && io.motor.on());
   // erkenne Hochheben
   // dof.accelGetOrientation(&accel_event, &orientation);
   // io.flat.set(!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7));

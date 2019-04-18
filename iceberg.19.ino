@@ -27,7 +27,7 @@ void setup()
   orientation.init();
   us.init();
   reflexion.init();
-  
+
   setupDone();
   digitalWrite(io.kick.getPin(), LOW);
 }
@@ -70,9 +70,9 @@ void loop()
   if (io.ballTouchCalibration.click())
     reflexion.calibrate();
   if (io.start.click())
-    io.pause.set(false);
+    io.pause = false;
   if (io.stop.click())
-    io.pause.set(true);
+    io.pause = true;
 
   if (io.shiftStart.click())
   {}

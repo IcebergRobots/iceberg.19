@@ -170,8 +170,8 @@ class IO {
     Timer abc             = Timer(    100             );
 
     // all global variables
-    Value aggressive     = Value(     BOOLEAN              );
-    Value striker        = Value(     BOOLEAN              );
+    bool  aggressive;
+    bool  striker;
     Value state          = Value(      LIMITS,    0,    9  );
     Value stateDirection = Value(     BOOLEAN              );
 
@@ -191,7 +191,7 @@ class IO {
     Value segment        = Value(      LIMITS,    0,    2  );  // Laufzeit eines Codeblockes
     Value battery        = Value(     BOOLEAN              );  // ist der Akku angeschlosse?
     Value batteryVoltage = Value(      LIMITS,     0,  999 );
-    Value pause          = Value(     BOOLEAN              );  // ist das Spiel pausiert?
+    bool  pause;  // ist das Spiel pausiert?
 
     Value heading        = Value(  MODULATION, -179,  180  );
     Value headingOffset  = Value(  MODULATION, -179,  180  );

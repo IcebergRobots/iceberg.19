@@ -152,7 +152,7 @@ void Light::light()
 
         if (io.motor.off())
           pui.setPixelState(10, STATE_ERROR);
-        else if (io.pause.on())
+        else if (io.pause)
           pui.setPixelState(10, STATE_WARNING);
         else
           pui.setPixelState(10, STATE_ACTIVE);

@@ -11,7 +11,6 @@ class Timer : public Value
     void update();
     
     void now();
-    void now(String reason);
     void abort();
 
     String str(unsigned int minLength=0, unsigned int maxLength=INF, bool sign=false);
@@ -23,7 +22,6 @@ class Timer : public Value
     using Value::now;
     using Value::abort;
     using Value::setWithoutEvent;
-    using Value::set;
     using Value::set;
     using Value::add;
     using Value::mul;

@@ -55,7 +55,6 @@ class Value : public Container
     void abort();
     bool setWithoutEvent(int _value);
     void set(int _value, byte pin=INF);
-    void set(int _value, String reason, byte pin=INF);
     void add(int _summand=1);
     void mul(float _factor);
     void toggle();

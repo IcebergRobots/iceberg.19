@@ -3,7 +3,7 @@ class Partner{
         void setAnimation(bool state);
         void start();
         void stop();
-        void setRoleStriker(bool striker);
+        void setRoleStriker(bool isStriker);
         void move();
         void getPosition(int *x, int *y);
         int[2] getPosition();

@@ -166,9 +166,7 @@ bool isFinite(byte value);
 
 int circulate(int value, int min, int max);
 int pinMode(byte pin);
-void reset();
-String format(String str, unsigned int minLength=0, unsigned int maxLength=-1);
-String format(long num, unsigned int minLength=0, unsigned int maxLength=-1, bool sign=false);
+//void reset();
 bool blink(unsigned long period, float proportion);
 long mapConstrain(long x, long in_min, long in_max, long out_min, long out_max);
 

@@ -51,37 +51,10 @@ int pinMode(byte pin)
   starte den Arduino neu
   - setze den Befehlszähler auf 0
 *****************************************************/
-void reset()
+/*void reset()
 {
-  asm("jmp 0"); // starte den Arduino neu
-}
-
-/*****************************************************
-  schneide eine Zahl oder Text auf eine bestimmte Länge
-  @param str: Text
-  @param num: Zahl
-  @param minLength: Mindestlänge der Ausgabe
-  @param max: obere Maximallänge der Ausgabe
-*****************************************************/
-String format(String str, unsigned int minLength, unsigned int maxLength)
-{
-  byte l = str.length();
-  for (int i = 0; l + i < minLength; i++)
-  {
-    str = " " + str;
-  }
-  if (maxLength + 1 != 0)
-    return str.substring(str.length() - maxLength, str.length());
-  else
-    return str;
-}
-String format(long num, unsigned int minLength, unsigned int maxLength, bool sign)
-{
-  String str = String(num);
-  if (sign && num >= 0)
-    str = "+" + str;
-  return format(str, minLength, maxLength);
-}
+  asm(F("jmp 0")); // starte den Arduino neu
+}*/
 
 bool blink(unsigned long period, float proportion) {
   return (millis() % period) <= proportion * period;
