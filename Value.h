@@ -24,7 +24,7 @@
 // Element type
 #define VALUE    0
 #define TIMER    1
-#define PIN      2
+#define PIN_NR      2
 #define KEY      3
 #define SHORTCUT 4
 

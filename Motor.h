@@ -8,7 +8,7 @@ class Motor : public Container
 {
   public:
     Motor();
-    void setPins(Pin *_current, Pin *_forward, Pin *_backward, Pin *_speed);
+    void setPins(OwnPin *_current, OwnPin *_forward, OwnPin *_backward, OwnPin *_speed);
     void temp(int power);
     void set(int power);
     void set();
@@ -16,7 +16,7 @@ class Motor : public Container
     void brake(bool active);
     int amperage();
     
-    Pin *current, *forward, *backward, *speed;
+    OwnPin *current, *forward, *backward, *speed;
   private:
 };
 

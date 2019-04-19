@@ -23,7 +23,7 @@ state:  ┊        STROKE    FURTHER       FURTHER       FURTHER       ┊
   OFF   ┊  OFF    ┊   ON     ┊       ON    ┊       ON    ┊      ...  ┊  OFF
 
 ******************************************************************************/
-class Key: public Pin
+class Key: public OwnPin
 {
 	public:
     Key(byte _pin, byte _type, unsigned long _preStroke=INF, unsigned long _postStroke=INF, unsigned long _postFurther=INF);

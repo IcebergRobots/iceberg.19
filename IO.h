@@ -9,111 +9,111 @@ class IO {
     IO();
 
     // Analoge Sensoren
-    Pin temperaturePcb      = Pin(  A13,  INPUT,         ANALOG   );  // misst Temperatur nahe den Motortreibern
-    Pin brightnessPcb       = Pin(  A10,  INPUT_PULLUP,  ANALOG   );  // misst Helligkeit rechts auf der Platine
-    Pin batteryVoltmeter    = Pin(  A11,  INPUT,         ANALOG   );  // misst Akkuspannung
-    Pin temperatureMd       = Pin(   A5,  INPUT,         ANALOG   );  // misst Temperatur nahe den Motortreibern
-    Pin buzzer              = Pin(   34,  OUTPUT,        DIGITAL  );  // piept Ton, aktiver Buzzer
+    OwnPin temperaturePcb      = OwnPin(  A13,  INPUT,         ANALOG   );  // misst Temperatur nahe den Motortreibern
+    OwnPin brightnessPcb       = OwnPin(  A10,  INPUT_PULLUP,  ANALOG   );  // misst Helligkeit rechts auf der Platine
+    OwnPin batteryVoltmeter    = OwnPin(  A11,  INPUT,         ANALOG   );  // misst Akkuspannung
+    OwnPin temperatureMd       = OwnPin(   A5,  INPUT,         ANALOG   );  // misst Temperatur nahe den Motortreibern
+    OwnPin buzzer              = OwnPin(   34,  OUTPUT,        DIGITAL  );  // piept Ton, aktiver Buzzer
 
     // Ausgabe
-    Pin indFront            = Pin(   49,  OUTPUT,        DIGITAL  );  // ungenutzte LED vorne
-    Pin speaker             = Pin(   13,  OUTPUT,        PWM      );  // zum abspielen von Tönen und Melodien, passiver Buzzer
-    Pin indLeft             = Pin(    6,  OUTPUT,        PWM      );  // ungenutzte LED hinten links
-    Pin indRight            = Pin(   38,  OUTPUT,        DIGITAL  );  // ungenutzte LED hinten rechts
-    Pin indRgb              = Pin(   36,  OUTPUT,        DIGITAL  );  // stellt RGB-LEDs vorne auf Main-PCB ein, kann über Logic Analyser mitgelesen werden
-    Pin indHeartbeat        = Pin(    7,  OUTPUT,        PWM      );  // Blinken zweier LEDs
+    OwnPin indFront            = OwnPin(   49,  OUTPUT,        DIGITAL  );  // ungenutzte LED vorne
+    OwnPin speaker             = OwnPin(   13,  OUTPUT,        PWM      );  // zum abspielen von Tönen und Melodien, passiver Buzzer
+    OwnPin indLeft             = OwnPin(    6,  OUTPUT,        PWM      );  // ungenutzte LED hinten links
+    OwnPin indRight            = OwnPin(   38,  OUTPUT,        DIGITAL  );  // ungenutzte LED hinten rechts
+    OwnPin indRgb              = OwnPin(   36,  OUTPUT,        DIGITAL  );  // stellt RGB-LEDs vorne auf Main-PCB ein, kann über Logic Analyser mitgelesen werden
+    OwnPin indHeartbeat        = OwnPin(    7,  OUTPUT,        PWM      );  // Blinken zweier LEDs
 
     // Bluetooth
-    Pin bluetoothTx         = Pin(   16,  INPUT,         DIGITAL  );  // HC-05 <- Mega, Funkverbindung mit Partner
-    Pin bluetoothRx         = Pin(   17,  INPUT,         DIGITAL  );  // HC-05 -> Mega, Funkverbindung mit Partner
+    OwnPin bluetoothTx         = OwnPin(   16,  INPUT,         DIGITAL  );  // HC-05 <- Mega, Funkverbindung mit Partner
+    OwnPin bluetoothRx         = OwnPin(   17,  INPUT,         DIGITAL  );  // HC-05 -> Mega, Funkverbindung mit Partner
 
     // Bodensensor
-    Pin lineInterrupt       = Pin(    3,  INPUT,         PWM      );  // empfängt Interrupt beim Erkennen einer Linie
-    Pin lineLight           = Pin(   46,  OUTPUT,        DIGITAL  );  // stellt Bodenbeleuchtungs-LEDs ein
-    Pin lineTx              = Pin(   14,  INPUT,         DIGITAL  );  // Nano <- Mega
-    Pin lineRx              = Pin(   15,  INPUT,         DIGITAL  );  // Nano -> Mega
+    OwnPin lineInterrupt       = OwnPin(    3,  INPUT,         PWM      );  // empfängt Interrupt beim Erkennen einer Linie
+    OwnPin lineLight           = OwnPin(   46,  OUTPUT,        DIGITAL  );  // stellt Bodenbeleuchtungs-LEDs ein
+    OwnPin lineTx              = OwnPin(   14,  INPUT,         DIGITAL  );  // Nano <- Mega
+    OwnPin lineRx              = OwnPin(   15,  INPUT,         DIGITAL  );  // Nano -> Mega
 
     // Freigelegte Pins
-    Pin test1               = Pin(   42,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss Testpin)
-    Pin test2               = Pin(   44,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss Testpin)
-    Pin test3               = Pin(   48,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss Testpin)
-    Pin jumper1             = Pin(   39,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss mit Masse J12)
-    Pin jumper2             = Pin(   41,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss mit Masse J13)
-    Pin jumper3             = Pin(   43,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss mit Masse J8)
-    Pin jumper4             = Pin(   45,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss mit Masse J9)
-    Pin jumper5             = Pin(  A12,  OUTPUT,        ANALOG   );  // ungenutzter Analoganschluss mit Masse J24)
-    Pin jumper6             = Pin(  A14,  OUTPUT,        ANALOG   );  // ungenutzter Analoganschluss mit Masse J26)
+    OwnPin test1               = OwnPin(   42,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss Testpin)
+    OwnPin test2               = OwnPin(   44,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss Testpin)
+    OwnPin test3               = OwnPin(   48,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss Testpin)
+    OwnPin jumper1             = OwnPin(   39,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss mit Masse J12)
+    OwnPin jumper2             = OwnPin(   41,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss mit Masse J13)
+    OwnPin jumper3             = OwnPin(   43,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss mit Masse J8)
+    OwnPin jumper4             = OwnPin(   45,  OUTPUT,        DIGITAL  );  // ungenutzter Digitalanschluss mit Masse J9)
+    OwnPin jumper5             = OwnPin(  A12,  OUTPUT,        ANALOG   );  // ungenutzter Analoganschluss mit Masse J24)
+    OwnPin jumper6             = OwnPin(  A14,  OUTPUT,        ANALOG   );  // ungenutzter Analoganschluss mit Masse J26)
 
     // I2C
-    Pin scl                 = Pin(   21,  INPUT_PULLUP,  DIGITAL  );  // I2C Clockleitung
-    Pin sda                 = Pin(   20,  INPUT_PULLUP,  DIGITAL  );  // I2C Datenleitung
+    OwnPin scl                 = OwnPin(   21,  INPUT_PULLUP,  DIGITAL  );  // I2C Clockleitung
+    OwnPin sda                 = OwnPin(   20,  INPUT_PULLUP,  DIGITAL  );  // I2C Datenleitung
 
     // Positionslichter
-    Pin navigationAntennaB  = Pin(   A8,  INPUT,         ANALOG   );  // erkennt Entfernung der IR-Pulsquelle
-    Pin navigationAntennaA  = Pin(   A9,  INPUT,         ANALOG   );  // erkennt Entfernung der IR-Pulsquelle
-    Pin navigationAntennaC  = Pin(   A7,  INPUT,         ANALOG   );  // erkennt Entfernung der IR-Pulsquelle
-    Pin navigationAntennaD  = Pin(   A6,  INPUT,         ANALOG   );  // erkennt Entfernung der IR-Pulsquelle
-    Pin navigationLight     = Pin(    4,  OUTPUT,        PWM      );  // aktiviert Pulse-IR-Positionslichter
+    OwnPin navigationAntennaB  = OwnPin(   A8,  INPUT,         ANALOG   );  // erkennt Entfernung der IR-Pulsquelle
+    OwnPin navigationAntennaA  = OwnPin(   A9,  INPUT,         ANALOG   );  // erkennt Entfernung der IR-Pulsquelle
+    OwnPin navigationAntennaC  = OwnPin(   A7,  INPUT,         ANALOG   );  // erkennt Entfernung der IR-Pulsquelle
+    OwnPin navigationAntennaD  = OwnPin(   A6,  INPUT,         ANALOG   );  // erkennt Entfernung der IR-Pulsquelle
+    OwnPin navigationLight     = OwnPin(    4,  OUTPUT,        PWM      );  // aktiviert Pulse-IR-Positionslichter
 
     // Lichtschranke
-    Pin ballLight           = Pin(   47,  OUTPUT,        DIGITAL  );  // leuchtet den Ball an, Sensor misst Reflexion
-    Pin ballTouch           = Pin(  A15,  INPUT_PULLUP,  ANALOG   );  // Fotowiderstand misst Helligkeit der Lichtschranke
+    OwnPin ballLight           = OwnPin(   47,  OUTPUT,        DIGITAL  );  // leuchtet den Ball an, Sensor misst Reflexion
+    OwnPin ballTouch           = OwnPin(  A15,  INPUT_PULLUP,  ANALOG   );  // Fotowiderstand misst Helligkeit der Lichtschranke
 
     // Logger
-    Pin loggerTx            = Pin(   18,  INPUT,         DIGITAL  );  // Logger <- Mega, Black Box Ereignissprotokoll
-    Pin loggerRx            = Pin(   19,  INPUT,         DIGITAL  );  // Logger -> Mega, Black Box Ereignissprotokoll
+    OwnPin loggerTx            = OwnPin(   18,  INPUT,         DIGITAL  );  // Logger <- Mega, Black Box Ereignissprotokoll
+    OwnPin loggerRx            = OwnPin(   19,  INPUT,         DIGITAL  );  // Logger -> Mega, Black Box Ereignissprotokoll
 
     // Logic Analyser
-    Pin loggerTrigger       = Pin(   40,  OUTPUT,        DIGITAL  );  // Freier Pin am Analyzer, kann zum auslösen einer Messung verwendet werden
+    OwnPin loggerTrigger       = OwnPin(   40,  OUTPUT,        DIGITAL  );  // Freier OwnPin am Analyzer, kann zum auslösen einer Messung verwendet werden
 
     // Motortreiber
-    Pin m0Speed             = Pin(    8,  OUTPUT,        PWM      );  // setzt Motordrehzahl
-    Pin m0Dir1              = Pin(   25,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
-    Pin m0Dir2              = Pin(   23,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
-    Pin m0Current           = Pin(   A1,  INPUT,         ANALOG   );  // misst Stromstärke der Motoren
-    Pin m1Speed             = Pin(    9,  OUTPUT,        PWM      );  // setzt Motordrehzahl
-    Pin m1Dir1              = Pin(   29,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
-    Pin m1Dir2              = Pin(   27,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
-    Pin m1Current           = Pin(   A2,  INPUT,         ANALOG   );  // misst Stromstärke der Motoren
-    Pin m2Speed             = Pin(   10,  OUTPUT,        PWM      );  // setzt Motordrehzahl
-    Pin m2Dir1              = Pin(   37,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
-    Pin m2Dir2              = Pin(   35,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
-    Pin m2Current           = Pin(   A3,  INPUT,         ANALOG   );  // misst Stromstärke der Motoren
-    Pin m3Speed             = Pin(   11,  OUTPUT,        PWM      );  // setzt Motordrehzahl
-    Pin m3Dir1              = Pin(   33,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
-    Pin m3Dir2              = Pin(   31,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
-    Pin m3Current           = Pin(   A4,  INPUT,         ANALOG   );  // misst Stromstärke der Motoren
+    OwnPin m0Speed             = OwnPin(    8,  OUTPUT,        PWM      );  // setzt Motordrehzahl
+    OwnPin m0Dir1              = OwnPin(   25,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
+    OwnPin m0Dir2              = OwnPin(   23,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
+    OwnPin m0Current           = OwnPin(   A1,  INPUT,         ANALOG   );  // misst Stromstärke der Motoren
+    OwnPin m1Speed             = OwnPin(    9,  OUTPUT,        PWM      );  // setzt Motordrehzahl
+    OwnPin m1Dir1              = OwnPin(   29,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
+    OwnPin m1Dir2              = OwnPin(   27,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
+    OwnPin m1Current           = OwnPin(   A2,  INPUT,         ANALOG   );  // misst Stromstärke der Motoren
+    OwnPin m2Speed             = OwnPin(   10,  OUTPUT,        PWM      );  // setzt Motordrehzahl
+    OwnPin m2Dir1              = OwnPin(   37,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
+    OwnPin m2Dir2              = OwnPin(   35,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
+    OwnPin m2Current           = OwnPin(   A3,  INPUT,         ANALOG   );  // misst Stromstärke der Motoren
+    OwnPin m3Speed             = OwnPin(   11,  OUTPUT,        PWM      );  // setzt Motordrehzahl
+    OwnPin m3Dir1              = OwnPin(   33,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
+    OwnPin m3Dir2              = OwnPin(   31,  OUTPUT,        DIGITAL  );  // legt Fahrtrichtung oder Bremsmodus fest
+    OwnPin m3Current           = OwnPin(   A4,  INPUT,         ANALOG   );  // misst Stromstärke der Motoren
 
     // PUI-Anschluss
-    Pin puiLight            = Pin(   32,  OUTPUT,        DIGITAL  );  // stellt PUI-LEDs ein
-    Pin puiInterrupt        = Pin(    2,  INPUT,         DIGITAL  );  // empfängt Interrupt bei Knopfdruck
-    Pin poti                = Pin(   A0,  INPUT,         ANALOG   );  // misst Drehwiderstand
-    Pin headstart           = Pin(    0,  INPUT_PULLUP,  PUI      );  // headstart (lever)
-    Pin motor               = Pin(    1,  INPUT_PULLUP,  PUI      );  // motor     (lever)
-    Pin bluetooth           = Pin(    2,  INPUT_PULLUP,  PUI      );  // bluetooth (lever)
-    Pin kicker              = Pin(    3,  INPUT_PULLUP,  PUI      );  // kicker    (lever)
-    Pin bottom              = Pin(    4,  INPUT_PULLUP,  PUI      );  // bottom    (lever)
-    Pin turbo               = Pin(    5,  INPUT_PULLUP,  PUI      );  // debug     (lever)
+    OwnPin puiLight            = OwnPin(   32,  OUTPUT,        DIGITAL  );  // stellt PUI-LEDs ein
+    OwnPin puiInterrupt        = OwnPin(    2,  INPUT,         DIGITAL  );  // empfängt Interrupt bei Knopfdruck
+    OwnPin poti                = OwnPin(   A0,  INPUT,         ANALOG   );  // misst Drehwiderstand
+    OwnPin headstart           = OwnPin(    0,  INPUT_PULLUP,  PUI      );  // headstart (lever)
+    OwnPin motor               = OwnPin(    1,  INPUT_PULLUP,  PUI      );  // motor     (lever)
+    OwnPin bluetooth           = OwnPin(    2,  INPUT_PULLUP,  PUI      );  // bluetooth (lever)
+    OwnPin kicker              = OwnPin(    3,  INPUT_PULLUP,  PUI      );  // kicker    (lever)
+    OwnPin bottom              = OwnPin(    4,  INPUT_PULLUP,  PUI      );  // bottom    (lever)
+    OwnPin turbo               = OwnPin(    5,  INPUT_PULLUP,  PUI      );  // debug     (lever)
 
-    Pin indKeeper           = Pin(    6,  OUTPUT,        PUI      );  // kleine Led
-    Pin indStriker          = Pin(    7,  OUTPUT,        PUI      );  // große Led
+    OwnPin indKeeper           = OwnPin(    6,  OUTPUT,        PUI      );  // kleine Led
+    OwnPin indStriker          = OwnPin(    7,  OUTPUT,        PUI      );  // große Led
 
 
     // Schuss-Elektronik
-    Pin kick                = Pin(   12,  OUTPUT,        PWM      );  // Schuss auslösen, lässt Elektromagneten anziehen, Wenn MOSFET ausgewählt PWM-fähig
+    OwnPin kick                = OwnPin(   12,  OUTPUT,        PWM      );  // Schuss auslösen, lässt Elektromagneten anziehen, Wenn MOSFET ausgewählt PWM-fähig
 
     // Servo
-    Pin cameraServo         = Pin(    5,  OUTPUT,        PWM      );  // Kamerawinkel, setzt Servolenkung für die Kameradrehung
+    OwnPin cameraServo         = OwnPin(    5,  OUTPUT,        PWM      );  // Kamerawinkel, setzt Servolenkung für die Kameradrehung
 
     // SPI 
-    Pin spiClk              = Pin(   52,  INPUT,         DIGITAL  );  // Serial Clock
-    Pin spiCs               = Pin(   53,  OUTPUT,        DIGITAL  );  // Chip Select
-    Pin spiMiso             = Pin(   50,  INPUT,         DIGITAL  );  // Master Input, Slave Output
-    Pin spiMosi             = Pin(   51,  INPUT,         DIGITAL  );  // Master Output, Slave Input
+    OwnPin spiClk              = OwnPin(   52,  INPUT,         DIGITAL  );  // Serial Clock
+    OwnPin spiCs               = OwnPin(   53,  OUTPUT,        DIGITAL  );  // Chip Select
+    OwnPin spiMiso             = OwnPin(   50,  INPUT,         DIGITAL  );  // Master Input, Slave Output
+    OwnPin spiMosi             = OwnPin(   51,  INPUT,         DIGITAL  );  // Master Output, Slave Input
 
     // USB 
-    Pin usbTx               = Pin(    1,  INPUT,         DIGITAL  );  // Computer <- Mega, Computer Kommunikation
-    Pin usbRx               = Pin(    0,  OUTPUT,        DIGITAL  );  // Computer -> Mega, Computer Kommunikation   
+    OwnPin usbTx               = OwnPin(    1,  INPUT,         DIGITAL  );  // Computer <- Mega, Computer Kommunikation
+    OwnPin usbRx               = OwnPin(    0,  OUTPUT,        DIGITAL  );  // Computer -> Mega, Computer Kommunikation   
 
     // PUI: keys and levers
     Key decreasePage          = Key(   11,  PUI,      0,     500,   200   );  // vorherige Bildschirmseite

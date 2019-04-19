@@ -8,7 +8,7 @@
   - set pinMode
   - configurate limits automatically
 *****************************************************/
-Pin::Pin(byte _pin, byte _mode, byte _type) : Value() {
+OwnPin::OwnPin(byte _pin, byte _mode, byte _type) : Value() {
   pin = _pin;
   mode = _mode;
   type = _type;
@@ -44,7 +44,7 @@ Pin::Pin(byte _pin, byte _mode, byte _type) : Value() {
   output a signal on the arduino pin
   @param _value: output signal
 *****************************************************/
-void Pin::set(int _value) {
+void OwnPin::set(int _value) {
   temp(_value);
   set();
 }
@@ -52,7 +52,7 @@ void Pin::set(int _value) {
 /*****************************************************
   output the temporary saved signal on the arduino pin
 *****************************************************/
-void Pin::set() {
+void OwnPin::set() {
   if (mode == OUTPUT) {
     switch (type) {
       case ANALOG:
@@ -78,7 +78,7 @@ void Pin::set() {
   @param _value: output signal
   - wait for set() to execute changes
 *****************************************************/
-void Pin::temp(int _value) {
+void OwnPin::temp(int _value) {
   Value::set(_value, getPin());
 }
 
@@ -86,7 +86,7 @@ void Pin::temp(int _value) {
   read the arduino pin
   - will ignore output pins
 *****************************************************/
-void Pin::update() {
+void OwnPin::update() {
   Value::update();
   if(mode != OUTPUT) {
     switch (type)
@@ -115,11 +115,11 @@ void Pin::update() {
 /*****************************************************
   return pin address
 *****************************************************/
-byte Pin::getPin() {
+byte OwnPin::getPin() {
 	return pin;
 }
 
-void Pin::initPui() {
+void OwnPin::initPui() {
   if (mode == OUTPUT) pui.pinMode(pin, OUTPUT);
   else                pui.pinMode(pin, INPUT);
       

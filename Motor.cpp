@@ -3,7 +3,7 @@
 
 Motor::Motor() {}
 
-void Motor::setPins(Pin *_current, Pin *_forward, Pin *_backward, Pin *_speed) {
+void Motor::setPins(OwnPin *_current, OwnPin *_forward, OwnPin *_backward, OwnPin *_speed) {
   current = _current;
   forward = _forward;
   backward = _backward;

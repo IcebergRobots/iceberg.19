@@ -10,10 +10,10 @@
 #define PUI 3
 #define VIRTUAL 4
 
-class Pin : public Value
+class OwnPin : public Value
 {
   public:
-	Pin(byte _pin, byte _mode, byte _type);
+	OwnPin(byte _pin, byte _mode, byte _type);
 	void set(int _value);
 	void set();
 	void temp(int _value);

@@ -10,7 +10,7 @@
   - see header file for visualisation
 *****************************************************/
 Key::Key(byte _pin, byte _type, unsigned long _preStroke, unsigned long _postStroke, unsigned long _postFurther)
- : Pin(_pin, INPUT_PULLUP, _type) {
+ : OwnPin(_pin, INPUT_PULLUP, _type) {
   setElementType(KEY);
   preStroke = _preStroke;
   postStroke = _postStroke;
@@ -34,7 +34,7 @@ bool Key::click() { return stroke() || further(); }
   read the arduino pins and process it to detect clicks
 *****************************************************/
 void Key::update() {
-  Pin::update();
+  OwnPin::update();
 	if(off()) state = OFF; // Knopf ist losgelassen
 	else { // Knopf wird gedrückt
     switch (state) {

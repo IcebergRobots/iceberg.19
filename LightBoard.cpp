@@ -4,10 +4,15 @@
   Constructor
 *****************************************************/
 LightBoard::LightBoard(int numPixels, int pin, unsigned long lockedPeriod = 0, unsigned long cooldownPeriod = 0)
-    : Adafruit_NeoPixel(numPixels, pin, NEO_GRB + NEO_KHZ800)
 {
+  numLEDs = numPixels;
+  this->addressOffset = startingIndexCounter;
+  FastLED.addLeds<WS2812B, pin>(ledStrips, startingIndexCounter, numPixels);
+
   setCooldown(cooldownPeriod);
   setLocked(lockedPeriod);
+
+  startingIndexCounter += numPixels;;
 }
 
 /*****************************************************
@@ -92,4 +97,20 @@ unsigned long LightBoard::wheelToColor(byte pos)
 bool LightBoard::isEnabled()
 {
   return LIGHT_ENABLED && io.battery.on();
+}
+
+void LightBoard::setPixelColor(byte pos, byte _r, byte _g, byte _b){
+  ledStrips[this->addressOffset+pos] = CRGB(_r*brightness/255,_g*brightness/255,_b*brightness/255);
+}
+
+void LightBoard::show(){
+  FastLED.show()
+}
+
+void LightBoard::setBrightness(byte b){
+  brightness = b;
+}
+
+byte LightBoard::numPixels(){
+  return numLEDs;
 }

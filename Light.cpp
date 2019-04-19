@@ -34,6 +34,7 @@ void Light::init()
 
 void Light::light()
 {
+  bool updateLeds = false;
   io.indHeartbeat.set(map(abs(int(millis() % 500) - 250), 0, 250, -100, 356));
 
   if (io.setupLight.off())
@@ -52,7 +53,7 @@ void Light::light()
           inside.setPixelColor(i, inside.wheelToColor((i * 255 / 8 + millis() / 4) % 255));
         }
         inside.setBrightness(255);
-        inside.show();
+        updateLeds = true;
       }
       //NO animation
       else
@@ -62,7 +63,7 @@ void Light::light()
           inside.setPixelColor(i, 0, 0, 0);
         }
         inside.setBrightness(255);
-        inside.show();
+        updateLeds = true;
       }
     }
 
@@ -100,7 +101,8 @@ void Light::light()
             line.setPixelColor(i, line.wheelToColor(((millis() / 3) % 255) % 255));
         }
       }
-      if (LINE_ENABLED) line.show();
+      if (LINE_ENABLED) 
+        updateLeds = true;
     }
 
     if (pui.onDemand())
@@ -163,7 +165,7 @@ void Light::light()
           pui.setPixelState(11);
 
         pui.setBrightness(map(io.poti.get(), 0, 1023, 0, 255));
-        pui.show();
+        updateLeds = true;
       }
 
       //Animation
@@ -175,9 +177,13 @@ void Light::light()
           pui.setPixelColor(i, pui.wheelToColor((i * 255 / 12 + millis() / 4) % 255));
         }
         pui.setBrightness(255);
-        pui.show();
+        updateLeds = true;
       }
     }
+  }
+
+  if(updateLeds){
+    pui.show();
   }
 }
 
