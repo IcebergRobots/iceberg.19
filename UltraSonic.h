@@ -39,7 +39,7 @@ private:
     int distance[5] = {0, 0, 0, 0, 0};
     int echo2[2] = {0, 0};
     int echo3[2] = {0, 0};
-    byte addresses[5] = {I2C_US_FRONT_LEFT, I2C_US_LEFT, I2C_US_BACK, I2C_US_RIGHT, I2C_US_FRONT_RIGHT}; 
+    const byte addresses[5] PROGMEM = {I2C_US_FRONT_LEFT, I2C_US_LEFT, I2C_US_BACK, I2C_US_RIGHT, I2C_US_FRONT_RIGHT}; 
 };
 
 extern Ultrasonic us;

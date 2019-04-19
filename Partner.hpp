@@ -12,7 +12,7 @@ class Partner{
         byte getRating();
         bool isActive();
     private:
-        Value rating = Value();
+        int rating;
         int xPosition;
         int yPosition;
         Timer heartPartner    = Timer(    500             );  // wurde Heartbeat des Gegners empfangen?

@@ -14,7 +14,7 @@ class Motor : public Container
     void set();
     int get();
     void brake(bool active);
-    int amperage();
+    int getCurrent();
     
     Pin *current, *forward, *backward, *speed;
   private:

@@ -37,6 +37,6 @@ void Motor::brake(bool active) {
   speed->temp(255); 
 }
 
-int Motor::amperage() {
+int Motor::getCurrent() {
   return current->get(); 
 }
