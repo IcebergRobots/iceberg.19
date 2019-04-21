@@ -100,9 +100,6 @@ void Pilot::update()
   int rotation = 0;
   int rotMulti = 40;
 
-  headingPIDin = io.heading.get();
-  trackingPIDin = io.ball.get();
-
   switch (io.state.get())
   {
   default:
@@ -200,7 +197,7 @@ void Pilot::update()
 
 int Pilot::face(int angle)
 {
-  //angle = circulate(angle, -179,  180);
+  headingPIDin = io.heading.get();
   io.driveOrientation.set(angle);
   headingPIDtarget = io.driveOrientation.get();
   // Misst die Kompassabweichung vom Tor [-180 bis 179]
@@ -216,6 +213,9 @@ int Pilot::face(int angle)
 
 int Pilot::trackBall()
 {
+  int pidP = TRACKING_PID_P * map(io.ballWidth.get(), 30, 70, 90, 130) * 0.01;
+  trackingPID.SetTunings(pidP, TRACKING_PID_I, TRACKING_PID_D);
+  trackingPIDin = io.ball.get();
   trackingPIDtarget = 0;
   trackingPID.Compute();
   return trackingPIDout;
