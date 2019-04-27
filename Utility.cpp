@@ -1,5 +1,33 @@
 #include "Utility.h"
 
+void handleKeyEvents(){
+  //---------------------------------------
+  // KEY-EVENTS
+  //---------------------------------------
+  if (io.selectMenu.click()){}
+  if (io.testKick.click())
+    kick();
+  if (io.compassCalibration.click())
+  {
+    io.headingOffset.set(io.zOrientation.get());
+    EEPROM.write(0, io.headingOffset.left());     // speichere Vorzeichen
+    EEPROM.write(1, abs(io.headingOffset.get())); // speichere Winkel
+  }
+  if (io.animation.click())
+    io.animationEnabled.set(!io.animationEnabled.get());
+  if (io.lineCalibration.click())
+    BOTTOM_SERIAL.write(42);
+  if (io.ballTouchCalibration.click())
+    reflexion.calibrate();
+  if (io.start.click())
+    io.pause.set(false);
+  if (io.stop.click()){
+    io.pause.set(true);
+  }
+  //---------------------------------------
+  //---------------------------------------
+}
+
 void kick()
 {
   if (KICKER_ENABLED && io.kicker.on() && io.kickActive.outsidePeriod(600))
@@ -14,6 +42,7 @@ void initUART()
 {
   BLUETOOTH_SERIAL.begin(BLUETOOTH_BAUDRATE);
   BOTTOM_SERIAL.begin(BOTTOM_BAUDRATE);
+  DEBUG_SERIAL.begin(DEBUG_BAUDRATE);
 }
 
 /*****************************************************
@@ -21,11 +50,9 @@ void initUART()
 *****************************************************/
 void initI2C()
 {
-  beginSegment(F("i2c"));
   // I2c.begin();
   // I2c.scan();
   Wire.begin();
-  endSegment();
 }
 
 /*****************************************************
@@ -61,7 +88,7 @@ void setupDone()
 void initStates()
 {
   io.driveEnabled.set(true); // aktiviere das Fahrgestell
-  io.pause=true;        // verhindere, dass die Roboter sofort losfahren
+  io.pause.set(true);        // verhindere, dass die Roboter sofort losfahren
 
   io.batteryVoltmeter.update();                                     // miss die Akkuspannung
   io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE); // bestimme, welche Klassen initialisieren sollen
@@ -89,7 +116,7 @@ void updateStates()
   io.batteryVoltage.set(io.batteryVoltmeter.get() * 0.1249);
   io.battery.set(io.batteryVoltmeter.get() >= BATTERY_MIN_VOLTAGE);
   io.flat.now();
-  io.driveEnabled.set(!io.pause && io.motor.on());
+  io.driveEnabled.set(!io.pause.get() && io.motor.on());
   // erkenne Hochheben
   // dof.accelGetOrientation(&accel_event, &orientation);
   // io.flat.set(!((orientation.roll > 30 && abs(orientation.pitch) < 20) || accel_event.acceleration.z < 7));
@@ -103,33 +130,11 @@ void initEEPROM()
     io.headingOffset.set(-EEPROM.read(1));
 }
 
-void printBeginSegment(String name)
-{
-  if (io.runtime.never())
-  { 
-    if (io.segment.on())
-      endSegment();
-    io.segment.set(SEGMENT_EMPTY); // start timer
-  }
-}
-void printEndSegment()
-{
-  if (io.runtime.never())
-  {
-    if (io.segment.on())
-    {
-      io.segment.set(0);
-    }
-  }
-}
-
 void initPui()
 {
   if (io.battery.on())
   {
-    beginSegment(F("pui"));
     pui.begin();
-    endSegment();
   }
 }
 

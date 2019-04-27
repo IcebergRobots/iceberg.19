@@ -16,12 +16,10 @@ void Camera::init()
 {
   if (isEnabled())
   {
-    beginSegment(F("c"));
     SPI.begin(); // initialisiere den SPI Bus
     Pixy::init();
     if (SPI.transfer(0x00) == 255)
       io.cameraResponse.now(); // erkennen, ob die Kamera angeschlossen ist
-    endSegment();
   }
 }
 
@@ -29,7 +27,6 @@ void Camera::frame()
 {
   if (isEnabled())
   {
-    beginSegment(F("c:r"));
     if (io.turbo.on())
       setLED(0, 0, 0);     // schalte die Front-LED aus
     int ballAreaMax = 0;   // Ballgröße, 0: blind, >0: Flächeninhalt
@@ -79,7 +76,6 @@ void Camera::frame()
         break;
       }
     }
-    endSegment();
   }
 }
 

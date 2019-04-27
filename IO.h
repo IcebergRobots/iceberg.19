@@ -143,6 +143,7 @@ class IO {
 
 
     // binary timers
+    Timer driveTimer      = Timer(    20              );
     Timer flat            = Timer(    600             );  // liegen wir flach?
     Timer isHeadstart     = Timer(    350             );  // führen wir einen Schnellstart aus ?
     Timer isDodge         = Timer(    200             );  // weichen wir dem Gegner aus?
@@ -191,7 +192,7 @@ class IO {
     Value segment        = Value(      LIMITS,    0,    2  );  // Laufzeit eines Codeblockes
     Value battery        = Value(     BOOLEAN              );  // ist der Akku angeschlosse?
     Value batteryVoltage = Value(      LIMITS,     0,  999 );
-    bool  pause;  // ist das Spiel pausiert?
+    Value  pause         = Value(     BOOLEAN              );  // ist das Spiel pausiert?
 
     Value heading        = Value(  MODULATION, -179,  180  );
     Value headingOffset  = Value(  MODULATION, -179,  180  );

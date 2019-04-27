@@ -64,8 +64,3 @@ long mapConstrain(long x, long in_min, long in_max, long out_min, long out_max) 
   x = constrain(x, in_min, in_max);
   return map(x, in_min, in_max, out_min, out_max);
 }
-
-void beginSegment(String name) { beginSegmentFunction(name); }
-void endSegment() { endSegmentFunction(); }
-void (*beginSegmentFunction)(String);
-void (*endSegmentFunction)();

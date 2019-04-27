@@ -13,7 +13,6 @@ Light::Light()
 
 void Light::init()
 {
-  beginSegment(F("l"));
   io.indHeartbeat.set(255);
   io.indFront.set(255);
   io.indLeft.set(255);
@@ -29,7 +28,6 @@ void Light::init()
     line.show();
   }
   io.setupLight.now();
-  endSegment();
 }
 
 void Light::light()
@@ -152,7 +150,7 @@ void Light::light()
 
         if (io.motor.off())
           pui.setPixelState(10, STATE_ERROR);
-        else if (io.pause)
+        else if (io.pause.get())
           pui.setPixelState(10, STATE_WARNING);
         else
           pui.setPixelState(10, STATE_ACTIVE);

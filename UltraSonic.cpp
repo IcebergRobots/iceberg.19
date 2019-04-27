@@ -20,18 +20,15 @@ int Ultrasonic::gety()       {  return y;            }
 
 
 void Ultrasonic::init() {
-  beginSegment(F("us"));
   for(int i = 0; i < 5; i++) {
     Wire.beginTransmission(addresses[i]);
     Wire.write(byte(0x02));
     Wire.write(byte(70));
     Wire.endTransmission();
   }
-  endSegment();
 }
 
 void Ultrasonic::update() {
-  beginSegment(F("us"));
   fetch();
   for(int i = 0; i < 5; i++) {
     Wire.beginTransmission(addresses[i]);
@@ -41,7 +38,6 @@ void Ultrasonic::update() {
   }
   if (right() >= COURT_BORDER_MIN) io.farSidelineRight.now();
   if (left() >= COURT_BORDER_MIN) io.farSidelineLeft.now();
-  endSegment();
 }
 
 void Ultrasonic::fetch() {

@@ -22,13 +22,11 @@ class Pilot : public Chassis
 public:
   Pilot();
 
-  void setState();
   void update();
-
-  bool atGatepost();
-
   int face(int angle = 0);
   int trackBall();
+
+  void computePIDs();
 
 private:
   // WICHTUNG DER PID-REGLER
@@ -47,7 +45,7 @@ private:
   double trackingPIDout = 0;
   double trackingPIDtarget = 0;
   //TODO
-  PID trackingPID = PID(&trackingPIDin, &trackingPIDout, &trackingPIDtarget, .5, 0, 0, DIRECT);
+  PID trackingPID = PID(&trackingPIDin, &trackingPIDout, &trackingPIDtarget, .7, 0, 0, DIRECT);
 };
 extern Pilot drive;
 

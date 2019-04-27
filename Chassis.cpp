@@ -67,7 +67,7 @@ void Chassis::brake() {
   - nutze Berechnungen des Zwischenspeichers
 *****************************************************/
 void Chassis::execute(bool force) {
-  if (force || io.driveEnabled.on()) {
+  if (io.motorsOn) {
     for (int i = 0; i < objects<Motor>(); i++) {
       Motor *m = objects<Motor>(i);
       m->set();

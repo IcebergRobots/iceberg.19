@@ -37,8 +37,8 @@
 #define SPEED_FREE 70           // [0 bis 255]~70 STATUS 4: Befreiung
 #define SPEED_LOST 60          // [0 bis 255]~100 STATUS 5: Seitlich verloren
 #define SPEED_SIDEWAY 60       // [0 bis 255]~100  STATUS 6: Ballverfolgung
-#define SPEED_BALL 45          // [0 bis 255]~72  STATUS 6: Ballverfolgung
-#define SPEED_BALL_FAR 50      // [0 bis 255]~72  STATUS 6: Ballverfolgung
+#define SPEED_BALL 40          // [0 bis 255]~72  STATUS 6: Ballverfolgung
+#define SPEED_BALL_FAR 70      // [0 bis 255]~72  STATUS 6: Ballverfolgung
 #define SPEED_CLOSE 45         // [0 bis 255]~60 STATUS 7: Torausrichtung
 #define SPEED_ATTACK 60        // [0 bis 255]~100 STATUS 8: Angriff
 #define SPEED_AVOID_MATE 100   // [0 bis 255]~100 STATUS 9: Ausweichen
@@ -169,10 +169,5 @@ int pinMode(byte pin);
 //void reset();
 bool blink(unsigned long period, float proportion);
 long mapConstrain(long x, long in_min, long in_max, long out_min, long out_max);
-
-void beginSegment(String name="");
-void endSegment();
-extern void (*beginSegmentFunction)(String);
-extern void (*endSegmentFunction)();
 
 #endif

@@ -6,11 +6,13 @@
 #include "Pilot.h"
 #include "Line.h"
 #include <avr/wdt.h>
+#include "Reflexion.h"
 
 #define SEGMENT_OFF    0
 #define SEGMENT_EMPTY  1
 #define SEGMENT_FILLED 2
 
+void handleKeyEvents();
 void kick();
 
 void initUART();
@@ -25,9 +27,6 @@ void startSound();
 void initEEPROM();
 void initStates();
 void updateStates();
-
-void printBeginSegment(String name);
-void printEndSegment();
 
 void updateKick();
 
