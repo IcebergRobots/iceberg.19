@@ -31,7 +31,9 @@ void Chassis::drive() {
 *****************************************************/
 void Chassis::drive(int angle, int power, int rotation) {
   io.driveAngle.set(angle); // übernehme den Zielwinkel
-  if (power < 0)  io.driveAngle.add(180); // ist die Geschwindigkeit negativ, drehe um 180°
+  while (power < 0){
+    io.driveAngle.add(180); // ist die Geschwindigkeit negativ, drehe um 180°
+  }  
   io.driveRotation.set(rotation); // übernehme die Eigenrotation
   io.drivePower.set(abs(power) - abs(io.driveRotation.get())); // reduziere die Geschwindigkeit, damit noch die Rotation durchgeführt werden kann
   
@@ -67,7 +69,7 @@ void Chassis::brake() {
   - nutze Berechnungen des Zwischenspeichers
 *****************************************************/
 void Chassis::execute(bool force) {
-  if (io.motorsOn) {
+  if (force || io.driveEnabled.get()) {
     for (int i = 0; i < objects<Motor>(); i++) {
       Motor *m = objects<Motor>(i);
       m->set();

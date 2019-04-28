@@ -58,16 +58,13 @@ void loop()
   // updateRating();
   updateKick();
 
-  if(io.pause.rising()){
+  if(io.driveEnabled.falling()){
     drive.brake();
   }
 
-  if(io.driveTimer.off()){
-    drive.update();
-    drive.execute();
-    io.driveTimer.now();
-  }
-  /*if (io.onLine.off()||true)
+  drive.update();
+
+  /*if (io.onLine.off())
     drive.update();
   else
     drive.drive(io.lineAngle.get() + 180, SPEED_LINE);

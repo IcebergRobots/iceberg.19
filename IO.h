@@ -192,7 +192,7 @@ class IO {
     Value segment        = Value(      LIMITS,    0,    2  );  // Laufzeit eines Codeblockes
     Value battery        = Value(     BOOLEAN              );  // ist der Akku angeschlosse?
     Value batteryVoltage = Value(      LIMITS,     0,  999 );
-    Value  pause         = Value(     BOOLEAN              );  // ist das Spiel pausiert?
+    Value pause         = Value(     BOOLEAN              );  // ist das Spiel pausiert?
 
     Value heading        = Value(  MODULATION, -179,  180  );
     Value headingOffset  = Value(  MODULATION, -179,  180  );

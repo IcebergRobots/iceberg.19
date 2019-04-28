@@ -38,8 +38,8 @@ void Pilot::update()
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     if(io.seeBall.get()){
       direction = trackBall();
-      //speed = mapConstrain(io.ballWidth.get(), 5, 35, SPEED_BALL_FAR, SPEED_BALL);
-      speed = 50;
+      speed = mapConstrain(io.ballWidth.get(), 5, 35, SPEED_BALL_FAR, SPEED_BALL);
+      //speed = 50;
 
       if (direction > 60)
       {
@@ -51,15 +51,15 @@ void Pilot::update()
         direction = -100;
         speed = SPEED_SIDEWAY;
       }
-      drive(direction, speed, face(faceDir));
     }
     else{
       speed = SPEED_BACKWARDS;
       direction = 180;
-      drive(direction, speed, face(faceDir));
     }
-
     Serial.println("DIR: "+String(direction)+" PWR: "+String(speed));
+    //drive(direction, speed, face(faceDir));
+    drive(direction, speed, 0);
+    execute();
   }
   else{
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,8 +67,6 @@ void Pilot::update()
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
   }
-
-  
 }
 
 int Pilot::face(int angle)
@@ -79,7 +77,7 @@ int Pilot::face(int angle)
   // Misst die Kompassabweichung vom Tor [-180 bis 179]
   headingPIDin = (double)io.heading.get();
   
-  if (io.motorsOn)
+  if (io.driveEnabled.on())
   {
     headingPID.Compute();
     return -headingPIDout; // [-255 bis 255]
