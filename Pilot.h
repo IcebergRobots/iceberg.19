@@ -1,54 +1,47 @@
 #ifndef Pilot_h
 #define Pilot_h
 
-#include "Chassis.h"
-#include <PID_v1.h>
-#include "Ultrasonic.h"
+#include "Config.h"
 
-#define BACK 0
-#define GOALKEEPER 1
-#define GOALPOST_GO 2
-#define GOALPOST_RETURN 3
-#define FREEING 4
-#define LOST 5
-
-#define BALL_TRACKING 6
-#define GOAL_AIMING 7
-#define ATTACK 8
-#define DODGE 9
-
-class Pilot : public Chassis
+class Pilot
 {
-public:
-  Pilot();
+  public:
+    Pilot();
+    Pilot(byte angle);
 
-  void setState();
-  void update();
+    void setPins(byte id, byte fwd, byte bwd, byte pwm, int curSens);
+    void setAngle(byte angle);
 
-  bool atGatepost();
+    void steerMotor(byte id, int power);
 
-  int face(int angle = 0);
-  int trackBall();
+    void drive();
+    void drive(int values[]);
+    void drive(int angle, int power);
+    void drive(int angle, int power, int rotation);
 
-private:
-  // WICHTUNG DER PID-REGLER
-  double pidSetpoint; // Nulllevel [-180 bis 180] Winkel des Tours
-  double pidIn;       // Kompasswert [-180 bis 180]
-  double pidOut;      // Rotationsstärke [-255 bis 255]
+    void calculate(int angle, int power);
+    void calculate(int angle, int power, int rotation);
 
-  // Regler Roboterausrichtung
-  double headingPIDin = 0; // Kompasswinkel als Eingabe [-179 bis 180]
-  double headingPIDout = 0; // Rotationsstärke als Ausgabe [-255 bis 255]
-  double headingPIDtarget = 0;  // Sollwert der Ausrichtung [-179 bis 180]
-  PID headingPID = PID (&headingPIDin, &headingPIDout, &headingPIDtarget, HEADING_PID_P, HEADING_PID_I, HEADING_PID_D, DIRECT);
+    void brake(bool activ);
 
-  // Regler Ballverfolgung
-  double trackingPIDin = 0; // Ballwinkel als Eingabe []
-  double trackingPIDout = 0;
-  double trackingPIDtarget = 0;
-  //TODO
-  PID trackingPID = PID(&trackingPIDin, &trackingPIDout, &trackingPIDtarget, .5, 0, 0, DIRECT);
+    void setMotEn(bool motEn);
+    bool getMotEn();
+    void switchMotEn();
+
+  private:
+    byte _fwd[4];    // digitaler PIN fuer Vorwaertsrotation
+    byte _bwd[4];    // digitaler PIN fuer Rueckwaertsrotation
+    byte _pwm[4];    // analoger PIN fuer Geschwindigkeit
+
+    byte _curSens[4];
+
+    int _values[4];  // Zwischenspeicher für Outputsignale
+
+    byte _angle;
+    bool _motEn;    // gibt an, ob die Motoren an sind
+    bool _halfSpeed = false;
+
+    int _curr;
 };
-extern Pilot drive;
 
 #endif

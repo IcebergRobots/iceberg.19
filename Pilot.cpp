@@ -1,228 +1,203 @@
 #include "Pilot.h"
 
-/*********************************************************************
-  Konstruktor
-  - konfiguriere die Motor-Pins
-  - konfiguriere PID-Regler
-*********************************************************************/
-Pilot::Pilot()
-{
-  setAxisAngle(70);
-  m[0].setPins(&io.m0Current, &io.m0Dir1, &io.m0Dir2, &io.m0Speed);
-  m[1].setPins(&io.m1Current, &io.m1Dir1, &io.m1Dir2, &io.m1Speed);
-  m[2].setPins(&io.m2Current, &io.m2Dir1, &io.m2Dir2, &io.m2Speed);
-  m[3].setPins(&io.m3Current, &io.m3Dir1, &io.m3Dir2, &io.m3Speed);
+// Implementierung: OBJEKTE
+extern Display d;
+extern Player p;
+extern Led led;
+extern Mate mate;
+//extern Pilot m;
+extern Ultrasonic us;
 
-  // konfiguriere PID-Regler
-  headingPID.SetMode(AUTOMATIC);
-  headingPID.SetOutputLimits(-255, 255);
+// array auslesen ist schneller als berechnen
+const int sinus[360] = {0, 175, 349, 523, 698, 872, 1045, 1219, 1392, 1564, 1736, 1908, 2079, 2250, 2419, 2588, 2756, 2924, 3090, 3256, 3420, 3584, 3746, 3907, 4067, 4226, 4384, 4540, 4695, 4848, 5000, 5150, 5299, 5446, 5592, 5736, 5878, 6018, 6157, 6293, 6428, 6561, 6691, 6820, 6947, 7071, 7193, 7314, 7431, 7547, 7660, 7771, 7880, 7986, 8090, 8192, 8290, 8387, 8480, 8572, 8660, 8746, 8829, 8910, 8988, 9063, 9135, 9205, 9272, 9336, 9397, 9455, 9511, 9563, 9613, 9659, 9703, 9744, 9781, 9816, 9848, 9877, 9903, 9925, 9945, 9962, 9976, 9986, 9994, 9998, 10000, 9998, 9994, 9986, 9976, 9962, 9945, 9925, 9903, 9877, 9848, 9816, 9781, 9744, 9703, 9659, 9613, 9563, 9511, 9455, 9397, 9336, 9272, 9205, 9135, 9063, 8988, 8910, 8829, 8746, 8660, 8572, 8480, 8387, 8290, 8192, 8090, 7986, 7880, 7771, 7660, 7547, 7431, 7314, 7193, 7071, 6947, 6820, 6691, 6561, 6428, 6293, 6157, 6018, 5878, 5736, 5592, 5446, 5299, 5150, 5000, 4848, 4695, 4540, 4384, 4226, 4067, 3907, 3746, 3584, 3420, 3256, 3090, 2924, 2756, 2588, 2419, 2250, 2079, 1908, 1736, 1564, 1392, 1219, 1045, 872, 698, 523, 349, 175, 0, -175, -349, -523, -698, -872, -1045, -1219, -1392, -1564, -1736, -1908, -2079, -2250, -2419, -2588, -2756, -2924, -3090, -3256, -3420, -3584, -3746, -3907, -4067, -4226, -4384, -4540, -4695, -4848, -5000, -5150, -5299, -5446, -5592, -5736, -5878, -6018, -6157, -6293, -6428, -6561, -6691, -6820, -6947, -7071, -7193, -7314, -7431, -7547, -7660, -7771, -7880, -7986, -8090, -8192, -8290, -8387, -8480, -8572, -8660, -8746, -8829, -8910, -8988, -9063, -9135, -9205, -9272, -9336, -9397, -9455, -9511, -9563, -9613, -9659, -9703, -9744, -9781, -9816, -9848, -9877, -9903, -9925, -9945, -9962, -9976, -9986, -9994, -9998, -10000, -9998, -9994, -9986, -9976, -9962, -9945, -9925, -9903, -9877, -9848, -9816, -9781, -9744, -9703, -9659, -9613, -9563, -9511, -9455, -9397, -9336, -9272, -9205, -9135, -9063, -8988, -8910, -8829, -8746, -8660, -8572, -8480, -8387, -8290, -8192, -8090, -7986, -7880, -7771, -7660, -7547, -7431, -7314, -7193, -7071, -6947, -6820, -6691, -6561, -6428, -6293, -6157, -6018, -5878, -5736, -5592, -5446, -5299, -5150, -5000, -4848, -4695, -4540, -4384, -4226, -4067, -3907, -3746, -3584, -3420, -3256, -3090, -2924, -2756, -2588, -2419, -2250, -2079, -1908, -1736, -1564, -1392, -1219, -1045, -872, -698, -523, -349, -175};
 
-  trackingPID.SetMode(AUTOMATIC);
-  trackingPID.SetOutputLimits(-179, 180);
+/*****************************************************
+  setze Achsenwinkel auf 70°
+*****************************************************/
+Pilot::Pilot() {
+  _angle = 70;
+  _motEn = false;
 }
 
 /*****************************************************
-  aktualisiere die Zustandsmaschine
-  - prüfe ob Zustandsänderungen sinnvoll sind
+  setze Achsenwinkel
+  @param angle: Achsenwinkel
 *****************************************************/
-void Pilot::setState()
-{
-  if (io.seeBall.change() && io.seeBall.on()) // finden wir den Ball gerade wieder?
-    io.state.set(BALL_TRACKING);
-  if (io.seeBall.change() && io.seeBall.off()) // verlieren wir den Ball gerade?
-    io.state.set(BACK);
+Pilot::Pilot(byte angle) {
+  _angle = angle;
+  _motEn = false;
+}
 
-  switch (io.state.get()) // durchlaufe die Zustandsmaschine
-  {
-  default:
-  case BACK:                             // fahre nach hinten
-    if (us.back() <= COURT_REARWARD_MAX) // sind wir schon im Strafraum?
-      io.state.set(GOALKEEPER);
-    break;
-  case GOALKEEPER:
-    if (io.seeBall.off() && io.stateDirection.outsidePeriod(SIDEWARD_MAX_DURATION))     // fahren wir schon zu lange blind in eine Richtung?
-      io.stateDirection.set(io.stateDirection.off());                   // ändere die Richtung wegen Zeitüberschreitung
-    else if (io.seeBall.on() || io.stateDirection.outsidePeriod(SIDEWARD_MIN_DURATION)) // verhindere zu häufige Richtungswechsel außer bei Ballsicht
-    {
-      // positioniere dich vor den Ball
-      if (io.seeBallLeft.on())
-        io.stateDirection.set(LEFT);
-      else if (io.seeBallRight.on())
-        io.stateDirection.set(RIGHT);
+/*****************************************************
+  setze Motor-Ansteuerungspins
+  @param id: Motor-ID
+  @param fwd: Pin für Vorwärtsdrehung
+  @param bwd: Pin für Rückwärtsdrehung
+  @param pwm: Pin für Geschwindigkeit
+*****************************************************/
+void Pilot::setPins(byte id, byte fwd, byte bwd, byte pwm, int curSens) {
+  if (id < 0 || id > 3) { // ungueltige Eingabe
+    return;
+  }
 
-      if (us.back() > COURT_REARWARD_MAX)         // haben wir den Strafraum verlassen
-        io.state.set(BACK); // fahre wieder nach hinten
-      else if (atGatepost())                      // sind wir ausreichend
-        io.stateDirection.set(io.stateDirection.off());
+  _fwd[id] = fwd;         // speichere Pins
+  _bwd[id] = bwd;
+  _pwm[id] = pwm;
+
+  _curSens[id] = curSens;
+
+  pinMode(fwd, OUTPUT);   // definiere Pins als Output
+  pinMode(bwd, OUTPUT);
+  pinMode(pwm, OUTPUT);
+}
+
+/*****************************************************
+  setze den Winkel zwischen zwei Motoren einer Seite (Achsenwinkel)
+  @param angle: Achsenwinkel
+*****************************************************/
+void Pilot::setAngle(byte angle) {
+  _angle = angle % 180;
+}
+
+/*****************************************************
+  setze Ausgangssignale fuer einen Motor
+  @param id [0 bis 3]: Motor-ID
+  @param power [-255 bis 255]: Gescwindigkeit
+
+  IDs:
+     .--.
+  0 /    \ 3
+  1 \    / 2
+     '--'
+*****************************************************/
+void Pilot::steerMotor(byte id, int power) {
+  if (_motEn) {
+    if (id < 0 || id > 3) {     //Eingabeueberpruefung
+      return;
     }
-    break;
-  case GOALPOST_GO:
 
-    break;
-  case GOALPOST_RETURN:
+    power = min(255, power);    //Eingabekorrektur
+    power = max(-255, power);
 
-    break;
-  case FREEING:
-
-    break;
-  case LOST:
-
-    break;
-
-  case BALL_TRACKING:
-
-    break;
-  case GOAL_AIMING:
-
-    break;
-  case ATTACK:
-
-    break;
-  case DODGE:
-
-    break;
+    digitalWrite(_fwd[id], power > 0);  //drehe Motor vorwarts
+    digitalWrite(_bwd[id], power <= 0); //drehe Motor rueckwaerts
+    analogWrite(_pwm[id], abs(power));  //drehe Motor mit Geschwindigkeit
   }
 }
 
-void Pilot::update()
-{
-  setState();
+/*****************************************************
+  fahre mit Geschwindigkeit, Zielwinkel und Eigenrotation
+  @param (optional) angle [-180 bis 180]: Zielwinkel
+  @param (optional) power [-255 bis 255]: Geschwindigkeit
+  @param (optional) rotation [-255 bis 255]: Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
 
-  if (io.driveEnabled.falling())
-    brake();
+  Winkel:0
+      .--.
+  90 /    \ -90
+     \    /
+      '--'
+*****************************************************/
+void Pilot::drive(int angle, int power, int rotation) {
+  calculate(angle, power, rotation);
+  drive();
+}
+void Pilot::drive(int angle, int power) {
+  calculate(angle, power);
+  drive();
+}
+void Pilot::drive() {
+  drive(_values);
+}
 
-  int direction = 0;
-  int speed = 255;
-  int rotation = 0;
-  int rotMulti = 40;
-
-  headingPIDin = io.heading.get();
-  trackingPIDin = io.ball.get();
-
-  switch (io.state.get())
-  {
-  default:
-  case BACK:
-    if (false /*us.back() && us.back() < 80*/)
-    {
-      speed = SPEED_PENALTY;
-      //driveState = "v penalty";
-    }
-    else
-    {
-      speed = SPEED_BACKWARDS;
-      //driveState = "v backward";
-    }
-    // fahre rückwärts und lenke zur Mitte vor dem Tor
-    /*if (us.left() && us.left() < COURT_BORDER_MIN) direction = -constrain(map(COURT_BORDER_MIN - us.left(), 0, 30, 180, 180 - ANGLE_PASSIVE_MAX), 180 - ANGLE_PASSIVE_MAX, 180);
-      else if (us.right() && us.right() < COURT_BORDER_MIN) direction = constrain(map(COURT_BORDER_MIN - us.right(), 0, 30, 180, 180 - ANGLE_PASSIVE_MAX), 180 - ANGLE_PASSIVE_MAX, 180);
-      else*/
-    direction = 180;
-
-    drive(180, speed, face(0));
-    break;
-  case GOALKEEPER:
-    if (io.seeBall.off())
-      speed = map(abs(io.ball.get()), 0, X_CENTER, SPEED_KEEPER, 0.6 * SPEED_KEEPER);
-    else
-      speed = SPEED_KEEPER;
-    if (io.stateDirection.left())
-    {
-      direction = ANGLE_SIDEWAY;
-      if (us.left() < COURT_BORDER_MIN)
-        speed = SPEED_KEEPER * 0.7; // fahre langsamer am Spielfeldrand
-    }
-    else
-    {
-      direction = -ANGLE_SIDEWAY;
-      if (us.right() < COURT_BORDER_MIN)
-        speed = SPEED_KEEPER * 0.7; // fahre langsamer am Spielfeldrand
-    }
-    if (us.back() < COURT_REARWARD_MIN)
-      direction *= map(us.back(), 0, COURT_REARWARD_MIN, 8, 10) / 10.0; // fahre leicht schräg nach vorne
-
-    drive(direction, speed, face(0));
-    break;
-  case GOALPOST_GO:
-
-    break;
-  case GOALPOST_RETURN:
-
-    break;
-  case FREEING:
-
-    break;
-  case LOST:
-
-    break;
-
-  case BALL_TRACKING:
-    direction = trackBall();
-
-    speed = mapConstrain(io.ballWidth.get(), 5, 35, SPEED_BALL_FAR, SPEED_BALL);
-    //direction = map(io.ball.get(), -X_CENTER, X_CENTER, (float)rotMulti, -(float)rotMulti);
-    if (direction > 60)
-    {
-      // seitwärts bewegen, um Torsusrichtung aufrecht zu erhalten
-      // driveState = "> follow";
-      direction = 100;
-      speed = SPEED_SIDEWAY;
-    }
-    else if (direction < -60)
-    {
-      // seitwärts bewegen, um Torsusrichtung aufrecht zu erhalten
-      // driveState = "< follow";
-      direction = -100;
-      speed = SPEED_SIDEWAY;
-    }
-    else
-    {
-      // driveState = "^ follow";
-    }
-    drive(direction, speed, face(0));
-    break;
-  case GOAL_AIMING:
-
-    break;
-  case ATTACK:
-
-    break;
-  case DODGE:
-
-    break;
+/*****************************************************
+  steuere die Motoren an, um zu fahren
+  @param values: Zwischenspeicher
+  - nutze Berechnungen des Zwischenspeichers
+*****************************************************/
+void Pilot::drive(int values[]) {
+  for (int i = 0; i < 4; i++) {
+    steerMotor(i, values[i]);
   }
 }
 
-int Pilot::face(int angle)
-{
-  //angle = circulate(angle, -179,  180);
-  io.driveOrientation.set(angle);
-  headingPIDtarget = io.driveOrientation.get();
-  // Misst die Kompassabweichung vom Tor [-180 bis 179]
-  headingPIDin = (double)io.heading.get();
-  if (io.driveEnabled.on())
-  {
-    headingPID.Compute();
-    return -headingPIDout; // [-255 bis 255]
+
+/*****************************************************
+  berechne Zwischenspeicher für Motoransteuerung
+  @param angle [180 bis 180]: Zielwinkel
+  @param power [-255 bis 255]: Geschwindigkeit
+  @param (optional) rotation [-255 bis 255]: Eigenrotation -> Korrekturdrehung, um wieder zum Gegnertor ausgerichtet zu sein
+*****************************************************/
+void Pilot::calculate(int angle, int power, int rotation) {
+  driveDirection = angle;   // setze die Displaywerte
+  drivePower = power;       // setze die Displaywerte
+  driveRotation = rotation; // setze die Displaywerte
+
+  if (power < 0) {      //bei negativen Geschwindigkeiten,
+    power = -power;     //positive Geschwindigkeit
+    angle += 180;       //bei 180° Drehung verwenden
   }
-  else
-    return 0;
+
+  power = constrain(power, 0, 255);
+
+  while (angle < 0) {   //Eingabekorrektur
+    angle += 360;       //
+  }                     //
+  angle %= 360;         //
+
+  if (power + abs(rotation) > 255) {        //Wenn die Gesamtgeschwindigkeit zu groß ist,
+    power -= (power + abs(rotation)) - 255; //wird die Geschwindigkeit ausreichend reduziert
+  }
+
+  //                                                      IDs:  .--.
+  int sinA02 = sinus[(((_angle / 2) - angle) + 360) % 360]; //berechne Zwischenwert für Achse der Motoren 1 und 3      3 /    \ 0
+  int sinA13 = sinus[(((_angle / 2) + angle) + 360) % 360]; //berechne Zwischenwert für Achse der Motoren 2 und 4      2 \    / 1
+  //                                                            '--'
+  int axis02 = power * (double)sinA02 / 10000; //berechne Motorstärken für Achse 1&3
+  int axis13 = power * (double)sinA13 / 10000; //berechne Motorstärken für Achse 2&4
+
+
+  _values[0] = axis02 - rotation;       //erstelle Zwischenspeicher für alle Motorstärken
+  _values[1] = axis13 - rotation;
+  _values[2] = axis02 + rotation;
+  _values[3] = axis13 + rotation;
+}
+void Pilot::calculate(int angle, int power) {
+  calculate(angle, power, 0);
 }
 
-int Pilot::trackBall()
-{
-  trackingPIDtarget = 0;
-  trackingPID.Compute();
-  return trackingPIDout;
+
+
+/*****************************************************
+  bremse aktiv oder passiv alle Motoren
+  @param activ: aktives Bremsen?
+*****************************************************/
+void Pilot::brake(bool activ) {
+  drivePower = 0;     // setze die Displaywerte
+  driveRotation = 0;  // setze die Displaywerte
+
+  for (byte i = 0; i < 4; i++) {
+    digitalWrite(_fwd[i], activ);
+    digitalWrite(_bwd[i], activ);
+    analogWrite(_pwm[i], 255);
+  }
 }
 
-bool Pilot::atGatepost()
-{
-  // benutze Abstand in Bewegungsrichtung
-  if (io.stateDirection.left())
-    return io.farSidelineLeft.on();
-  else
-    return io.farSidelineRight.on();
+void Pilot::setMotEn(bool motEn) {
+  if (_motEn != motEn) {
+    _motEn = motEn;
+    if (motEn) {
+      p.setRusher(true);
+      p.setKeeper(true);
+    } else {
+      brake(true);
+    }
+  }
 }
 
-Pilot drive;
+void Pilot::switchMotEn() {
+  setMotEn(!_motEn);
+}
+
+bool Pilot::getMotEn() {
+  return _motEn;
+}

@@ -1,36 +1,32 @@
 #ifndef Utility_h
 #define Utility_h
 
-#include "IO.h"
-#include "Ultrasonic.h"
-#include "Pilot.h"
-#include "Line.h"
-#include <avr/wdt.h>
+#include "Config.h"
+#include "Input.hpp"
 
-#define SEGMENT_OFF    0
-#define SEGMENT_EMPTY  1
-#define SEGMENT_FILLED 2
-
-void kick();
-
-void initUART();
-void initI2C();
-void setupWatchdog();
-void loopWatchdog();
-void setupDone();
-
+void reset();
+int shift(int &value, int min, int max);
 void startSound();
+void calculateStates();
+void transmitHeartbeat();
+void setupMotor();
+void avoidLine();
+void kick();
+void readCompass();
+void buzzerTone(int duration);
+int ausrichten(int orientation);
+void readPixy();
+void rating();
+String boolToSign(bool b);
 
+void debug(String str);
+void debug(long num);
+void debug();
+void debugln(String str);
+void debugln(long num);
+void debugln();
 
-void initEEPROM();
-void initStates();
-void updateStates();
-
-void printBeginSegment(String name);
-void printEndSegment();
-
-void updateKick();
-
-void initPui();
-
+void handleBluetooth();
+void handleStartStop();
+void handleMenu();
 #endif
