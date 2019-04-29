@@ -129,8 +129,7 @@ bool isSetupAnimantion = true;    // läuft die Setup Animation;
 bool stateFine = true;            // liegt kein Fehler vor?
 unsigned long ledTimer = 0;       // Zeitpunkt der letzten Led-Aktualisierung
 Adafruit_NeoPixel bottom = Adafruit_NeoPixel(BOTTOM_LENGTH, BOTTOM_LED, NEO_GRB + NEO_KHZ800); // OBJEKTINITIALISIERUNG (BODEN-LEDS)
-//Adafruit_NeoPixel matrix = Adafruit_NeoPixel(MATRIX_LENGTH, MATRIX_LED, NEO_GRB + NEO_KHZ800); // OBJEKTINITIALISIERUNG (LED-MATRIX)
-//Adafruit_NeoPixel info = Adafruit_NeoPixel(INFO_LENGTH, INFO_LED, NEO_GRB + NEO_KHZ800);       // OBJEKTINITIALISIERUNG (STATUS-LEDS)
+Adafruit_NeoPixel info = Adafruit_NeoPixel(INFO_LENGTH, INFO_LED, NEO_GRB + NEO_KHZ800);       // OBJEKTINITIALISIERUNG (STATUS-LEDS)
 Led led;  // OBJEKTINITIALISIERUNG
 
 // Globale Definition: BUZZER
@@ -217,9 +216,8 @@ void setup() {
 
   // initialisiere Leds
   d.setupMessage(9, "LED", "Animation");
-  // bottom.begin();   // BODEN-LEDS initialisieren     TODO
-  // matrix.begin();   // MATRIX-LEDS initialisieren    TODO
-  // info.begin();     // STATUS-LEDS initialisieren    TODO
+  bottom.begin();   // BODEN-LEDS initialisieren     TODO
+  info.begin();     // STATUS-LEDS initialisieren    TODO
   if (!silent) led.start();
   d.setupMessage(10, "B: " + String(lightBarrierTriggerLevel), "");
   DEBUG_SERIAL.println();

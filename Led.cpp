@@ -3,10 +3,11 @@
 // Implementierung: OBJEKTE
 extern Display d;
 extern Player p;
-//extern Led led;
+extern Led led;
 extern Mate mate;
 extern Pilot m;
 extern Ultrasonic us;
+extern Adafruit_NeoPixel bottom;
 
 Led::Led() {}
 
@@ -21,31 +22,28 @@ void Led::heartbeat(){
 *****************************************************/
 void Led::led() {
   //TODO
-  
-  /*if (!timer) {
+  if (!timer) {
     // setze Helligkeit zurück
     bottom.setBrightness(BOTTOM_BRIGHTNESS);
-    if (p.lastRoleToggle() < ROLE_LED_DURATION) matrix.setBrightness(255);
-    else matrix.setBrightness(MATRIX_BRIGHTNESS);
-    info.setBrightness(INFO_BRIGHTNESS);
+    //matrix.setBrightness(MATRIX_BRIGHTNESS);
+    //info.setBrightness(INFO_BRIGHTNESS);
 
     // setze Boden-Leds
-    if (!input.switch_bottom || isLifted) setBoard(bottom, BOTTOM_LENGTH, bottom.Color(0, 0, 0));
-    else if (!input.switch_a) setBoard(bottom, BOTTOM_LENGTH, bottom.Color(255, 0, 0));
+    if (!input.switch_bodensensor || isLifted) setBoard(bottom, BOTTOM_LENGTH, bottom.Color(0, 0, 0));
     else setBoard(bottom, BOTTOM_LENGTH, bottom.Color(255, 255, 255));
-    matrix.show();
-    info.show();
+    //matrix.show();
+    //info.show();
   } else {
     // maximale Helligkeit
     bottom.setBrightness(255);
-    matrix.setBrightness(255);
-    info.setBrightness(255);
+    //matrix.setBrightness(255);
+    //info.setBrightness(255);
     byte angle = (int)((millis() - timer) * 0.2) % 256;
     wheelBoard(bottom, BOTTOM_LENGTH, angle);
-    setBoard(matrix, MATRIX_LENGTH, wheelToColor(matrix, angle));
-    setBoard(info, INFO_LENGTH, wheelToColor(info, angle));
+    //setBoard(matrix, MATRIX_LENGTH, wheelToColor(matrix, angle));
+    //setBoard(info, INFO_LENGTH, wheelToColor(info, angle));
   }
-  ledTimer = millis();*/
+  ledTimer = millis();
 }
 
 /*****************************************************
