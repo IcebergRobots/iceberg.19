@@ -2,3 +2,5 @@
 desktop\.ini
 
 *.ipch
+
+\.vscode/ipch/
