@@ -32,8 +32,6 @@ class Input{
         Input();
         void update();
         void init();
-        bool switch_a       = true;
-        bool switch_b       = true;
 
         bool button_encoder = true;
 

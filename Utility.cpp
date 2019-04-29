@@ -9,6 +9,9 @@ extern Pilot m;
 extern Ultrasonic us;
 extern Input input;
 
+extern struct bno055_euler myEulerData;	  //Structure to hold the Euler data
+extern struct bno055_t compass;
+
 void reset() {
   asm ("jmp 0");   // starte den Arduino neu
 }
@@ -32,11 +35,11 @@ void startSound() {
   Berechne alle Statuswerte und Zustände
 *****************************************************/
 void calculateStates() {
-  isLifted = false;// TODO isLifted = millis() - flatTimer > 600;
+  isLifted = millis() - flatTimer > 600;
   onLine = millis() - lineTimer < LINE_DURATION;
   isHeadstart = millis() - headstartTimer < HEADSTART_DURATION;
   isAvoidMate = millis() - avoidMateTimer < AVOID_MATE_DURATION;
-  batVol = analogRead(BATT_VOLTAGE) * 0.1220703;  // SPANNUNG MAL 10!
+  batVol = analogRead(BATT_VOLTAGE) * 0.124783;  // SPANNUNG MAL 10!
   if (batVol > VOLTAGE_MIN) {
     batState = 1; // ok
     if (m.getMotEn()) {
@@ -241,11 +244,11 @@ void kick() {
 
 void readCompass() {
   // kompasswert [-180 bis 180]
-
-  //TODO
-
-  //heading = (((int)orientation.heading - startHeading + 720) % 360) - 180;
-  //stateFine = false;
+  bno055_read_euler_hrp(&myEulerData);
+  heading = (((myEulerData.h)/16 - startHeading + 720) % 360) - 180;
+  debugln(myEulerData.r);
+  if(abs(myEulerData.r) < 100)
+    flatTimer = millis();
 }
 
 void buzzerTone(int duration) {

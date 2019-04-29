@@ -51,6 +51,8 @@ Player p;  // OBJEKTINITIALISIERUNG
 int heading = 0;                    // Wert des Kompass
 int startHeading = 0;               // Startwert des Kompass
 int rotation = 0;                   // rotationswert für die Motoren
+struct bno055_t compass;
+struct bno055_euler myEulerData;	  //Structure to hold the Euler data
 
 // Gloabale Definition: BEWERTUNG
 byte scoreBallWidth = 0;
@@ -132,7 +134,7 @@ bool isLifted = false;  // ist der Roboter hochgehoben?
 bool isTypeA; // ist das Roboter A?
 unsigned long lastDisplay = 0; // Zeitpunkt des letzten Displayaktualisierens
 String displayDebug = "";      // unterste Zeile des Bildschirms;
-Display d = Display(); // OBJEKTINITIALISIERUNG
+Display d = Display(42); // OBJEKTINITIALISIERUNG
 
 // Globale Definition: LEDS, DEBUG
 bool wasLedButton = false;        // war der Animationsknopf gedrückt
@@ -218,7 +220,9 @@ void setup() {
 
   // initialisiere Kompasssensor
   d.setupMessage(7, "COMPASS", "Orientierung");
-  //TODO
+  BNO_Init(&compass);
+  bno055_set_operation_mode(OPERATION_MODE_NDOF);
+  bno055_set_powermode(POWER_MODE_NORMAL);
 
   // initialisiere PID-Regler
   d.setupMessage(8, "PID", "Rotation");

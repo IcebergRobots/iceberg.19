@@ -8,8 +8,10 @@ extern Mate mate;
 extern Pilot m;
 extern Ultrasonic us;
 
+Display::Display(int resetPin) : Adafruit_SH1106(resetPin) {}
+
 void Display::init() {
-  begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialisiere das Displays
+  begin();  // initialisiere das Displays
   clearDisplay(); // leere den Bildschirm
   if (!silent) drawBitmap(0, 0, LOGO, 114, 64, WHITE); // zeige das Logo
   display();  //wendet Aenderungen an

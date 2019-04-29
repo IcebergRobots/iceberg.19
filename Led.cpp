@@ -8,6 +8,8 @@ extern Mate mate;
 extern Pilot m;
 extern Ultrasonic us;
 extern Adafruit_NeoPixel bottom;
+extern Adafruit_NeoPixel info;
+extern Input input;
 
 Led::Led() {}
 
@@ -25,23 +27,20 @@ void Led::led() {
   if (!timer) {
     // setze Helligkeit zurück
     bottom.setBrightness(BOTTOM_BRIGHTNESS);
-    //matrix.setBrightness(MATRIX_BRIGHTNESS);
-    //info.setBrightness(INFO_BRIGHTNESS);
+    info.setBrightness(INFO_BRIGHTNESS);
 
     // setze Boden-Leds
     if (!input.switch_bodensensor || isLifted) setBoard(bottom, BOTTOM_LENGTH, bottom.Color(0, 0, 0));
     else setBoard(bottom, BOTTOM_LENGTH, bottom.Color(255, 255, 255));
-    //matrix.show();
-    //info.show();
+
+    info.show();
   } else {
     // maximale Helligkeit
     bottom.setBrightness(255);
-    //matrix.setBrightness(255);
-    //info.setBrightness(255);
+    info.setBrightness(255);
     byte angle = (int)((millis() - timer) * 0.2) % 256;
     wheelBoard(bottom, BOTTOM_LENGTH, angle);
-    //setBoard(matrix, MATRIX_LENGTH, wheelToColor(matrix, angle));
-    //setBoard(info, INFO_LENGTH, wheelToColor(info, angle));
+    wheelBoard(info, INFO_LENGTH, angle);
   }
   ledTimer = millis();
 }
@@ -51,29 +50,38 @@ void Led::led() {
 *****************************************************/
 void Led::set() {
   //TODO
-  /*if (p.lastRoleToggle() < ROLE_LED_DURATION) {
-    if (p.isKeeper()) setBoard(matrix, MATRIX_LENGTH, matrix.Color(0, 255, 0));
-    if (p.isRusher()) setBoard(matrix, MATRIX_LENGTH, matrix.Color(255, 0, 255));
-  } else {
-    // zeige Statuswerte an
-    showState(info, 0, stateFine);
-    showState(info, 1, batState * (batState != 3 || millis() % 250 < 125), true);
-    showState(info, 2, millis() % 1000 < 200, true);
+  showState(info, 0,  0                                                           );  //PARTY
+  showState(info, 1,  batState * (batState != 3 || millis() % 250 < 125), true    );  //Voltage
+  showState(info, 2,  0                                                           );  //ColCode
+  showState(info, 3,  seeGoal                                                     );  //Goal
+  showState(info, 4,  seeBall                                                     );  //Ball
+  showState(info, 5,  isLifted * 3                                      , true    );  //Lifted
+  showState(info, 6,  !silent                                                     );  //Debug
+  showState(info, 7,  input.switch_bodensensor                                    );  //Bodensensor
+  showState(info, 8,  input.switch_kick                                           );  //Kicker
+  showState(info, 9,  input.switch_bluetooth                                      );  //Bluetooth
+  showState(info, 10, m.getMotEn() + (!m.getMotEn()&&input.switch_motor)*2        );  //Motors
+  showState(info, 11, input.switch_headstart                                      );  //Headstart
+  /*
+  // zeige Statuswerte an
+  showState(info, 0, stateFine);
+  showState(info, 1, batState * (batState != 3 || millis() % 250 < 125), true);
+  showState(info, 2, millis() % 1000 < 200, true);
 
-    showState(matrix, 0, input.switch_kick);
-    showState(matrix, 1, !input.switch_motor);
-    showState(matrix, 2, seeBall + closeBall, true);
-    showState(matrix, 3, hasBall, true);
-    showState(matrix, 4, !mate.timeout());
-    //showState(matrix, 5, Bodensensor verfügbar);
-    showState(matrix, 6, isLifted * 3, true);
-    showState(matrix, 7, pixyState, true);
-    showState(matrix, 8, !onLine);
-    showState(matrix, 9, seeGoal, true);
-    //showState(matrix, 10, !us.timeout() * (2 - us.check()));
-    if (p.isKeeper()) showState(matrix, 11, 1, true);
-    else if (p.isRusher()) showState(matrix, 11, 3, true);
-    else showState(matrix, 11, 0, true);
+  showState(matrix, 0, input.switch_kick);
+  showState(matrix, 1, !input.switch_motor);
+  showState(matrix, 2, seeBall + closeBall, true);
+  showState(matrix, 3, hasBall, true);
+  showState(matrix, 4, !mate.timeout());
+  //showState(matrix, 5, Bodensensor verfügbar);
+  showState(matrix, 6, isLifted * 3, true);
+  showState(matrix, 7, pixyState, true);
+  showState(matrix, 8, !onLine);
+  showState(matrix, 9, seeGoal, true);
+  //showState(matrix, 10, !us.timeout() * (2 - us.check()));
+  if (p.isKeeper()) showState(matrix, 11, 1, true);
+  else if (p.isRusher()) showState(matrix, 11, 3, true);
+  else showState(matrix, 11, 0, true);
   }*/
 }
 
@@ -112,7 +120,7 @@ unsigned long Led::lastAnimation() {
   @param (optional) state: darzustellender Zustand
   0: rot/aus
   1: grün
-  2: magenta
+  2: gelb
   3: rot
   @param hideRed: soll rot unsichtbar sein?
 *****************************************************/
@@ -124,7 +132,7 @@ void Led::showState(Adafruit_NeoPixel & board, byte pos, byte state, bool hideRe
          hideRed=true Information nicht verfügbar (aus)
          hideRed=true Information nicht relevant (aus)
       */
-      board.setPixelColor(pos, (!hideRed) * 150, 0, (!hideRed) * 150);
+      board.setPixelColor(pos, (!hideRed) * 255, 0, 0);
       break;
     case 1:
       /*
@@ -137,14 +145,14 @@ void Led::showState(Adafruit_NeoPixel & board, byte pos, byte state, bool hideRe
          Wahrnung (blau)
          Information ungewiss (blau)
       */
-      board.setPixelColor(pos, 0, 180, 120);
+      board.setPixelColor(pos, 255, 255, 0);
       break;
     case 3:
       /*
          Kritische Warnung (magenta)
          Information falsch (magenta)
       */
-      board.setPixelColor(pos, 255, 0, 150);
+      board.setPixelColor(pos, 255, 0, 0);
 
       break;
   }
