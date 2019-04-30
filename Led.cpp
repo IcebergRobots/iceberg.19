@@ -233,7 +233,9 @@ void Led::hymne() {
   // TODO setBoard(bottom, BOTTOM_LENGTH, bottom.Color(255, 255, 255));
   // TODO setBoard(matrix, MATRIX_LENGTH, matrix.Color(255, 255, 255));
   // TODO setBoard(info, INFO_LENGTH, info.Color(255, 255, 255));
-  while (input.button_animation) {}
+  while (input.button_animation) {
+    input.update();
+  }
   // TODO setBoard(bottom, BOTTOM_LENGTH, 0);
   // TODO setBoard(matrix, MATRIX_LENGTH, 0);
   // TODO setBoard(info, INFO_LENGTH, 0);
@@ -299,7 +301,8 @@ void Led::hymne() {
 
 void Led::myTone(unsigned int frequency, unsigned long duration, unsigned long pause) {
   if (timer) {
-    if (input.button_encoder || !input.switch_debug) {
+    if (input.button_encoder) {
+      input.update();
       cancel();
       return;
     }
@@ -307,7 +310,8 @@ void Led::myTone(unsigned int frequency, unsigned long duration, unsigned long p
     tone(BUZZER, frequency, duration);
     unsigned long timestamp = micros();
     while (micros() - timestamp < pause) {
-      if (input.button_encoder || !input.switch_debug) {
+      if (input.button_encoder) {
+        input.update();
         cancel();
         return;
       }
