@@ -161,9 +161,9 @@ extern bool wasMenuButton;
 
 // Serielle Kommunikationen
 #define DEBUG true                // soll eine Usb-Kommunikation bestehen?
-#define DEBUG_STATE false          // soll der Statuswechsel gezeigt werden?
-#define DEBUG_FUNCTIONS false     // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP false           // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_STATE true          // soll der Statuswechsel gezeigt werden?
+#define DEBUG_FUNCTIONS true     // sollen Methoden gezeigt werden?
+#define DEBUG_LOOP true           // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH false      // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_SERIAL Serial       // Serial der Usb-Schnittstelle
 #define BLUETOOTH true            // soll eine Bluetooth-Kommunikation bestehen?

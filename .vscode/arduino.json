@@ -2,5 +2,6 @@
     "board": "arduino:avr:mega",
     "configuration": "cpu=atmega2560",
     "sketch": "iceberg.19.ino",
-    "port": "COM15"
+    "port": "COM5",
+    "programmer": "AVRISP mkII"
 }

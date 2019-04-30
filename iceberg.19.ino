@@ -360,11 +360,5 @@ void loop() {
     p.play();
   }
 
-
-  if (millis() - lastDisplay > 1000 || (d.getPage() == 3  && millis() - lastDisplay > 200)) {
-    if (DEBUG_FUNCTIONS) debug(F("display"));
-    d.update();   // aktualisiere Bildschirm und LEDs
-  }
-
   if (hasDebugHead) debugln();
 }

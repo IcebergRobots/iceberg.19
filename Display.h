@@ -3,9 +3,8 @@
 
 #include "Config.h"
 #include "pin.h"
-#include <Adafruit_SH1106.h>
 
-class Display: public Adafruit_SH1106
+class Display
 {
   public:
     Display(int resetPin);
