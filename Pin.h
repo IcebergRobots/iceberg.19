@@ -40,7 +40,7 @@
 #define ROTARY_B        28  //  Rotary Encoder Rotation B
 
 #define BUZZER_ACTIVE   34  //  Pin ohne feste Funktion. Verbunden mit Platinensteckverbinder
-// #define INFO_LED        6   //  hier sind 3 RGB-LEDs angeschlossen: State, Battery, Heartbeat
+#define INFO_LED        32   //  hier sind die RGB-LEDs der PUI angeschlossen
 #define BUZZER          13   //  zum Ausgeben von Signaltönen
 // #define MATRIX_LED      41  //  Reihenfolge: Schuss, Mot. EN, Balls., Ballb., Bluet., Bodens., lift, Pixy, line, undefined, undefined, Debug
 

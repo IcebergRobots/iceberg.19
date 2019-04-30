@@ -41,7 +41,7 @@ void pinModes() {
   pinMode(ROTARY_B,			  INPUT_PULLUP);
 
   pinMode(BUZZER_ACTIVE,   OUTPUT);
-  // pinMode(INFO_LED,	  	  OUTPUT);
+  pinMode(INFO_LED,	  	  OUTPUT);
   pinMode(BUZZER,			    OUTPUT);
   // pinMode(MATRIX_LED,		  OUTPUT);
 

@@ -18,7 +18,8 @@ void Input::update(){
     //TODO
     button_start = !digitalRead(BUTTON_START);
     button_stop  = !digitalRead(BUTTON_STOP);
-    
+
+    button_encoder = !digitalRead(ROTARY_BUTTON);
 
     //IO-Expander-Pins
     button_kick        = ! mcp.digitalRead(PIN_MCP_kick); //UPDATE

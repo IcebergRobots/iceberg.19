@@ -3,12 +3,11 @@
 
 #include "Config.h"
 #include "pin.h"
-#include <Adafruit_SSD1306.h>
 
-class Display: public Adafruit_SSD1306
+class Display
 {
   public:
-    Display() : Adafruit_SSD1306() {}
+    Display(int resetPin);
 
     void init();
     void setupMessage(byte pos, String title, String description);

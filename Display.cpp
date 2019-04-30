@@ -8,15 +8,18 @@ extern Mate mate;
 extern Pilot m;
 extern Ultrasonic us;
 
+Display::Display(int resetPin){}
+
 void Display::init() {
-  begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialisiere das Displays
+  /*begin();  // initialisiere das Displays
   clearDisplay(); // leere den Bildschirm
   if (!silent) drawBitmap(0, 0, LOGO, 114, 64, WHITE); // zeige das Logo
-  display();  //wendet Aenderungen an
+  display();  //wendet Aenderungen an*/
 }
 
 void Display::setupMessage(byte pos, String title, String description) {
-  if (!silent) {
+  
+  /*if (!silent) {
     fillRect(47, 0, 81, 31, BLACK); // lösche das Textfeld
     drawRect(0, 29, map(pos, 0, SETUP_MESSAGE_RANGE, 0, 128), 2, WHITE);
     setTextColor(WHITE);
@@ -30,12 +33,12 @@ void Display::setupMessage(byte pos, String title, String description) {
     print(description.substring(0, 13));
 
     display();
-  }
+  }*/
 }
 
 // Infos auf dem Bildschirm anzeigen
 void Display::update() {
-  if (set() == false) {
+  /*if (set() == false) {
     if (DEBUG_FUNCTIONS) debug(F("reload"));
     set();
   }
@@ -106,7 +109,7 @@ void Display::update() {
   invertDisplay(m.getMotEn());
   display();      // aktualisiere Display
 
-  lastDisplay = millis(); // merke Zeitpunkt
+  lastDisplay = millis(); // merke Zeitpunkt*/
 }
 
 void Display::select() {

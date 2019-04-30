@@ -1,2 +1,8 @@
 
 desktop\.ini
+
+*.ipch
+
+\.vscode/ipch/
+
+\.vscode/arduino\.json

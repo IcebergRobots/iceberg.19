@@ -1,16 +1,29 @@
 /***
-  _____ _______ _______ ______  _______  ______  ______
-    |   |       |______ |_____] |______ |_____/ |  ____
-  __|__ |_____  |______ |_____] |______ |    \_ |_____|
 
-   ______  _____  ______   _____  _______ _______
-  |_____/ |     | |_____] |     |    |    |______
-  |    \_ |_____| |_____] |_____|    |    ______|
-
+8888888 .d8888b.  8888888888 888888b.   8888888888 8888888b.   .d8888b.  
+  888  d88P  Y88b 888        888  "88b  888        888   Y88b d88P  Y88b 
+  888  888    888 888        888  .88P  888        888    888 888    888 
+  888  888        8888888    8888888K.  8888888    888   d88P 888        
+  888  888        888        888  "Y88b 888        8888888P"  888  88888 
+  888  888    888 888        888    888 888        888 T88b   888    888 
+  888  Y88b  d88P 888        888   d88P 888        888  T88b  Y88b  d88P 
+8888888 "Y8888P"  8888888888 8888888P"  8888888888 888   T88b  "Y8888P88 
+                                                                         
+                                                                         
+                                                                         
+8888888b.   .d88888b.  888888b.    .d88888b. 88888888888 .d8888b.        
+888   Y88b d88P" "Y88b 888  "88b  d88P" "Y88b    888    d88P  Y88b       
+888    888 888     888 888  .88P  888     888    888    Y88b.            
+888   d88P 888     888 8888888K.  888     888    888     "Y888b.         
+8888888P"  888     888 888  "Y88b 888     888    888        "Y88b.       
+888 T88b   888     888 888    888 888     888    888          "888       
+888  T88b  Y88b. .d88P 888   d88P Y88b. .d88P    888    Y88b  d88P       
+888   T88b  "Y88888P"  8888888P"   "Y88888P"     888     "Y8888P"        
 */
 
 // Implementierung: DATEIEN
 #include "Config.h"
+#include "HardWire.h"
 
 // Globale Definition: FAHREN
 bool start = false;         // ist der funkstart aktiviert
@@ -39,6 +52,7 @@ Player p;  // OBJEKTINITIALISIERUNG
 int heading = 0;                    // Wert des Kompass
 int startHeading = 0;               // Startwert des Kompass
 int rotation = 0;                   // rotationswert für die Motoren
+Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
 // Gloabale Definition: BEWERTUNG
 byte scoreBallWidth = 0;
@@ -120,7 +134,7 @@ bool isLifted = false;  // ist der Roboter hochgehoben?
 bool isTypeA; // ist das Roboter A?
 unsigned long lastDisplay = 0; // Zeitpunkt des letzten Displayaktualisierens
 String displayDebug = "";      // unterste Zeile des Bildschirms;
-Display d = Display(); // OBJEKTINITIALISIERUNG
+Display d = Display(42); // OBJEKTINITIALISIERUNG
 
 // Globale Definition: LEDS, DEBUG
 bool wasLedButton = false;        // war der Animationsknopf gedrückt
@@ -129,8 +143,7 @@ bool isSetupAnimantion = true;    // läuft die Setup Animation;
 bool stateFine = true;            // liegt kein Fehler vor?
 unsigned long ledTimer = 0;       // Zeitpunkt der letzten Led-Aktualisierung
 Adafruit_NeoPixel bottom = Adafruit_NeoPixel(BOTTOM_LENGTH, BOTTOM_LED, NEO_GRB + NEO_KHZ800); // OBJEKTINITIALISIERUNG (BODEN-LEDS)
-//Adafruit_NeoPixel matrix = Adafruit_NeoPixel(MATRIX_LENGTH, MATRIX_LED, NEO_GRB + NEO_KHZ800); // OBJEKTINITIALISIERUNG (LED-MATRIX)
-//Adafruit_NeoPixel info = Adafruit_NeoPixel(INFO_LENGTH, INFO_LED, NEO_GRB + NEO_KHZ800);       // OBJEKTINITIALISIERUNG (STATUS-LEDS)
+Adafruit_NeoPixel info = Adafruit_NeoPixel(INFO_LENGTH, INFO_LED, NEO_GRB + NEO_KHZ800);       // OBJEKTINITIALISIERUNG (STATUS-LEDS)
 Led led;  // OBJEKTINITIALISIERUNG
 
 // Globale Definition: BUZZER
@@ -176,7 +189,7 @@ void setup() {
   BOTTOM_SERIAL.begin(115200);
 
   // Start der I2C-Kommunikation
-  Wire.begin();        
+  Wire.begin();    
 
   // konfiguriere PID-Regler
   myPID.SetTunings(PID_FILTER_P, PID_FILTER_I, PID_FILTER_D);
@@ -210,7 +223,8 @@ void setup() {
 
   // initialisiere Kompasssensor
   d.setupMessage(7, "COMPASS", "Orientierung");
-  //TODO
+  bno.begin();
+  
 
   // initialisiere PID-Regler
   d.setupMessage(8, "PID", "Rotation");
@@ -220,9 +234,8 @@ void setup() {
 
   // initialisiere Leds
   d.setupMessage(9, "LED", "Animation");
-  // bottom.begin();   // BODEN-LEDS initialisieren     TODO
-  // matrix.begin();   // MATRIX-LEDS initialisieren    TODO
-  // info.begin();     // STATUS-LEDS initialisieren    TODO
+  bottom.begin();   // BODEN-LEDS initialisieren     TODO
+  info.begin();     // STATUS-LEDS initialisieren    TODO
   if (!silent) led.start();
   d.setupMessage(10, "B: " + String(lightBarrierTriggerLevel), "");
   DEBUG_SERIAL.println();
@@ -266,7 +279,9 @@ void loop() {
   hasDebugHead = false;
   displayDebug = "";
 
+  debugln("BEFORE");
   readCompass();
+  debugln("AFTER");
   calculateStates();  // Berechne alle Statuswerte und Zustände
 
   if (millis() - kickTimer > map(analogRead(POTI), 0, 1023, 0, 35)) digitalWrite(SCHUSS, 0); // schuß wieder ausschalten
@@ -283,14 +298,21 @@ void loop() {
 
   // Torrichtung speichern
   if (input.button_compass) {
-    startHeading = 0;
-    readCompass();
-    startHeading = heading; //merke Torrichtung [-180 bis 179]
-    EEPROM.write(0, startHeading < 0);  // speichere Vorzeichen
-    EEPROM.write(1, abs(startHeading)); // speichere Winkel
-    heading = 0;
-    buzzerTone(200);
-    d.update();   // aktualisiere Bildschirm und LEDs
+    if(input.button_encoder){
+      m.drive(0,0,40);
+      //myCompass.calibration();
+      m.brake(true);
+    }
+    else{  
+      startHeading = 0;
+      readCompass();
+      startHeading = heading; //merke Torrichtung [-180 bis 179]
+      EEPROM.write(0, startHeading < 0);  // speichere Vorzeichen
+      EEPROM.write(1, abs(startHeading)); // speichere Winkel
+      heading = 0;
+      buzzerTone(200);
+      d.update();   // aktualisiere Bildschirm und LEDs
+    }
   }
 
   // lösche Bodensensor Cache
@@ -353,12 +375,6 @@ void loop() {
     m.drive(driveDirection, drivePower, driveRotation);
   } else {
     p.play();
-  }
-
-
-  if (millis() - lastDisplay > 1000 || (d.getPage() == 3  && millis() - lastDisplay > 200)) {
-    if (DEBUG_FUNCTIONS) debug(F("display"));
-    d.update();   // aktualisiere Bildschirm und LEDs
   }
 
   if (hasDebugHead) debugln();

@@ -9,6 +9,8 @@ extern Pilot m;
 extern Ultrasonic us;
 extern Input input;
 
+extern Adafruit_BNO055 bno;
+
 void reset() {
   asm ("jmp 0");   // starte den Arduino neu
 }
@@ -32,11 +34,11 @@ void startSound() {
   Berechne alle Statuswerte und Zustände
 *****************************************************/
 void calculateStates() {
-  isLifted = false;// TODO isLifted = millis() - flatTimer > 600;
+  isLifted = millis() - flatTimer > 600;
   onLine = millis() - lineTimer < LINE_DURATION;
   isHeadstart = millis() - headstartTimer < HEADSTART_DURATION;
   isAvoidMate = millis() - avoidMateTimer < AVOID_MATE_DURATION;
-  batVol = analogRead(BATT_VOLTAGE) * 0.1220703;  // SPANNUNG MAL 10!
+  batVol = analogRead(BATT_VOLTAGE) * 0.124783;  // SPANNUNG MAL 10!
   if (batVol > VOLTAGE_MIN) {
     batState = 1; // ok
     if (m.getMotEn()) {
@@ -241,11 +243,11 @@ void kick() {
 
 void readCompass() {
   // kompasswert [-180 bis 180]
-
-  //TODO
-
-  //heading = (((int)orientation.heading - startHeading + 720) % 360) - 180;
-  //stateFine = false;
+  sensors_event_t event;
+  bno.getEvent(&event);
+  heading = (((int)event.orientation.x - startHeading + 720) % 360) - 180;
+  if(abs(event.orientation.y)<20)
+    flatTimer = millis();
 }
 
 void buzzerTone(int duration) {
