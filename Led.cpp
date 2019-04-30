@@ -24,7 +24,6 @@ void Led::heartbeat(){
   Aktualisiere alle Leds bzw. zeige die Animation
 *****************************************************/
 void Led::led() {
-  //TODO
   if (!timer) {
     // setze Helligkeit zurück
     bottom.setBrightness(BOTTOM_BRIGHTNESS);
@@ -50,7 +49,6 @@ void Led::led() {
   Lege Leds auf Statusinformation fest
 *****************************************************/
 void Led::set() {
-  //TODO
   info.setPixelColor(0, wheelToColor(info, (millis()/2)%255)                      );  //PARTY
   showState(info, 1,  batState * (batState != 3 || millis() % 250 < 125), true    );  //Voltage
   showState(info, 2,  0                                                           );  //ColCode
@@ -63,27 +61,6 @@ void Led::set() {
   showState(info, 9,  input.switch_bluetooth                                      );  //Bluetooth
   showState(info, 10, m.getMotEn() + (!m.getMotEn()&&input.switch_motor)*2        );  //Motors
   showState(info, 11, input.switch_headstart                                      );  //Headstart
-  /*
-  // zeige Statuswerte an
-  showState(info, 0, stateFine);
-  showState(info, 1, batState * (batState != 3 || millis() % 250 < 125), true);
-  showState(info, 2, millis() % 1000 < 200, true);
-
-  showState(matrix, 0, input.switch_kick);
-  showState(matrix, 1, !input.switch_motor);
-  showState(matrix, 2, seeBall + closeBall, true);
-  showState(matrix, 3, hasBall, true);
-  showState(matrix, 4, !mate.timeout());
-  //showState(matrix, 5, Bodensensor verfügbar);
-  showState(matrix, 6, isLifted * 3, true);
-  showState(matrix, 7, pixyState, true);
-  showState(matrix, 8, !onLine);
-  showState(matrix, 9, seeGoal, true);
-  //showState(matrix, 10, !us.timeout() * (2 - us.check()));
-  if (p.isKeeper()) showState(matrix, 11, 1, true);
-  else if (p.isRusher()) showState(matrix, 11, 3, true);
-  else showState(matrix, 11, 0, true);
-  }*/
 }
 
 void Led::showCalibration() {

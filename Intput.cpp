@@ -15,7 +15,6 @@ void Input::init(){
 }
 
 void Input::update(){
-    //TODO
     button_start = !digitalRead(BUTTON_START);
     button_stop  = !digitalRead(BUTTON_STOP);
 
