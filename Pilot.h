@@ -13,6 +13,8 @@ class Pilot
     void setAngle(byte angle);
 
     void steerMotor(byte id, int power);
+    void setMotor(byte id, int power);
+    void update();
 
     void drive();
     void drive(int values[]);
@@ -37,11 +39,10 @@ class Pilot
 
     int _values[4];  // Zwischenspeicher für Outputsignale
 
+    int _wantedSpeed[4];
+
     byte _angle;
     bool _motEn;    // gibt an, ob die Motoren an sind
-    bool _halfSpeed = false;
-
-    int _curr;
 };
 
 #endif

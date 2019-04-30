@@ -86,6 +86,33 @@ void Pilot::steerMotor(byte id, int power) {
 }
 
 /*****************************************************
+  wird jede Loop aufgerufen, passt die Geschwindigkeit dem sollwert an (über Encoder)
+  IDs:
+     .--.
+  0 /    \ 3
+  1 \    / 2
+     '--'
+*****************************************************/
+void Pilot::update() {
+  
+}
+
+/*****************************************************
+  setze Sollgeschwindigkeit für einen Motor
+  @param id [0 bis 3]: Motor-ID
+  @param power [-255 bis 255]: Gescwindigkeit
+
+  IDs:
+     .--.
+  0 /    \ 3
+  1 \    / 2
+     '--'
+*****************************************************/
+void Pilot::setMotor(byte id, int power) {
+  
+}
+
+/*****************************************************
   fahre mit Geschwindigkeit, Zielwinkel und Eigenrotation
   @param (optional) angle [-180 bis 180]: Zielwinkel
   @param (optional) power [-255 bis 255]: Geschwindigkeit
