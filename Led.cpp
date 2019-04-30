@@ -145,7 +145,7 @@ void Led::showState(Adafruit_NeoPixel & board, byte pos, byte state, bool hideRe
          Wahrnung (blau)
          Information ungewiss (blau)
       */
-      board.setPixelColor(pos, 255, 255, 0);
+      board.setPixelColor(pos, 140, 127, 0);
       break;
     case 3:
       /*
