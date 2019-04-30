@@ -245,9 +245,9 @@ void readCompass() {
   // kompasswert [-180 bis 180]
   sensors_event_t event;
   bno.getEvent(&event);
-  debugln(event.orientation.y);
-  //heading = (((int)myCompass.getHeading() - startHeading + 720) % 360) - 180;
-  flatTimer = millis();
+  heading = (((int)event.orientation.x - startHeading + 720) % 360) - 180;
+  if(abs(event.orientation.y)<20)
+    flatTimer = millis();
 }
 
 void buzzerTone(int duration) {
