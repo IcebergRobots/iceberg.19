@@ -1,5 +1,5 @@
 #include "Encoder.h"
-#include "Wire.h"
+#include "HardWire.h"
 
 
 Encoder::Encoder(int nr){
