@@ -274,6 +274,8 @@ void loop() {
   input.update();
   us.update();
   led.heartbeat();
+
+  delay(2);           //solves Compass reset issue (I think you have wait a while before starting new I2C-Communicition)
   
   readCompass();
   calculateStates();  // Berechne alle Statuswerte und Zustände
