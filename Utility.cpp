@@ -34,7 +34,7 @@ void startSound() {
   Berechne alle Statuswerte und Zustände
 *****************************************************/
 void calculateStates() {
-  isLifted = millis() - flatTimer > 600;
+  isLifted = millis() - flatTimer > 300;
   onLine = millis() - lineTimer < LINE_DURATION;
   isHeadstart = millis() - headstartTimer < HEADSTART_DURATION;
   isAvoidMate = millis() - avoidMateTimer < AVOID_MATE_DURATION;
@@ -246,7 +246,7 @@ void readCompass() {
   sensors_event_t event;
   bno.getEvent(&event);
   heading = (((int)event.orientation.x - startHeading + 720) % 360) - 180;
-  if(abs(event.orientation.y)<20)
+  if(abs(event.orientation.y)<15)
     flatTimer = millis();
 }
 
