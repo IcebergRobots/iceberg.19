@@ -229,6 +229,9 @@ void setup() {
   myPID.SetMode(AUTOMATIC);
   myPID.SetOutputLimits(-255, 255);
 
+  //initiiere Ultraschallsensoren
+  us.init();
+
   // initialisiere Leds
   d.setupMessage(9, "LED", "Animation");
   bottom.begin();   // BODEN-LEDS initialisieren     TODO
@@ -267,10 +270,13 @@ void setup() {
 void loop() {
   input.update();
 
+  us.update();
+
   hasDebugHead = false;
   displayDebug = "";
 
   debugln("BEFORE");
+  us.update();
   readCompass();
   debugln("AFTER");
   calculateStates();  // Berechne alle Statuswerte und Zustände
