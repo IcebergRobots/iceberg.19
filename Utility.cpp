@@ -263,7 +263,7 @@ void handleMenu(){
 
 void kick() {
   if (millis() - kickTimer > 333 && input.switch_kick) {
-    digitalWrite(SCHUSS, 1);
+    analogWrite(SCHUSS, map(analogRead(POTI),0,1023,190,255));
     kickTimer = millis();
   }
 }

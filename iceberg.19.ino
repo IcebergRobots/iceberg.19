@@ -275,7 +275,7 @@ void loop() {
   debugln("AFTER");
   calculateStates();  // Berechne alle Statuswerte und Zustände
 
-  if (millis() - kickTimer > map(analogRead(POTI), 0, 1023, 0, 35)) digitalWrite(SCHUSS, 0); // schuß wieder ausschalten
+  if (millis() - kickTimer > 35) digitalWrite(SCHUSS, 0); // schuß wieder ausschalten
 
   if (batState == 3) analogWrite(BUZZER, 127 * (millis() % 250 < 125));
   else analogWrite(BUZZER, 127 * millis() <= buzzerStopTimer);  // buzzer anschalten bzw. wieder ausschalten
