@@ -303,8 +303,11 @@ void loop() {
 
   if (millis() - kickTimer > 35) digitalWrite(SCHUSS, 0); // schuß wieder ausschalten
 
-  if (batState == 3) digitalWrite(BUZZER_ACTIVE, (millis() % 250) < 125);
-  else analogWrite(BUZZER, 127 * millis() <= buzzerStopTimer);  // buzzer anschalten bzw. wieder ausschalten
+  if (batState == 3) 
+    digitalWrite(BUZZER_ACTIVE, (millis() % 250) < 125);
+  else
+    digitalWrite(BUZZER_ACTIVE, LOW);
+  analogWrite(BUZZER, 127 * millis() <= buzzerStopTimer);  // buzzer anschalten bzw. wieder ausschalten
 
   //empty Serial Buffer
   while (BOTTOM_SERIAL.available() > 1) {
