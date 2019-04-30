@@ -26,27 +26,27 @@
 #include "HardWire.h"
 
 // Globale Definition: FAHREN
-bool start = false;         // ist der funkstart aktiviert
-bool onLine = false;        // befinden wir uns auf einer Linie?
-bool isHeadstart = false;   // fahren wir mit voller Geschwindigkeit?
-bool isAvoidMate = false;   // sollen wir dem Partner ausweichen?
-bool isKeeperLeft = false;  // deckten wir zuletzt das Tor mit einer Linksbewegung?
-bool wasMotor = false;      // war motor aktiv?
-bool wasStart = false;      // war start aktiv?
-byte role = 0;              // Spielrolle: Stürmer(2) / Torwart(1) / Aus(0)
-int rotMulti;               // Scalar, um die Rotationswerte zu verstärken
-int drivePower = 0;         // [-255 bis 255] aktuelle maximale Motorstärke
-int driveRotation = 0;      // [-255 bis 255] aktuelle Rotationsstärke
-int driveDirection = 0;     // [-180 bis 180] Ziel-Fahrrichtung
-int driveOrientation = 0;   // [-180 bis 180] Ziel-Orientierungswinkel
-int lineDir = -1;           // Richtung, in der ein Bodensensor ausschlug
+bool start = false;                 // ist der funkstart aktiviert
+bool onLine = false;                // befinden wir uns auf einer Linie?
+bool isHeadstart = false;           // fahren wir mit voller Geschwindigkeit?
+bool isAvoidMate = false;           // sollen wir dem Partner ausweichen?
+bool isKeeperLeft = false;          // deckten wir zuletzt das Tor mit einer Linksbewegung?
+bool wasMotor = false;              // war motor aktiv?
+bool wasStart = false;              // war start aktiv?
+byte role = 0;                      // Spielrolle: Stürmer(2) / Torwart(1) / Aus(0)
+int rotMulti;                       // Scalar, um die Rotationswerte zu verstärken
+int drivePower = 0;                 // [-255 bis 255] aktuelle maximale Motorstärke
+int driveRotation = 0;              // [-255 bis 255] aktuelle Rotationsstärke
+int driveDirection = 0;             // [-180 bis 180] Ziel-Fahrrichtung
+int driveOrientation = 0;           // [-180 bis 180] Ziel-Orientierungswinkel
+int lineDir = -1;                   // Richtung, in der ein Bodensensor ausschlug
 unsigned long lineTimer = 0;        // Zeitpunkt des Interrupts durch einen Bodensensor
 unsigned long headstartTimer = 0;   // Zeitpunkt des Betätigen des Headstarts
 unsigned long avoidMateTimer = 0;   // Zeitpunkt des letzten Ausweich-Signals
-unsigned long flatTimer = 0;    // Zeitpunktm zu dem der Roboter das letzte mal flach auf dem Boden stand
-String driveState = "          ";             // Zustand des Fahrens
-Pilot m;  // OBJEKTINITIALISIERUNG
-Player p;  // OBJEKTINITIALISIERUNG
+unsigned long flatTimer = 0;        // Zeitpunktm zu dem der Roboter das letzte mal flach auf dem Boden stand
+String driveState = "          ";   // Zustand des Fahrens
+Pilot m;                            // OBJEKTINITIALISIERUNG
+Player p;                           // OBJEKTINITIALISIERUNG
 
 // Globale Definition: KOMPASS
 int heading = 0;                    // Wert des Kompass
@@ -66,43 +66,43 @@ bool wasStartButton = false;      // war zuletzt der Funktstart aktiviert
 unsigned long startTimer = 0;     // Zeitpunkt des letzten Start Drückens
 unsigned long sendAvoidTimer = 0; // Zeitpunkt des letzten Ausweichsendens
 unsigned long bluetoothTimer = 0; // Zeitpunkt des letzten Sendens
-Mate mate;  // OBJEKTINITIALISIERUNG
+Mate mate;                        // OBJEKTINITIALISIERUNG
 
 // Globale Definition: WICHTUNG DER PID-REGLER
-double pidSetpoint; // Nulllevel [-180 bis 180] Winkel des Tours
-double pidIn;       // Kompasswert [-180 bis 180]
-double pidOut;      // Rotationsstärke [-255 bis 255]
+double pidSetpoint;               // Nulllevel [-180 bis 180] Winkel des Tours
+double pidIn;                     // Kompasswert [-180 bis 180]
+double pidOut;                    // Rotationsstärke [-255 bis 255]
 PID myPID = PID(&pidIn, &pidOut, &pidSetpoint, PID_FILTER_P, PID_FILTER_I, PID_FILTER_D, DIRECT); // OBJEKTINITIALISIERUNG
 
 // Globale Definition: BATTERY
-byte batState = 0;  // ist du Spannung zu gering?
-int batVol = 0;     // Spannung MAL 10!
+byte batState = 0;                // ist du Spannung zu gering?
+int batVol = 0;                   // Spannung MAL 10!
 
 // Globale Definition: PIXY
-bool seeBall = false;   // sehen wir den Ball?
-bool seeGoal = false;   // sehen wir das Tor?
-bool seeEast = false;   // sehen wir eine Farbmarkierung nach rechts
-bool seeWest = false;   // sehen wir eine Farbmarkierung nach links
-bool closeBall = false; // ist der Ball groß
-bool isDrift = false;   // driften wir
-bool driftLeft = false; // steuern wir nach links gegen
-bool ccLeft = false;        // Richtung des Ausweichens
-byte pixyState = 0;     // Verbindungsstatus per Pixy
-byte blockCount = 0;    // Anzahl der gesehenen Blöcke
-byte blockCountBall = 0;// Anzahl der Ball Blöcke
-byte blockCountGoal = 0;// Anzahl der Tor Blöcke
-byte blockCountEast = 0;// Anzahl der Color Code Blöcke
-byte blockCountWest = 0;// Anzahl der Color Code Blöcke
-int ball = 0;           // Abweichung der Ball X-Koordinate
-int ballWidth = 0;      // Ballbreite
-int ballArea = 0;       // Ballgröße (Flächeninhalt)
-int goal = 0;           // Abweichung der Tor X-Koordinate
-int goalWidth = 0;      // Torbreite
-int goalArea = 0;       // Torgröße (Flächeninhalt)
-int east = 0;           // Abweichung des Farbmarkierungs X-Koordinate
-int eastHeight = 0;     // Farbmarkierungshöhe
-int west = 0;           // Abweichung des Farbmarkierungs X-Koordinate
-int westHeight = 0;     // Farbmarkierungshöhe
+bool seeBall = false;             // sehen wir den Ball?
+bool seeGoal = false;             // sehen wir das Tor?
+bool seeEast = false;             // sehen wir eine Farbmarkierung nach rechts
+bool seeWest = false;             // sehen wir eine Farbmarkierung nach links
+bool closeBall = false;           // ist der Ball groß
+bool isDrift = false;             // driften wir
+bool driftLeft = false;           // steuern wir nach links gegen
+bool ccLeft = false;              // Richtung des Ausweichens
+byte pixyState = 0;               // Verbindungsstatus per Pixy
+byte blockCount = 0;              // Anzahl der gesehenen Blöcke
+byte blockCountBall = 0;          // Anzahl der Ball Blöcke
+byte blockCountGoal = 0;          // Anzahl der Tor Blöcke
+byte blockCountEast = 0;          // Anzahl der Color Code Blöcke
+byte blockCountWest = 0;          // Anzahl der Color Code Blöcke
+int ball = 0;                     // Abweichung der Ball X-Koordinate
+int ballWidth = 0;                // Ballbreite
+int ballArea = 0;                 // Ballgröße (Flächeninhalt)
+int goal = 0;                     // Abweichung der Tor X-Koordinate
+int goalWidth = 0;                // Torbreite
+int goalArea = 0;                 // Torgröße (Flächeninhalt)
+int east = 0;                     // Abweichung des Farbmarkierungs X-Koordinate
+int eastHeight = 0;               // Farbmarkierungshöhe
+int west = 0;                     // Abweichung des Farbmarkierungs X-Koordinate
+int westHeight = 0;               // Farbmarkierungshöhe
 unsigned long seeBallTimer = 0;   // Zeitpunkt des letzten Ball Sehens
 unsigned long seeGoalTimer = 0;   // Zeitpunkt des letzen Tor Sehens
 unsigned long seeEastTimer = 0;   // Zeitpunkt der letzen Ost Sehens
@@ -112,29 +112,29 @@ unsigned long driftTimer = 0;     // Zeitpunkt seit wann wir gegensteuern
 unsigned long ballLeftTimer = 0;  // Zeitpunkt wann der Ball zuletzt links war
 unsigned long ballRightTimer = 0; // Zeitpunkt wann der Ball zuletzt rechts war
 unsigned long pixyResponseTimer = 0;  // Zeitpunkt der letzten Antwort der Pixy
-unsigned long pixyTimer = 0;  // Zeitpunkt des letzten Auslesens der Pixy
-Pixy pixy;  // OBJEKTINITIALISIERUNG
+unsigned long pixyTimer = 0;      // Zeitpunkt des letzten Auslesens der Pixy
+Pixy pixy;                        // OBJEKTINITIALISIERUNG
 
 // Globale Definition: ULTRASCHALL
 bool isPenaltyFree = true;
 unsigned long penaltyFreeTimer = 0;
-unsigned long usTimer = 0;  // Zeitpunkt des letzten Auslesens
-Ultrasonic us;  // OBJEKTINITIALISIERUNG
+unsigned long usTimer = 0;        // Zeitpunkt des letzten Auslesens
+Ultrasonic us;                    // OBJEKTINITIALISIERUNG
 
 
 // Globale Definition: KICK, LIGHT-BARRIER
-bool hasBall = false;   // besitzen der Roboter den Ball?
-unsigned long kickTimer = 0;  // Zeitpunkt des letzten Schießens
+bool hasBall = false;             // besitzen der Roboter den Ball?
+unsigned long kickTimer = 0;      // Zeitpunkt des letzten Schießens
 unsigned int lightBarrierTriggerLevel = 80; // [0 bis 1023]~50 Wert, ab dem Lichtschranke ausschlägt
 
 // Globale Definition: LIFT
-bool isLifted = false;  // ist der Roboter hochgehoben?
+bool isLifted = false;            // ist der Roboter hochgehoben?
 
 // Globale Definition: DISPLAY
-bool isTypeA; // ist das Roboter A?
-unsigned long lastDisplay = 0; // Zeitpunkt des letzten Displayaktualisierens
-String displayDebug = "";      // unterste Zeile des Bildschirms;
-Display d = Display(42); // OBJEKTINITIALISIERUNG
+bool isTypeA;                     // ist das Roboter A?
+unsigned long lastDisplay = 0;    // Zeitpunkt des letzten Displayaktualisierens
+String displayDebug = "";         // unterste Zeile des Bildschirms;
+Display d = Display(42);          // OBJEKTINITIALISIERUNG
 
 // Globale Definition: LEDS, DEBUG
 bool wasLedButton = false;        // war der Animationsknopf gedrückt
@@ -144,7 +144,7 @@ bool stateFine = true;            // liegt kein Fehler vor?
 unsigned long ledTimer = 0;       // Zeitpunkt der letzten Led-Aktualisierung
 Adafruit_NeoPixel bottom = Adafruit_NeoPixel(BOTTOM_LENGTH, BOTTOM_LED, NEO_GRB + NEO_KHZ800); // OBJEKTINITIALISIERUNG (BODEN-LEDS)
 Adafruit_NeoPixel info = Adafruit_NeoPixel(INFO_LENGTH, INFO_LED, NEO_GRB + NEO_KHZ800);       // OBJEKTINITIALISIERUNG (STATUS-LEDS)
-Led led;  // OBJEKTINITIALISIERUNG
+Led led;                          // OBJEKTINITIALISIERUNG
 
 // Globale Definition: BUZZER
 byte silent = false;
@@ -152,8 +152,8 @@ unsigned long buzzerStopTimer = 0; // Zeitpunkt, wann der Buzzer ausgehen soll
 
 // Globale Definition: ROTARY-ENCODER
 RotaryEncoder rotaryEncoder = RotaryEncoder(ROTARY_B, ROTARY_A);  // OBJEKTINITIALISIERUNG
-int rotaryPositionLast = 0; // letzter Zustand des Reglers
-bool wasMenuButton = false; // war der Menü-Knopf gedrückt?
+int rotaryPositionLast = 0;        // letzter Zustand des Reglers
+bool wasMenuButton = false;        // war der Menü-Knopf gedrückt?
 
 //###################################################################################################
 //##...............................................................................................##
