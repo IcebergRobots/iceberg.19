@@ -3,16 +3,16 @@
 
 class Encoder {
     public: 
-        Encoder(int nr);
+        Encoder(int encNr, int dataNr);
         
         void update();
         int getSpeed();
-        int getPwr(int pwr, int motor);
 
     private:
-        int encNr;
-        int dataNr;
+        int _encNr;
+        int _dataNr;
         int speed;
+        unsigned long timer;
 
 };
 

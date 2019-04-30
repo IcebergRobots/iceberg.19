@@ -155,8 +155,7 @@ RotaryEncoder rotaryEncoder = RotaryEncoder(ROTARY_B, ROTARY_A);  // OBJEKTINITI
 int rotaryPositionLast = 0; // letzter Zustand des Reglers
 bool wasMenuButton = false; // war der Menü-Knopf gedrückt?
 
-//Globale Definition: ENCODER
-Encoder encoder[4] = {Encoder(0), Encoder(1), Encoder(2), Encoder(3)};
+
 
 //###################################################################################################
 //##...............................................................................................##
