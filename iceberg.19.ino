@@ -268,22 +268,25 @@ void setup() {
 //###################################################################################################
 
 void loop() {
-  input.update();
-
-  us.update();
-
   hasDebugHead = false;
   displayDebug = "";
 
-  debugln("BEFORE");
+  input.update();
   us.update();
+  led.heartbeat();
+  
   readCompass();
-  debugln("AFTER");
   calculateStates();  // Berechne alle Statuswerte und Zustände
+  rating();
+
+  handleMenu();
+  handleCompassCalibration();
+  handleStartStop();
+  handleBluetooth();
 
   if (millis() - kickTimer > 35) digitalWrite(SCHUSS, 0); // schuß wieder ausschalten
 
-  if (batState == 3) analogWrite(BUZZER, 127 * (millis() % 250 < 125));
+  if (batState == 3) digitalWrite(BUZZER_ACTIVE, (millis() % 250) < 125);
   else analogWrite(BUZZER, 127 * millis() <= buzzerStopTimer);  // buzzer anschalten bzw. wieder ausschalten
 
   //empty Serial Buffer
@@ -291,88 +294,24 @@ void loop() {
     BOTTOM_SERIAL.read();
   }
 
-  handleMenu();
-
-  // Torrichtung speichern
-  if (input.button_compass) {
-    if(input.button_encoder){
-      m.brake(true);
-      sensors_event_t event;
-      digitalWrite(LED_BACK_LEFT,  HIGH);
-      digitalWrite(LED_BACK_RIGHT, HIGH);
-      while(input.button_compass){
-        input.update();
-      }
-
-      while (!bno.isFullyCalibrated() && !input.button_compass)
-      {
-        input.update();
-        bno.getEvent(&event);
-
-        Serial.print("X: ");
-        Serial.print(event.orientation.x, 4);
-        Serial.print("\tY: ");
-        Serial.print(event.orientation.y, 4);
-        Serial.print("\tZ: ");
-        Serial.print(event.orientation.z, 4);
-
-        /* New line for the next sample */
-        Serial.println("");
-        displayCalStatus();
-
-        led.showCalibration();
-        led.led();
-        led.heartbeat();
-
-        /* Wait the specified delay before requesting new data */
-        delay(50);
-      }
-      
-      digitalWrite(LED_BACK_LEFT,  LOW);
-      digitalWrite(LED_BACK_RIGHT, LOW);
-
-    }
-    else{  
-      startHeading = 0;
-      readCompass();
-      startHeading = heading; //merke Torrichtung [-180 bis 179]
-      EEPROM.write(0, startHeading < 0);  // speichere Vorzeichen
-      EEPROM.write(1, abs(startHeading)); // speichere Winkel
-      heading = 0;
-      buzzerTone(200);
-      d.update();   // aktualisiere Bildschirm und LEDs
-    }
-  }
-
-  // lösche Bodensensor Cache
-  while (BOTTOM_SERIAL > 1) {
-    BOTTOM_SERIAL.read();
-  }
-
   if (input.button_kick) kick(); // schieße
 
-  led.heartbeat();
 
+  //TIMER
+  //led-Timer
   if (led.isAnimation() || millis() - ledTimer > 100) {
     if (DEBUG_FUNCTIONS) debug("led");
-    led.set();  // Lege Leds auf Statusinformation fest
-    led.led();  // Aktualisiere alle Leds bzw. zeige die Animation
+    led.set();                                                // Lege Leds auf Statusinformation fest
+    led.led();                                                // Aktualisiere alle Leds bzw. zeige die Animation
   }
-
+  //Pixy-Timer
   if (millis() - pixyTimer > 20) {
     if (DEBUG_FUNCTIONS) debug("pixy");
-    readPixy(); // aktualisiere Pixywerte (max. alle 50ms)
+    readPixy();                                               // aktualisiere Pixywerte (max. alle 50ms)
   }
-
-  if (millis() - usTimer > 100) us.update(); // lese die Ultraschall Sensoren aus (max. alle 100ms)
-
-  rating();
-
-  if (millis() - bluetoothTimer > 100)  transmitHeartbeat(); // Sende einen Herzschlag mit Statusinformationen an den Partner
-
-  handleStartStop();
-
-  handleBluetooth();
+  //Bluetooth-Timer
+  if (millis() - bluetoothTimer > 100)  transmitHeartbeat();  // Sende einen Herzschlag mit Statusinformationen an den Partner
+  
 
   // Fahre
   if (isLifted) {

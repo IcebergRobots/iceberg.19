@@ -11,6 +11,59 @@ extern Input input;
 
 extern Adafruit_BNO055 bno;
 
+void handleCompassCalibration(){
+  // Torrichtung speichern
+  if (input.button_compass) {
+    if(input.button_encoder){
+      m.brake(true);
+      sensors_event_t event;
+      digitalWrite(LED_BACK_LEFT,  HIGH);
+      digitalWrite(LED_BACK_RIGHT, HIGH);
+      while(input.button_compass){
+        input.update();
+      }
+
+      while (!bno.isFullyCalibrated() && !input.button_compass)
+      {
+        input.update();
+        bno.getEvent(&event);
+
+        Serial.print("X: ");
+        Serial.print(event.orientation.x, 4);
+        Serial.print("\tY: ");
+        Serial.print(event.orientation.y, 4);
+        Serial.print("\tZ: ");
+        Serial.print(event.orientation.z, 4);
+
+        /* New line for the next sample */
+        Serial.println("");
+        displayCalStatus();
+
+        led.showCalibration();
+        led.led();
+        led.heartbeat();
+
+        /* Wait the specified delay before requesting new data */
+        delay(50);
+      }
+      
+      digitalWrite(LED_BACK_LEFT,  LOW);
+      digitalWrite(LED_BACK_RIGHT, LOW);
+
+    }
+    else{  
+      startHeading = 0;
+      readCompass();
+      startHeading = heading; //merke Torrichtung [-180 bis 179]
+      EEPROM.write(0, startHeading < 0);  // speichere Vorzeichen
+      EEPROM.write(1, abs(startHeading)); // speichere Winkel
+      heading = 0;
+      buzzerTone(200);
+      d.update();   // aktualisiere Bildschirm und LEDs
+    }
+  }
+}
+
 void displayCalStatus(void)
 {
     /* Get the four calibration values (0..3) */
