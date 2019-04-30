@@ -50,7 +50,7 @@ void Led::led() {
 *****************************************************/
 void Led::set() {
   //TODO
-  showState(info, 0,  0                                                           );  //PARTY
+  info.setPixelColor(0, wheelToColor(info, (millis()/2)%255)                      );  //PARTY
   showState(info, 1,  batState * (batState != 3 || millis() % 250 < 125), true    );  //Voltage
   showState(info, 2,  0                                                           );  //ColCode
   showState(info, 3,  seeGoal                                                     );  //Goal
