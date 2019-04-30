@@ -7,9 +7,12 @@ class Encoder {
         
         void update();
         int getSpeed();
-        int getPwr();
+        int getPwr(int pwr, int motor);
 
     private:
+        int encNr;
+        int dataNr;
+        int speed;
 
 };
 

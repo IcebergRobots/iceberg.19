@@ -11,6 +11,7 @@
 #include "Utility.h"
 #include "pin.h"
 #include "Input.hpp"
+#include "Encoder.h"
 
 #include <SPI.h>
 #include <HardWire.h>
