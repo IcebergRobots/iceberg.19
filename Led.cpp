@@ -10,6 +10,7 @@ extern Ultrasonic us;
 extern Adafruit_NeoPixel bottom;
 extern Adafruit_NeoPixel info;
 extern Input input;
+extern Adafruit_BNO055 bno;
 
 Led::Led() {}
 
@@ -83,6 +84,43 @@ void Led::set() {
   else if (p.isRusher()) showState(matrix, 11, 3, true);
   else showState(matrix, 11, 0, true);
   }*/
+}
+
+void Led::showCalibration() {
+  setBoard(info, 12, info.Color(0,0,0));
+
+  uint8_t system, gyro, accel, mag;
+  system = gyro = accel = mag = 0;
+  bno.getCalibration(&system, &gyro, &accel, &mag);
+
+  /* The data should be ignored until the system calibration is > 0 */
+  Serial.print("\t");
+  if (!system)
+  {
+      Serial.print("! ");
+  }
+
+  /* Display the individual values */
+  Serial.print("Sys:");
+  Serial.print(system, DEC);
+  Serial.print(" G:");
+  Serial.print(gyro, DEC);
+  Serial.print(" A:");
+  Serial.print(accel, DEC);
+  Serial.print(" M:");
+  Serial.print(mag, DEC);
+
+  showState(info, 5, (4-system) % 4  ,true);
+  showState(info, 11, (4-system) % 4 ,true);
+
+  showState(info, 4, (4-gyro) % 4    ,true);
+  showState(info, 10, (4-gyro) % 4   ,true);
+
+  showState(info, 3, (4-accel) % 4   ,true);
+  showState(info, 9, (4-accel) % 4   ,true);
+
+  showState(info, 2, (4-mag) % 4     ,true);
+  showState(info, 8, (4-mag) % 4     ,true);
 }
 
 /*****************************************************

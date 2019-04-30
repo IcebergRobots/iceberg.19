@@ -96,4 +96,8 @@
 #define M2_CURR         A3 //  Pin zum messen des Motorstroms von M3
 #define M3_CURR         A4 //  Pin zum messen des Motorstroms von M4
 
+#define LED_BACK_LEFT   6
+#define LED_BACK_RIGHT  38
+
+
 #endif
