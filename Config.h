@@ -19,7 +19,8 @@
 #include <RotaryEncoder.h>
 #include <PID_v1.h>
 #include <Adafruit_NeoPixel.h>
-#include <BNO055_support.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BNO055.h>
 
 // Implementierung: FAHREN
 extern bool start, onLine, isHeadstart, isAvoidMate, isKeeperLeft, wasMotor, wasStart;

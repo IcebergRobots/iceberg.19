@@ -52,8 +52,7 @@ Player p;  // OBJEKTINITIALISIERUNG
 int heading = 0;                    // Wert des Kompass
 int startHeading = 0;               // Startwert des Kompass
 int rotation = 0;                   // rotationswert für die Motoren
-struct bno055_t compass;
-struct bno055_euler myEulerData;	  //Structure to hold the Euler data
+Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
 // Gloabale Definition: BEWERTUNG
 byte scoreBallWidth = 0;
@@ -221,9 +220,8 @@ void setup() {
 
   // initialisiere Kompasssensor
   d.setupMessage(7, "COMPASS", "Orientierung");
-  BNO_Init(&compass);
-  bno055_set_operation_mode(OPERATION_MODE_NDOF);
-  bno055_set_powermode(POWER_MODE_NORMAL);
+  bno.begin();
+  
 
   // initialisiere PID-Regler
   d.setupMessage(8, "PID", "Rotation");
@@ -272,7 +270,9 @@ void loop() {
   hasDebugHead = false;
   displayDebug = "";
 
+  debugln("BEFORE");
   readCompass();
+  debugln("AFTER");
   calculateStates();  // Berechne alle Statuswerte und Zustände
 
   if (millis() - kickTimer > map(analogRead(POTI), 0, 1023, 0, 35)) digitalWrite(SCHUSS, 0); // schuß wieder ausschalten
@@ -289,14 +289,21 @@ void loop() {
 
   // Torrichtung speichern
   if (input.button_compass) {
-    startHeading = 0;
-    readCompass();
-    startHeading = heading; //merke Torrichtung [-180 bis 179]
-    EEPROM.write(0, startHeading < 0);  // speichere Vorzeichen
-    EEPROM.write(1, abs(startHeading)); // speichere Winkel
-    heading = 0;
-    buzzerTone(200);
-    d.update();   // aktualisiere Bildschirm und LEDs
+    if(input.button_encoder){
+      m.drive(0,0,40);
+      //myCompass.calibration();
+      m.brake(true);
+    }
+    else{  
+      startHeading = 0;
+      readCompass();
+      startHeading = heading; //merke Torrichtung [-180 bis 179]
+      EEPROM.write(0, startHeading < 0);  // speichere Vorzeichen
+      EEPROM.write(1, abs(startHeading)); // speichere Winkel
+      heading = 0;
+      buzzerTone(200);
+      d.update();   // aktualisiere Bildschirm und LEDs
+    }
   }
 
   // lösche Bodensensor Cache

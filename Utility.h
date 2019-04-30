@@ -3,7 +3,6 @@
 
 #include "Config.h"
 #include "Input.hpp"
-#include "BNO055_support.h"	
 
 void reset();
 int shift(int &value, int min, int max);

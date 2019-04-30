@@ -9,8 +9,7 @@ extern Pilot m;
 extern Ultrasonic us;
 extern Input input;
 
-extern struct bno055_euler myEulerData;	  //Structure to hold the Euler data
-extern struct bno055_t compass;
+extern Adafruit_BNO055 bno;
 
 void reset() {
   asm ("jmp 0");   // starte den Arduino neu
@@ -244,11 +243,11 @@ void kick() {
 
 void readCompass() {
   // kompasswert [-180 bis 180]
-  bno055_read_euler_hrp(&myEulerData);
-  heading = (((myEulerData.h)/16 - startHeading + 720) % 360) - 180;
-  debugln(myEulerData.r);
-  if(abs(myEulerData.r) < 100)
-    flatTimer = millis();
+  sensors_event_t event;
+  bno.getEvent(&event);
+  debugln(event.orientation.y);
+  //heading = (((int)myCompass.getHeading() - startHeading + 720) % 360) - 180;
+  flatTimer = millis();
 }
 
 void buzzerTone(int duration) {
