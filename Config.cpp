@@ -13,7 +13,8 @@ void pinModes() {
     pinMode(i, INPUT);
   }
 
-  pinMode(LED_BACK_LEFT, OUTPUT);
+  pinMode(LED_FRONT,      OUTPUT);
+  pinMode(LED_BACK_LEFT,  OUTPUT);
   pinMode(LED_BACK_RIGHT, OUTPUT);
 
   pinMode(LIGHT_BARRIER,	INPUT_PULLUP);

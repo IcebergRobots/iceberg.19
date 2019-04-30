@@ -2,7 +2,6 @@
 #define Utility_h
 
 #include "Config.h"
-#include "Input.hpp"
 
 void handleCompassCalibration();
 void displayCalStatus(void);

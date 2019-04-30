@@ -131,7 +131,6 @@ Ultrasonic us;                    // OBJEKTINITIALISIERUNG
 // Globale Definition: KICK, LIGHT-BARRIER
 bool hasBall = false;             // besitzen der Roboter den Ball?
 unsigned long kickTimer = 0;      // Zeitpunkt des letzten Schießens
-unsigned int lightBarrierTriggerLevel = 80; // [0 bis 1023]~50 Wert, ab dem Lichtschranke ausschlägt
 
 // Globale Definition: LIFT
 bool isLifted = false;            // ist der Roboter hochgehoben?
@@ -161,6 +160,9 @@ RotaryEncoder rotaryEncoder = RotaryEncoder(ROTARY_B, ROTARY_A);  // OBJEKTINITI
 int rotaryPositionLast = 0;        // letzter Zustand des Reglers
 bool wasMenuButton = false;        // war der Menü-Knopf gedrückt?
 
+//Ballsensor
+BallTouch ballTouch = BallTouch(47, A15);
+
 //###################################################################################################
 //##...............................................................................................##
 //##....####...######..######..##..##..#####.......................................................##
@@ -179,7 +181,6 @@ void setup() {
   pixyResponseTimer = SPI.transfer(0x00) == 255;
 
   silent = !input.switch_debug;  // Schnellstart?
-  if (analogRead(LIGHT_BARRIER) > 50 && analogRead(LIGHT_BARRIER) < 400) lightBarrierTriggerLevel = analogRead(LIGHT_BARRIER) + 100;
 
   d.init();  // initialisiere Display mit Iceberg Schriftzug
   
@@ -217,10 +218,10 @@ void setup() {
 
   // lies EEPROM aus
   d.setupMessage(4, "EEPROM", "auslesen");
-  if (EEPROM.read(0) == 0) {
-    startHeading = EEPROM.read(1);
+  if (EEPROM.read(EEPROM_HEADING_SIGN) == 0) {
+    startHeading = EEPROM.read(EEPROM_HEADING);
   } else {
-    startHeading = -EEPROM.read(1);
+    startHeading = -EEPROM.read(EEPROM_HEADING);
   }
 
   // initialisiere Kompasssensor
@@ -244,10 +245,11 @@ void setup() {
   bottom.begin();   // BODEN-LEDS initialisieren   
   info.begin();     // STATUS-LEDS initialisieren
 
-  if (!silent) led.start();
+  // initialisiere BallTouch Sensor
+  d.setupMessage(9, "Ball", "Ballsensor");
+  ballTouch.init();
 
-  // lichtschrankenLevel wird angezeigt
-  d.setupMessage(10, "B: " + String(lightBarrierTriggerLevel), "");
+  if (!silent) led.start();
 
   DEBUG_SERIAL.println();
   DEBUG_SERIAL.println("ICEBERG ROBOTS");
@@ -284,6 +286,8 @@ void loop() {
 
   input.update();
   us.update();
+  ballTouch.update();
+
   led.heartbeat();
 
   delay(2);           //solves Compass reset issue (I think you have wait a while before starting new I2C-Communicition)
@@ -308,7 +312,7 @@ void loop() {
   }
 
   if (input.button_kick) kick(); // schieße
-
+  if (input.button_lightBarrierCalibration) ballTouch.calibrate();
 
   //TIMER
   //led-Timer

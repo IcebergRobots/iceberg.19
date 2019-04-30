@@ -11,6 +11,8 @@
 #include "Utility.h"
 #include "pin.h"
 #include "Input.hpp"
+#include "BallTouch.h"
+#include "EEPROM.h"
 
 #include <SPI.h>
 #include <HardWire.h>
@@ -60,7 +62,6 @@ extern unsigned long penaltyFreeTimer, usTimer;
 // Implementierung: KICK, LIGHT-BARRIER
 extern bool hasBall;
 extern unsigned long kickTimer;
-extern unsigned int lightBarrierTriggerLevel;
 
 // Implementierung: LIFT
 extern bool isLifted;
@@ -161,9 +162,9 @@ extern bool wasMenuButton;
 
 // Serielle Kommunikationen
 #define DEBUG true                // soll eine Usb-Kommunikation bestehen?
-#define DEBUG_STATE true          // soll der Statuswechsel gezeigt werden?
-#define DEBUG_FUNCTIONS true     // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP true           // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_STATE false          // soll der Statuswechsel gezeigt werden?
+#define DEBUG_FUNCTIONS false     // sollen Methoden gezeigt werden?
+#define DEBUG_LOOP false           // soll jeder Schleifendurchlauf gezeigt werden?
 #define DEBUG_BLUETOOTH false      // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_SERIAL Serial       // Serial der Usb-Schnittstelle
 #define BLUETOOTH true            // soll eine Bluetooth-Kommunikation bestehen?

@@ -49,6 +49,8 @@ void Led::led() {
   Lege Leds auf Statusinformation fest
 *****************************************************/
 void Led::set() {
+  digitalWrite(LED_FRONT, hasBall);
+
   info.setPixelColor(0, wheelToColor(info, (millis()/2)%255)                      );  //PARTY
   showState(info, 1,  batState * (batState != 3 || millis() % 250 < 125), true    );  //Voltage
   showState(info, 2,  0                                                           );  //ColCode

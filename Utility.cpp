@@ -8,6 +8,7 @@ extern Mate mate;
 extern Pilot m;
 extern Ultrasonic us;
 extern Input input;
+extern BallTouch ballTouch;
 
 extern Adafruit_BNO055 bno;
 
@@ -55,8 +56,8 @@ void handleCompassCalibration(){
       startHeading = 0;
       readCompass();
       startHeading = heading; //merke Torrichtung [-180 bis 179]
-      EEPROM.write(0, startHeading < 0);  // speichere Vorzeichen
-      EEPROM.write(1, abs(startHeading)); // speichere Winkel
+      EEPROM.write(EEPROM_HEADING_SIGN, startHeading < 0);  // speichere Vorzeichen
+      EEPROM.write(EEPROM_HEADING, abs(startHeading)); // speichere Winkel
       heading = 0;
       buzzerTone(200);
       d.update();   // aktualisiere Bildschirm und LEDs
@@ -140,7 +141,7 @@ void calculateStates() {
   silent = input.switch_debug;
   silent != silent;
 
-  hasBall = analogRead(LIGHT_BARRIER) > lightBarrierTriggerLevel;
+  hasBall = ballTouch.hasBall();
   seeBall = !isLifted && millis() - seeBallTimer < 100;
   seeGoal = !isLifted && millis() - seeGoalTimer < 500;
   seeEast = !isLifted && millis() - seeEastTimer < 500;
