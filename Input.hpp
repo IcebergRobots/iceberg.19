@@ -3,7 +3,7 @@
 #include "Utility.h"
 
 #include "Adafruit_MCP23017.h"
-#include "Wire.h"
+#include "HardWire.h"
 
 #ifndef Input_hpp
 #define Input_hpp

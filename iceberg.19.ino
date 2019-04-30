@@ -23,6 +23,7 @@
 
 // Implementierung: DATEIEN
 #include "Config.h"
+#include "HardWire.h"
 
 // Globale Definition: FAHREN
 bool start = false;         // ist der funkstart aktiviert
@@ -186,7 +187,7 @@ void setup() {
   BOTTOM_SERIAL.begin(115200);
 
   // Start der I2C-Kommunikation
-  Wire.begin();        
+  Wire.begin();    
 
   // konfiguriere PID-Regler
   myPID.SetTunings(PID_FILTER_P, PID_FILTER_I, PID_FILTER_D);

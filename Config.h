@@ -13,12 +13,11 @@
 #include "Input.hpp"
 
 #include <SPI.h>
-#include <Wire.h>
+#include <HardWire.h>
 #include <EEPROM.h>
 #include <Pixy.h>
 #include <RotaryEncoder.h>
 #include <PID_v1.h>
-#include <Adafruit_GFX.h>
 #include <Adafruit_NeoPixel.h>
 #include <BNO055_support.h>
 
