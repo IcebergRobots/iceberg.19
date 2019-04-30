@@ -142,6 +142,9 @@ RotaryEncoder rotaryEncoder = RotaryEncoder(ROTARY_B, ROTARY_A);  // OBJEKTINITI
 int rotaryPositionLast = 0; // letzter Zustand des Reglers
 bool wasMenuButton = false; // war der Menü-Knopf gedrückt?
 
+//Globale Definition: ENCODER
+Enconder encoder[4];
+
 //###################################################################################################
 //##...............................................................................................##
 //##....####...######..######..##..##..#####.......................................................##
@@ -236,6 +239,12 @@ void setup() {
     DEBUG_SERIAL.println("TICK");
   }
   DEBUG_SERIAL.println("-=-=-=-=-=-=-=-");
+
+  //initialisiere Encoder 
+  d.setupMessage(11, "Encoder", "Geschwindigkeit")
+  for(int i=0; i<4, i++){
+    encoder[i] = encoder(i); 
+  }
 
   // sorge dafür, dass alle Timer genügend Abstand haben
   while (millis() < 500) {}

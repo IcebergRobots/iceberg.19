@@ -3,7 +3,11 @@
 
 class Encoder {
     public: 
-        Encoder();
+        Encoder(int nr);
+        
+        void update();
+        int getSpeed();
+        int getPwr();
 
     private:
 
