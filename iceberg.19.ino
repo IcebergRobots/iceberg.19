@@ -1,25 +1,31 @@
-/***
+/*
+ ______________________________________________________________________________
+|                                                                              |    
+|  8888888 .d8888b.  8888888888 888888b.   8888888888 8888888b.   .d8888b.     |
+|    888  d88P  Y88b 888        888  "88b  888        888   Y88b d88P  Y88b    |
+|    888  888    888 888        888  .88P  888        888    888 888    888    |
+|    888  888        8888888    8888888K.  8888888    888   d88P 888           |
+|    888  888        888        888  "Y88b 888        8888888P"  888  88888    |
+|    888  888    888 888        888    888 888        888 T88b   888    888    |
+|    888  Y88b  d88P 888        888   d88P 888        888  T88b  Y88b  d88P    |
+|  8888888 "Y8888P"  8888888888 8888888P"  8888888888 888   T88b  "Y8888P88    |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|  8888888b.   .d88888b.  888888b.    .d88888b. 88888888888 .d8888b.           |
+|  888   Y88b d88P" "Y88b 888  "88b  d88P" "Y88b    888    d88P  Y88b          |
+|  888    888 888     888 888  .88P  888     888    888    Y88b.               |
+|  888   d88P 888     888 8888888K.  888     888    888     "Y888b.            |
+|  8888888P"  888     888 888  "Y88b 888     888    888        "Y88b.          |
+|  888 T88b   888     888 888    888 888     888    888          "888          |
+|  888  T88b  Y88b. .d88P 888   d88P Y88b. .d88P    888    Y88b  d88P          |
+|  888   T88b  "Y88888P"  8888888P"   "Y88888P"     888     "Y8888P"           |
+|                                                                              |     
+|______________________________________________________________________________|
 
-8888888 .d8888b.  8888888888 888888b.   8888888888 8888888b.   .d8888b.  
-  888  d88P  Y88b 888        888  "88b  888        888   Y88b d88P  Y88b 
-  888  888    888 888        888  .88P  888        888    888 888    888 
-  888  888        8888888    8888888K.  8888888    888   d88P 888        
-  888  888        888        888  "Y88b 888        8888888P"  888  88888 
-  888  888    888 888        888    888 888        888 T88b   888    888 
-  888  Y88b  d88P 888        888   d88P 888        888  T88b  Y88b  d88P 
-8888888 "Y8888P"  8888888888 8888888P"  8888888888 888   T88b  "Y8888P88 
-                                                                         
-                                                                         
-                                                                         
-8888888b.   .d88888b.  888888b.    .d88888b. 88888888888 .d8888b.        
-888   Y88b d88P" "Y88b 888  "88b  d88P" "Y88b    888    d88P  Y88b       
-888    888 888     888 888  .88P  888     888    888    Y88b.            
-888   d88P 888     888 8888888K.  888     888    888     "Y888b.         
-8888888P"  888     888 888  "Y88b 888     888    888        "Y88b.       
-888 T88b   888     888 888    888 888     888    888          "888       
-888  T88b  Y88b. .d88P 888   d88P Y88b. .d88P    888    Y88b  d88P       
-888   T88b  "Y88888P"  8888888P"   "Y88888P"     888     "Y8888P"        
 */
+//TODO: Lichtschranke
+//TODO: Ultraschall überprüfen
 
 // Implementierung: DATEIEN
 #include "Config.h"
@@ -167,22 +173,22 @@ bool wasMenuButton = false;        // war der Menü-Knopf gedrückt?
 
 void setup() {
   pinModes();
+
   // Prüfe, ob die Pixy angeschlossen ist
   SPI.begin();
   pixyResponseTimer = SPI.transfer(0x00) == 255;
 
-  silent = false;//silent = !input.switch_debug;  // Schnellstart?
+  silent = !input.switch_debug;  // Schnellstart?
   if (analogRead(LIGHT_BARRIER) > 50 && analogRead(LIGHT_BARRIER) < 400) lightBarrierTriggerLevel = analogRead(LIGHT_BARRIER) + 100;
 
   d.init();  // initialisiere Display mit Iceberg Schriftzug
-
-  // Roboter bremst aktiv
-  m.brake(true);
+  
+  m.brake(true);  // Roboter bremst aktiv
 
   // Start der Seriellen Kommunikation
+  //LOGGER_SERIAL.begin(115200);    // aktuell nicht in verwendung
   DEBUG_SERIAL.begin(115200);
   BLUETOOTH_SERIAL.begin(115200);
-  LOGGER_SERIAL.begin(115200); 
   BOTTOM_SERIAL.begin(115200);
 
   // Start der I2C-Kommunikation
@@ -194,24 +200,23 @@ void setup() {
   // weiche den Linien aus
   attachInterrupt(digitalPinToInterrupt(INT_BODENSENSOR), avoidLine, RISING);
 
-  // setzte die PinModes
-  d.setupMessage(1, "PIN", "pinModes");
-  isTypeA = digitalRead(TYPE); // lies den Hardware Jumper aus
+  // lies den Hardware Jumper aus um Roboter A/B zu unterscheidne
+  isTypeA = digitalRead(TYPE);        
 
   // setzte Pins und Winkel des Pilot Objekts
-  d.setupMessage(2, "MOTOR", "setPins");
+  d.setupMessage(1, "MOTOR", "setPins");
   setupMotor();
 
   // initialisiere Kamera
-  d.setupMessage(3, "PIXY", "Kamera");
+  d.setupMessage(2, "PIXY", "Kamera");
   pixy.init();
 
   // initialisiere IO-Expander
-  d.setupMessage(4, "PUI", "IO-Expander");
+  d.setupMessage(3, "PUI", "IO-Expander");
   input.init();
 
   // lies EEPROM aus
-  d.setupMessage(5, "EEPROM", "auslesen");
+  d.setupMessage(4, "EEPROM", "auslesen");
   if (EEPROM.read(0) == 0) {
     startHeading = EEPROM.read(1);
   } else {
@@ -219,25 +224,31 @@ void setup() {
   }
 
   // initialisiere Kompasssensor
-  d.setupMessage(7, "COMPASS", "Orientierung");
+  d.setupMessage(5, "COMPASS", "Orientierung");
   bno.begin();
+  //TODO: offsets übernehmen
   
 
   // initialisiere PID-Regler
-  d.setupMessage(8, "PID", "Rotation");
+  d.setupMessage(6, "PID", "Rotation");
   pidSetpoint = 0;
   myPID.SetMode(AUTOMATIC);
   myPID.SetOutputLimits(-255, 255);
 
   //initiiere Ultraschallsensoren
+  d.setupMessage(7, "US", "Ultraschallsensoren");
   us.init();
 
   // initialisiere Leds
-  d.setupMessage(9, "LED", "Animation");
-  bottom.begin();   // BODEN-LEDS initialisieren     TODO
-  info.begin();     // STATUS-LEDS initialisieren    TODO
+  d.setupMessage(8, "LED", "Animation");
+  bottom.begin();   // BODEN-LEDS initialisieren   
+  info.begin();     // STATUS-LEDS initialisieren
+
   if (!silent) led.start();
+
+  // lichtschrankenLevel wird angezeigt
   d.setupMessage(10, "B: " + String(lightBarrierTriggerLevel), "");
+
   DEBUG_SERIAL.println();
   DEBUG_SERIAL.println("ICEBERG ROBOTS");
   DEBUG_SERIAL.println("-=-=-=-=-=-=-=-");
