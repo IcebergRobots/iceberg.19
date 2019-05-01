@@ -20,6 +20,8 @@ class Led
     bool isAnimation();
     unsigned long lastAnimation();
 
+    void showCalibration();
+
   private:
     void showState(Adafruit_NeoPixel & board, byte pos, byte state, bool showRed);
     void showState(Adafruit_NeoPixel & board, byte pos, byte state);
