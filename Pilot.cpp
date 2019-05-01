@@ -102,8 +102,8 @@ void Pilot::update() {
   int power;
   for(int i=0; i<4; i++){
     currentspeed = map((encoder[i].getSpeed() - 127),-127,127,-255,255);
-      power = MULTIPLIER_DIFF * ( _wantedSpeed[i] - currentspeed ) + MULTIPLIER_SPEED * _wantedSpeed[i];
-      steerMotor(i, power);
+    power = MULTIPLIER_DIFF * ( _wantedSpeed[i] - currentspeed ) + MULTIPLIER_SPEED * _wantedSpeed[i];
+    steerMotor(i, power);
   }  
 }
 
