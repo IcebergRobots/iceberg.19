@@ -24,8 +24,27 @@
 |______________________________________________________________________________|
 
 */
-//TODO: Lichtschranke
-//TODO: Ultraschall überprüfen
+//  IMPORTANT
+//    TODO: Ultraschall überprüfen
+//    TODO: Bodensensor
+//    TODO: Bluetooth
+//    TODO: HEADSTART
+//    TODO: Compass read Offsets
+//
+//  SHOULD WORK
+//    TODO: Encoder
+//    TODO: neue Display Klasse
+//    TODO: beide US nach vorne nutzen
+//
+//  NICE TO HAVE
+//    TODO: LM35
+//    TODO: RTC
+//    TODO: HELLIGKEIT
+//    TODO: LOGGER
+//    TODO: Innenbeleuchtung
+//    TODO: extern EEPROM
+//    TODO: Stromsensoren Motoren
+//    TODO: IR-Ortung
 
 // Implementierung: DATEIEN
 #include "Config.h"
@@ -161,16 +180,16 @@ int rotaryPositionLast = 0;        // letzter Zustand des Reglers
 bool wasMenuButton = false;        // war der Menü-Knopf gedrückt?
 
 //Ballsensor
-BallTouch ballTouch = BallTouch(47, A15);
+BallTouch ballTouch = BallTouch(47, A15); //initialisieren des Ballsensors (LED und Sensorpin werden übergeben)
 
 //###################################################################################################
-//##...............................................................................................##
-//##....####...######..######..##..##..#####.......................................................##
-//##...##......##........##....##..##..##..##......................................................##
-//##....####...####......##....##..##..#####.......................................................##
-//##.......##..##........##....##..##..##..........................................................##
-//##....####...######....##.....####...##..........................................................##
-//##...............................................................................................##
+//##                                                                                               ##
+//##    ####   ######  ######  ##  ##  #####                                                       ##
+//##   ##      ##        ##    ##  ##  ##  ##                                                      ##
+//##    ####   ####      ##    ##  ##  #####                                                       ##
+//##       ##  ##        ##    ##  ##  ##                                                          ##
+//##    ####   ######    ##     ####   ##                                                          ##
+//##                                                                                               ##
 //###################################################################################################
 
 void setup() {
