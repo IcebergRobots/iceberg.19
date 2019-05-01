@@ -338,6 +338,7 @@ void loop() {
 
   if (input.button_kick) kick(); // schieße
   if (input.button_lightBarrierCalibration) ballTouch.calibrate();
+  if (input.button_line) BOTTOM_SERIAL.write(42);
 
   //TIMER
   //led-Timer

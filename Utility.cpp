@@ -143,18 +143,11 @@ void avoidLine() {
     BOTTOM_SERIAL.read();
   }
   if (BOTTOM_SERIAL.available() > 0) {
-    lineDir = (BOTTOM_SERIAL.read() * 22.5) - 180;
-    driveDirection = lineDir;
+    lineDir = BOTTOM_SERIAL.read()*2;
+    driveDirection = lineDir+180;
     m.drive(driveDirection, SPEED_LINE, 0);
     lineTimer = millis();
     headstartTimer = 0;
-    /*if (drivePower > 200) {
-      lineTimer = millis() + (2 * LINE_DURATION);
-      } else if (drivePower > 100) {
-      lineTimer = millis() + (1.5 * LINE_DURATION);
-      } else {
-      lineTimer = millis() + LINE_DURATION;
-      }*/
     displayDebug = driveDirection;
   }
 
