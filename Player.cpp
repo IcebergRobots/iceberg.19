@@ -7,6 +7,7 @@ extern Led led;
 extern Mate mate;
 extern Pilot m;
 extern Ultrasonic us;
+extern Compass compass;
 
 Player::Player() {
 }
@@ -57,22 +58,22 @@ void Player::changeState() {
         else if (!stateLeft && ball < -BALL_ANGLE_TRIGGER) setState(3, "ball<");
       }
       else if (millis() - stateTimer > TURN_MAX_DURATION) setState(3, "time>");
-      else if (stateLeft && heading < -ANGLE_TURN_MAX * 0.9) setState(3, "angle<");
-      else if (!stateLeft && heading > ANGLE_TURN_MAX * 0.9) setState(3, "angle>");
+      else if (stateLeft && compass.getHeading() < -ANGLE_TURN_MAX * 0.9) setState(3, "angle<");
+      else if (!stateLeft && compass.getHeading() > ANGLE_TURN_MAX * 0.9) setState(3, "angle>");
       break;
 
     case 3: // Pfostendrehung zurück
       if (seeBall) {
         if (stateLeft) {
-          if ((ball / 3 + heading) > -ANGLE_RETURN_MIN) setDirection(TOGGLE, "ball|");
+          if ((ball / 3 + compass.getHeading()) > -ANGLE_RETURN_MIN) setDirection(TOGGLE, "ball|");
           else if (ball < -BALL_ANGLE_TRIGGER) setState(2, "ball<");
         } else {
-          if ((ball / 3 + heading) < ANGLE_RETURN_MIN) setDirection(TOGGLE, "ball|");
+          if ((ball / 3 + compass.getHeading()) < ANGLE_RETURN_MIN) setDirection(TOGGLE, "ball|");
           else if (ball > BALL_ANGLE_TRIGGER) setState(2, "ball>");
         }
       }
       else if (millis() - stateTimer > RETURN_MAX_DURATION) setDirection(TOGGLE, "time>");
-      else if (abs(heading) < ANGLE_RETURN_MIN) setDirection(TOGGLE, "angle|");
+      else if (abs(compass.getHeading()) < ANGLE_RETURN_MIN) setDirection(TOGGLE, "angle|");
       break;
 
     case 4: // Befreiung
@@ -183,11 +184,11 @@ void Player::play() {
     case 2: // Pfostendrehung hin
       if (seeBall && ball < BALL_ANGLE_TRIGGER) driveRotation = 160;
       if (stateLeft) {
-        if (seeBall) driveOrientation = constrain(ball / 3 + heading, -ANGLE_TURN_MAX, 0);
+        if (seeBall) driveOrientation = constrain(ball / 3 + compass.getHeading(), -ANGLE_TURN_MAX, 0);
         else driveOrientation = -ANGLE_TURN_MAX;
         driveState = "< turn";
       } else {
-        if (seeBall) driveOrientation = constrain(ball / 3 + heading, 0, ANGLE_TURN_MAX);
+        if (seeBall) driveOrientation = constrain(ball / 3 + compass.getHeading(), 0, ANGLE_TURN_MAX);
         else driveOrientation = ANGLE_TURN_MAX;
         driveState = "> turn";
       }
@@ -199,11 +200,11 @@ void Player::play() {
 
     case 3: // Pfostendrehung zurück
       if (stateLeft) {
-        if (seeBall) driveOrientation = constrain(ball / 3 + heading, -ANGLE_TURN_MAX, 0);
+        if (seeBall) driveOrientation = constrain(ball / 3 + compass.getHeading(), -ANGLE_TURN_MAX, 0);
         else driveOrientation = 0;
         driveState = "< return";
       } else {
-        if (seeBall) driveOrientation = constrain(ball / 3 + heading, 0, ANGLE_TURN_MAX);
+        if (seeBall) driveOrientation = constrain(ball / 3 + compass.getHeading(), 0, ANGLE_TURN_MAX);
         else driveOrientation = 0;
         driveState = "> return";
       }
@@ -281,7 +282,7 @@ void Player::play() {
         driveDirection = -ANGLE_GOAL;
         driveState = "> close";
       }
-      driveOrientation = constrain(ball / 3 + heading, -ANGLE_GOAL_MAX, ANGLE_GOAL_MAX);
+      driveOrientation = constrain(ball / 3 + compass.getHeading(), -ANGLE_GOAL_MAX, ANGLE_GOAL_MAX);
 
       if (millis() - stateTimer < 200) m.brake(true); // bremse kurz ab
       else {

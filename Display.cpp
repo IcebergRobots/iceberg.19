@@ -7,6 +7,7 @@ extern Led led;
 extern Mate mate;
 extern Pilot m;
 extern Ultrasonic us;
+extern Compass compass;
 
 Display::Display(int resetPin){}
 
@@ -46,16 +47,16 @@ void Display::update() {
   clearDisplay();
   setTextColor(WHITE);
 
-  if (heading < -135) { // zeige einen Punkt, der zum Tor zeigt
-    drawRect(map(heading, -180, -134, 63 , 125), 61, 2, 2, WHITE); //unten (rechte Hälfte)
-  } else if (heading < -45) {
-    drawRect(125, map(heading, -135, -44, 61, 0), 2, 2, WHITE); //rechts
-  } else if (heading < 45) {
-    drawRect(map(heading, -45, 44, 125, 0), 0, 2, 2, WHITE); //oben
-  } else if (heading < 135) {
-    drawRect(0, map(heading, 45, 134, 0, 61), 2, 2, WHITE); //links
-  } else if (heading < 180) {
-    drawRect(map(heading, 135, 179, 0, 62), 61, 2, 2, WHITE); //unten (linke Hälfte)
+  if (compass.getHeading() < -135) { // zeige einen Punkt, der zum Tor zeigt
+    drawRect(map(compass.getHeading(), -180, -134, 63 , 125), 61, 2, 2, WHITE); //unten (rechte Hälfte)
+  } else if (compass.getHeading() < -45) {
+    drawRect(125, map(compass.getHeading(), -135, -44, 61, 0), 2, 2, WHITE); //rechts
+  } else if (compass.getHeading() < 45) {
+    drawRect(map(compass.getHeading(), -45, 44, 125, 0), 0, 2, 2, WHITE); //oben
+  } else if (compass.getHeading() < 135) {
+    drawRect(0, map(compass.getHeading(), 45, 134, 0, 61), 2, 2, WHITE); //links
+  } else if (compass.getHeading() < 180) {
+    drawRect(map(compass.getHeading(), 135, 179, 0, 62), 61, 2, 2, WHITE); //unten (linke Hälfte)
   }
   if (level == 0) {
     drawLine(map(page, 0, PAGE_RANGE, 3, 123), 11, map(page, -1, PAGE_RANGE - 1, 3, 123), 11, WHITE);
@@ -202,7 +203,7 @@ bool Display::set() {
       } else {
         addLine(F("Line:"));
       }
-      addLine(F("Head"), heading, true);
+      addLine(F("Head"), compass.getHeading(), true);
       addLine(F("Time"), millis() / 1000);
       //addLine("acc.X", accel_event.acceleration.x, true); TODO
       //addLine("acc.Y", accel_event.acceleration.y, true); TODO

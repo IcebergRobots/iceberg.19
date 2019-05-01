@@ -11,6 +11,7 @@
 #include "Utility.hpp"
 #include "Input.hpp"
 #include "BallTouch.hpp"
+#include "Compass.hpp"
 
 #include "EEPROM.h"
 #include "Pin.h"
@@ -22,17 +23,12 @@
 #include <RotaryEncoder.h>
 #include <PID_v1.h>
 #include <Adafruit_NeoPixel.h>
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BNO055.h>
 
 // Implementierung: FAHREN
 extern bool start, onLine, isHeadstart, isAvoidMate, isKeeperLeft, wasMotor, wasStart;
 extern int rotMulti, drivePower, driveRotation, driveDirection, driveOrientation, lineDir;
 extern unsigned long lineTimer, headstartTimer, avoidMateTimer, flatTimer;
 extern String driveState;
-
-// Implementierung: KOMPASS
-extern int heading, startHeading, rotation;
 
 // Implementierung: BEWERTUNG
 extern byte scoreBallWidth, scoreBall, scoreRearward, scoreGoal, score;

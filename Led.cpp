@@ -10,7 +10,7 @@ extern Ultrasonic us;
 extern Adafruit_NeoPixel bottom;
 extern Adafruit_NeoPixel info;
 extern Input input;
-extern Adafruit_BNO055 bno;
+extern Compass compass;
 
 Led::Led() {}
 
@@ -70,7 +70,7 @@ void Led::showCalibration() {
 
   uint8_t system, gyro, accel, mag;
   system = gyro = accel = mag = 0;
-  bno.getCalibration(&system, &gyro, &accel, &mag);
+  compass.getCalibration(&system, &gyro, &accel, &mag);
 
   /* The data should be ignored until the system calibration is > 0 */
   Serial.print("\t");

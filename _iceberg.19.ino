@@ -29,7 +29,6 @@
 //    TODO: Bodensensor
 //    TODO: Bluetooth
 //    TODO: HEADSTART
-//    TODO: Compass read Offsets
 //
 //  SHOULD WORK
 //    TODO: Encoder
@@ -73,10 +72,8 @@ Pilot m;                            // OBJEKTINITIALISIERUNG
 Player p;                           // OBJEKTINITIALISIERUNG
 
 // Globale Definition: KOMPASS
-int heading = 0;                    // Wert des Kompass
-int startHeading = 0;               // Startwert des Kompass
+Compass compass;
 int rotation = 0;                   // rotationswert für die Motoren
-Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
 // Gloabale Definition: BEWERTUNG
 byte scoreBallWidth = 0;
@@ -234,17 +231,9 @@ void setup() {
   d.setupMessage(3, "PUI", "IO-Expander");
   input.init();
 
-  // lies EEPROM aus
-  d.setupMessage(4, "EEPROM", "auslesen");
-  if (EEPROM.read(EEPROM_HEADING_SIGN) == 0) {
-    startHeading = EEPROM.read(EEPROM_HEADING);
-  } else {
-    startHeading = -EEPROM.read(EEPROM_HEADING);
-  }
-
   // initialisiere Kompasssensor
   d.setupMessage(5, "COMPASS", "Orientierung");
-  bno.begin();
+  compass.init();
   //TODO: offsets übernehmen
   
 
@@ -305,12 +294,10 @@ void loop() {
   input.update();
   us.update();
   ballTouch.update();
+  compass.update();
 
   led.heartbeat();
-
-  delay(2);           //solves Compass reset issue (I think you have wait a while before starting new I2C-Communicition)
   
-  readCompass();
   calculateStates();  // Berechne alle Statuswerte und Zustände
   rating();
 
@@ -325,7 +312,8 @@ void loop() {
     digitalWrite(BUZZER_ACTIVE, (millis() % 250) < 125);
   else
     digitalWrite(BUZZER_ACTIVE, LOW);
-  analogWrite(BUZZER, 127 * millis() <= buzzerStopTimer);  // buzzer anschalten bzw. wieder ausschalten
+    
+  analogWrite(BUZZER, 127 * (millis() <= buzzerStopTimer));  // buzzer anschalten bzw. wieder ausschalten
 
   //empty Serial Buffer
   while (BOTTOM_SERIAL.available() > 1) {

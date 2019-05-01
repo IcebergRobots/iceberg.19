@@ -10,86 +10,20 @@ extern Ultrasonic us;
 extern Input input;
 extern BallTouch ballTouch;
 
-extern Adafruit_BNO055 bno;
+extern Compass compass;
 
 void handleCompassCalibration(){
   // Torrichtung speichern
   if (input.button_compass) {
     if(input.button_encoder){
-      m.brake(true);
-      sensors_event_t event;
-      digitalWrite(LED_BACK_LEFT,  HIGH);
-      digitalWrite(LED_BACK_RIGHT, HIGH);
-      while(input.button_compass){
-        input.update();
-      }
-
-      while (!bno.isFullyCalibrated() && !input.button_compass)
-      {
-        input.update();
-        bno.getEvent(&event);
-
-        Serial.print("X: ");
-        Serial.print(event.orientation.x, 4);
-        Serial.print("\tY: ");
-        Serial.print(event.orientation.y, 4);
-        Serial.print("\tZ: ");
-        Serial.print(event.orientation.z, 4);
-
-        /* New line for the next sample */
-        Serial.println("");
-        displayCalStatus();
-
-        led.showCalibration();
-        led.led();
-        led.heartbeat();
-
-        /* Wait the specified delay before requesting new data */
-        delay(50);
-      }
-      
-      digitalWrite(LED_BACK_LEFT,  LOW);
-      digitalWrite(LED_BACK_RIGHT, LOW);
-
+      compass.calibrate();
     }
     else{  
-      startHeading = 0;
-      readCompass();
-      startHeading = heading; //merke Torrichtung [-180 bis 179]
-      EEPROM.write(EEPROM_HEADING_SIGN, startHeading < 0);  // speichere Vorzeichen
-      EEPROM.write(EEPROM_HEADING, abs(startHeading)); // speichere Winkel
-      heading = 0;
-      buzzerTone(200);
+      compass.setStartHeading();
+      buzzerTone(150);
       d.update();   // aktualisiere Bildschirm und LEDs
     }
   }
-}
-
-void displayCalStatus(void)
-{
-    /* Get the four calibration values (0..3) */
-    /* Any sensor data reporting 0 should be ignored, */
-    /* 3 means 'fully calibrated" */
-    uint8_t system, gyro, accel, mag;
-    system = gyro = accel = mag = 0;
-    bno.getCalibration(&system, &gyro, &accel, &mag);
-
-    /* The data should be ignored until the system calibration is > 0 */
-    Serial.print("\t");
-    if (!system)
-    {
-        Serial.print("! ");
-    }
-
-    /* Display the individual values */
-    Serial.print("Sys:");
-    Serial.print(system, DEC);
-    Serial.print(" G:");
-    Serial.print(gyro, DEC);
-    Serial.print(" A:");
-    Serial.print(accel, DEC);
-    Serial.print(" M:");
-    Serial.print(mag, DEC);
 }
 
 void reset() {
@@ -322,15 +256,6 @@ void kick() {
   }
 }
 
-void readCompass() {
-  // kompasswert [-180 bis 180]
-  sensors_event_t event;
-  bno.getEvent(&event);
-  heading = (((int)event.orientation.x - startHeading + 720) % 360) - 180;
-  if(abs(event.orientation.y)<15)
-    flatTimer = millis();
-}
-
 void buzzerTone(int duration) {
   if (!silent) {
     analogWrite(BUZZER, 127);
@@ -344,7 +269,7 @@ int ausrichten(int orientation) {
   pidSetpoint = shift(orientation, -179, 180);
   // Misst die Kompassabweichung vom Tor [-180 bis 179]
   if (m.getMotEn()) {
-    pidIn = (double) heading;
+    pidIn = (double) compass.getHeading();
 
     double gap = abs(pidSetpoint - pidIn); //distance away from setpoint
     myPID.Compute();
