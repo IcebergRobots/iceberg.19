@@ -3,6 +3,9 @@
 
 #include "Config.h"
 
+#define MULTIPLIER_DIFF 0.33
+#define MULTIPLIER_SPEED 0.77
+
 class Pilot
 {
   public:
