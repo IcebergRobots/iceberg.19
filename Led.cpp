@@ -11,6 +11,7 @@ extern Adafruit_NeoPixel bottom;
 extern Adafruit_NeoPixel info;
 extern Input input;
 extern Compass compass;
+extern byte role;
 
 Led::Led() {}
 
@@ -63,6 +64,8 @@ void Led::set() {
   showState(info, 9,  input.switch_bluetooth                                      );  //Bluetooth
   showState(info, 10, m.getMotEn() + (!m.getMotEn()&&input.switch_motor)*2        );  //Motors
   showState(info, 11, input.switch_headstart                                      );  //Headstart
+
+  input.setStrikerLed(role == 2);
 }
 
 void Led::showCalibration() {

@@ -12,6 +12,9 @@ void Input::init(){
         mcp.pinMode(i, INPUT);
         mcp.pullUp(i, HIGH);
     }
+
+    mcp.pinMode(PIN_MCP_LED_KEEPER, OUTPUT);
+    mcp.pinMode(PIN_MCP_LED_STRIKER, OUTPUT);
 }
 
 void Input::update(){
@@ -40,6 +43,11 @@ void Input::update(){
     switch_kick        = ! mcp.digitalRead(PIN_MCP_SW_kick);           //UPDATE
     switch_bodensensor = ! mcp.digitalRead(PIN_MCP_SW_bodensensor);
     switch_debug       = ! mcp.digitalRead(PIN_MCP_SW_debug);          //UPDATE
+}
+
+void Input::setStrikerLed(bool state){
+    mcp.digitalWrite(PIN_MCP_LED_KEEPER, !state);
+    mcp.digitalWrite(PIN_MCP_LED_STRIKER, state);
 }
 
 Input input;

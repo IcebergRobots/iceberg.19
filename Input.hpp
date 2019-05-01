@@ -24,14 +24,18 @@
 #define PIN_MCP_SW_bodensensor  4
 #define PIN_MCP_SW_debug        5
 
+//LEDs
+#define PIN_MCP_LED_STRIKER     6
+#define PIN_MCP_LED_KEEPER      7
+
 class Input{
     public:
         Input();
         void update();
         void init();
+        void setStrikerLed(bool state);
 
         bool button_encoder = true;
-
     // PUI:
         // Buttons
         bool button_start       = false;
