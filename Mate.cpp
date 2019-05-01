@@ -1,4 +1,4 @@
-#include "Mate.h"
+#include "Mate.hpp"
 
 // Implementierung: OBJEKTE
 extern Display d;

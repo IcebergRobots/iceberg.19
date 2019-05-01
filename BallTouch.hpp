@@ -1,7 +1,7 @@
-#ifndef BallTouch_h
-#define BallTouch_h
+#ifndef BallTouch_hpp
+#define BallTouch_hpp
 
-#include "Config.h"
+#include "Config.hpp"
 
 #define LED_OFF false
 #define LED_ON true

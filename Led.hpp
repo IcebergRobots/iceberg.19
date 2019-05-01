@@ -1,8 +1,7 @@
-#ifndef Led_h
-#define Led_h
+#ifndef Led_hpp
+#define Led_hpp
 
-#include "Config.h"
-#include "Input.hpp"
+#include "Config.hpp"
 
 #include <Adafruit_NeoPixel.h>
 

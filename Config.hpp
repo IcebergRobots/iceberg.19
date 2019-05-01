@@ -1,18 +1,19 @@
-#ifndef Config_h
-#define Config_h
+#ifndef Config_hpp
+#define Config_hpp
 
 #include "Arduino.h"
-#include "Display.h"
-#include "Led.h"
-#include "Pilot.h"
-#include "Player.h"
-#include "Mate.h"
-#include "Ultrasonic.h"
-#include "Utility.h"
-#include "pin.h"
+#include "Display.hpp"
+#include "Led.hpp"
+#include "Pilot.hpp"
+#include "Player.hpp"
+#include "Mate.hpp"
+#include "Ultrasonic.hpp"
+#include "Utility.hpp"
 #include "Input.hpp"
-#include "BallTouch.h"
+#include "BallTouch.hpp"
+
 #include "EEPROM.h"
+#include "Pin.h"
 
 #include <SPI.h>
 #include <HardWire.h>

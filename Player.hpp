@@ -1,7 +1,7 @@
-#ifndef Player_h
-#define Player_h
+#ifndef Player_hpp
+#define Player_hpp
 
-#include "Config.h"
+#include "Config.hpp"
 
 class Player
 {

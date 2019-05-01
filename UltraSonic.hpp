@@ -1,7 +1,7 @@
-#ifndef Ultrasonic_h
-#define Ultrasonic_h
+#ifndef Ultrasonic_hpp
+#define Ultrasonic_hpp
 
-#include "Config.h"
+#include "Config.hpp"
 
 #define I2C_US_FRONT_LEFT 112
 #define I2C_US_LEFT 113

@@ -47,8 +47,7 @@
 //    TODO: IR-Ortung
 
 // Implementierung: DATEIEN
-#include "Config.h"
-#include "HardWire.h"
+#include "Config.hpp"
 
 // Globale Definition: FAHREN
 bool start = false;                 // ist der funkstart aktiviert

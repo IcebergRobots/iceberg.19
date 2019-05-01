@@ -1,8 +1,7 @@
-#ifndef Display_h
-#define Display_h
+#ifndef Display_hpp
+#define Display_hpp
 
-#include "Config.h"
-#include "pin.h"
+#include "Config.hpp"
 
 class Display
 {

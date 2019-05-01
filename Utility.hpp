@@ -1,7 +1,7 @@
-#ifndef Utility_h
-#define Utility_h
+#ifndef Utility_hpp
+#define Utility_hpp
 
-#include "Config.h"
+#include "Config.hpp"
 
 void handleCompassCalibration();
 void displayCalStatus(void);

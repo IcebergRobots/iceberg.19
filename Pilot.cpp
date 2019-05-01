@@ -1,4 +1,4 @@
-#include "Pilot.h"
+#include "Pilot.hpp"
 
 // Implementierung: OBJEKTE
 extern Display d;

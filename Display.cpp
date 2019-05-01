@@ -1,4 +1,4 @@
-#include "Display.h"
+#include "Display.hpp"
 
 // Implementierung: OBJEKTE
 //extern Display d;

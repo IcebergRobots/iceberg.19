@@ -1,4 +1,4 @@
-#include "BallTouch.h"
+#include "BallTouch.hpp"
 
 BallTouch::BallTouch(int pinLed, int pinSensor){
     _pinLed = pinLed;

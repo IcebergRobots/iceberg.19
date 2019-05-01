@@ -1,4 +1,4 @@
-#include "Ultrasonic.h"
+#include "Ultrasonic.hpp"
 
 // Implementierung: OBJEKTE
 extern Display d;

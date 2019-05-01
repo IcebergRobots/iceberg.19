@@ -1,4 +1,4 @@
-#include "Config.h"
+#include "Config.hpp"
 
 // Implementierung: OBJEKTE
 extern Display d;

@@ -1,12 +1,9 @@
-#include "Arduino.h"
-#include "pin.h"
-#include "Utility.h"
-
-#include "Adafruit_MCP23017.h"
-#include "HardWire.h"
-
 #ifndef Input_hpp
 #define Input_hpp
+
+#include "Config.hpp"
+
+#include <Adafruit_MCP23017.h>
 
 //IO-Expander:    
 #define PIN_MCP_kick            8

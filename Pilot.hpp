@@ -1,7 +1,7 @@
-#ifndef Pilot_h
-#define Pilot_h
+#ifndef Pilot_hpp
+#define Pilot_hpp
 
-#include "Config.h"
+#include "Config.hpp"
 
 class Pilot
 {

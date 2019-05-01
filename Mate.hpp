@@ -1,8 +1,7 @@
-#ifndef Mate_h
-#define Mate_h
+#ifndef Mate_hpp
+#define Mate_hpp
 
-#include "Config.h"
-#include "Input.hpp"
+#include "Config.hpp"
 
 #define CACHE_SIZE 10             // Länge des Input Byte Buffers
 
