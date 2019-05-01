@@ -91,12 +91,11 @@ void Ultrasonic::update() {
     fetched = true;
   }
   if(millis()-lastMeasurement > 65){
-    for(int i = 0; i < 5; i++) {
-      Wire.beginTransmission(addresses[i]);
-      Wire.write(byte(0x00));
-      Wire.write(byte(0x51));
-      Wire.endTransmission();
-    }
+    Wire.beginTransmission(0);  //auf Adresse 0 hören alle Ultraschallsensor zu. Alternativ können die Befehle an alle Sonsoren einzeln gesendet werden.
+    Wire.write(byte(0x00));
+    Wire.write(byte(0x51));
+    Wire.endTransmission();
+
     lastMeasurement = millis();
     fetched = false;
   }
