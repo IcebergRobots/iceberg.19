@@ -101,7 +101,7 @@ void Pilot::update(byte id) {
   for(int i=0; i<4, i++){
     currentspeed[i] = map(encoder[i].getSpeed-127,-127,127,-255,255);
     if(currentspeed[i] != _wantedSpeed[i]){
-      power
+      power[id] = (1/3 * currentspeed + 2/3 * _wantedSpeed)/3;
     }
   }  
 }
@@ -123,12 +123,12 @@ void Pilot::setMotor(byte id) {
       return;
     }
 
-    power = min(255, _wantedSpeed);    //Eingabekorrektur
-    power = max(-255, _wantedSpeed);
+    power = min(255, _wantedSpeed[id]);    //Eingabekorrektur
+    power = max(-255, _wantedSpeed[id]);
 
-    digitalWrite(_fwd[id], _wantedSpeed > 0);  //drehe Motor vorwarts
-    digitalWrite(_bwd[id], _wantedSpeed <= 0); //drehe Motor rueckwaerts
-    analogWrite(_pwm[id], abs(_wantedSpeed));  //drehe Motor mit Geschwindigkeit
+    digitalWrite(_fwd[id], _wantedSpeed[id] > 0);  //drehe Motor vorwarts
+    digitalWrite(_bwd[id], _wantedSpeed[id] <= 0); //drehe Motor rueckwaerts
+    analogWrite(_pwm[id], abs(_wantedSpeed[id]));  //drehe Motor mit Geschwindigkeit
   }
 }
 

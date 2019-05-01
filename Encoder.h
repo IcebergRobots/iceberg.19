@@ -12,7 +12,8 @@ class Encoder {
         int _encNr;
         int _dataNr;
         int speed;
-        unsigned long timer;
+        unsigned long timer = 0;
+        int maxtime = 20;
 
 };
 

@@ -39,12 +39,12 @@ class Pilot
 
     int _values[4];  // Zwischenspeicher für Outputsignale
 
-    int _wantedSpeed[4];
-
     byte _angle;
     bool _motEn;    // gibt an, ob die Motoren an sind
 
     int _currentspeed[4];
+    int _wantedSpeed[4];
+    int _power[4];
 };
 
 #endif
