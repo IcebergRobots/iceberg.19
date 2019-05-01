@@ -10,6 +10,7 @@ extern Ultrasonic us;
 extern Adafruit_NeoPixel bottom;
 extern Adafruit_NeoPixel info;
 extern Input input;
+extern Adafruit_BNO055 bno;
 
 Led::Led() {}
 
@@ -23,7 +24,6 @@ void Led::heartbeat(){
   Aktualisiere alle Leds bzw. zeige die Animation
 *****************************************************/
 void Led::led() {
-  //TODO
   if (!timer) {
     // setze Helligkeit zurück
     bottom.setBrightness(BOTTOM_BRIGHTNESS);
@@ -49,8 +49,7 @@ void Led::led() {
   Lege Leds auf Statusinformation fest
 *****************************************************/
 void Led::set() {
-  //TODO
-  showState(info, 0,  0                                                           );  //PARTY
+  info.setPixelColor(0, wheelToColor(info, (millis()/2)%255)                      );  //PARTY
   showState(info, 1,  batState * (batState != 3 || millis() % 250 < 125), true    );  //Voltage
   showState(info, 2,  0                                                           );  //ColCode
   showState(info, 3,  seeGoal                                                     );  //Goal
@@ -62,27 +61,43 @@ void Led::set() {
   showState(info, 9,  input.switch_bluetooth                                      );  //Bluetooth
   showState(info, 10, m.getMotEn() + (!m.getMotEn()&&input.switch_motor)*2        );  //Motors
   showState(info, 11, input.switch_headstart                                      );  //Headstart
-  /*
-  // zeige Statuswerte an
-  showState(info, 0, stateFine);
-  showState(info, 1, batState * (batState != 3 || millis() % 250 < 125), true);
-  showState(info, 2, millis() % 1000 < 200, true);
+}
 
-  showState(matrix, 0, input.switch_kick);
-  showState(matrix, 1, !input.switch_motor);
-  showState(matrix, 2, seeBall + closeBall, true);
-  showState(matrix, 3, hasBall, true);
-  showState(matrix, 4, !mate.timeout());
-  //showState(matrix, 5, Bodensensor verfügbar);
-  showState(matrix, 6, isLifted * 3, true);
-  showState(matrix, 7, pixyState, true);
-  showState(matrix, 8, !onLine);
-  showState(matrix, 9, seeGoal, true);
-  //showState(matrix, 10, !us.timeout() * (2 - us.check()));
-  if (p.isKeeper()) showState(matrix, 11, 1, true);
-  else if (p.isRusher()) showState(matrix, 11, 3, true);
-  else showState(matrix, 11, 0, true);
-  }*/
+void Led::showCalibration() {
+  setBoard(info, 12, info.Color(0,0,0));
+
+  uint8_t system, gyro, accel, mag;
+  system = gyro = accel = mag = 0;
+  bno.getCalibration(&system, &gyro, &accel, &mag);
+
+  /* The data should be ignored until the system calibration is > 0 */
+  Serial.print("\t");
+  if (!system)
+  {
+      Serial.print("! ");
+  }
+
+  /* Display the individual values */
+  Serial.print("Sys:");
+  Serial.print(system, DEC);
+  Serial.print(" G:");
+  Serial.print(gyro, DEC);
+  Serial.print(" A:");
+  Serial.print(accel, DEC);
+  Serial.print(" M:");
+  Serial.print(mag, DEC);
+
+  showState(info, 5, (4-system) % 4  ,true);
+  showState(info, 11, (4-system) % 4 ,true);
+
+  showState(info, 4, (4-gyro) % 4    ,true);
+  showState(info, 10, (4-gyro) % 4   ,true);
+
+  showState(info, 3, (4-accel) % 4   ,true);
+  showState(info, 9, (4-accel) % 4   ,true);
+
+  showState(info, 2, (4-mag) % 4     ,true);
+  showState(info, 8, (4-mag) % 4     ,true);
 }
 
 /*****************************************************
@@ -218,7 +233,9 @@ void Led::hymne() {
   // TODO setBoard(bottom, BOTTOM_LENGTH, bottom.Color(255, 255, 255));
   // TODO setBoard(matrix, MATRIX_LENGTH, matrix.Color(255, 255, 255));
   // TODO setBoard(info, INFO_LENGTH, info.Color(255, 255, 255));
-  while (input.button_animation) {}
+  while (input.button_animation) {
+    input.update();
+  }
   // TODO setBoard(bottom, BOTTOM_LENGTH, 0);
   // TODO setBoard(matrix, MATRIX_LENGTH, 0);
   // TODO setBoard(info, INFO_LENGTH, 0);
@@ -284,7 +301,8 @@ void Led::hymne() {
 
 void Led::myTone(unsigned int frequency, unsigned long duration, unsigned long pause) {
   if (timer) {
-    if (input.button_encoder || !input.switch_debug) {
+    if (input.button_encoder) {
+      input.update();
       cancel();
       return;
     }
@@ -292,7 +310,8 @@ void Led::myTone(unsigned int frequency, unsigned long duration, unsigned long p
     tone(BUZZER, frequency, duration);
     unsigned long timestamp = micros();
     while (micros() - timestamp < pause) {
-      if (input.button_encoder || !input.switch_debug) {
+      if (input.button_encoder) {
+        input.update();
         cancel();
         return;
       }

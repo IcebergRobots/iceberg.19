@@ -4,6 +4,8 @@
 #include "Config.h"
 #include "Input.hpp"
 
+void handleCompassCalibration();
+void displayCalStatus(void);
 void reset();
 int shift(int &value, int min, int max);
 void startSound();
