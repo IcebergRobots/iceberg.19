@@ -9,7 +9,11 @@ Compass::Compass(){
 }
 
 void Compass::init(){
-    bno.begin();
+    delay(2);
+    while(!bno.begin()){
+        DEBUG_SERIAL.println("Compass initialisation error!");
+        delay(100);
+    }
 
     if (EEPROM.read(EEPROM_HEADING_SIGN) == 0) {
         _startHeading = EEPROM.read(EEPROM_HEADING);

@@ -28,13 +28,12 @@
 //    TODO: Ultraschall überprüfen
 //    TODO: Bodensensor
 //    TODO: Bluetooth
-//    TODO: HEADSTART
-//    TODO: crashes in setup
 //
 //  SHOULD WORK
 //    TODO: Encoder
 //    TODO: neue Display Klasse
 //    TODO: beide US nach vorne nutzen
+//    TODO: Debug-Schalter
 //
 //  NICE TO HAVE
 //    TODO: LM35
@@ -208,6 +207,8 @@ void setup() {
   BLUETOOTH_SERIAL.begin(115200);
   BOTTOM_SERIAL.begin(115200);
 
+  DEBUG_SERIAL.println("Wire begin");
+
   // Start der I2C-Kommunikation
   Wire.begin();    
 
@@ -220,17 +221,25 @@ void setup() {
   // lies den Hardware Jumper aus um Roboter A/B zu unterscheidne
   isTypeA = digitalRead(TYPE);        
 
+  DEBUG_SERIAL.println("setupMotor");
+
   // setzte Pins und Winkel des Pilot Objekts
   d.setupMessage(1, "MOTOR", "setPins");
   setupMotor();
+
+  DEBUG_SERIAL.println("Pixy");
 
   // initialisiere Kamera
   d.setupMessage(2, "PIXY", "Kamera");
   pixy.init();
 
+  DEBUG_SERIAL.println("PUI");
+
   // initialisiere IO-Expander
   d.setupMessage(3, "PUI", "IO-Expander");
   input.init();
+
+  DEBUG_SERIAL.println("Compass");
 
   // initialisiere Kompasssensor
   d.setupMessage(5, "COMPASS", "Orientierung");
@@ -244,14 +253,20 @@ void setup() {
   myPID.SetMode(AUTOMATIC);
   myPID.SetOutputLimits(-255, 255);
 
+  DEBUG_SERIAL.println("Ultraschall");
+
   //initiiere Ultraschallsensoren
   d.setupMessage(7, "US", "Ultraschallsensoren");
   us.init();
+
+  DEBUG_SERIAL.println("LED");
 
   // initialisiere Leds
   d.setupMessage(8, "LED", "Animation");
   bottom.begin();   // BODEN-LEDS initialisieren   
   info.begin();     // STATUS-LEDS initialisieren
+
+  DEBUG_SERIAL.println("Ballsensor");
 
   // initialisiere BallTouch Sensor
   d.setupMessage(9, "Ball", "Ballsensor");
