@@ -29,6 +29,7 @@
 //    TODO: Bodensensor
 //    TODO: Bluetooth
 //    TODO: HEADSTART
+//    TODO: crashes in setup
 //
 //  SHOULD WORK
 //    TODO: Encoder

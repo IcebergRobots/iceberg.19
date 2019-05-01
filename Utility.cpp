@@ -166,6 +166,9 @@ void handleStartStop(){
 
   if(input.button_start){
     m.setMotEn(true);
+    if(input.switch_headstart){
+      headstartTimer = millis();
+    }
   }
 
   if(input.button_stop){
