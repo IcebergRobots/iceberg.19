@@ -117,19 +117,8 @@ void Pilot::update(byte id) {
   1 \    / 2
      '--'
 *****************************************************/
-void Pilot::setMotor(byte id) {
-  if (_motEn) {
-    if (id < 0 || id > 3) {     //Eingabeueberpruefung
-      return;
-    }
-
-    power = min(255, _wantedSpeed[id]);    //Eingabekorrektur
-    power = max(-255, _wantedSpeed[id]);
-
-    digitalWrite(_fwd[id], _wantedSpeed[id] > 0);  //drehe Motor vorwarts
-    digitalWrite(_bwd[id], _wantedSpeed[id] <= 0); //drehe Motor rueckwaerts
-    analogWrite(_pwm[id], abs(_wantedSpeed[id]));  //drehe Motor mit Geschwindigkeit
-  }
+void Pilot::setMotor(byte id, int power) {
+  _wantedSpeed[id] = power;
 }
 
 /*****************************************************
