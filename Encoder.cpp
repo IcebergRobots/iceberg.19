@@ -12,7 +12,7 @@ void Encoder::update(){
   if(millis() - timer > maxtime){
     Wire.requestFrom(_encNr,2);
     if(Wire.available()){ 
-      if(_dataNr = 1){
+      if(_dataNr == 1){
         Wire.read();
         speed = Wire.read();
       }else{
