@@ -26,7 +26,7 @@
 */
 //  IMPORTANT
 //    TODO: Ultraschall überprüfen
-//    TODO: Bodensensor
+//    TODO: Bodensensor überprüfen
 //    TODO: Bluetooth
 //
 //  SHOULD WORK
@@ -34,6 +34,7 @@
 //    TODO: neue Display Klasse
 //    TODO: beide US nach vorne nutzen
 //    TODO: Debug-Schalter
+//    TODO: Stärke des Bodensensors auslesen
 //
 //  NICE TO HAVE
 //    TODO: LM35
