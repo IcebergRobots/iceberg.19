@@ -1,5 +1,6 @@
 #include "Encoder.h"
 #include "HardWire.h"
+#include "Config.h"
 
 
 Encoder::Encoder(int encNr, int dataNr){
