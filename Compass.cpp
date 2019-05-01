@@ -9,12 +9,15 @@ Compass::Compass(){
 }
 
 void Compass::init(){
+    DEBUG_SERIAL.println("Compass begin");
+
     delay(2);
     while(!bno.begin()){
         DEBUG_SERIAL.println("Compass initialisation error!");
         delay(100);
     }
 
+    DEBUG_SERIAL.println("Compass read StartHeading");
     if (EEPROM.read(EEPROM_HEADING_SIGN) == 0) {
         _startHeading = EEPROM.read(EEPROM_HEADING);
     } else {
@@ -25,6 +28,7 @@ void Compass::init(){
         buzzerTone(800);
     }
 
+    DEBUG_SERIAL.println("Compass restore Offsets");
     restoreOffsets();
 }
 
@@ -32,6 +36,8 @@ void Compass::restoreOffsets(){
     adafruit_bno055_offsets_t calibrationData;
 
     EEPROM.get(EEPROM_COMPASS_OFFSET, calibrationData);
+
+    delay(2);
     bno.setSensorOffsets(calibrationData);
 }
 
@@ -89,6 +95,7 @@ void Compass::calibrate(){
     led.showCalibration();
 
     adafruit_bno055_offsets_t newCalib;
+    delay(2);
     bno.getSensorOffsets(newCalib);
     EEPROM.put(EEPROM_COMPASS_OFFSET, newCalib);
 
@@ -99,6 +106,7 @@ void Compass::calibrate(){
 }
 
 void Compass::getCalibration(byte *system, byte *gyro, byte *accel, byte *mag){
+    delay(2);
     bno.getCalibration(system, gyro, accel, mag);
 }
 

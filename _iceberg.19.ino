@@ -244,8 +244,8 @@ void setup() {
   // initialisiere Kompasssensor
   d.setupMessage(5, "COMPASS", "Orientierung");
   compass.init();
-  //TODO: offsets übernehmen
-  
+
+  DEBUG_SERIAL.println("PID");
 
   // initialisiere PID-Regler
   d.setupMessage(6, "PID", "Rotation");
