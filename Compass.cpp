@@ -34,11 +34,13 @@ void Compass::init(){
 
 void Compass::restoreOffsets(){
     adafruit_bno055_offsets_t calibrationData;
-
+    DEBUG_SERIAL.println("load offsets");
     EEPROM.get(EEPROM_COMPASS_OFFSET, calibrationData);
-
-    delay(2);
+    DEBUG_SERIAL.println("loaded offset");
+    delay(50);
     bno.setSensorOffsets(calibrationData);
+    delay(10);
+    DEBUG_SERIAL.println("changed offset");
 }
 
 void Compass::update(){
