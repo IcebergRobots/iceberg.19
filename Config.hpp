@@ -107,7 +107,7 @@ extern bool wasMenuButton;
 #define SPEED_ATTACK 60        // [0 bis 255]~100 STATUS 8: Angriff
 #define SPEED_AVOID_MATE 100   // [0 bis 255]~100 STATUS 9: Ausweichen
 #define SPEED_DRIFT 80         // [0 bis 255]~140
-#define SPEED_LINE 255           // [0 bis 255]~90
+#define SPEED_LINE 130           // [0 bis 255]~90
 
 // TIMES
 #define BACKWARD_MAX_DURATION 4000    // wann darf frühestens eingegriffen werden

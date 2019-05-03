@@ -3,6 +3,7 @@
 
 #include "Config.hpp"
 
+int convertToStableAngle(int angle);
 void handleCompassCalibration();
 void displayCalStatus(void);
 void reset();

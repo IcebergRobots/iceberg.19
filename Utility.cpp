@@ -14,6 +14,27 @@ extern Compass compass;
 extern bool wasStartButton;
 extern bool wasStopButton;
 
+int convertToStableAngle(int angle){
+  #define CRITICAL_ANGLE 30 //Bereich in dem das fahren vermieden werden soll als +/- wert.
+
+  while(angle < 360){
+    angle += 360;
+  }
+
+  angle %= 360;
+
+  if(angle > 90-CRITICAL_ANGLE && angle < 90+CRITICAL_ANGLE)
+    return 100;
+
+  if(angle > 270-CRITICAL_ANGLE && angle <= 270)
+    return 270-CRITICAL_ANGLE;
+
+  if(angle < 270+CRITICAL_ANGLE && angle >  270)
+    return 270+CRITICAL_ANGLE;
+
+  return angle;
+}
+
 void handleCompassCalibration(){
   // Torrichtung speichern
   if (input.button_compass) {
@@ -152,17 +173,16 @@ void avoidLine() {
   if (BOTTOM_SERIAL.available() > 0) {
     byte data = BOTTOM_SERIAL.read();
     lineDir = data;
-    byte linePwr = data & B00000011;
+    byte linePwr = data & B00000011 ;
+    linePwr++;
 
     lineDir = (lineDir >> 2)*6;
-    driveDirection = lineDir+180;
+    driveDirection = convertToStableAngle(lineDir+180);
     m.drive(driveDirection, linePwr*SPEED_LINE, 0);
     lineTimer = millis();
     headstartTimer = 0;
     displayDebug = driveDirection;
   }
-
-
 }
 
 void handleStartStop(){
