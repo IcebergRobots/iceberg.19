@@ -85,6 +85,7 @@ byte score = 0;
 
 // Globale Definition: BLUETOOTH, MATE
 bool wasStartButton = false;      // war zuletzt der Funktstart aktiviert
+bool wasStopButton = false;      // war zuletzt der Funktstart aktiviert
 unsigned long startTimer = 0;     // Zeitpunkt des letzten Start Drückens
 unsigned long sendAvoidTimer = 0; // Zeitpunkt des letzten Ausweichsendens
 unsigned long bluetoothTimer = 0; // Zeitpunkt des letzten Sendens
@@ -292,6 +293,8 @@ void setup() {
 
   // sorge dafür, dass alle Timer genügend Abstand haben
   while (millis() < 500) {}
+
+  startSound();
 }
 
 //###################################################################################################

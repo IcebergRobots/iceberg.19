@@ -107,7 +107,7 @@ extern bool wasMenuButton;
 #define SPEED_ATTACK 60        // [0 bis 255]~100 STATUS 8: Angriff
 #define SPEED_AVOID_MATE 100   // [0 bis 255]~100 STATUS 9: Ausweichen
 #define SPEED_DRIFT 80         // [0 bis 255]~140
-#define SPEED_LINE 70           // [0 bis 255]~90
+#define SPEED_LINE 50           // [0 bis 255]~90
 
 // TIMES
 #define BACKWARD_MAX_DURATION 4000    // wann darf frühestens eingegriffen werden
@@ -158,7 +158,7 @@ extern bool wasMenuButton;
 #define SETUP_MESSAGE_RANGE 10 // [0 bis *] Anzahl von Schritten im Setup
 
 // Serielle Kommunikationen
-#define DEBUG true                // soll eine Usb-Kommunikation bestehen?
+#define DEBUG false                // soll eine Usb-Kommunikation bestehen?
 #define DEBUG_STATE false          // soll der Statuswechsel gezeigt werden?
 #define DEBUG_FUNCTIONS false     // sollen Methoden gezeigt werden?
 #define DEBUG_LOOP false           // soll jeder Schleifendurchlauf gezeigt werden?

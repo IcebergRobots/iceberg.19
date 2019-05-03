@@ -11,6 +11,12 @@ extern Ultrasonic us;
 Mate::Mate() {
 }
 
+void Mate::send(byte data){
+  byte t_data[1]; 
+  t_data[0] = data;
+  send(t_data, 1); // avoid mate
+}
+
 /*****************************************************
   übertrage Daten an den Patner
   @param data: Datenarray

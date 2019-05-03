@@ -11,7 +11,7 @@ Compass::Compass(){
 void Compass::init(){
     DEBUG_SERIAL.println("Compass begin");
 
-    delay(2);
+     
     while(!bno.begin()){
         DEBUG_SERIAL.println("Compass initialisation error!");
         delay(100);
@@ -44,7 +44,7 @@ void Compass::restoreOffsets(){
 }
 
 void Compass::update(){
-    delay(2);
+     
 
     bno.getEvent(&_event);
 
@@ -84,7 +84,7 @@ void Compass::calibrate(){
         analogWrite(BUZZER, 127 * (millis() <= buzzerStopTimer));  // buzzer anschalten bzw. wieder ausschalten
         input.update();
 
-        delay(2);
+         
         bno.getEvent(&event);
 
         led.showCalibration();
@@ -95,11 +95,13 @@ void Compass::calibrate(){
     }
 
     led.showCalibration();
+    led.led();
+    led.heartbeat();
 
     adafruit_bno055_offsets_t newCalib;
-    delay(2);
-    bno.getSensorOffsets(newCalib);
-    EEPROM.put(EEPROM_COMPASS_OFFSET, newCalib);
+     
+    if(bno.getSensorOffsets(newCalib))
+        EEPROM.put(EEPROM_COMPASS_OFFSET, newCalib);
 
     delay(200);
     
@@ -108,7 +110,7 @@ void Compass::calibrate(){
 }
 
 void Compass::getCalibration(byte *system, byte *gyro, byte *accel, byte *mag){
-    delay(2);
+     
     bno.getCalibration(system, gyro, accel, mag);
 }
 

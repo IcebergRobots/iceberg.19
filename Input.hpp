@@ -60,6 +60,31 @@ class Input{
 
     private:
         Adafruit_MCP23017 mcp;
+
+        unsigned long inputTimer = 0;
+
+        bool last_button_encoder = true;
+    // PUI:
+        // Buttons
+        bool last_button_start       = false;
+        bool last_button_stop        = false;
+        bool last_button_kick      = true;
+        bool last_button_compass     = false;
+        bool last_button_animation   = false;
+        bool last_button_line        = false;
+        bool last_button_lightBarrierCalibration = false;
+
+        bool last_button_left        = false;
+        bool last_button_middle      = false;
+        bool last_button_right       = false;
+
+        // Switches
+        bool last_switch_headstart   = false;
+        bool last_switch_motor     = false;
+        bool last_switch_bluetooth   = false;
+        bool last_switch_kick      = false;
+        bool last_switch_bodensensor = false;
+        bool last_switch_debug     = false;
 };
 extern Input input;
 

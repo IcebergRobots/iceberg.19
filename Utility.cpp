@@ -11,6 +11,8 @@ extern Input input;
 extern BallTouch ballTouch;
 
 extern Compass compass;
+extern bool wasStartButton;
+extern bool wasStopButton;
 
 void handleCompassCalibration(){
   // Torrichtung speichern
@@ -38,8 +40,13 @@ int shift(int &value, int min, int max) {
 
 void startSound() {
   //Fiepen, welches Programstart signalisiert
+  
   for (int i = 10; i < 2000; i += 10) {
+    if(isTypeA)
     tone(BUZZER, i);
+    else
+    tone(BUZZER, 2010-i);
+    
     delay(1);
   }
   noTone(BUZZER);
@@ -143,9 +150,13 @@ void avoidLine() {
     BOTTOM_SERIAL.read();
   }
   if (BOTTOM_SERIAL.available() > 0) {
-    lineDir = BOTTOM_SERIAL.read()*2;
+    byte data = BOTTOM_SERIAL.read();
+    lineDir = data;
+    byte linePwr = data & B00000011;
+
+    lineDir = (lineDir >> 2)*6;
     driveDirection = lineDir+180;
-    m.drive(driveDirection, SPEED_LINE, 0);
+    m.drive(driveDirection, linePwr*SPEED_LINE, 0);
     lineTimer = millis();
     headstartTimer = 0;
     displayDebug = driveDirection;
@@ -162,11 +173,19 @@ void handleStartStop(){
     if(input.switch_headstart){
       headstartTimer = millis();
     }
+    if(!wasStartButton){
+      mate.send('a');
+    }
   }
+  wasStartButton = input.button_start;
 
   if(input.button_stop){
     m.setMotEn(false);
+    if(!wasStartButton){
+      mate.send('o');
+    }
   }
+  wasStopButton = input.button_stop;
 
   if(!(bool)(input.switch_motor)){
     m.setMotEn(false);
@@ -200,6 +219,17 @@ void handleBluetooth(){
       avoidMateTimer = millis();
       driveDirection = -100;
       driveState = "< mate";
+      break;
+
+    case 'a':
+      m.setMotEn(true);
+      if(input.switch_headstart){
+        headstartTimer = millis();
+      }
+      break;
+
+    case 'o':
+      m.setMotEn(false);
       break;
   }
 

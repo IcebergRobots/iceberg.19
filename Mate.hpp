@@ -13,6 +13,7 @@ class Mate
     byte receive();
     unsigned long timeout();
     void send(byte * data, byte numberOfElements);
+    void send(byte data);
     bool getMotEn();
     bool isKeeper();
     bool isRusher();
