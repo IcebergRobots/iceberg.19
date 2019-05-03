@@ -107,7 +107,7 @@ extern bool wasMenuButton;
 #define SPEED_ATTACK 60        // [0 bis 255]~100 STATUS 8: Angriff
 #define SPEED_AVOID_MATE 100   // [0 bis 255]~100 STATUS 9: Ausweichen
 #define SPEED_DRIFT 80         // [0 bis 255]~140
-#define SPEED_LINE 50           // [0 bis 255]~90
+#define SPEED_LINE 255           // [0 bis 255]~90
 
 // TIMES
 #define BACKWARD_MAX_DURATION 4000    // wann darf frühestens eingegriffen werden
@@ -117,7 +117,7 @@ extern bool wasMenuButton;
 #define TURN_MAX_DURATION 1500        // max Zeit für Drehmodus
 #define RETURN_MAX_DURATION 1500      // max Zeit für Drehmodus zurück
 #define LOST_DURATION 700      // max Zeit für Ausweichmanöver
-#define LINE_DURATION 300             // wie lange steuern wir der Linie entgegen?
+#define LINE_DURATION 50             // wie lange steuern wir der Linie entgegen?
 #define HEADSTART_DURATION 350        // wie lange fahren wir volle Geschwindigkeit?
 #define AVOID_MATE_DURATION 200       // wie lange weichen wir aus
 #define DRIFT_DURATION 200            // wie lange steuern wir einem Drift entgegen?
