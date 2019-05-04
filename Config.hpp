@@ -17,7 +17,7 @@
 #include "Pin.h"
 
 #include <SPI.h>
-#include <HardWire.h>
+#include <WSWire.h>
 #include <EEPROM.h>
 #include <Pixy.h>
 #include <RotaryEncoder.h>
