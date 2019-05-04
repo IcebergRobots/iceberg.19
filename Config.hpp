@@ -95,19 +95,19 @@ extern bool wasMenuButton;
 #define ROTATION_18CM 50        // [0 bis *]~70
 #define ROTATION_10CM 70        // [0 bis *]~90
 #define ROTATION_TOUCH 40       // [0 bis *]~20
-#define SPEED_BACKWARDS 60      // [0 bis 255]~70  STATUS 0: Nach hinten
-#define SPEED_PENALTY 40        // [0 bis 255]~50  STATUS 0: Nach hinten
-#define SPEED_KEEPER 65         // [0 bis 255]~60  STATUS 1: Torverteidigung
-#define SPEED_FREE 70           // [0 bis 255]~70 STATUS 4: Befreiung
-#define SPEED_LOST 60          // [0 bis 255]~100 STATUS 5: Seitlich verloren
-#define SPEED_SIDEWAY 60       // [0 bis 255]~100  STATUS 6: Ballverfolgung
-#define SPEED_BALL 45          // [0 bis 255]~72  STATUS 6: Ballverfolgung
-#define SPEED_BALL_FAR 50      // [0 bis 255]~72  STATUS 6: Ballverfolgung
-#define SPEED_CLOSE 45         // [0 bis 255]~60 STATUS 7: Torausrichtung
+#define SPEED_BACKWARDS 0.5*60      // [0 bis 255]~70  STATUS 0: Nach hinten
+#define SPEED_PENALTY 0.5*40        // [0 bis 255]~50  STATUS 0: Nach hinten
+#define SPEED_KEEPER 0.5*65         // [0 bis 255]~60  STATUS 1: Torverteidigung
+#define SPEED_FREE 0.5*70           // [0 bis 255]~70 STATUS 4: Befreiung
+#define SPEED_LOST 0.5*60          // [0 bis 255]~100 STATUS 5: Seitlich verloren
+#define SPEED_SIDEWAY 0.5*60       // [0 bis 255]~100  STATUS 6: Ballverfolgung
+#define SPEED_BALL 0.5*45          // [0 bis 255]~72  STATUS 6: Ballverfolgung
+#define SPEED_BALL_FAR 0.5*50      // [0 bis 255]~72  STATUS 6: Ballverfolgung
+#define SPEED_CLOSE 0.5*45         // [0 bis 255]~60 STATUS 7: Torausrichtung
 #define SPEED_ATTACK 60        // [0 bis 255]~100 STATUS 8: Angriff
-#define SPEED_AVOID_MATE 100   // [0 bis 255]~100 STATUS 9: Ausweichen
-#define SPEED_DRIFT 80         // [0 bis 255]~140
-#define SPEED_LINE 90          // [0 bis 255]~90
+#define SPEED_AVOID_MATE 0.5*100   // [0 bis 255]~100 STATUS 9: Ausweichen
+#define SPEED_DRIFT 0.5*80         // [0 bis 255]~140
+#define SPEED_LINE 0.5*90          // [0 bis 255]~90
 
 // TIMES
 #define BACKWARD_MAX_DURATION 4000    // wann darf frühestens eingegriffen werden

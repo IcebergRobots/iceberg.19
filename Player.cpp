@@ -98,12 +98,13 @@ void Player::changeState() {
     case 7: // Torausrichtung
       if (!closeBall) setState(6, "farBall");
       else if (!seeGoal) setState(6, "!goal");
-      else if (goal < -BALL_ANGLE_TRIGGER) stateLeft = LEFT;
-      else if (goal > BALL_ANGLE_TRIGGER) stateLeft = RIGHT;
+      else if (goal < -25) stateLeft = LEFT;
+      else if (goal > 25) stateLeft = RIGHT;
       else if (abs(ball) < BALL_ANGLE_TRIGGER) setState(8, "goal|");
       break;
 
     case 8: // Angriff
+      if (attackTimer != 0) attackTimer = millis();
       if (seeBall && ball > BALL_ANGLE_TRIGGER) stateLeft = RIGHT;
       else if (seeBall && ball < -BALL_ANGLE_TRIGGER) stateLeft = LEFT;
 
@@ -112,6 +113,12 @@ void Player::changeState() {
   }
   if (tempState == 0 && state == 1) stateTimer = max(0, millis() - SIDEWARD_MIN_DURATION / 2);
   else if (tempState != state) stateTimer = millis();
+
+  if (!rotationDone && attackTimer > 0 && (millis() - attackTimer > 2000 || state != 8)) {
+    rotationDone = true;
+    compass.setStartHeading(compass._startHeading + 180);
+    state = 0;
+  }
 
   if (seeWest || seeEast) {
     int angle = 0;

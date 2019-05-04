@@ -26,7 +26,7 @@ class Compass{
         int getRoll();
 
         void getCalibration(byte *system, byte *gyro, byte *accel, byte *mag);
-    private:
+    // private:
         int _startHeading = 0;
 
         int _heading;

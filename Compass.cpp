@@ -71,7 +71,7 @@ void Compass::setStartHeading(){
 }
 
 void Compass::setStartHeading(int angle){
-    _startHeading = angle;
+    _startHeading = ((angle + 180) % 360) - 180;
 }
 
 void Compass::calibrate(){
