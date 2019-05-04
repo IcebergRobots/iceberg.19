@@ -173,7 +173,7 @@ void avoidLine() {
     byte linePwr = 2;
 
     //Serial.println(lineDir);
-    driveDirection = lineDir+180;//convertToStableAngle(lineDir+180);
+    driveDirection = convertToStableAngle(lineDir+180);
 
     /*
     if(us.right()<60 && us.left() > 90){
