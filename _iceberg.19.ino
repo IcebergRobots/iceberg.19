@@ -365,7 +365,7 @@ void loop() {
     readPixy();                                               // aktualisiere Pixywerte (max. alle 50ms)
   }
   //Bluetooth-Timer
-  if (millis() - bluetoothTimer > 100)  transmitHeartbeat();  // Sende einen Herzschlag mit Statusinformationen an den Partner
+  if (millis() - bluetoothTimer > 100 && m.getMotEn())  transmitHeartbeat();  // Sende einen Herzschlag mit Statusinformationen an den Partner
   
   
   debugln("D");
