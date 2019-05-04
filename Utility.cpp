@@ -169,14 +169,13 @@ void avoidLine() {
   }
   if (BOTTOM_SERIAL.available() > 0) {
     byte data = BOTTOM_SERIAL.read();
-    lineDir = data;
-    byte linePwr = data & B00000011 ;
-    linePwr++;
+    lineDir = map(data, 0, 255, 0, 359);
+    byte linePwr = 2;
 
-    lineDir = (lineDir >> 2)*6;
     //Serial.println(lineDir);
     driveDirection = lineDir+180;//convertToStableAngle(lineDir+180);
 
+    /*
     if(us.right()<60 && us.left() > 90){
       driveDirection = 110;
     }
@@ -184,6 +183,7 @@ void avoidLine() {
     if(us.left()<60 && us.right() > 90){
       driveDirection = 250;
     }
+    */
 
     m.drive(driveDirection, linePwr*SPEED_LINE, 0);
     lineTimer = millis();
