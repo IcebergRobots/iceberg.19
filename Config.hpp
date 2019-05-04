@@ -107,7 +107,7 @@ extern bool wasMenuButton;
 #define SPEED_ATTACK 60        // [0 bis 255]~100 STATUS 8: Angriff
 #define SPEED_AVOID_MATE 100   // [0 bis 255]~100 STATUS 9: Ausweichen
 #define SPEED_DRIFT 80         // [0 bis 255]~140
-#define SPEED_LINE 130           // [0 bis 255]~90
+#define SPEED_LINE 90          // [0 bis 255]~90
 
 // TIMES
 #define BACKWARD_MAX_DURATION 4000    // wann darf frühestens eingegriffen werden
@@ -116,8 +116,8 @@ extern bool wasMenuButton;
 #define SIDEWARD_MIN_DURATION 700     // min Zeit für Seitwärtsfahren
 #define TURN_MAX_DURATION 1500        // max Zeit für Drehmodus
 #define RETURN_MAX_DURATION 1500      // max Zeit für Drehmodus zurück
-#define LOST_DURATION 700      // max Zeit für Ausweichmanöver
-#define LINE_DURATION 50             // wie lange steuern wir der Linie entgegen?
+#define LOST_DURATION 700             // max Zeit für Ausweichmanöver
+#define LINE_DURATION 80              // wie lange steuern wir der Linie entgegen?
 #define HEADSTART_DURATION 350        // wie lange fahren wir volle Geschwindigkeit?
 #define AVOID_MATE_DURATION 200       // wie lange weichen wir aus
 #define DRIFT_DURATION 200            // wie lange steuern wir einem Drift entgegen?
@@ -160,9 +160,9 @@ extern bool wasMenuButton;
 // Serielle Kommunikationen
 #define DEBUG false                // soll eine Usb-Kommunikation bestehen?
 #define DEBUG_STATE false          // soll der Statuswechsel gezeigt werden?
-#define DEBUG_FUNCTIONS false     // sollen Methoden gezeigt werden?
-#define DEBUG_LOOP false           // soll jeder Schleifendurchlauf gezeigt werden?
-#define DEBUG_BLUETOOTH false      // sollen bluetooth nachrichten gezeigt werden?
+#define DEBUG_FUNCTIONS true     // sollen Methoden gezeigt werden?
+#define DEBUG_LOOP true           // soll jeder Schleifendurchlauf gezeigt werden?
+#define DEBUG_BLUETOOTH true      // sollen bluetooth nachrichten gezeigt werden?
 #define DEBUG_SERIAL Serial       // Serial der Usb-Schnittstelle
 #define BLUETOOTH true            // soll eine Bluetooth-Kommunikation bestehen?
 #define BLUETOOTH_SERIAL Serial2  // Serial des Bluetooth-Moduls

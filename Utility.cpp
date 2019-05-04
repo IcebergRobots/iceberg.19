@@ -26,11 +26,8 @@ int convertToStableAngle(int angle){
   if(angle > 90-CRITICAL_ANGLE && angle < 90+CRITICAL_ANGLE)
     return 100;
 
-  if(angle > 270-CRITICAL_ANGLE && angle <= 270)
-    return 270-CRITICAL_ANGLE;
-
-  if(angle < 270+CRITICAL_ANGLE && angle >  270)
-    return 270+CRITICAL_ANGLE;
+  if(angle > 270-CRITICAL_ANGLE && angle < 270+CRITICAL_ANGLE)
+    return 260;
 
   return angle;
 }
@@ -177,7 +174,17 @@ void avoidLine() {
     linePwr++;
 
     lineDir = (lineDir >> 2)*6;
-    driveDirection = convertToStableAngle(lineDir+180);
+    //Serial.println(lineDir);
+    driveDirection = lineDir+180;//convertToStableAngle(lineDir+180);
+
+    if(us.right()<60 && us.left() > 90){
+      driveDirection = 110;
+    }
+
+    if(us.left()<60 && us.right() > 90){
+      driveDirection = 250;
+    }
+
     m.drive(driveDirection, linePwr*SPEED_LINE, 0);
     lineTimer = millis();
     headstartTimer = 0;

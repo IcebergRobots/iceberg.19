@@ -12,7 +12,7 @@ void BallTouch::init(){
 }
 
 void BallTouch::calibrate(){
-    _threshold = _value - 50;
+    _threshold = _value - 20;
     EEPROM.write(EEPROM_BALLTOUCH_THRESHOLD, (byte)_threshold / 4);
 }
 

@@ -321,10 +321,15 @@ void loop() {
   calculateStates();  // Berechne alle Statuswerte und Zustände
   rating();
 
+  debugln("A");
+
   handleMenu();
   handleCompassCalibration();
   handleStartStop();
   handleBluetooth();
+
+  
+  debugln("B");
 
   if (millis() - kickTimer > 35) digitalWrite(SCHUSS, 0); // schuß wieder ausschalten
 
@@ -344,6 +349,9 @@ void loop() {
   if (input.button_lightBarrierCalibration) ballTouch.calibrate();
   if (input.button_line) BOTTOM_SERIAL.write(42);
 
+  
+  debugln("C");
+
   //TIMER
   //led-Timer
   if (led.isAnimation() || millis() - ledTimer > 100) {
@@ -359,25 +367,31 @@ void loop() {
   //Bluetooth-Timer
   if (millis() - bluetoothTimer > 100)  transmitHeartbeat();  // Sende einen Herzschlag mit Statusinformationen an den Partner
   
+  
+  debugln("D");
 
   // Fahre
   if (isLifted) {
     // hochgehoben
     driveState = F("lifted");
+    debugln(driveState);
     m.brake(false);
   } else if (onLine) {
     // weiche einer Linie aus
     driveState = F("line");
+    debugln(driveState);
     m.drive(driveDirection, SPEED_LINE, 0);
   } else if (isHeadstart) {
     // führe einen Schnellstart aus
     driveState = F("headstart");
+    debugln(driveState);
     for (int i = 0; i < 4; i++) {
       m.steerMotor(i, 255);
     }
   } else if (isDrift) {
     // steuere gegen
     driveState = F("drift");
+    debugln(driveState);
     drivePower = SPEED_DRIFT;
     if (driftLeft) {
       driveDirection = 90;
@@ -385,12 +399,17 @@ void loop() {
       driveDirection = -90;
     }
   } else if (isAvoidMate) {
+    
+    debugln("isAvoidMate");
     driveRotation = ausrichten(0);
     drivePower = max(SPEED_AVOID_MATE - abs(driveRotation), 0);
     m.drive(driveDirection, drivePower, driveRotation);
   } else {
+    debugln("p.play()");
     p.play();
   }
+
+  debugln("end");
 
   if (hasDebugHead) debugln();
 }

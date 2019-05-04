@@ -44,7 +44,8 @@ void Compass::restoreOffsets(){
 }
 
 void Compass::update(){
-     
+     debugln("Start");
+
 
     bno.getEvent(&_event);
 
@@ -55,6 +56,8 @@ void Compass::update(){
     if(abs(_pitch) < FLAT_ANGLE){
         flatTimer = millis();
     }
+
+    debugln("Stop");
 }
 
 
