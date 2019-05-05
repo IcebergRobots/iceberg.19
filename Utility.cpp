@@ -208,7 +208,7 @@ void handleStartStop(){
 
   if(input.button_stop){
     m.setMotEn(false);
-    if(!wasStartButton){
+    if(!wasStartButton && input.button_encoder){
       mate.send('o');
     }
   }
