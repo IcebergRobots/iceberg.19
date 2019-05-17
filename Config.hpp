@@ -152,7 +152,7 @@ extern bool wasMenuButton;
 #define SIGNATURE_GOAL 2      // Pixy-Signature des Tors
 #define SIGNATURE_CC 28       // Pixy-Signature des Tors
 #define BALL_WIDTH_TRIGGER 40 // Schwellwert eines großen Balles
-#define BALL_ANGLE_TRIGGER 40 // Schwellenwert der Ballrichtung
+#define BALL_ANGLE_TRIGGER 60 // Schwellenwert der Ballrichtung
 
 // DISPLAY
 #define SETUP_MESSAGE_RANGE 10 // [0 bis *] Anzahl von Schritten im Setup
