@@ -31,8 +31,12 @@ void Led::led() {
     info.setBrightness(INFO_BRIGHTNESS);
 
     // setze Boden-Leds
-    if (!input.switch_bodensensor || isLifted) setBoard(bottom, BOTTOM_LENGTH, bottom.Color(0, 0, 0));
-    else setBoard(bottom, BOTTOM_LENGTH, bottom.Color(255, 255, 255));
+    if (!input.switch_bodensensor) setBoard(bottom, BOTTOM_LENGTH, bottom.Color(255, 255, 255));
+    else setBoard(bottom, BOTTOM_LENGTH, bottom.Color(255, 0, 100));
+
+    if(isLifted){
+      setBoard(bottom, BOTTOM_LENGTH, bottom.Color(0, 0, 0));
+    }
 
     info.show();
   } else {

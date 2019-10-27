@@ -98,9 +98,9 @@ void Player::changeState() {
     case 7: // Torausrichtung
       if (!closeBall) setState(6, "farBall");
       else if (!seeGoal) setState(6, "!goal");
-      else if (goal < -BALL_ANGLE_TRIGGER) stateLeft = LEFT;
-      else if (goal > BALL_ANGLE_TRIGGER) stateLeft = RIGHT;
-      else if (abs(ball) < BALL_ANGLE_TRIGGER) setState(8, "goal|");
+      else if (goal+goalWidth/2 < -65) stateLeft = RIGHT;
+      else if (goal-goalWidth/2 > 65) stateLeft = LEFT;
+      else if (abs(ball) < 50) setState(8, "goal|");
       break;
 
     case 8: // Angriff
